@@ -5,7 +5,17 @@ function buscar(dia){
 			process.exit(0);
 		}
 		actualizarLista(record, dia);
-		actualizarLista(record, dia);
+	});
+}
+
+function buscarTodo(){
+	animesdb.find({}).sort({"nombre":1}).exec(function(err, record) {
+		if (err) {
+			console.error(err);
+			process.exit(0);
+		}
+		actualizarListaCompleta(record);
+		console.log(record);
 	});
 }
 

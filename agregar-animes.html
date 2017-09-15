@@ -35,7 +35,7 @@
 								<td><input type="text" name="pagina" required></td>
 								<td>
 									<input type="file" name="carpeta" onchange="getFolder(this)" id="file" class="inputfile" webkitdirectory />
-									<label for="file">Escoja una carpeta</label>
+									<label for="file" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
 								</td>
 							</tr>
 							<tr>
@@ -61,27 +61,6 @@
 	<script type="text/javascript" src="js/materialize-initialize.js"></script>
 	<script type="text/javascript" src="js/render.js"></script>
 	<script type="text/javascript" src="js/consultas.js"></script>
-	<script>
-	var inputs = document.querySelectorAll( '.inputfile' );
-Array.prototype.forEach.call( inputs, function( input )
-{
-	var label	 = input.nextElementSibling,
-		labelVal = label.innerHTML;
-
-	input.addEventListener( 'change', function( e )
-	{
-		var fileName = '';
-		if( this.files && this.files.length > 1 )
-			fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
-		else
-			fileName = e.target.value.split( '\\' ).pop();
-
-		if( fileName )
-			label.querySelector( 'span' ).innerHTML = fileName;
-		else
-			label.innerHTML = labelVal;
-	});
-});
-	</script>
+	<script type="text/javascript" src="js/agregar-animes-initialize.js"></script>
 </body>
 </html>

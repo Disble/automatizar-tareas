@@ -37,6 +37,19 @@ let template = [{
 			}
 		}
 	},	{
+		label: 'Editar Animes',
+		click: function (item, focusedWindow) {
+			if (focusedWindow) {
+				if (focusedWindow.id === 1) {
+					BrowserWindow.getAllWindows().forEach(function (win) {
+						win.loadURL(`file://${__dirname}/editar-animes.html`);
+					})
+				}
+			}
+		}
+	},	{
+		type: 'separator'
+	},	{
 		label: 'Pendientes',
 		click: function (item, focusedWindow) {
 			if (focusedWindow) {

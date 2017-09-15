@@ -31,6 +31,7 @@ h1.titulo {
     font-size: 0.9em !important;
 	font-weight: 300;
 }
+
 .inputfile {
 	width: 0.1px;
 	height: 0.1px;
@@ -42,19 +43,16 @@ h1.titulo {
 .inputfile + label {
 	font-size: 0.8em;
 	text-align: center;
-	padding: 4px;
+	padding: 6px 4px;
 	font-weight: 400;
 	color: white;
 	width: 80px;
 	border-radius: 4px;
 	background-color: #0549ff;
 	display: inline-block;
+	cursor: pointer; /* "hand" cursor */
 }
 
-.inputfile:focus + label,
 .inputfile + label:hover {
-    background-color: green;
-}
-.inputfile + label {
-	cursor: pointer; /* "hand" cursor */
+	background-color: green;
 }

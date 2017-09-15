@@ -1,3 +1,20 @@
+function actualizarListaCompleta(consulta) {
+	var tblListaAnimes = "";
+	let cont = 1;
+	$.each(consulta, function(i, item){
+		tblListaAnimes += `<tr>
+								<td>${cont++}</td>
+								<td class='center'>${consulta[i].nombre}</td>
+								<td>${consulta[i].dia}</td>
+								<td>${consulta[i].orden}</td>
+								<td>${consulta[i].nrocapvisto}</td>
+								<td>${consulta[i].pagina}</td>
+								<td>${consulta[i].carpeta}</td>
+							</tr>"`;
+	});
+	$('#contenido').html(tblListaAnimes);
+}
+
 function actualizarLista(consulta, dia) {
 	var tblListaAnimes = "";
 	$.each(consulta, function(i, item){
@@ -12,55 +29,12 @@ function actualizarLista(consulta, dia) {
 									</div>
 								</td>
 								<td>
-									<button class="btn btn-small green" onclick="abrirCarpeta('${(consulta[i].carpeta)}');">Abrir</button>
+									<button class="btn btn-small green ${consulta[i].carpeta === null || consulta[i].carpeta === undefined ? 'disabled': ''}" onclick="abrirCarpeta('${consulta[i].carpeta}');">Abrir</button>
 								</td>
 							</tr>"`;
 	});
 	$('#contenido').html(tblListaAnimes);
 	$('.titulo').html(dia);
-}
-function increNuevosAnimes(){
-	let nuevaConsulta = `<tr>
-							<td><input type="number" name="orden" required></td>
-							<td><input type="text" name="nombre" required></td>
-							<td><input type="text" name="dia" required></td>
-							<td><input type="number" name="nrocapvisto" required></td>
-							<td><input type="text" name="pagina" required></td>
-							<td>
-								<input type="file" name="carpeta" onchange="getFolder(this)" id="file" class="inputfile" webkitdirectory />
-								<label for="file">Escoja una carpeta</label>
-							</td>
-						</tr>`;
-	$('#agregarNuevoAnime').parent().parent().parent().before(nuevaConsulta);
-}
-function crearJSON(){
-	var inputs = $("input[type]");
-	var listaEnviar = Array();
-	var contenido = Array();
-	inputs.each(function(key, value) {
-		let llave = inputs[key].getAttribute('name');
-		let valor = inputs[key].value;
-		if (llave == "orden" || llave == "nrocapvisto")
-			contenido[llave] = parseInt(valor);
-		else
-			contenido[llave] = valor;
-		//console.log(contenido);
-		if(llave=="carpeta"){
-			var json = {
-				'orden' : contenido['orden'],
-				'nombre': contenido['nombre'],
-				'dia': contenido['dia'].toLowerCase(),
-				'nrocapvisto': contenido['nrocapvisto'],
-				'pagina': contenido['pagina'].toLowerCase(),
-				'carpeta': inputs[key].getAttribute('value')
-			};
-			listaEnviar.push(json);
-			contenido = Array();
-		}
-		//console.log(listaEnviar);
-	});
-	console.log(listaEnviar);
-	return listaEnviar;
 }
 
 function menuRender(){
@@ -124,42 +98,74 @@ function menuRender(){
 		}
 		salidaMenu += `</li>`;
 	});
-	//console.log(salidaMenu);
 	$('#menu').html(salidaMenu);
 }
 
 function cargarTablasAnime(){
 	var anime = [
 				"Nombre",
-				"Cap Visto",
-				"Pagina",
+				"Cáp Visto",
+				"Página",
 				"Min/Add",
 				"Carpeta"
 			];
 	var myHtml = "";
 	$.each(anime, function(i, item){
-		myHtml += "<th class=\"lenguajes\">" + item + "</th>";
+		myHtml += `<th class="center">${item}</th>`;
 	});
 	$('#cabecera').html(myHtml);
 }
 
-function firstUpperCase(value){
-	return value.charAt(0).toUpperCase() + value.slice(1);;
-}
+/*------------------------- RENDER DINAMICO ---------------------------------------*/
 
-function diaSemana(){
-	var diasSemana = new Array("domingo","lunes","martes","miércoles","jueves","viernes","sábado");
-	var f=new Date();
-	return diasSemana[f.getDay()];
+function increNuevosAnimes(){
+	let nuevaConsulta = `<tr>
+							<td><input type="number" name="orden" required></td>
+							<td><input type="text" name="nombre" required></td>
+							<td><input type="text" name="dia" required></td>
+							<td><input type="number" name="nrocapvisto" required></td>
+							<td><input type="text" name="pagina" required></td>
+							<td>
+								<input type="file" name="carpeta" onchange="getFolder(this)" id="file${++contNewFolder}" class="inputfile" webkitdirectory />
+								<label for="file${contNewFolder}" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
+							</td>
+						</tr>`;
+	$('#agregarNuevoAnime').parent().parent().parent().before(nuevaConsulta);
+	$('.tooltipped').tooltip({delay: 50});
+}
+function crearJSON(){
+	var inputs = $("input[type]");
+	var listaEnviar = Array();
+	var contenido = Array();
+	inputs.each(function(key, value) {
+		let llave = inputs[key].getAttribute('name');
+		let valor = inputs[key].value;
+		if (llave == "orden" || llave == "nrocapvisto")
+			contenido[llave] = parseInt(valor);
+		else
+			contenido[llave] = valor;
+		//console.log(contenido);
+		if(llave=="carpeta"){
+			var json = {
+				'orden' : contenido['orden'],
+				'nombre': contenido['nombre'],
+				'dia': contenido['dia'].toLowerCase(),
+				'nrocapvisto': contenido['nrocapvisto'],
+				'pagina': contenido['pagina'].toLowerCase(),
+				'carpeta': inputs[key].getAttribute('value')
+			};
+			listaEnviar.push(json);
+			contenido = Array();
+		}
+		//console.log(listaEnviar);
+	});
+	console.log(listaEnviar);
+	return listaEnviar;
 }
 
 function abrirCarpeta(folder){
-	console.log(`D:/Anime/${folder}/*`);
-	//if (shell.showItemInFolder(`D:\\Anime\\${folder}\\*`))
-	if (shell.showItemInFolder(`${folder}/*`))
-		console.log('SI');
-	else
-		console.log('NO');
+	if (!shell.showItemInFolder(`${folder}/*`))
+		alert('Hubo problemas al abrir la carpeta', 'Error');
 }
 
 function getFolder(dir){
@@ -174,14 +180,21 @@ function getFolder(dir){
 		}
 		path += folder[i];
 	}
-	console.log(path);
-	$(dir).attr('value', path)
-	console.log($(dir).value);
+	//console.log(path);
+	$(dir).attr('value', path);
+	$(dir).siblings().html('Cargado');
+	$(dir).siblings().attr('data-tooltip', path);
+	$('.tooltipped').tooltip({delay: 50});
+	//console.log($(dir).value);
 }
 
-$(document).ready(() => {
-	menuRender();
-	cargarTablasAnime();
-	buscar(diaSemana());
-	$('.collapsible').collapsible('open', 0);
-});
+/*------------------------- FUNCIONES ADICIONALES ---------------------------------------*/
+function firstUpperCase(value){
+	return value.charAt(0).toUpperCase() + value.slice(1);;
+}
+
+function diaSemana(){
+	var diasSemana = new Array("domingo","lunes","martes","miércoles","jueves","viernes","sábado");
+	var f=new Date();
+	return diasSemana[f.getDay()];
+}
