@@ -101,28 +101,6 @@ function menuRender(){
 				'onclick': "buscar('domingo');",
 				'class': 'collection-item'
 			}
-		},
-		'opciones': {
-			'Ver Anime': {
-				'href': 'index.html',
-				'class': 'collection-item'
-			},
-			'Agregar Anime': {
-				'href': 'agregar-animes.html',
-				'class': 'collection-item'
-			},
-			'Editar Anime': {
-				'href': '#!',
-				'class': 'collection-item'
-			},
-			'Pendientes': {
-				'href': 'pendientes.html',
-				'class': 'collection-item'
-			},
-			'Agregar Pendientes': {
-				'href': 'editar-pendientes.html',
-				'class': 'collection-item'
-			}
 		}
 	};
 	var salidaMenu = '';
