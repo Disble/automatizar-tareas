@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Agregar Animes</title>
+  <link rel="stylesheet" type="text/css" href="node_modules/materialize-css/dist/css/materialize.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/app.css" />
+</head>
+<body>
+	<div class="row">
+		<div class="col s12">
+			<h1 class="center">Agregar Animes</h1>
+			<hr>
+			<div class="container">
+				<form action="" onsubmit="return cargarDatos();" id="nuevaListaAnimes">
+					<table >
+						<thead>
+							<tr>
+								<th>Orden</th>
+								<th>Nombre</th>
+								<th>Día</th>
+								<th>Cáp Vistos</th>
+								<th>Página</th>
+								<th>Carpeta</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="number" name="orden" required></td>
+								<td><input type="text" name="nombre" required></td>
+								<td><input type="text" name="dia" required></td>
+								<td><input type="number" name="nrocapvisto" required></td>
+								<td><input type="text" name="pagina" required></td>
+								<td>
+									<input type="file" name="carpeta" onchange="getFolder(this)" id="file" class="inputfile" webkitdirectory />
+									<label for="file">Escoja una carpeta</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="6">
+									<div class="barra-sumar">
+										<hr>
+										<div class="triangle"></div>
+										<a id="agregarNuevoAnime" onclick="increNuevosAnimes();" class="right btn-floating btn blue">+</a>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th colspan="6" class="center"><input class="btn green" type="submit" value="Agregar"></th>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+			</div>
+		</div>
+	</div>
+
+  	<script src="index.js"></script>
+	<script type="text/javascript" src="js/materialize-initialize.js"></script>
+	<script type="text/javascript" src="js/render.js"></script>
+	<script type="text/javascript" src="js/consultas.js"></script>
+	<script>
+	var inputs = document.querySelectorAll( '.inputfile' );
+Array.prototype.forEach.call( inputs, function( input )
+{
+	var label	 = input.nextElementSibling,
+		labelVal = label.innerHTML;
+
+	input.addEventListener( 'change', function( e )
+	{
+		var fileName = '';
+		if( this.files && this.files.length > 1 )
+			fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+		else
+			fileName = e.target.value.split( '\\' ).pop();
+
+		if( fileName )
+			label.querySelector( 'span' ).innerHTML = fileName;
+		else
+			label.innerHTML = labelVal;
+	});
+});
+	</script>
+</body>
+</html>

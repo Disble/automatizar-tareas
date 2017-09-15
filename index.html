@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Automatizador Tareas (Nombre Provisional)</title>
+  <link rel="stylesheet" type="text/css" href="node_modules/materialize-css/dist/css/materialize.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/app.css" />
+</head>
+<body>
+	<div class="row">
+		<div class="col s3">
+			<ul class="collapsible" id="menu" data-collapsible="accordion">
+			</ul>
+		</div>
+		<div class="col s9">
+			<h1 class="center titulo"></h1>
+			<hr>
+			<div class="container">
+				<table>
+					<thead>
+						<tr id="cabecera">
+						</tr>
+					</thead>
+					<tbody id="contenido">
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<script src="index.js"></script>
+	<script type="text/javascript" src="js/materialize-initialize.js"></script>
+	<script type="text/javascript" src="js/render.js"></script>
+	<script type="text/javascript" src="js/consultas.js"></script>
+</body>
+</html>
