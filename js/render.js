@@ -1,10 +1,11 @@
+/*------------------------- RENDER CARGA CON LA PAGINA ---------------------------------------*/
 function actualizarListaCompleta(consulta) {
 	var tblListaAnimes = "";
 	let cont = 1;
 	$.each(consulta, function(i, item){
 		tblListaAnimes += `<tr>
 								<td>${cont++}</td>
-								<td class='center'>${consulta[i].nombre}</td>
+								<td>${consulta[i].nombre}</td>
 								<td>${consulta[i].dia}</td>
 								<td>${consulta[i].orden}</td>
 								<td>${consulta[i].nrocapvisto}</td>
@@ -20,7 +21,7 @@ function actualizarLista(consulta, dia) {
 	$.each(consulta, function(i, item){
 		tblListaAnimes += `<tr>
 								<td>${consulta[i].nombre}</td>
-								<td class='center'>${consulta[i].nrocapvisto}</td>
+								<td>${consulta[i].nrocapvisto}</td>
 								<td>${consulta[i].pagina}</td>
 								<td>
 									<div class="btnIncremento">
@@ -80,7 +81,7 @@ function menuRender(){
 	var salidaMenu = '';
 	$.each(menu, function(nivel1, value1){
 		salidaMenu += `<li>
-							<div class="collapsible-header">${firstUpperCase(nivel1)}</div>`;
+							<div class="collapsible-header flex-center">${firstUpperCase(nivel1)}</div>`;
 		if (value1 != null){
 			salidaMenu += `<div class="collapsible-body no-padding">
 								<div class="collection">`;
@@ -104,14 +105,14 @@ function menuRender(){
 function cargarTablasAnime(){
 	var anime = [
 				"Nombre",
-				"Cáp Visto",
+				"Capítulo Visto",
 				"Página",
 				"Min/Add",
 				"Carpeta"
 			];
 	var myHtml = "";
 	$.each(anime, function(i, item){
-		myHtml += `<th class="center">${item}</th>`;
+		myHtml += `<th>${item}</th>`;
 	});
 	$('#cabecera').html(myHtml);
 }
@@ -194,7 +195,7 @@ function firstUpperCase(value){
 }
 
 function diaSemana(){
-	var diasSemana = new Array("domingo","lunes","martes","miércoles","jueves","viernes","sábado");
+	var diasSemana = new Array("domingo","lunes","martes","miercoles","jueves","viernes","sabado");
 	var f=new Date();
 	return diasSemana[f.getDay()];
 }
