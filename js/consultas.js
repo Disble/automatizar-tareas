@@ -15,32 +15,28 @@ function buscarTodo(){
 			process.exit(0);
 		}
 		actualizarListaCompleta(record);
-		console.log(record);
 		cellEdit();
+		eraserRow();
 	});
 }
 
 function actualizar(dia, orden, cont){
-	animesdb.update({$and: [{"dia":dia}, {"orden":orden}]}, {$set: {"nrocapvisto": cont}}, function(err, num) {
+	animesdb.update({$and: [{"dia":dia}, {"orden":orden}]}, {$set: {"nrocapvisto": cont}}, function(err, numUpdate) {
 		if (err) {
 			console.error(err);
 			return;
 		}
 		buscar(dia);
-		console.log(num);
 	});
 }
 
 function actualizarFila(id, json){
-	console.log(json)
 	animesdb.update({"_id" : id}, json, function(err, num) {
 		if (err) {
 			console.error(err);
 			return;
 		}
-		//buscar(dia);
-		//console.log(num);
-		buscarTodo()
+		buscarTodo();
 	});
 }
 
@@ -50,32 +46,16 @@ function cargarDatos(){
 			console.error(err);
 			return;
 		}
-		console.log(record);
 	});
 	return false;
 }
-buscar("lunes");
-/*
-animesdb.find({"dia":"sabado"}, function(err, record) {
-    if (err) {
-        console.error(err);
-        process.exit(0);
-    }
-    //console.log(record);
-	actualizarLista(record);
-});*/
-/*
-animesdb.update({"orden":3}, {$set: {"nrocapvisto": 9}}, function(err, num) {
-    if (err) {
-        console.error(err);
-        return;
-    }
-    animesdb.find({"dia":"domingo"}, function(err, result) {
-        if (err) {
-            console.error(err);
-            return;
-        }
-		actualizarLista(result);
-    });
-});
-*/
+
+function borrarFila(id){
+	animesdb.remove({ _id : id }, {}, function (err, numRemoved) {
+		if (err) {
+			console.error(err);
+			process.exit(0);
+		}
+		buscarTodo();
+	});
+}

@@ -1,4 +1,11 @@
 $(document).ready(() => {
 	buscarTodo();
-	cellEdit();
+	document.addEventListener('dragover', function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+	});
+	document.addEventListener('drop', function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+	});
 });

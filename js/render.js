@@ -4,16 +4,13 @@ function actualizarListaCompleta(consulta) {
 	let cont = 0;
 	$.each(consulta, function(i, item){
 		tblListaAnimes += `<tr>
-								<td>
-									<input class="btn btn-small" type="button" id="eraser${++cont}" value="Borrar" />
-								</td>
-								<td>${cont}</td>
+								<td><input class="btn btn-small" type="button" id="eraser${++cont}" value="${cont}" /></td>
 								<td>${consulta[i].nombre}</td>
 								<td>${consulta[i].dia}</td>
 								<td>${consulta[i].orden}</td>
 								<td>${consulta[i].nrocapvisto}</td>
 								<td>${consulta[i].pagina}</td>
-								<td>${consulta[i].carpeta}</td>
+								<td id="update-folder">${consulta[i].carpeta}</td>
 								<td class="hidden">${consulta[i]._id}</td>
 							</tr>"`;
 	});
@@ -162,28 +159,26 @@ function crearJSON(){
 			listaEnviar.push(json);
 			contenido = Array();
 		}
-		//console.log(listaEnviar);
 	});
-	console.log(listaEnviar);
+	//console.log(listaEnviar);
 	return listaEnviar;
 }
 
 function crearJSONActualizar(row){
 	var json = {
-		'orden' : row[2],
+		'orden' : parseInt(row[2]),
 		'nombre': row[0],
 		'dia': row[1],
-		'nrocapvisto': row[3],
+		'nrocapvisto': parseInt(row[3]),
 		'pagina': row[4],
 		'carpeta': row[5]
 	}
-	//console.log(json)
 	return json;
 }
 
 function abrirCarpeta(folder){
 	if (!shell.showItemInFolder(`${folder}/*`))
-		alert('Hubo problemas al abrir la carpeta', 'Error');
+		alert('Hubo problemas al abrir la carpeta.\nPor favor revise el formato de la dirección de la carpeta en Editar Animes.', 'Error');
 }
 
 function getFolder(dir){
@@ -198,7 +193,6 @@ function getFolder(dir){
 		}
 		path += folder[i];
 	}
-	//console.log(path);
 	$(dir).attr('value', path);
 	$(dir).siblings().html('Cargado');
 	$(dir).siblings().attr('data-tooltip', path);
@@ -217,29 +211,32 @@ function cellEdit(){
 			$(this).removeAttr('contenteditable')
 			let row = Array()
 			$(this).parent().children().each((key, value) => {
-				if (key != 0 && key != 1)
+				if (key != 0)
 					row.push(value.textContent)
 			})
 			let id = row[6]
-			console.log(crearJSONActualizar(row))
-			//actualizarFila(id, crearJSONActualizar(row))
+			actualizarFila(id, crearJSONActualizar(row))
 		})
 		$(value).bind('keypress', function(e) {
 			if(e.keyCode==13)
 				$(this).trigger('focusout')
 		})
+		/*--------------------------------------------------*/
+		if($(value).attr('id') === 'update-folder'){
+			//console.log(value.textContent)
+		}
 	})
+}
+
+function eraserRow(){
 	let btnBorrar = $('td').find('input')
 	btnBorrar.parent().unbind()
 	btnBorrar.each(function(key, value){
 		$(value).click(function(e){
-			e.preventDefault()
-			e.stopPropagation()
 			if (confirm('¿Estás seguro que quieres borrar esta fila?','Advertencia')){
-				console.log('confirma')
-			} else {
-				console.log('cancela')
-				return
+				let id
+				$(this).parent().parent().find('.hidden').each((key, value) => id = value.textContent)
+				borrarFila(id)
 			}
 		})
 	})
