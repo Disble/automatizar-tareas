@@ -9,13 +9,14 @@ function buscar(dia){
 }
 
 function buscarTodo(){
-	animesdb.find({}).sort({"nombre":1}).exec(function(err, record) {
+	animesdb.find({}).sort({"_id":-1}).exec(function(err, record) {
 		if (err) {
 			console.error(err);
 			process.exit(0);
 		}
 		actualizarListaCompleta(record);
 		console.log(record);
+		cellEdit();
 	});
 }
 
@@ -27,6 +28,19 @@ function actualizar(dia, orden, cont){
 		}
 		buscar(dia);
 		console.log(num);
+	});
+}
+
+function actualizarFila(id, json){
+	console.log(json)
+	animesdb.update({"_id" : id}, json, function(err, num) {
+		if (err) {
+			console.error(err);
+			return;
+		}
+		//buscar(dia);
+		//console.log(num);
+		buscarTodo()
 	});
 }
 

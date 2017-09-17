@@ -48,15 +48,18 @@ h1.titulo {
 	color: white;
 	width: 80px;
 	border-radius: 4px;
-	background-color: #0549ff;
 	display: inline-block;
 	cursor: pointer; /* "hand" cursor */
 }
 
 .inputfile + label:hover {
-	background-color: green;
+	background-color: #4CAF50 ;
 }
 
 .flex-center{
 	justify-content: center;
+}
+
+.hidden{
+	display: none;
 }

@@ -1,17 +1,8 @@
 console.log('Automatizador de tareas');
 const electron = require('electron');
-const {
-	app,
-	BrowserWindow
-} = electron;
+const {app, BrowserWindow} = electron;
 const Menu = electron.Menu;
 
-/*
-app.on('ready', () => {
-	let win = new BrowserWindow({width: 800, height: 600});
-	win.loadURL(`file://${__dirname}/index.html`);
-});
-*/
 let template = [{
 	label: 'Index',
 	submenu: [{
@@ -282,10 +273,7 @@ app.on('window-all-closed', function () {
 	if (reopenMenuItem) reopenMenuItem.enabled = true
 })
 app.on('ready', function () {
-	let win = new BrowserWindow({
-		width: 800,
-		height: 600
-	});
+	let win = new BrowserWindow({width: 800, height: 600});
 	win.loadURL(`file://${__dirname}/index.html`);
 	const menu = Menu.buildFromTemplate(template)
 	Menu.setApplicationMenu(menu)
