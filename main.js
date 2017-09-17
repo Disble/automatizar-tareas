@@ -1,7 +1,9 @@
-console.log('Automatizador de tareas');
-const electron = require('electron');
-const {app, BrowserWindow} = electron;
-const Menu = electron.Menu;
+const electron = require('electron')
+const {app, BrowserWindow} = electron
+const Menu = electron.Menu
+/*-------------------------------------------*/
+console.log('Automatizador de tareas')
+console.log('Version : ' + app.getVersion())
 
 let template = [{
 	label: 'Index',
@@ -11,7 +13,7 @@ let template = [{
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {
 					BrowserWindow.getAllWindows().forEach(function (win) {
-						win.loadURL(`file://${__dirname}/index.html`);
+						win.loadURL(`file://${__dirname}/index.html`)
 					})
 				}
 			}
@@ -33,7 +35,7 @@ let template = [{
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {
 					BrowserWindow.getAllWindows().forEach(function (win) {
-						win.loadURL(`file://${__dirname}/editar-animes.html`);
+						win.loadURL(`file://${__dirname}/editar-animes.html`)
 					})
 				}
 			}
@@ -46,7 +48,7 @@ let template = [{
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {
 					BrowserWindow.getAllWindows().forEach(function (win) {
-						win.loadURL(`file://${__dirname}/pendientes.html`);
+						win.loadURL(`file://${__dirname}/pendientes.html`)
 					})
 				}
 			}
@@ -140,24 +142,15 @@ let template = [{
 		label: 'Close',
 		accelerator: 'CmdOrCtrl+W',
 		role: 'close'
-	}, {
-		type: 'separator'
-	}, {
-		label: 'Reopen Window',
-		accelerator: 'CmdOrCtrl+Shift+T',
-		enabled: false,
-		key: 'reopenMenuItem',
-		click: function () {
-			app.emit('activate')
-		}
 	}]
 },	{
 	label: 'Help',
 	role: 'help',
 	submenu: [{
-		label: 'Learn More',
+		label: 'About',
+		enabled: false,
 		click: function () {
-			electron.shell.openExternal('http://electron.atom.io')
+
 		}
 	}]
 }]
@@ -169,10 +162,6 @@ function addUpdateMenuItems(items, position) {
 	let updateItems = [{
 		label: `Version ${version}`,
 		enabled: false
-  }, {
-		label: 'Checking for Update',
-		enabled: false,
-		key: 'checkingForUpdate'
   }, {
 		label: 'Check for Update',
 		visible: false,
@@ -188,7 +177,12 @@ function addUpdateMenuItems(items, position) {
 		click: function () {
 			require('electron').autoUpdater.quitAndInstall()
 		}
-  }]
+}, 	{
+		label: 'Learn More',
+		click: function () {
+			electron.shell.openExternal('http://electron.atom.io')
+		}
+	}]
 
 	items.splice.apply(items, [position, 0].concat(updateItems))
 }
@@ -210,53 +204,6 @@ function findReopenMenuItem() {
 	return reopenMenuItem
 }
 
-if (process.platform === 'darwin') {
-	const name = electron.app.getName()
-	template.unshift({
-		label: name,
-		submenu: [{
-			label: `About ${name}`,
-			role: 'about'
-    }, {
-			type: 'separator'
-    }, {
-			label: 'Services',
-			role: 'services',
-			submenu: []
-    }, {
-			type: 'separator'
-    }, {
-			label: `Hide ${name}`,
-			accelerator: 'Command+H',
-			role: 'hide'
-    }, {
-			label: 'Hide Others',
-			accelerator: 'Command+Alt+H',
-			role: 'hideothers'
-    }, {
-			label: 'Show All',
-			role: 'unhide'
-    }, {
-			type: 'separator'
-    }, {
-			label: 'Quit',
-			accelerator: 'Command+Q',
-			click: function () {
-				app.quit()
-			}
-    }]
-	})
-
-	// Window menu.
-	template[3].submenu.push({
-		type: 'separator'
-	}, {
-		label: 'Bring All to Front',
-		role: 'front'
-	})
-
-	addUpdateMenuItems(template[0].submenu, 1)
-}
 
 if (process.platform === 'win32') {
 	const helpMenu = template[template.length - 1].submenu

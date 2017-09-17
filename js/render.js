@@ -39,46 +39,7 @@ function actualizarLista(consulta, dia) {
 	$('.titulo').html(dia);
 }
 
-function menuRender(){
-	var menu = {
-		'día': {
-			'lunes': {
-				'href': '#!',
-				'onclick': "buscar('lunes');",
-				'class': 'collection-item'
-			},
-			'martes': {
-				'href': '#!',
-				'onclick': "buscar('martes');",
-				'class': 'collection-item'
-			},
-			'miercoles': {
-				'href': '#!',
-				'onclick': "buscar('miercoles');",
-				'class': 'collection-item'
-			},
-			'jueves': {
-				'href': '#!',
-				'onclick': "buscar('jueves');",
-				'class': 'collection-item'
-			},
-			'viernes': {
-				'href': '#!',
-				'onclick': "buscar('viernes');",
-				'class': 'collection-item'
-			},
-			'sabado': {
-				'href': '#!',
-				'onclick': "buscar('sabado');",
-				'class': 'collection-item'
-			},
-			'domingo': {
-				'href': '#!',
-				'onclick': "buscar('domingo');",
-				'class': 'collection-item'
-			}
-		}
-	};
+function menuRender(menu){
 	var salidaMenu = '';
 	$.each(menu, function(nivel1, value1){
 		salidaMenu += `<li>
@@ -89,8 +50,8 @@ function menuRender(){
 		}
 		$.each(value1, function(nivel2, value2){
 			salidaMenu += `<a `;
-			$.each(value2, function(nivel3, value2){
-				salidaMenu += `${nivel3}="${value2}" `;
+			$.each(value2, function(nivel3, value3){
+				salidaMenu += `${nivel3}="${value3}" `;
 			});
 			salidaMenu += `>${firstUpperCase(nivel2)}</a>`;
 		});
@@ -135,6 +96,7 @@ function increNuevosAnimes(){
 	$('#agregarNuevoAnime').parent().parent().parent().before(nuevaConsulta);
 	$('.tooltipped').tooltip({delay: 50});
 }
+
 function crearJSON(){
 	var inputs = $("input[type]");
 	var listaEnviar = Array();
