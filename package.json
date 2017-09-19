@@ -1,7 +1,7 @@
 {
   "name": "automatizar-tareas",
   "version": "0.1.0",
-  "description": "Apoyando la vagancia desde tiempos inmemoriables.",
+  "description": "Apoyando la vagancia desde tiempos inmemoriales.",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
