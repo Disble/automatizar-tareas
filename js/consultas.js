@@ -4,7 +4,8 @@ function buscar(dia){
 			console.error(err);
 			process.exit(0);
 		}
-		actualizarLista(record, dia);
+		let render = new Render();
+		render.actualizarLista(record, dia);
 	});
 }
 

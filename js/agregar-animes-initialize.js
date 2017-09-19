@@ -1,3 +1,3 @@
 $(document).ready(() => {
-	contNewFolder = 0;
+	render = new Render()
 });

@@ -34,7 +34,7 @@
 								<td><input type="number" name="nrocapvisto" required></td>
 								<td><input type="text" name="pagina" required></td>
 								<td>
-									<input type="file" name="carpeta" onchange="getFolder(this)" id="file" class="inputfile" webkitdirectory />
+									<input type="file" name="carpeta" onchange="render.getFolder(this)" id="file" class="inputfile" webkitdirectory />
 									<label for="file" class="tooltipped blue" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
 								</td>
 							</tr>
@@ -43,7 +43,7 @@
 									<div class="barra-sumar">
 										<hr>
 										<div class="triangle"></div>
-										<a id="agregarNuevoAnime" onclick="increNuevosAnimes();" class="right btn-floating btn blue">+</a>
+										<a id="agregarNuevoAnime" onclick="render.increNuevosAnimes();" class="right btn-floating btn blue">+</a>
 									</div>
 								</td>
 							</tr>

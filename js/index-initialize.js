@@ -1,5 +1,6 @@
 $(document).ready(() => {
-	menuRender({
+	render = new Render()
+	render.menuRender({
 		'día': {
 			'lunes': {
 				'href': '#!',
@@ -38,8 +39,7 @@ $(document).ready(() => {
 			}
 		}
 	});
-	cargarTablasAnime();
-	buscar(diaSemana());
+	render.cargarTablasAnime();
+	buscar(render.diaSemana());
 	$('.collapsible').collapsible('open', 0);
-	contNewFolder = 0;
 });
