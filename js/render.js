@@ -1,6 +1,6 @@
 /*------------------------- RENDER CARGA CON LA PAGINA ---------------------------------------*/
 function actualizarListaCompleta(consulta) {
-	var tblListaAnimes = "";
+	let tblListaAnimes = '';
 	let cont = 0;
 	$.each(consulta, function(i, item){
 		tblListaAnimes += `<tr>
@@ -10,7 +10,7 @@ function actualizarListaCompleta(consulta) {
 								<td>${consulta[i].orden}</td>
 								<td>${consulta[i].nrocapvisto}</td>
 								<td>${consulta[i].pagina}</td>
-								<td id="update-folder">${consulta[i].carpeta}</td>
+								<td>${consulta[i].carpeta}</td>
 								<td class="hidden">${consulta[i]._id}</td>
 							</tr>"`;
 	});
@@ -18,7 +18,7 @@ function actualizarListaCompleta(consulta) {
 }
 
 function actualizarLista(consulta, dia) {
-	var tblListaAnimes = "";
+	let tblListaAnimes = '';
 	$.each(consulta, function(i, item){
 		tblListaAnimes += `<tr>
 								<td>${consulta[i].nombre}</td>
@@ -65,14 +65,14 @@ function menuRender(menu){
 }
 
 function cargarTablasAnime(){
-	var anime = [
-				"Nombre",
-				"Capítulo Visto",
-				"Página",
-				"Min/Add",
-				"Carpeta"
+	let anime = [
+				'Nombre',
+				'Capítulo Visto',
+				'Página',
+				'Min/Add',
+				'Carpeta'
 			];
-	var myHtml = "";
+	let myHtml = '';
 	$.each(anime, function(i, item){
 		myHtml += `<th>${item}</th>`;
 	});
@@ -98,7 +98,7 @@ function increNuevosAnimes(){
 }
 
 function crearJSON(){
-	var inputs = $("input[type]");
+	var inputs = $('input[type]');
 	var listaEnviar = Array();
 	var contenido = Array();
 	inputs.each(function(key, value) {
@@ -127,7 +127,7 @@ function crearJSON(){
 }
 
 function crearJSONActualizar(row){
-	var json = {
+	let json = {
 		'orden' : parseInt(row[2]),
 		'nombre': row[0],
 		'dia': row[1],
@@ -183,10 +183,6 @@ function cellEdit(){
 			if(e.keyCode==13)
 				$(this).trigger('focusout')
 		})
-		/*--------------------------------------------------*/
-		if($(value).attr('id') === 'update-folder'){
-			//console.log(value.textContent)
-		}
 	})
 }
 
@@ -196,7 +192,7 @@ function eraserRow(){
 	btnBorrar.each(function(key, value){
 		$(value).click(function(e){
 			if (confirm('¿Estás seguro que quieres borrar esta fila?','Advertencia')){
-				let id
+				let id = ''
 				$(this).parent().parent().find('.hidden').each((key, value) => id = value.textContent)
 				borrarFila(id)
 			}
@@ -206,11 +202,11 @@ function eraserRow(){
 
 /*------------------------- FUNCIONES ADICIONALES ---------------------------------------*/
 function firstUpperCase(value){
-	return value.charAt(0).toUpperCase() + value.slice(1);
+	return value.charAt(0).toUpperCase() + value.slice(1)
 }
 
 function diaSemana(){
-	var diasSemana = new Array("domingo","lunes","martes","miercoles","jueves","viernes","sabado");
-	var f=new Date();
-	return diasSemana[f.getDay()];
+	let diasSemana = new Array("domingo","lunes","martes","miercoles","jueves","viernes","sabado")
+	let f = new Date()
+	return diasSemana[f.getDay()]
 }

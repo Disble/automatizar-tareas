@@ -6,14 +6,14 @@ Esta aplicación tiene como principio la sencillez y accesibilidad de uso, ayuda
 
 Enfocada principalmente como un Sistema de Control de Capítulos (o SCC siglas que acabo de inventar) de animes vistos. Teniendo un ciclo completo (agregar, ver, editar, borrar) en su presente versión Alpha.
 
-Como parte del programa diseñado al comienzo del desarrollo se presentarán como mínimo las siguientes funciones en la versión reléase 1.0.0. De la cuales actualmente ya se tienen cumplidas las siguientes funciones. 
+Como parte del programa, diseñado al comienzo del desarrollo se presentarán como mínimo las siguientes funciones en la versión reléase 1.0.0. De las cuales actualmente ya se tienen cumplidas las siguientes funciones. 
 
-- Animes (como lista enlazado a carpetas)
+- Lista de Animes (enlazado a carpetas)
  - [x] Agregar
  - [x] Editar
  - [x] Ver
  - [x] Borrar
-- Pendientes (solo como lista)
+- Lista de Pendientes (solo como lista)
  - [] Agregar
  - [] Editar
  - [] Ver
