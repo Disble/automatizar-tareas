@@ -2,10 +2,10 @@ class Render {
 	constructor() {
 		this.contNewFolder = 0
 	}
-/*------------------------- RENDER CARGA CON LA PAGINA ---------------------------------------*/
+	/*------------------------- RENDER CARGA CON LA PAGINA ---------------------------------------*/
 	actualizarListaCompleta(consulta) {
-		let tblListaAnimes = '';
-		let cont = 0;
+		let tblListaAnimes = ''
+		let cont = 0
 		$.each(consulta, function(i, item){
 			tblListaAnimes += `<tr>
 									<td><input class="btn btn-small" type="button" id="eraser${++cont}" value="${cont}" /></td>
@@ -16,13 +16,13 @@ class Render {
 									<td>${consulta[i].pagina}</td>
 									<td>${consulta[i].carpeta}</td>
 									<td class="hidden">${consulta[i]._id}</td>
-								</tr>"`;
-		});
-		$('#contenido').html(tblListaAnimes);
+								</tr>"`
+		})
+		$('#contenido').html(tblListaAnimes)
 	}
 
 	actualizarLista(consulta, dia) {
-		let tblListaAnimes = '';
+		let tblListaAnimes = ''
 		$.each(consulta, function(i, item){
 			tblListaAnimes += `<tr>
 									<td>${consulta[i].nombre}</td>
@@ -30,17 +30,17 @@ class Render {
 									<td>${consulta[i].pagina}</td>
 									<td>
 										<div class="btnIncremento">
-										<a class="btn-floating btn waves-effect waves-light red" onclick="actualizar('${consulta[i].dia}', ${consulta[i].orden}, ${(consulta[i].nrocapvisto - 1)});" >-</a>
-										<a class="btn-floating btn waves-effect waves-light blue" onclick="actualizar('${consulta[i].dia}', ${consulta[i].orden}, ${(consulta[i].nrocapvisto + 1)});" >+</a>
+										<a class="btn-floating btn waves-effect waves-light red" onclick="actualizar('${consulta[i].dia}', ${consulta[i].orden}, ${(consulta[i].nrocapvisto - 1)})" >-</a>
+										<a class="btn-floating btn waves-effect waves-light blue" onclick="actualizar('${consulta[i].dia}', ${consulta[i].orden}, ${(consulta[i].nrocapvisto + 1)})" >+</a>
 										</div>
 									</td>
 									<td>
-										<button class="btn btn-small green ${consulta[i].carpeta === null || consulta[i].carpeta === undefined ? 'disabled': ''}" onclick="render.abrirCarpeta('${consulta[i].carpeta}');">Abrir</button>
+										<button class="btn btn-small green ${consulta[i].carpeta === null || consulta[i].carpeta === undefined ? 'disabled': ''}" onclick="render.abrirCarpeta('${consulta[i].carpeta}')">Abrir</button>
 									</td>
-								</tr>"`;
-		});
-		$('#contenido').html(tblListaAnimes);
-		$('.titulo').html(dia);
+								</tr>"`
+		})
+		$('#contenido').html(tblListaAnimes)
+		$('.titulo').html(dia)
 	}
 
 	menuRender(menu){
@@ -76,12 +76,12 @@ class Render {
 					'Página',
 					'Min/Add',
 					'Carpeta'
-				];
-		let myHtml = '';
+				]
+		let myHtml = ''
 		$.each(anime, function(i, item){
-			myHtml += `<th>${item}</th>`;
-		});
-		$('#cabecera').html(myHtml);
+			myHtml += `<th>${item}</th>`
+		})
+		$('#cabecera').html(myHtml)
 	}
 
 	/*------------------------- RENDER DINAMICO ---------------------------------------*/
@@ -97,23 +97,23 @@ class Render {
 									<input type="file" name="carpeta" onchange="render.getFolder(this)" id="file${++this.contNewFolder}" class="inputfile" webkitdirectory />
 									<label for="file${this.contNewFolder}" class="tooltipped blue" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
 								</td>
-							</tr>`;
-		$('#agregarNuevoAnime').parent().parent().parent().before(nuevaConsulta);
-		$('.tooltipped').tooltip({delay: 50});
+							</tr>`
+		$('#agregarNuevoAnime').parent().parent().parent().before(nuevaConsulta)
+		$('.tooltipped').tooltip({delay: 50})
 	}
 
 	crearJSON(){
-		var inputs = $('input[type]');
-		var listaEnviar = Array();
-		var contenido = Array();
+		var inputs = $('input[type]')
+		var listaEnviar = Array()
+		var contenido = Array()
 		inputs.each(function(key, value) {
-			let llave = inputs[key].getAttribute('name');
-			let valor = inputs[key].value;
+			let llave = inputs[key].getAttribute('name')
+			let valor = inputs[key].value
 			if (llave == "orden" || llave == "nrocapvisto")
-				contenido[llave] = parseInt(valor);
+				contenido[llave] = parseInt(valor)
 			else
-				contenido[llave] = valor;
-			//console.log(contenido);
+				contenido[llave] = valor
+			//console.log(contenido)
 			if(llave=="carpeta"){
 				var json = {
 					'orden' : contenido['orden'],
@@ -122,13 +122,13 @@ class Render {
 					'nrocapvisto': contenido['nrocapvisto'],
 					'pagina': contenido['pagina'].toLowerCase(),
 					'carpeta': inputs[key].getAttribute('value')
-				};
-				listaEnviar.push(json);
-				contenido = Array();
+				}
+				listaEnviar.push(json)
+				contenido = Array()
 			}
-		});
-		//console.log(listaEnviar);
-		return listaEnviar;
+		})
+		//console.log(listaEnviar)
+		return listaEnviar
 	}
 
 	crearJSONActualizar(row){
@@ -140,32 +140,32 @@ class Render {
 			'pagina': row[4],
 			'carpeta': row[5]
 		}
-		return json;
+		return json
 	}
 
 	abrirCarpeta(folder){
 		if (!shell.showItemInFolder(`${folder}/*`))
-			alert('Hubo problemas al abrir la carpeta.\nPor favor revise el formato de la dirección de la carpeta en Editar Animes.', 'Error');
+			alert('Hubo problemas al abrir la carpeta.\nPor favor revise el formato de la dirección de la carpeta en Editar Animes.', 'Error')
 	}
 
 	getFolder(dir){
-		if (dir === undefined || dir === null || dir.files[0] === undefined) return;
-		let folder = dir.files[0].path;
-		let tam = folder.length;
-		let path = '';
+		if (dir === undefined || dir === null || dir.files[0] === undefined) return
+		let folder = dir.files[0].path
+		let tam = folder.length
+		let path = ''
 		for(let i = 0; i < tam; i++){
 			if (folder.charCodeAt(i) === 92){
-				path += '/';
-				continue;
+				path += '/'
+				continue
 			}
-			path += folder[i];
+			path += folder[i]
 		}
-		$(dir).attr('value', path);
-		$(dir).siblings().html('Cargado');
-		$(dir).siblings().attr('data-tooltip', path);
-		$(dir).siblings().removeClass('blue');
-		$(dir).siblings().addClass('green');
-		$('.tooltipped').tooltip({delay: 50});
+		$(dir).attr('value', path)
+		$(dir).siblings().html('Cargado')
+		$(dir).siblings().attr('data-tooltip', path)
+		$(dir).siblings().removeClass('blue')
+		$(dir).siblings().addClass('green')
+		$('.tooltipped').tooltip({delay: 50})
 	}
 
 	cellEdit(){

@@ -39,7 +39,7 @@ $(document).ready(() => {
 			}
 		}
 	});
-	render.cargarTablasAnime();
-	buscar(render.diaSemana());
-	$('.collapsible').collapsible('open', 0);
-});
+	render.cargarTablasAnime()
+	buscar(render.diaSemana())
+	$('.collapsible').collapsible('open', 0)
+})
