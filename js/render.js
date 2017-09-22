@@ -138,7 +138,7 @@ class Render {
 			'dia': row[1],
 			'nrocapvisto': parseInt(row[3]),
 			'pagina': row[4],
-			'carpeta': row[5]
+			'carpeta': row[5] == 'null' || row[5] == '' ? null : this.slashFolder(row[5])
 		}
 		return json
 	}
@@ -151,24 +151,31 @@ class Render {
 	getFolder(dir){
 		if (dir === undefined || dir === null || dir.files[0] === undefined) return
 		let folder = dir.files[0].path
-		let tam = folder.length
-		let path = ''
-		for(let i = 0; i < tam; i++){
-			if (folder.charCodeAt(i) === 92){
-				path += '/'
-				continue
-			}
-			path += folder[i]
-		}
+		let path = this.slashFolder(folder)
+		console.log(path)
 		$(dir).attr('value', path)
 		$(dir).siblings().html('Cargado')
 		$(dir).siblings().attr('data-tooltip', path)
 		$(dir).siblings().removeClass('blue')
 		$(dir).siblings().addClass('green')
 		$('.tooltipped').tooltip({delay: 50})
+		return path
+	}
+
+	slashFolder(folder){
+		let path = ''
+		for(let i in folder){
+			if (folder.charCodeAt(i) === 92){
+				path += '/'
+				continue
+			}
+			path += folder[i]
+		}
+		return path
 	}
 
 	cellEdit(){
+		let that = this
 		$('td').each(function(key, value){
 			$(value).dblclick(function(){
 				$(this).attr('contenteditable', 'true')
@@ -182,7 +189,7 @@ class Render {
 						row.push(value.textContent)
 				})
 				let id = row[6]
-				actualizarFila(id, crearJSONActualizar(row))
+				actualizarFila(id, that.crearJSONActualizar(row))
 			})
 			$(value).bind('keypress', function(e) {
 				if(e.keyCode==13)

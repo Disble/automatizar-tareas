@@ -28,8 +28,7 @@ function actualizar(dia, orden, cont){
 			console.error(err)
 			return
 		}
-		let render = new Render()
-		render.buscar(dia)
+		buscar(dia)
 	})
 }
 
@@ -44,7 +43,8 @@ function actualizarFila(id, json){
 }
 
 function cargarDatos(){
-	animesdb.insert(crearJSON(), function(err, record) {
+	let render = new Render()
+	animesdb.insert(render.crearJSON(), function(err, record) {
 		if (err) {
 			console.error(err)
 			return
