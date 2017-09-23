@@ -44,7 +44,7 @@ function actualizarFila(id, json){
 
 function cargarDatos(){
 	let render = new Render()
-	animesdb.insert(render.crearJSON(), function(err, record) {
+	animesdb.insert(render.crearJson(), function(err, record) {
 		if (err) {
 			console.error(err)
 			return

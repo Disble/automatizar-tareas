@@ -45,20 +45,19 @@ class Render {
 
 	menuRender(menu){
 		var salidaMenu = ''
-		let that = this
-		$.each(menu, function(nivel1, value1){
+		$.each(menu, (nivel1, value1) => {
 			salidaMenu += `<li>
-								<div class="collapsible-header flex-center">${that.firstUpperCase(nivel1)}</div>`
+								<div class="collapsible-header flex-center">${this._firstUpperCase(nivel1)}</div>`
 			if (value1 != null){
 				salidaMenu += `<div class="collapsible-body no-padding">
 									<div class="collection">`
 			}
-			$.each(value1, function(nivel2, value2){
+			$.each(value1, (nivel2, value2) => {
 				salidaMenu += `<a `
-				$.each(value2, function(nivel3, value3){
+				$.each(value2, (nivel3, value3) => {
 					salidaMenu += `${nivel3}="${value3}" `
 				})
-				salidaMenu += `>${that.firstUpperCase(nivel2)}</a>`
+				salidaMenu += `>${this._firstUpperCase(nivel2)}</a>`
 			})
 			if (value1 != null){
 				salidaMenu += `</div>
@@ -102,7 +101,7 @@ class Render {
 		$('.tooltipped').tooltip({delay: 50})
 	}
 
-	crearJSON(){
+	crearJson(){
 		var inputs = $('input[type]')
 		var listaEnviar = Array()
 		var contenido = Array()
@@ -131,12 +130,12 @@ class Render {
 		return listaEnviar
 	}
 
-	crearJSONActualizar(row){
+	crearJsonActualizar(row){
 		let json = {
-			'orden' : parseInt(row[2]),
+			'orden' : parseInt(row[2]) < 0 ? 0 : parseInt(row[2]),
 			'nombre': row[0],
 			'dia': row[1],
-			'nrocapvisto': parseInt(row[3]),
+			'nrocapvisto': this._estadoNumCap(row[3]),
 			'pagina': row[4],
 			'carpeta': row[5] == 'null' || row[5] == '' ? null : this.slashFolder(row[5])
 		}
@@ -159,7 +158,6 @@ class Render {
 		$(dir).siblings().removeClass('blue')
 		$(dir).siblings().addClass('green')
 		$('.tooltipped').tooltip({delay: 50})
-		return path
 	}
 
 	slashFolder(folder){
@@ -189,7 +187,7 @@ class Render {
 						row.push(value.textContent)
 				})
 				let id = row[6]
-				actualizarFila(id, that.crearJSONActualizar(row))
+				actualizarFila(id, that.crearJsonActualizar(row))
 			})
 			$(value).bind('keypress', function(e) {
 				if(e.keyCode==13)
@@ -213,7 +211,7 @@ class Render {
 	}
 
 	/*------------------------- FUNCIONES ADICIONALES ---------------------------------------*/
-	firstUpperCase(value){
+	_firstUpperCase(value){
 		return value.charAt(0).toUpperCase() + value.slice(1)
 	}
 
@@ -221,5 +219,15 @@ class Render {
 		let diasSemana = new Array("domingo","lunes","martes","miercoles","jueves","viernes","sabado")
 		let f = new Date()
 		return diasSemana[f.getDay()]
+	}
+
+	_estadoNumCap(numCap){
+		numCap = parseInt(numCap)
+		if (numCap == -1)
+			return 'Finalizado'
+		else if (numCap < -1 || isNaN(numCap))
+			return 0
+		else
+			return numCap
 	}
 }
