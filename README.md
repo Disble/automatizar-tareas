@@ -23,6 +23,11 @@ Como parte del programa, diseñado al comienzo del desarrollo se presentarán co
  - [] Borrar
 - [] **Historial de Animes vistos (totales)**
 
+### Caracteristicas por Función
+- **Lista de Animes**
+ - [x] Cuando el número de capítulo de un anime es menor a cero, se marca como finalizado.
+ - [] Si se guarda como página la url de la misma, se activa un link de redirección externo.
+
 ## Guía de usuario
 ---
 Explica los pasos básicos sobre cómo usar la herramienta digital. Es una buena sección para mostrar capturas de pantalla o gifs que ayuden a entender la herramienta digital.

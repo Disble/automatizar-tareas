@@ -50,6 +50,7 @@ function cargarDatos(){
 			return
 		}
 	})
+	Materialize.toast('Datos Ingresados Correctamente', 4000)
 	return false
 }
 

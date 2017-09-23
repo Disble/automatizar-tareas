@@ -18,7 +18,8 @@ let template = [{
 				}
 			}
 		}
-	},	{
+	},
+	{
 		label: 'Agregar Animes',
 		click: function (item, focusedWindow) {
 			if (focusedWindow) {
@@ -29,7 +30,8 @@ let template = [{
 				}
 			}
 		}
-	},	{
+	},
+	{
 		label: 'Editar Animes',
 		click: function (item, focusedWindow) {
 			if (focusedWindow) {
@@ -40,50 +42,45 @@ let template = [{
 				}
 			}
 		}
-	},	{
-		type: 'separator'
-	},	{
-		label: 'Pendientes',
-		click: function (item, focusedWindow) {
-			if (focusedWindow) {
-				if (focusedWindow.id === 1) {
-					BrowserWindow.getAllWindows().forEach(function (win) {
-						win.loadURL(`file://${__dirname}/pendientes.html`)
-					})
-				}
-			}
-		}
 	}]
-},	{
+},
+{
 	label: 'Edit',
 	submenu: [{
 		label: 'Undo',
 		accelerator: 'CmdOrCtrl+Z',
 		role: 'undo'
-	}, {
+	},
+	{
 		label: 'Redo',
 		accelerator: 'Shift+CmdOrCtrl+Z',
 		role: 'redo'
-	}, {
+	},
+	{
 		type: 'separator'
-	}, {
+	},
+	{
 		label: 'Cut',
 		accelerator: 'CmdOrCtrl+X',
 		role: 'cut'
-	}, {
+	},
+	{
 		label: 'Copy',
 		accelerator: 'CmdOrCtrl+C',
 		role: 'copy'
-	}, {
+	},
+	{
 		label: 'Paste',
 		accelerator: 'CmdOrCtrl+V',
 		role: 'paste'
-	}, {
+	},
+	{
 		label: 'Select All',
 		accelerator: 'CmdOrCtrl+A',
 		role: 'selectall'
 	}]
-},	{
+},
+{
 	label: 'Window',
 	role: 'window',
 	submenu: [{
@@ -103,7 +100,8 @@ let template = [{
 				focusedWindow.reload()
 			}
 		}
-	}, {
+	},
+	{
 		label: 'Toggle Full Screen',
 		accelerator: (function () {
 			if (process.platform === 'darwin') {
@@ -117,7 +115,8 @@ let template = [{
 				focusedWindow.setFullScreen(!focusedWindow.isFullScreen())
 			}
 		}
-	}, {
+	},
+	{
 		label: 'Toggle Developer Tools',
 		accelerator: (function () {
 			if (process.platform === 'darwin') {
@@ -132,26 +131,27 @@ let template = [{
 				focusedWindow.toggleDevTools()
 			}
 		}
-	},{
+	},
+	{
 		type: 'separator'
-	},{
+	},
+	{
 		label: 'Minimize',
 		accelerator: 'CmdOrCtrl+M',
 		role: 'minimize'
-	}, {
+	},
+	{
 		label: 'Close',
 		accelerator: 'CmdOrCtrl+W',
 		role: 'close'
 	}]
-},	{
+},
+{
 	label: 'Help',
 	role: 'help',
 	submenu: [{
 		label: 'About',
-		enabled: false,
-		click: function () {
-
-		}
+		enabled: false
 	}]
 }]
 

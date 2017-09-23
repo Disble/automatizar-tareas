@@ -6,13 +6,13 @@ class Render {
 	actualizarListaCompleta(consulta) {
 		let tblListaAnimes = ''
 		let cont = 0
-		$.each(consulta, function(i, item){
+		$.each(consulta, (i, item) => {
 			tblListaAnimes += `<tr>
 									<td><input class="btn btn-small" type="button" id="eraser${++cont}" value="${cont}" /></td>
 									<td>${consulta[i].nombre}</td>
 									<td>${consulta[i].dia}</td>
 									<td>${consulta[i].orden}</td>
-									<td>${consulta[i].nrocapvisto}</td>
+									<td>${this._isFinalizado(consulta[i].nrocapvisto)}</td>
 									<td>${consulta[i].pagina}</td>
 									<td>${consulta[i].carpeta}</td>
 									<td class="hidden">${consulta[i]._id}</td>
@@ -23,14 +23,14 @@ class Render {
 
 	actualizarLista(consulta, dia) {
 		let tblListaAnimes = ''
-		$.each(consulta, function(i, item){
+		$.each(consulta, (i, item) => {
 			tblListaAnimes += `<tr>
 									<td>${consulta[i].nombre}</td>
-									<td>${consulta[i].nrocapvisto}</td>
-									<td>${consulta[i].pagina}</td>
+									<td>${this._isFinalizado(consulta[i].nrocapvisto)}</td>
+									<td>${this._paginaConstructor(consulta[i].pagina)}</td>
 									<td>
 										<div class="btnIncremento">
-										<a class="btn-floating btn waves-effect waves-light red" onclick="actualizar('${consulta[i].dia}', ${consulta[i].orden}, ${(consulta[i].nrocapvisto - 1)})" >-</a>
+										<a class="btn-floating btn waves-effect waves-light red" onclick="actualizar('${consulta[i].dia}', ${consulta[i].orden}, ${consulta[i].nrocapvisto < 0 ? -1 : (consulta[i].nrocapvisto - 1)})" >-</a>
 										<a class="btn-floating btn waves-effect waves-light blue" onclick="actualizar('${consulta[i].dia}', ${consulta[i].orden}, ${(consulta[i].nrocapvisto + 1)})" >+</a>
 										</div>
 									</td>
@@ -41,6 +41,14 @@ class Render {
 		})
 		$('#contenido').html(tblListaAnimes)
 		$('.titulo').html(dia)
+		$('.url-external').click(function (e) {
+			e.preventDefault()
+			e.stopPropagation()
+			$(this).each(function(key, value) {
+				if (!shell.openExternal(value.href))
+					alert('Hubo problemas al abrir la url.\nPor favor revise el formato de la url en Editar Animes.', 'Error')
+			})
+		})
 	}
 
 	menuRender(menu){
@@ -211,23 +219,51 @@ class Render {
 	}
 
 	/*------------------------- FUNCIONES ADICIONALES ---------------------------------------*/
-	_firstUpperCase(value){
-		return value.charAt(0).toUpperCase() + value.slice(1)
-	}
-
 	diaSemana(){
 		let diasSemana = new Array("domingo","lunes","martes","miercoles","jueves","viernes","sabado")
 		let f = new Date()
 		return diasSemana[f.getDay()]
 	}
 
+	_firstUpperCase(value){
+		return value.charAt(0).toUpperCase() + value.slice(1)
+	}
+
 	_estadoNumCap(numCap){
 		numCap = parseInt(numCap)
-		if (numCap == -1)
-			return 'Finalizado'
-		else if (numCap < -1 || isNaN(numCap))
+		if (numCap < -1 || isNaN(numCap))
 			return 0
 		else
 			return numCap
+	}
+
+	_isFinalizado(numCap){
+		numCap = parseInt(numCap)
+		if (numCap == -1)
+			return 'Finalizado'
+		else if (numCap < -1)
+			return 'Hackerman :V'
+		else
+			return numCap
+	}
+
+	_paginaConstructor(pagina){
+		if (this._isUrl(pagina))
+			return this._redirectExternalConstructor(pagina)
+		else
+			return pagina
+	}
+
+	_isUrl(path) {
+		var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+		return regexp.test(path);
+	}
+
+	_redirectExternalConstructor(path){
+		let url = document.createElement('a')
+		url.href = path
+		url.innerText = this._firstUpperCase(url.hostname)
+		url.setAttribute('class', 'url-external')
+		return url.outerHTML
 	}
 }
