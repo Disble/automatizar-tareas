@@ -36,6 +36,7 @@ function actualizarFila(id, json){
 	animesdb.update({"_id" : id}, json, function(err, num) {
 		if (err) {
 			console.error(err)
+			Materialize.toast('Houston, tenemos un problema', 4000)
 			return
 		}
 		buscarTodo()
@@ -47,6 +48,7 @@ function cargarDatos(){
 	animesdb.insert(render.crearJson(), function(err, record) {
 		if (err) {
 			console.error(err)
+			Materialize.toast('Houston, tenemos un problema', 4000)
 			return
 		}
 	})

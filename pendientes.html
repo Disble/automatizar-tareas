@@ -18,71 +18,11 @@
 			<h1 class="center">Pendientes</h1>
 			<hr>
 			<div class="container">
-				<!--<input type="file" id="party">-->
-				<input type="file" id="input" onchange="getFolder(this)">
-				<div id="holder">
-				  Drag your file here
-				</div>
-				<input type="file" id="party" onchange="getFolder(this)" webkitdirectory />
 			</div>
 		</div>
 	</div>
 	<script src="index.js"></script>
-	<script type="text/javascript" src="js/materialize-initialize.js"></script>
 	<script type="text/javascript" src="js/render.js"></script>
 	<script type="text/javascript" src="js/consultas.js"></script>
-	<script>
-
-		function handleFiles(archivos) {
-			//var fileList = this.files;  now you can work with the file list
-			//document.getElementById('input').files[0].path;
-			console.log(archivos[0].path);
-		}
-		/*
-		document.addEventListener('drop', function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-
-			for (let f of e.dataTransfer.files) {
-				console.log('File(s) you dragged here: ', f.path)
-			}
-		});
-
-		document.addEventListener('dragover', function (e) {
-			e.preventDefault();
-			//e.stopPropagation();
-		});
-		*/
-		/*
-		function invertirBackslash(dir){
-			let fate = dir[0].path
-			let tam = fate.length;
-			let folder = '';
-			for(let i = 0; i < tam; i++){
-				if (fate.charCodeAt(i) === 92){
-					folder += '/'					;
-					continue;
-				}
-				folder += fate[i];
-			}
-			console.log(folder);
-		}
-		*/
-		function getFolder(dir){
-			let folder = dir.files[0].path
-			let tam = folder.length;
-			let path = '';
-			for(let i = 0; i < tam; i++){
-				if (folder.charCodeAt(i) === 92){
-					path += '/';
-					continue;
-				}
-				path += folder[i];
-			}
-			//console.log(path);
-			$(dir).attr('value', path)
-			//console.log(dir.value);
-		}
-	</script>
 </body>
 </html>

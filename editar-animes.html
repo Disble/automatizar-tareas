@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Automatizador Tareas (Nombre Provisional)</title>
+  <title>Editar Animes</title>
   <link rel="stylesheet" type="text/css" href="node_modules/materialize-css/dist/css/materialize.min.css" />
   <link rel="stylesheet" type="text/css" href="css/app.css" />
 </head>
@@ -13,27 +13,24 @@
 		<div class="col s12">
 			<h1 class="center">Lista de Animes</h1>
 			<hr>
-			<div class="container">
 				<table class="bordered centered">
 					<thead>
 							<tr>
-								<th>Núm/Borrar</th>
+								<th class="tooltipped" data-position="top" data-delay="50" data-tooltip="Hacer click en estos botones puede tener resultados no deseados.">Núm/Borrar</th>
 								<th>Nombre</th>
-								<th>Día</th>
+								<th class="tooltipped" data-position="top" data-delay="50" data-tooltip="¡Olvídate de las tildes!">Día</th>
 								<th>Orden</th>
-								<th class="tooltipped" data-position="top" data-delay="50" data-tooltip="Si pones -1 el anime se marca como finalizado.">Capítulos Vistos</th>
-								<th>Página</th>
+								<th class="tooltipped" data-position="top" data-delay="50" data-tooltip="Si pones -1 el anime se marca como Finalizado.">Capítulos Vistos</th>
+								<th class="tooltipped" data-position="top" data-delay="50" data-tooltip="¡También se reconocen las URLs!">Página</th>
 								<th class="tooltipped" data-position="top" data-delay="50" data-tooltip="Formato: C:/carpeta/subcarpeta">Carpeta</th>
 							</tr>
 						</thead>
 					<tbody id="contenido">
 					</tbody>
 				</table>
-			</div>
 		</div>
 	</div>
 	<script src="index.js"></script>
-	<script type="text/javascript" src="js/materialize-initialize.js"></script>
 	<script type="text/javascript" src="js/render.js"></script>
 	<script type="text/javascript" src="js/consultas.js"></script>
 	<script type="text/javascript" src="js/editar-animes-initialize.js"></script>

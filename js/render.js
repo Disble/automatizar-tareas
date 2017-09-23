@@ -10,7 +10,7 @@ class Render {
 			tblListaAnimes += `<tr>
 									<td><input class="btn btn-small" type="button" id="eraser${++cont}" value="${cont}" /></td>
 									<td>${consulta[i].nombre}</td>
-									<td>${consulta[i].dia}</td>
+									<td>${this._addDiasAccents(consulta[i].dia)}</td>
 									<td>${consulta[i].orden}</td>
 									<td>${this._isFinalizado(consulta[i].nrocapvisto)}</td>
 									<td>${consulta[i].pagina}</td>
@@ -40,7 +40,7 @@ class Render {
 								</tr>"`
 		})
 		$('#contenido').html(tblListaAnimes)
-		$('.titulo').html(dia)
+		$('.titulo').html(this._addDiasAccents(dia))
 		$('.url-external').click(function (e) {
 			e.preventDefault()
 			e.stopPropagation()
@@ -74,6 +74,10 @@ class Render {
 			salidaMenu += `</li>`
 		})
 		$('#menu').html(salidaMenu)
+		$('.no-link').click(function (e) {
+			e.preventDefault()
+			e.stopPropagation()
+		})
 	}
 
 	cargarTablasAnime(){
@@ -113,7 +117,7 @@ class Render {
 		var inputs = $('input[type]')
 		var listaEnviar = Array()
 		var contenido = Array()
-		inputs.each(function(key, value) {
+		inputs.each((key, value) => {
 			let llave = inputs[key].getAttribute('name')
 			let valor = inputs[key].value
 			if (llave == "orden" || llave == "nrocapvisto")
@@ -125,7 +129,7 @@ class Render {
 				var json = {
 					'orden' : contenido['orden'],
 					'nombre': contenido['nombre'],
-					'dia': contenido['dia'].toLowerCase(),
+					'dia': this._quitaAcentos(contenido['dia']),
 					'nrocapvisto': contenido['nrocapvisto'],
 					'pagina': contenido['pagina'].toLowerCase(),
 					'carpeta': inputs[key].getAttribute('value')
@@ -142,7 +146,7 @@ class Render {
 		let json = {
 			'orden' : parseInt(row[2]) < 0 ? 0 : parseInt(row[2]),
 			'nombre': row[0],
-			'dia': row[1],
+			'dia': this._quitaAcentos(row[1]),
 			'nrocapvisto': this._estadoNumCap(row[3]),
 			'pagina': row[4],
 			'carpeta': row[5] == 'null' || row[5] == '' ? null : this.slashFolder(row[5])
@@ -225,6 +229,15 @@ class Render {
 		return diasSemana[f.getDay()]
 	}
 
+	_addDiasAccents(dia){
+		if (dia == 'sabado')
+			return 'sábado'
+		else if (dia === 'miercoles')
+			return 'miércoles'
+		else
+			return dia
+	}
+
 	_firstUpperCase(value){
 		return value.charAt(0).toUpperCase() + value.slice(1)
 	}
@@ -251,7 +264,7 @@ class Render {
 		if (this._isUrl(pagina))
 			return this._redirectExternalConstructor(pagina)
 		else
-			return pagina
+			return this._firstUpperCase(pagina)
 	}
 
 	_isUrl(path) {
@@ -265,5 +278,17 @@ class Render {
 		url.innerText = this._firstUpperCase(url.hostname)
 		url.setAttribute('class', 'url-external')
 		return url.outerHTML
+	}
+
+	_quitaAcentos(str) {
+		var res = str.toLowerCase()
+		res = res.replace(new RegExp(/\s/g),'')
+		res = res.replace(new RegExp(/[àáâãäå]/g),'a')
+		res = res.replace(new RegExp(/[èéêë]/g),'e')
+		res = res.replace(new RegExp(/[ìíîï]/g),'i')
+		res = res.replace(new RegExp(/ñ/g),'n')
+		res = res.replace(new RegExp(/[òóôõö]/g),'o')
+		res = res.replace(new RegExp(/[ùúûü]/g),'u')
+		return res
 	}
 }
