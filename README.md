@@ -17,12 +17,12 @@ Como parte del programa, diseñado al comienzo del desarrollo se presentarán co
  - [x] Ver
  - [x] Borrar
 - **Lista de Pendientes (solo como lista)**
- - [] Agregar
- - [] Editar
- - [] Ver
- - [] Borrar
-- [] **Historial de Animes vistos (totales)**
-- [] **Alternar entre tema claro y oscuro**
+ - [ ] Agregar
+ - [ ] Editar
+ - [ ] Ver
+ - [ ] Borrar
+- [ ] **Historial de Animes vistos (totales)**
+- [ ] **Alternar entre tema claro y oscuro**
 
 ### Características escondidas por Función
 - **Lista de Animes**
@@ -40,7 +40,7 @@ Primero, se necesita tener instalado [nodejs](https://nodejs.org/en/download/) y
 
 Una vez instalados, abrir la terminal, ir al lugar donde planea guardar la aplicación y ejecutar los siguientes comandos.
 
-    git clone xxxxxxxxxxxxxxx
+    git clone git@gitlab.com:Disble/automatizar-tareas.git
     npm install
     npm start
 
@@ -66,4 +66,4 @@ Las versiones de esta aplicación fueron creadas basándose en [Versionado Semá
 
 ## Licencia 
 ---
-Este proyecto está bajo la licencia [MIT](./LICENCE) que esta adjuntado en el mismo.
+Este proyecto está bajo la licencia [MIT](./blob/master/LICENSE) que esta adjuntado en el mismo.
