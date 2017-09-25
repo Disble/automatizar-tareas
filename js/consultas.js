@@ -1,3 +1,16 @@
+function cargarDatos(){
+	let render = new Render()
+	animesdb.insert(render.crearJson(), function(err, record) {
+		if (err) {
+			console.error(err)
+			Materialize.toast('Houston, tenemos un problema', 4000)
+			return
+		}
+	})
+	Materialize.toast('Datos Ingresados Correctamente', 4000)
+	return false
+}
+
 function buscar(dia){
 	animesdb.find({"dia":dia}).sort({"orden":1}).exec(function(err, record) {
 		if (err) {
@@ -22,8 +35,8 @@ function buscarTodo(){
 	})
 }
 
-function actualizar(dia, orden, cont){
-	animesdb.update({$and: [{"dia":dia}, {"orden":orden}]}, {$set: {"nrocapvisto": cont}}, function(err, numUpdate) {
+function actualizar(dia, id, cont){
+	animesdb.update({"_id" : id}, {$set: {"nrocapvisto": cont}}, function(err, numUpdate) {
 		if (err) {
 			console.error(err)
 			return
@@ -41,19 +54,6 @@ function actualizarFila(id, json){
 		}
 		buscarTodo()
 	})
-}
-
-function cargarDatos(){
-	let render = new Render()
-	animesdb.insert(render.crearJson(), function(err, record) {
-		if (err) {
-			console.error(err)
-			Materialize.toast('Houston, tenemos un problema', 4000)
-			return
-		}
-	})
-	Materialize.toast('Datos Ingresados Correctamente', 4000)
-	return false
 }
 
 function borrarFila(id){

@@ -1,3 +1,4 @@
+'use strict'
 class Render {
 	constructor() {
 		this.contNewFolder = 0
@@ -30,13 +31,14 @@ class Render {
 									<td>${this._paginaConstructor(consulta[i].pagina)}</td>
 									<td>
 										<div class="btnIncremento">
-										<a class="btn-floating btn waves-effect waves-light red" onclick="actualizar('${consulta[i].dia}', ${consulta[i].orden}, ${consulta[i].nrocapvisto < 0 ? -1 : (consulta[i].nrocapvisto - 1)})" >-</a>
-										<a class="btn-floating btn waves-effect waves-light blue" onclick="actualizar('${consulta[i].dia}', ${consulta[i].orden}, ${(consulta[i].nrocapvisto + 1)})" >+</a>
+										<a class="btn-floating btn waves-effect waves-light red" onclick="render.actualizarCapitulo('${consulta[i].dia}', this, ${consulta[i].nrocapvisto < 0 ? -1 : (consulta[i].nrocapvisto - 1)})" >-</a>
+										<a class="btn-floating btn waves-effect waves-light blue" onclick="render.actualizarCapitulo('${consulta[i].dia}', this, ${(consulta[i].nrocapvisto + 1)})" >+</a>
 										</div>
 									</td>
 									<td>
 										<button class="btn btn-small green ${consulta[i].carpeta === null || consulta[i].carpeta === undefined ? 'disabled': ''}" onclick="render.abrirCarpeta('${consulta[i].carpeta}')">Abrir</button>
 									</td>
+									<td class="hidden" id="key">${consulta[i]._id}</td>
 								</tr>"`
 		})
 		$('#contenido').html(tblListaAnimes)
@@ -208,6 +210,11 @@ class Render {
 		})
 	}
 
+	actualizarCapitulo(dia, fila, cont){
+		let id = $(fila).parent().parent().parent().find('#key').text()
+		actualizar(dia, id, cont)
+	}
+
 	eraserRow(){
 		let btnBorrar = $('td').find('input')
 		btnBorrar.parent().unbind()
@@ -269,7 +276,7 @@ class Render {
 
 	_isUrl(path) {
 		var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
-		return regexp.test(path);
+		return regexp.test(path)
 	}
 
 	_redirectExternalConstructor(path){
