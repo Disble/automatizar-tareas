@@ -40,7 +40,7 @@ Primero, se necesita tener instalado [nodejs](https://nodejs.org/en/download/) y
 
 Una vez instalados, abrir la terminal, ir al lugar donde planea guardar la aplicación y ejecutar los siguientes comandos.
 
-    git clone git@gitlab.com:Disble/automatizar-tareas.git
+    git clone https://gitlab.com/Disble/automatizar-tareas.git
     npm install
     npm start
 
