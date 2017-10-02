@@ -19,6 +19,7 @@ function buscar(dia){
 		}
 		let render = new Render()
 		render.actualizarLista(record, dia)
+		render.changeState()
 	})
 }
 
@@ -35,8 +36,18 @@ function buscarTodo(){
 	})
 }
 
-function actualizar(dia, id, cont){
+function actualizarCap(dia, id, cont){
 	animesdb.update({"_id" : id}, {$set: {"nrocapvisto": cont}}, function(err, numUpdate) {
+		if (err) {
+			console.error(err)
+			return
+		}
+		buscar(dia)
+	})
+}
+
+function estadoCap(dia, id, estado){
+	animesdb.update({"_id" : id}, {$set: {"estado": estado}}, function(err, numUpdate) {
 		if (err) {
 			console.error(err)
 			return

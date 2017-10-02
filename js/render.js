@@ -13,7 +13,8 @@ class Render {
 									<td>${consulta[i].nombre}</td>
 									<td>${this._addDiasAccents(consulta[i].dia)}</td>
 									<td>${consulta[i].orden}</td>
-									<td>${this._isFinalizado(consulta[i].nrocapvisto)}</td>
+									<td>${consulta[i].nrocapvisto}</td>
+									<td>${this._isNoData(consulta[i].estado) ? 0 : consulta[i].estado}</td>
 									<td>${consulta[i].pagina}</td>
 									<td>${consulta[i].carpeta}</td>
 									<td class="hidden">${consulta[i]._id}</td>
@@ -26,17 +27,20 @@ class Render {
 		let tblListaAnimes = ''
 		$.each(consulta, (i, item) => {
 			tblListaAnimes += `<tr>
+									<td>
+									<input class="btn btn-small" type="button" id="estado${consulta[i].orden}" value="${consulta[i].orden}" />
+									</td>
 									<td>${consulta[i].nombre}</td>
-									<td>${this._isFinalizado(consulta[i].nrocapvisto)}</td>
+									<td>${this._blockSerie(consulta[i].estado) ? this._estadoSerie(consulta[i].estado) : consulta[i].nrocapvisto}</td>
 									<td>${this._paginaConstructor(consulta[i].pagina)}</td>
 									<td>
 										<div class="btnIncremento">
-										<a class="btn-floating btn waves-effect waves-light red" onclick="render.actualizarCapitulo('${consulta[i].dia}', this, ${consulta[i].nrocapvisto < 0 ? -1 : (consulta[i].nrocapvisto - 1)})" >-</a>
-										<a class="btn-floating btn waves-effect waves-light blue" onclick="render.actualizarCapitulo('${consulta[i].dia}', this, ${(consulta[i].nrocapvisto + 1)})" >+</a>
+										<a class="btn-floating btn waves-effect waves-light red ${this._blockSerie(consulta[i].estado) ? 'disabled': ''}" onclick="render.actualizarCapitulo('${consulta[i].dia}', this, ${consulta[i].nrocapvisto <= 0 ? 0 : (consulta[i].nrocapvisto - 1)})" >-</a>
+										<a class="btn-floating btn waves-effect waves-light blue ${this._blockSerie(consulta[i].estado) ? 'disabled': ''}" onclick="render.actualizarCapitulo('${consulta[i].dia}', this, ${(consulta[i].nrocapvisto + 1)})" >+</a>
 										</div>
 									</td>
 									<td>
-										<button class="btn btn-small green ${consulta[i].carpeta === null || consulta[i].carpeta === undefined ? 'disabled': ''}" onclick="render.abrirCarpeta('${consulta[i].carpeta}')">Abrir</button>
+										<button class="btn btn-small green ${this._isNoData(consulta[i].carpeta) ? 'disabled': ''}" onclick="render.abrirCarpeta('${consulta[i].carpeta}')">Abrir</button>
 									</td>
 									<td class="hidden" id="key">${consulta[i]._id}</td>
 								</tr>"`
@@ -84,6 +88,7 @@ class Render {
 
 	cargarTablasAnime(){
 		let anime = [
+					'Órden/\nEstado',
 					'Nombre',
 					'Capítulo Visto',
 					'Página',
@@ -146,13 +151,15 @@ class Render {
 
 	crearJsonActualizar(row){
 		let json = {
-			'orden' : parseInt(row[2]) < 0 ? 0 : parseInt(row[2]),
+			'orden': parseInt(row[2]) < 0 ? 0 : parseInt(row[2]),
 			'nombre': row[0],
 			'dia': this._quitaAcentos(row[1]),
 			'nrocapvisto': this._estadoNumCap(row[3]),
-			'pagina': row[4],
-			'carpeta': row[5] == 'null' || row[5] == '' ? null : this.slashFolder(row[5])
+			'estado': parseInt(row[4]) < 0 ? 0 : parseInt(row[4]),
+			'pagina': row[5],
+			'carpeta': row[6] == 'null' || row[6] == '' ? null : this.slashFolder(row[6])
 		}
+		console.log(json)
 		return json
 	}
 
@@ -200,7 +207,8 @@ class Render {
 					if (key != 0)
 						row.push(value.textContent)
 				})
-				let id = row[6]
+				let id = row[7]
+				console.log(id)
 				actualizarFila(id, that.crearJsonActualizar(row))
 			})
 			$(value).bind('keypress', function(e) {
@@ -212,18 +220,34 @@ class Render {
 
 	actualizarCapitulo(dia, fila, cont){
 		let id = $(fila).parent().parent().parent().find('#key').text()
-		actualizar(dia, id, cont)
+		actualizarCap(dia, id, cont)
 	}
 
 	eraserRow(){
 		let btnBorrar = $('td').find('input')
 		btnBorrar.parent().unbind()
 		btnBorrar.each(function(key, value){
-			$(value).click(function(e){
+			$(value).click(function(){
 				if (confirm('¿Estás seguro que quieres borrar esta fila?','Advertencia')){
 					let id = ''
 					$(this).parent().parent().find('.hidden').each((key, value) => id = value.textContent)
 					borrarFila(id)
+				}
+			})
+		})
+	}
+
+	changeState(){
+		let that = this
+		let btnBorrar = $('td').find('input')
+		btnBorrar.parent().unbind()
+		btnBorrar.each(function(key, value){
+			$(value).click(function(){
+				if (confirm('¿Desea marcar este anime como Finalizado?','Advertencia')){
+					let id = ''
+					$(this).parent().parent().find('.hidden').each((key, value) => id = value.textContent)
+					let dia = that._quitaAcentos($('.titulo').text().toLowerCase())
+					estadoCap(dia, id, 1)
 				}
 			})
 		})
@@ -253,16 +277,6 @@ class Render {
 		numCap = parseInt(numCap)
 		if (numCap < -1 || isNaN(numCap))
 			return 0
-		else
-			return numCap
-	}
-
-	_isFinalizado(numCap){
-		numCap = parseInt(numCap)
-		if (numCap == -1)
-			return 'Finalizado'
-		else if (numCap < -1)
-			return 'Hackerman :V'
 		else
 			return numCap
 	}
@@ -297,5 +311,23 @@ class Render {
 		res = res.replace(new RegExp(/[òóôõö]/g),'o')
 		res = res.replace(new RegExp(/[ùúûü]/g),'u')
 		return res
+	}
+
+	_estadoSerie(estado){
+		if (estado == undefined || estado == 0 || estado == null)
+			return 'Viendo'
+		else if (estado === 1)
+			return 'Finalizado'
+	}
+
+	_blockSerie(estado){
+		if (estado == undefined || estado == 0)
+			return false
+		else if (estado === 1)
+			return true
+	}
+
+	_isNoData(data){
+		return data === undefined  || isNaN(data) || data === null
 	}
 }
