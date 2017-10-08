@@ -1,4 +1,5 @@
 'use strict'
+/*NOTE: Quitar comentarios al acabar*/
 class Render {
 	constructor() {
 		this.contNewFolder = 0

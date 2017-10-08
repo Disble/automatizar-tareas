@@ -21,12 +21,12 @@ Como parte del programa, diseñado al comienzo del desarrollo se presentarán co
  - [ ] Editar
  - [ ] Ver
  - [ ] Borrar
-- [ ] **Historial de Animes vistos (totales)**
+- **Estadisticas**
+ - [ ] **Historial de Animes vistos (todos)**
 - [ ] **Alternar entre tema claro y oscuro**
 
 ### Características escondidas por Función
 - **Lista de Animes**
- - [x] Cuando el número de capítulo de un anime es menor a cero, se marca como finalizado.
  - [x] Si se guarda como página la url de la misma, se activa un link de redirección externo.
  - [x] No se necesita poner tildes, ni mayúsculas a los días de la semana.
 
@@ -43,10 +43,6 @@ Una vez instalados, abrir la terminal, ir al lugar donde planea guardar la aplic
     git clone https://gitlab.com/Disble/automatizar-tareas.git
     npm install
     npm start
-
-## Cómo contribuir
----
-Esta sección explica a desarrolladores cuáles son las maneras habituales de enviar una solicitud de adhesión de nuevo código (“pull requests”), cómo declarar fallos en la herramienta y qué guías de estilo se deben usar al escribir más líneas de código.
 
 ## Autor/es
 ---
