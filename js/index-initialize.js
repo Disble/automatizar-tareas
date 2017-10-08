@@ -37,6 +37,23 @@ $(document).ready(() => {
 				'onclick': "buscar('domingo');",
 				'class': 'collection-item no-link'
 			}
+		},
+		'estrenos': {
+			'Sin ver': {
+				'href': '#!',
+				'onclick': "buscar('sin ver');",
+				'class': 'collection-item no-link'
+			},
+			'Visto': {
+				'href': '#!',
+				'onclick': "buscar('visto');",
+				'class': 'collection-item no-link'
+			},
+			'Ver hoy': {
+				'href': '#!',
+				'onclick': "buscar('ver hoy');",
+				'class': 'collection-item no-link'
+			}
 		}
 	});
 	render.cargarTablasAnime()

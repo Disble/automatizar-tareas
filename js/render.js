@@ -303,7 +303,7 @@ class Render {
 
 	_quitaAcentos(str) {
 		var res = str.toLowerCase()
-		res = res.replace(new RegExp(/\s/g),'')
+		//res = res.replace(new RegExp(/\s/g),'')
 		res = res.replace(new RegExp(/[àáâãäå]/g),'a')
 		res = res.replace(new RegExp(/[èéêë]/g),'e')
 		res = res.replace(new RegExp(/[ìíîï]/g),'i')
@@ -328,6 +328,6 @@ class Render {
 	}
 
 	_isNoData(data){
-		return data === undefined  || isNaN(data) || data === null
+		return data === undefined || data === null
 	}
 }
