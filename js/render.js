@@ -104,13 +104,13 @@ class Render {
 	}
 
 	/*------------------------- RENDER DINAMICO ---------------------------------------*/
-
+	/* NOTE: falta activar la validacion*/
 	increNuevosAnimes(){
 		let nuevaConsulta = `<tr>
-								<td><input type="number" name="orden" required></td>
+								<td><input type="number" name="orden" min="1" required></td>
 								<td><input type="text" name="nombre" required></td>
 								<td><input type="text" name="dia" required></td>
-								<td><input type="number" name="nrocapvisto" required></td>
+								<td><input type="number" name="nrocapvisto" min="0" required></td>
 								<td><input type="text" name="pagina" required></td>
 								<td>
 									<input type="file" name="carpeta" onchange="render.getFolder(this)" id="file${++this.contNewFolder}" class="inputfile" webkitdirectory />
@@ -140,7 +140,9 @@ class Render {
 					'dia': this._quitaAcentos(contenido['dia']),
 					'nrocapvisto': contenido['nrocapvisto'],
 					'pagina': contenido['pagina'].toLowerCase(),
-					'carpeta': inputs[key].getAttribute('value')
+					'carpeta': inputs[key].getAttribute('value'),
+					'activo' : true,
+					'fechaCreacion' : new Date()
 				}
 				listaEnviar.push(json)
 				contenido = Array()
@@ -160,7 +162,7 @@ class Render {
 			'pagina': row[5],
 			'carpeta': row[6] == 'null' || row[6] == '' ? null : this.slashFolder(row[6])
 		}
-		console.log(json)
+		//console.log(json)
 		return json
 	}
 
@@ -209,7 +211,7 @@ class Render {
 						row.push(value.textContent)
 				})
 				let id = row[7]
-				console.log(id)
+				//console.log(id)
 				actualizarFila(id, that.crearJsonActualizar(row))
 			})
 			$(value).bind('keypress', function(e) {

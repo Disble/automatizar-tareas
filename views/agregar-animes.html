@@ -28,10 +28,10 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td><input type="number" name="orden" placeholder="1" required></td>
+								<td><input type="number" name="orden" min="1" placeholder="1" required></td>
 								<td><input type="text" name="nombre" placeholder="Cowboy Bebop" required></td>
 								<td><input type="text" name="dia" placeholder="sabado" required></td>
-								<td><input type="number" name="nrocapvisto" placeholder="0" required></td>
+								<td><input type="number" name="nrocapvisto" min="0" placeholder="0" required></td>
 								<td><input type="text" name="pagina" placeholder="http://www.animehdl.net/cowboy-bebop-2626-bd-opcional-dua/" required></td>
 								<td>
 									<input type="file" name="carpeta" onchange="render.getFolder(this)" id="file" class="inputfile" webkitdirectory />

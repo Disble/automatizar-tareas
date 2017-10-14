@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Editar Animes</title>
+  <link rel="stylesheet" type="text/css" href="../../node_modules/materialize-css/dist/css/materialize.min.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/app.css" />
+</head>
+<body>
+	<div class="row">
+		<div class="col s12">
+			<h1 class="center">Historial</h1>
+			<hr>
+				<table class="bordered centered">
+					<thead>
+							<tr>
+								<th class="tooltipped" data-position="top" data-delay="50" data-tooltip="Hacer click en estos botones puede tener resultados no deseados.">Núm/Borrar</th>
+								<th>Nombre</th>
+								<th class="tooltipped" data-position="top" data-delay="50" data-tooltip="¡Olvídate de las tildes!">Día</th>
+								<th class="tooltipped" data-position="top" data-delay="50" data-tooltip="Solo sirve para cambiar el orden de los capítulos.">Orden</th>
+								<th class="tooltipped" data-position="top" data-delay="50" data-tooltip="Si pones -1 el anime se marca como Finalizado.">Capítulos Vistos</th>
+								<th class="tooltipped" data-position="top" data-delay="50" data-tooltip="0 = Viendo, 1 = Finalizado.">Estado</th>
+								<th class="tooltipped" data-position="top" data-delay="50" data-tooltip="¡También se reconocen las URLs!">Página</th>
+								<th class="tooltipped" data-position="top" data-delay="50" data-tooltip="Formato: C:/carpeta/subcarpeta">Carpeta</th>
+							</tr>
+						</thead>
+					<tbody id="contenido">
+					</tbody>
+				</table>
+		</div>
+	</div>
+	<script src="../../routers/historial.js"></script>
+	<script type="text/javascript" src="../../js/render.js"></script>
+	<script type="text/javascript" src="../../js/consultas.js"></script>
+	<script type="text/javascript" src="../../js/historial-initialize.js"></script>
+</body>
+</html>

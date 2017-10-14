@@ -1,18 +1,19 @@
 function cargarDatos(){
 	let render = new Render()
-	animesdb.insert(render.crearJson(), function(err, record) {
+	let nuevo = render.crearJson()
+	animesdb.insert(nuevo, function(err, record) {
 		if (err) {
 			console.error(err)
 			Materialize.toast('Houston, tenemos un problema', 4000)
 			return
 		}
+		Materialize.toast('Datos Ingresados Correctamente', 4000)
 	})
-	Materialize.toast('Datos Ingresados Correctamente', 4000)
 	return false
 }
 
 function buscar(dia){
-	animesdb.find({"dia":dia}).sort({"orden":1}).exec(function(err, record) {
+	animesdb.find({$and : [{"dia":dia}, {$or : [{"activo" : true}, {"activo" : {$exists : false} }] }] }).sort({"orden":1}).exec(function(err, record) {
 		if (err) {
 			console.error(err)
 			process.exit(0)
@@ -24,6 +25,19 @@ function buscar(dia){
 }
 
 function buscarTodo(){
+	animesdb.find({$or : [{"activo" : true}, {"activo" : {$exists : false} }]}).sort({"_id":-1}).exec(function(err, record) {
+		if (err) {
+			console.error(err)
+			process.exit(0)
+		}
+		let render = new Render()
+		render.actualizarListaCompleta(record)
+		render.cellEdit()
+		render.eraserRow()
+	})
+}
+
+function buscarTodoHistorial(){
 	animesdb.find({}).sort({"_id":-1}).exec(function(err, record) {
 		if (err) {
 			console.error(err)
@@ -68,11 +82,13 @@ function actualizarFila(id, json){
 }
 
 function borrarFila(id){
-	animesdb.remove({ _id : id }, {}, function (err, numRemoved) {
+	animesdb.update({"_id" : id}, {$set: {"activo": false}}, function(err, numUpdate) {
 		if (err) {
 			console.error(err)
-			process.exit(0)
+			return
 		}
 		buscarTodo()
 	})
 }
+
+
