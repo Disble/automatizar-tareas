@@ -16,6 +16,7 @@ Como parte del programa, diseñado al comienzo del desarrollo se presentarán co
  - [x] Editar
  - [x] Ver
  - [x] Borrar
+ - [x] Cambiar estado (finalizado, viendo, no me gusto)
 - **Lista de Pendientes (solo como lista)**
  - [ ] Agregar
  - [ ] Editar
