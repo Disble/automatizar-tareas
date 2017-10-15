@@ -9,6 +9,7 @@ let template = [{
 	label: 'Index',
 	submenu: [{
 		label: 'Ver Animes',
+		accelerator: 'CmdOrCtrl+1',
 		click: function (item, focusedWindow) {
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {
@@ -21,6 +22,7 @@ let template = [{
 	},
 	{
 		label: 'Agregar Animes',
+		accelerator: 'CmdOrCtrl+2',
 		click: function (item, focusedWindow) {
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {
@@ -33,6 +35,7 @@ let template = [{
 	},
 	{
 		label: 'Editar Animes',
+		accelerator: 'CmdOrCtrl+3',
 		click: function (item, focusedWindow) {
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {
@@ -48,6 +51,7 @@ let template = [{
 	label: 'Estadisticas',
 	submenu: [{
 		label: 'Historial',
+		accelerator: 'CmdOrCtrl+h',
 		click: function (item, focusedWindow) {
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {

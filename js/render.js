@@ -36,9 +36,9 @@ class Render {
 											<div class="modal-content">
 												<h4>Mensaje de confirmación</h4>
 												<p>Escoga uno de los siguientes estados</p>
-												<button class="btn btn-small modal-close" onclick="estadoCap('${dia}', '${consulta[i]._id}', ${0})"><i class="icon-play"></i> Viendo</button>
+												<button class="btn btn-small modal-close green" onclick="estadoCap('${dia}', '${consulta[i]._id}', ${0})"><i class="icon-play"></i> Viendo</button>
 												<button class="btn btn-small modal-close" onclick="estadoCap('${dia}', '${consulta[i]._id}', ${1})"><i class="icon-ok-squared"></i> Finalizar</button>
-												<button class="btn btn-small modal-close" onclick="estadoCap('${dia}', '${consulta[i]._id}', ${2})"><i class="icon-emo-unhappy"></i> No me Gusto</button>
+												<button class="btn btn-small modal-close red" onclick="estadoCap('${dia}', '${consulta[i]._id}', ${2})"><i class="icon-emo-unhappy"></i> No me Gusto</button>
 											</div>
 											<div class="modal-footer">
 												<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
