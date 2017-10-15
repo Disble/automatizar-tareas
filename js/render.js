@@ -38,7 +38,7 @@ class Render {
 												<p>Escoga uno de los siguientes estados</p>
 												<button class="btn btn-small modal-close" onclick="estadoCap('${dia}', '${consulta[i]._id}', ${0})"><i class="icon-play"></i> Viendo</button>
 												<button class="btn btn-small modal-close" onclick="estadoCap('${dia}', '${consulta[i]._id}', ${1})"><i class="icon-ok-squared"></i> Finalizar</button>
-												<button class="btn btn-small modal-close" onclick="estadoCap('${dia}', '${consulta[i]._id}', ${2})"><i class="icon-emo-unhappy"></i> No Gusto</button>
+												<button class="btn btn-small modal-close" onclick="estadoCap('${dia}', '${consulta[i]._id}', ${2})"><i class="icon-emo-unhappy"></i> No me Gusto</button>
 											</div>
 											<div class="modal-footer">
 												<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
@@ -339,7 +339,7 @@ class Render {
 		else if (estado === 1)
 			return 'Finalizado'
 		else if (estado === 2)
-			return 'No gusto'
+			return 'No me gusto'
 	}
 
 	_blockSerie(estado){
