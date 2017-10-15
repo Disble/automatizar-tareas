@@ -141,6 +141,7 @@ class Render {
 					'nrocapvisto': contenido['nrocapvisto'],
 					'pagina': contenido['pagina'].toLowerCase(),
 					'carpeta': inputs[key].getAttribute('value'),
+					'estado' : 0,
 					'activo' : true,
 					'fechaCreacion' : new Date()
 				}
@@ -317,7 +318,7 @@ class Render {
 	}
 
 	_estadoSerie(estado){
-		if (estado == undefined || estado == 0 || estado == null)
+		if (this._isNoData(estado) || estado == 0)
 			return 'Viendo'
 		else if (estado === 1)
 			return 'Finalizado'

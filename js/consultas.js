@@ -18,6 +18,7 @@ function buscar(dia){
 			console.error(err)
 			process.exit(0)
 		}
+		console.log(record)
 		let render = new Render()
 		render.actualizarLista(record, dia)
 		render.changeState()
@@ -82,7 +83,7 @@ function actualizarFila(id, json){
 }
 
 function borrarFila(id){
-	animesdb.update({"_id" : id}, {$set: {"activo": false}}, function(err, numUpdate) {
+	animesdb.update({"_id" : id}, {$set: {"activo": false, "fechaEliminacion" : new Date()}}, function(err, numUpdate) {
 		if (err) {
 			console.error(err)
 			return
