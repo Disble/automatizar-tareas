@@ -25,11 +25,25 @@ class Render {
 	}
 
 	actualizarLista(consulta, dia) {
+		/*NOTE: no se que onda con el id="estadoX"*/
+		/*<input class="btn btn-small" type="button" id="estado${consulta[i].orden}" value="${consulta[i].orden}" />*/
 		let tblListaAnimes = ''
 		$.each(consulta, (i, item) => {
 			tblListaAnimes += `<tr>
 									<td>
-									<input class="btn btn-small" type="button" id="estado${consulta[i].orden}" value="${consulta[i].orden}" />
+										<button data-target="modal${i}" class="btn btn-small modal-trigger">${consulta[i].orden}</button>
+										<div id="modal${i}" class="modal">
+											<div class="modal-content">
+												<h4>Mensaje de confirmación</h4>
+												<p>Escoga uno de los siguientes estados</p>
+												<button class="btn btn-small modal-close" onclick="estadoCap('${dia}', '${consulta[i]._id}', ${0})"><i class="icon-play"></i> Viendo</button>
+												<button class="btn btn-small modal-close" onclick="estadoCap('${dia}', '${consulta[i]._id}', ${1})"><i class="icon-ok-squared"></i> Finalizar</button>
+												<button class="btn btn-small modal-close" onclick="estadoCap('${dia}', '${consulta[i]._id}', ${2})"><i class="icon-emo-unhappy"></i> No Gusto</button>
+											</div>
+											<div class="modal-footer">
+												<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+											</div>
+										</div>
 									</td>
 									<td>${consulta[i].nombre}</td>
 									<td>${this._blockSerie(consulta[i].estado) ? this._estadoSerie(consulta[i].estado) : consulta[i].nrocapvisto}</td>
@@ -41,7 +55,7 @@ class Render {
 										</div>
 									</td>
 									<td>
-										<button class="btn btn-small green ${this._isNoData(consulta[i].carpeta) ? 'disabled': ''}" onclick="render.abrirCarpeta('${consulta[i].carpeta}')">Abrir</button>
+										<button class="btn btn-small green ${this._isNoData(consulta[i].carpeta) ? 'disabled': ''}" onclick="render.abrirCarpeta('${consulta[i].carpeta}')"><span style="display: flex" class="tooltipped" data-position="left" data-delay="500" data-tooltip="Abrir carpeta"><i class="icon-folder-open"></i></span></button>
 									</td>
 									<td class="hidden" id="key">${consulta[i]._id}</td>
 								</tr>"`
@@ -56,6 +70,8 @@ class Render {
 					alert('Hubo problemas al abrir la url.\nPor favor revise el formato de la url en Editar Animes.', 'Error')
 			})
 		})
+		$('.tooltipped').tooltip({delay: 50})
+		$('.modal').modal()
 	}
 
 	menuRender(menu){
@@ -322,12 +338,14 @@ class Render {
 			return 'Viendo'
 		else if (estado === 1)
 			return 'Finalizado'
+		else if (estado === 2)
+			return 'No gusto'
 	}
 
 	_blockSerie(estado){
 		if (estado == undefined || estado == 0)
 			return false
-		else if (estado === 1)
+		else if (estado === 1 || estado == 2)
 			return true
 	}
 

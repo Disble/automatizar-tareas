@@ -68,6 +68,7 @@ function estadoCap(dia, id, estado){
 			return
 		}
 		buscar(dia)
+		Materialize.toast('Estado modificado correctamente', 4000)
 	})
 }
 
