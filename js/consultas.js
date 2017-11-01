@@ -44,10 +44,8 @@ function buscarTodoHistorial(){
 			console.error(err)
 			process.exit(0)
 		}
-		let render = new Render()
-		render.actualizarListaCompleta(record)
-		render.cellEdit()
-		render.eraserRow()
+		let render = new Historial()
+		render.imprimirHistorial(record)
 	})
 }
 
