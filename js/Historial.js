@@ -11,10 +11,7 @@ class Historial {
 			tblListaAnimes += `<tr>
 									<td>${++cont}</td>
 									<td>${consulta[i].nombre}</td>
-									<td>${consulta[i].nrocapvisto}</td>
-									<td>${consulta[i].estado}</td>
-									<td>${this._isNoData(consulta[i].fechaCreacion) ? 'No Data': consulta[i].fechaCreacion.getFullYear()}</td>
-									<td>${this._isNoData(consulta[i].fechaEliminacion) ? 'No Data': consulta[i].fechaEliminacion.getFullYear()}</td>
+									<td>${this._isNoData(consulta[i].fechaCreacion) ? 'No Data': this._setDateMonthYear(consulta[i].fechaCreacion)}</td>
 									<td class="hidden">${consulta[i]._id}</td>
 								</tr>"`
 		})
@@ -23,6 +20,13 @@ class Historial {
 
 	_isNoData(data){
 		return data === undefined || data === null
+	}
+
+	_setDateMonthYear(date){
+		let year = date.getFullYear()
+		let month = date.getMonth()
+		let months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+		return `${months[month]}, ${year}`
 	}
 }
 
