@@ -15,7 +15,7 @@ class Render {
 									<td>${this._addDiasAccents(consulta[i].dia)}</td>
 									<td>${consulta[i].orden}</td>
 									<td>${consulta[i].nrocapvisto}</td>
-									<td>${this._isNoData(consulta[i].estado) ? 0 : consulta[i].estado}</td>
+									<td ${this._isNoData(consulta[i].estado) ? '' : 'class="darken-2 ' + this._estadoColor(consulta[i].estado) + '"'}>${this._isNoData(consulta[i].estado) ? 0 : consulta[i].estado}</td>
 									<td>${consulta[i].pagina}</td>
 									<td>${consulta[i].carpeta}</td>
 									<td class="hidden">${consulta[i]._id}</td>
@@ -351,5 +351,15 @@ class Render {
 
 	_isNoData(data){
 		return data === undefined || data === null
+	}
+
+	_estadoColor(estado){
+		/*0 => Viendo, 1 => Finalizado, 2 => No me Gusto*/
+		if (estado == 0)
+			return 'green'
+		else if (estado == 1)
+			return 'blue'
+		else if (estado == 2)
+			return 'red'
 	}
 }
