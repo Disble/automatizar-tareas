@@ -39,7 +39,7 @@ function buscarTodo(){
 }
 
 function buscarTodoHistorial(){
-	animesdb.find({}).sort({"_id":-1}).exec(function(err, record) {
+	animesdb.find({}).sort({"fechaCreacion":-1}).exec(function(err, record) {
 		if (err) {
 			console.error(err)
 			process.exit(0)
@@ -71,7 +71,7 @@ function estadoCap(dia, id, estado){
 }
 
 function actualizarFila(id, json){
-	animesdb.update({"_id" : id}, json, function(err, num) {
+	animesdb.update({"_id" : id}, {$set: {"orden": json.orden, "nombre": json.nombre, "dia": json.dia, "nrocapvisto": json.nrocapvisto, "estado": json.estado, "pagina": json.pagina, "carpeta": json.carpeta}}, function(err, num) {
 		if (err) {
 			console.error(err)
 			Materialize.toast('Houston, tenemos un problema', 4000)
