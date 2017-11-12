@@ -26,7 +26,7 @@ function buscar(dia){
 }
 
 function buscarTodo(){
-	animesdb.find({$or : [{"activo" : true}, {"activo" : {$exists : false} }]}).sort({"_id":-1}).exec(function(err, record) {
+	animesdb.find({$or : [{"activo" : true}, {"activo" : {$exists : false} }]}).sort({"fechaCreacion":-1}).exec(function(err, record) {
 		if (err) {
 			console.error(err)
 			process.exit(0)
