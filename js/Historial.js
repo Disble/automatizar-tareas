@@ -59,8 +59,9 @@ class Historial {
 	_setDateMonthYear(date){
 		let year = date.getFullYear()
 		let month = date.getMonth()
+		let day = date.getDate()// < 10 ? '0' + date.getDate() : date.getDate()
 		let months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-		return `${months[month]}, ${year}`
+		return `${day} de ${months[month]}, ${year}`
 	}
 
 	_filterCapActiveChart(list){
