@@ -12,18 +12,23 @@
 	<div class="row">
 		<h1 class="center">Historial</h1>
 		<hr>
-		<div class="col s6">
-				<table class="bordered centered">
-					<thead>
-							<tr>
-								<th>Núm</th>
-								<th>Nombre</th>
-								<th>Fecha Creación</th>
-							</tr>
-						</thead>
-					<tbody id="contenido">
-					</tbody>
-				</table>
+        <div class="col s12">
+            <canvas id="capVistos" width="400" height="400"></canvas>
+        </div>
+		<div class="col s12">
+
+			<table class="bordered centered highlight">
+                <h4 class="center">Historial Unificado</h4>
+				<thead>
+						<tr>
+							<th>Núm</th>
+							<th>Nombre</th>
+							<th>Fecha Creación</th>
+						</tr>
+					</thead>
+				<tbody id="contenido">
+				</tbody>
+			</table>
 		</div>
 	</div>
 	<script src="../../routers/historial.js"></script>

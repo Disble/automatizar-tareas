@@ -1,6 +1,7 @@
 'use strict'
 
 class Historial {
+
 	constructor() {
 	}
 
@@ -16,8 +17,39 @@ class Historial {
 								</tr>"`
 		})
 		$('#contenido').html(tblListaAnimes)
+		this.capitulosVistos(consulta)
 	}
-
+	/*NOTE: Nueva idea, agregar una tarta con los animes viendo ahorita*/
+	capitulosVistos(lista){
+		var ctx = document.getElementById('capVistos')
+		let listFilter = this._filterCapActiveChart(lista)
+        var myChart = new Chart(ctx, {
+            type: 'horizontalBar',
+            data: {
+                labels: listFilter.nombres,
+                datasets: [{
+                    label: 'Núm capítulos',
+                    data: listFilter.nroCap,
+                    backgroundColor: listFilter.colorTransparente,
+                    borderColor: listFilter.color,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+				title: {
+					display: true,
+					text: 'Capítulos Vistos'
+				}
+            }
+        });
+	}
 	_isNoData(data){
 		return data === undefined || data === null
 	}
@@ -27,6 +59,38 @@ class Historial {
 		let month = date.getMonth()
 		let months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 		return `${months[month]}, ${year}`
+	}
+
+	_filterCapActiveChart(list){
+		let nombres = []
+		let nroCap = []
+		let colorTransparente = []
+		let color = []
+		$.each(list, (i, item) => {
+			if (list[i].estado == 0) {
+				let colorRand = this._getColorRandom(0.2)
+				let colorT = colorRand.replace('0.2', '1')
+				nombres.push(list[i].nombre)
+				nroCap.push(list[i].nrocapvisto)
+				colorTransparente.push(colorRand)
+				color.push(colorT)
+			}
+		})
+		let data = {
+			'nombres' : nombres,
+			'nroCap' : nroCap,
+			'colorTransparente' : colorTransparente,
+			'color' : color
+		}
+		return data
+	}
+
+	_getColorRandom(transparent) {
+		return `rgba(${this._getRandom()}, ${this._getRandom()}, ${this._getRandom()}, ${transparent})`
+	}
+
+	_getRandom() {
+		return Math.round(Math.random() * 255);
 	}
 }
 
