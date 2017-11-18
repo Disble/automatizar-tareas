@@ -27,7 +27,6 @@ class Historial {
             data: {
                 labels: listFilter.nombres,
                 datasets: [{
-                    label: 'Núm capítulos',
                     data: listFilter.nroCap,
                     backgroundColor: listFilter.colorTransparente,
                     borderColor: listFilter.color,
@@ -45,6 +44,9 @@ class Historial {
 				title: {
 					display: true,
 					text: 'Capítulos Vistos'
+				},
+				legend : {
+					display: false
 				}
             }
         });
