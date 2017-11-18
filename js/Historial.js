@@ -17,13 +17,12 @@ class Historial {
 								</tr>"`
 		})
 		$('#contenido').html(tblListaAnimes)
-		this.capitulosVistos(consulta)
 	}
-	/*NOTE: Nueva idea, agregar una tarta con los animes viendo ahorita*/
+
 	capitulosVistos(lista){
-		var ctx = document.getElementById('capVistos')
+		let ctx = document.getElementById('capVistos')
 		let listFilter = this._filterCapActiveChart(lista)
-        var myChart = new Chart(ctx, {
+        let capVistos = new Chart(ctx, {
             type: 'horizontalBar',
             data: {
                 labels: listFilter.nombres,
@@ -50,6 +49,7 @@ class Historial {
             }
         });
 	}
+
 	_isNoData(data){
 		return data === undefined || data === null
 	}

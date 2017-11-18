@@ -38,14 +38,17 @@ function buscarTodo(){
 	})
 }
 
-function buscarTodoHistorial(){
+function buscarTodoHistorial(option){
 	animesdb.find({}).sort({"fechaCreacion":-1}).exec(function(err, record) {
 		if (err) {
 			console.error(err)
 			process.exit(0)
 		}
 		let render = new Historial()
-		render.imprimirHistorial(record)
+		if (option == 1)
+			render.imprimirHistorial(record)
+		else
+			render.capitulosVistos(record)
 	})
 }
 
@@ -90,5 +93,3 @@ function borrarFila(id){
 		buscarTodo()
 	})
 }
-
-

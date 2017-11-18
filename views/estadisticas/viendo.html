@@ -4,33 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Historial</title>
+  <title>Animes Viendo</title>
   <link rel="stylesheet" type="text/css" href="../../node_modules/materialize-css/dist/css/materialize.min.css" />
   <link rel="stylesheet" type="text/css" href="../../css/app.css" />
 </head>
 <body>
 	<div class="row">
-		<div class="col s12">
-			<table class="bordered centered highlight">
-                <h3 class="center">Historial</h3>
-				<thead>
-						<tr>
-							<th>Núm</th>
-							<th>Nombre</th>
-							<th>Fecha Creación</th>
-						</tr>
-					</thead>
-				<tbody id="contenido">
-				</tbody>
-			</table>
-		</div>
+        <div class="col s12">
+            <canvas id="capVistos" width="400" height="400"></canvas>
+        </div>
 	</div>
-	<script src="../../routers/historial.js"></script>
-	<script type="text/javascript" src="../../js/render.js"></script>
+	<script type="text/javascript" src="../../routers/historial.js"></script>
 	<script type="text/javascript" src="../../js/Historial.js"></script>
 	<script type="text/javascript" src="../../js/consultas.js"></script>
 	<script type="text/javascript">
-	    buscarTodoHistorial(1);
+	    buscarTodoHistorial(2);
 	</script>
 </body>
 </html>
