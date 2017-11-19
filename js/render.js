@@ -15,7 +15,7 @@ class Render {
 									<td>${this._addDiasAccents(consulta[i].dia)}</td>
 									<td>${consulta[i].orden}</td>
 									<td>${consulta[i].nrocapvisto}</td>
-									<td ${this._isNoData(consulta[i].estado) ? '' : 'class="darken-2 ' + this._estadoColor(consulta[i].estado) + '"'}>${this._isNoData(consulta[i].estado) ? 0 : consulta[i].estado}</td>
+									<td ${this.isNoData(consulta[i].estado) ? '' : 'class="' + this._estadoColor(consulta[i].estado) + '"'}>${this.isNoData(consulta[i].estado) ? 0 : consulta[i].estado}</td>
 									<td>${consulta[i].pagina}</td>
 									<td>${consulta[i].carpeta}</td>
 									<td class="hidden">${consulta[i]._id}</td>
@@ -55,7 +55,7 @@ class Render {
 										</div>
 									</td>
 									<td>
-										<button class="btn btn-small green ${this._isNoData(consulta[i].carpeta) ? 'disabled': ''}" onclick="render.abrirCarpeta('${consulta[i].carpeta}')"><span style="display: flex" class="tooltipped" data-position="left" data-delay="500" data-tooltip="Abrir carpeta"><i class="icon-folder-open"></i></span></button>
+										<button class="btn btn-small green ${this.isNoData(consulta[i].carpeta) ? 'disabled': ''}" onclick="render.abrirCarpeta('${consulta[i].carpeta}')"><span style="display: flex" class="tooltipped" data-position="left" data-delay="500" data-tooltip="Abrir carpeta"><i class="icon-folder-open"></i></span></button>
 									</td>
 									<td class="hidden" id="key">${consulta[i]._id}</td>
 								</tr>"`
@@ -107,7 +107,7 @@ class Render {
 		let anime = [
 					'Órden/\nEstado',
 					'Nombre',
-					'Capítulo Visto',
+					'Capítulos Vistos',
 					'Página',
 					'Min/Add',
 					'Carpeta'
@@ -334,7 +334,7 @@ class Render {
 	}
 
 	_estadoSerie(estado){
-		if (this._isNoData(estado) || estado == 0)
+		if (this.isNoData(estado) || estado == 0)
 			return 'Viendo'
 		else if (estado === 1)
 			return 'Finalizado'
@@ -349,17 +349,17 @@ class Render {
 			return true
 	}
 
-	_isNoData(data){
+	isNoData(data){
 		return data === undefined || data === null
 	}
 
 	_estadoColor(estado){
 		/*0 => Viendo, 1 => Finalizado, 2 => No me Gusto*/
 		if (estado == 0)
-			return 'green'
+			return 'green accent-2'
 		else if (estado == 1)
-			return 'blue'
+			return 'light-blue accent-2'
 		else if (estado == 2)
-			return 'red'
+			return 'red accent-2'
 	}
 }

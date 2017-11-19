@@ -3,6 +3,7 @@
 class Historial {
 
 	constructor() {
+		this.render = new Render()
 	}
 
 	imprimirHistorial(consulta) {
@@ -12,18 +13,32 @@ class Historial {
 			tblListaAnimes += `<tr>
 									<td>${++cont}</td>
 									<td>${consulta[i].nombre}</td>
-									<td>${this._isNoData(consulta[i].fechaCreacion) ? 'No Data': this._setDateMonthYear(consulta[i].fechaCreacion)}</td>
-									<td class="hidden">${consulta[i]._id}</td>
+									<td>${this.render.isNoData(consulta[i].fechaCreacion) ? 'No Data': this._setFullDate(consulta[i].fechaCreacion)}</td>
+									<td class="hidden" id="key">${consulta[i]._id}</td>
 								</tr>"`
 		})
 		$('#contenido').html(tblListaAnimes)
 	}
 
 	capitulosVistos(lista){
-		let ctx = document.getElementById('capVistos')
 		let listFilter = this._filterCapActiveChart(lista)
+		this._chartCapVistos(listFilter, 'horizontalBar')
+	}
+
+	capitulosVistosUnAnime(anime){
+		let animeFilter = this._filterCapChart(anime)
+		this._chartCapVistos(animeFilter, 'bar')
+		this._setHistoriaAnime(animeFilter)
+	}
+
+	_setHistoriaAnime(anime){
+		document.title = 'Historia de ' + anime.nombres[0]
+	}
+
+	_chartCapVistos(listFilter, tipo){
+		let ctx = document.getElementById('capVistos')
         let capVistos = new Chart(ctx, {
-            type: 'horizontalBar',
+            type: tipo,
             data: {
                 labels: listFilter.nombres,
                 datasets: [{
@@ -37,7 +52,8 @@ class Historial {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero: true
+                            beginAtZero: true,
+            				min: 0
                         }
                     }]
                 },
@@ -52,11 +68,7 @@ class Historial {
         });
 	}
 
-	_isNoData(data){
-		return data === undefined || data === null
-	}
-
-	_setDateMonthYear(date){
+	_setFullDate(date){
 		let year = date.getFullYear()
 		let month = date.getMonth()
 		let day = date.getDate()// < 10 ? '0' + date.getDate() : date.getDate()
@@ -84,6 +96,18 @@ class Historial {
 			'nroCap' : nroCap,
 			'colorTransparente' : colorTransparente,
 			'color' : color
+		}
+		return data
+	}
+
+	_filterCapChart(anime){
+		let colorRand = this._getColorRandom(0.2)
+		let colorT = colorRand.replace('0.2', '1')
+		let data = {
+			'nombres' : [anime.nombre],
+			'nroCap' : [anime.nrocapvisto],
+			'colorTransparente' : [colorRand],
+			'color' : [colorT]
 		}
 		return data
 	}

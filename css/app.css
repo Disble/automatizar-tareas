@@ -63,3 +63,20 @@ h1.titulo {
 .hidden{
 	display: none;
 }
+
+.no-padding{
+	padding: ;
+}
+
+.btn-eliminar-anime{
+    padding-top: 96px;
+}
+
+.btn-eliminar-anime i {
+	font-weight: bold;
+    font-size: 1.3em;
+}
+
+.btn-eliminar-anime a{
+    font-weight: 500;
+}

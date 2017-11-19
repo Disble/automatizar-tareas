@@ -74,6 +74,19 @@ let template = [{
 				}
 			}
 		}
+	},
+	{
+		label: 'Historia del Anime',
+		accelerator: 'CmdOrCtrl+f',
+		click: function (item, focusedWindow) {
+			if (focusedWindow) {
+				if (focusedWindow.id === 1) {
+					BrowserWindow.getAllWindows().forEach(function (win) {
+						win.loadURL(`file://${__dirname}/views/estadisticas/historia-anime.html`)
+					})
+				}
+			}
+		}
 	}]
 },
 {
