@@ -50,7 +50,7 @@ function buscarPorId(id){
 }
 
 function buscarTodoHistorial(option){
-	animesdb.find({}).sort({"fechaCreacion":-1}).exec(function(err, record) {
+	animesdb.find({}).sort({"fechaUltCapVisto":-1}).exec(function(err, record) {
 		if (err) {
 			console.error(err)
 			process.exit(0)
@@ -64,7 +64,7 @@ function buscarTodoHistorial(option){
 }
 
 function actualizarCap(dia, id, cont){
-	animesdb.update({"_id" : id}, {$set: {"nrocapvisto": cont}}, function(err, numUpdate) {
+	animesdb.update({"_id" : id}, {$set: {"nrocapvisto": cont, "fechaUltCapVisto" : new Date()}}, function(err, numUpdate) {
 		if (err) {
 			console.error(err)
 			return

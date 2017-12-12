@@ -80,3 +80,8 @@ h1.titulo {
 .btn-eliminar-anime a{
     font-weight: 500;
 }
+
+table.highlight>tbody>tr:hover{
+	background-color: #4fd8fe;
+	cursor: pointer;
+}

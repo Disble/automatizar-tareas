@@ -13,11 +13,14 @@ class Historial {
 			tblListaAnimes += `<tr>
 									<td>${++cont}</td>
 									<td>${consulta[i].nombre}</td>
-									<td>${this.render.isNoData(consulta[i].fechaCreacion) ? 'No Data': this._setFullDate(consulta[i].fechaCreacion)}</td>
+									<td>${this.render.isNoData(consulta[i].nrocapvisto) ? 'No Data': consulta[i].nrocapvisto}</td>
+									<td>${this.render.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._setFullDate(consulta[i].fechaUltCapVisto)}</td>
+									<td>${this.render.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this.render.diaSemana(consulta[i].fechaUltCapVisto)}</td>
 									<td class="hidden" id="key">${consulta[i]._id}</td>
 								</tr>"`
 		})
 		$('#contenido').html(tblListaAnimes)
+		this._enlaceHistAnime()
 	}
 
 	capitulosVistos(lista){
@@ -28,11 +31,31 @@ class Historial {
 	capitulosVistosUnAnime(anime){
 		let animeFilter = this._filterCapChart(anime)
 		this._chartCapVistos(animeFilter, 'bar')
-		this._setHistoriaAnime(animeFilter)
+		this._setHistoriaAnime(anime)
+	}
+
+	_enlaceHistAnime() {
+
+		$('.hidden').each(function (i, item) {
+			$(this).parent().click(() => {
+				let key = $(this).parent().children('#key').html()
+				//alert('hola usuario ' + $(this).parent().children('#key').html())
+			})
+		})
 	}
 
 	_setHistoriaAnime(anime){
-		document.title = 'Historia de ' + anime.nombres[0]
+		document.title = 'Historia de ' + anime.nombre
+		$('#nombre').html(anime.nombre)
+		$('#estado').html(this.render._estadoSerie(anime.estado))
+		$('#fechaCreacion').html(this._setFullDate(anime.fechaCreacion))
+		$('#fechaEliminacion').html(this.render.isNoData(anime.fechaEliminacion) ? 'No Eliminado' : this._setFullDate(anime.fechaEliminacion))
+		$('#pagina').html(anime.pagina)
+		let carpeta = $('#carpeta')
+		carpeta.html(anime.carpeta)
+		carpeta.click(() => {
+			this.render.abrirCarpeta(anime.carpeta)
+		})
 	}
 
 	_chartCapVistos(listFilter, tipo){
