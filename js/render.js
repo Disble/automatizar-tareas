@@ -33,6 +33,9 @@ class Render {
 									<td>
 										<button data-target="modal${i}" class="btn btn-small modal-trigger">${consulta[i].orden}</button>
 										<div id="modal${i}" class="modal">
+											<div class="modal-footer">
+												<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">X</a>
+											</div>
 											<div class="modal-content">
 												<h4>Mensaje de confirmación</h4>
 												<p>Escoga uno de los siguientes estados</p>
@@ -41,7 +44,6 @@ class Render {
 												<button class="btn btn-small modal-close red" onclick="estadoCap('${dia}', '${consulta[i]._id}', ${2})"><i class="icon-emo-unhappy"></i> No me Gusto</button>
 											</div>
 											<div class="modal-footer">
-												<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
 											</div>
 										</div>
 									</td>

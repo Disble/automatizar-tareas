@@ -35,13 +35,102 @@ class Historial {
 	}
 
 	_enlaceHistAnime() {
-
+		let that = this
 		$('.hidden').each(function (i, item) {
 			$(this).parent().click(() => {
 				let key = $(this).parent().children('#key').html()
+				that._createModalStats(key)
 				//alert('hola usuario ' + $(this).parent().children('#key').html())
 			})
 		})
+	}
+
+	_createModalStats(key) {
+		$('#modalStats').remove()
+		let modalWindow = `
+		<div id="modalStats">
+			<button data-target="modalWin" class="btn btn-small modal-trigger hidden"></button>
+			<div id="modalWin" class="modal modal-fixed-footer">
+				<div class="modal-content">
+					<div class="row">
+						<div class="col s5">
+							<ul class="collapsible popout" data-collapsible="expandable">
+								<li>
+									<div class="collapsible-header flex-center cyan active">Nombre</div>
+									<div class="collapsible-body no-padding">
+										<div class="collection">
+											<a href="#" class="collection-item waves-effect waves-light center" id="nombre"></a>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="collapsible-header flex-center cyan active">Estado</div>
+									<div class="collapsible-body no-padding">
+										<div class="collection">
+											<a href="#" class="collection-item waves-effect waves-light center" id="estado"><i class="icon-play left"></i></a>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="collapsible-header flex-center cyan lighten-1 active">Fecha Creación</div>
+									<div class="collapsible-body no-padding">
+										<div class="collection">
+											<a href="#" class="collection-item waves-effect waves-light center" id="fechaCreacion"></a>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="collapsible-header flex-center cyan lighten-2 active">Fecha Eliminación</div>
+									<div class="collapsible-body no-padding">
+										<div class="collection">
+											<a href="#" class="collection-item waves-effect waves-light center" id="fechaEliminacion"></a>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="collapsible-header flex-center cyan lighten-3 active">Página</div>
+									<div class="collapsible-body no-padding">
+										<div class="collection">
+											<a href="#" class="collection-item waves-effect waves-light center" id="pagina"></a>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="collapsible-header flex-center cyan lighten-4 active">Carpeta</div>
+									<div class="collapsible-body no-padding">
+										<div class="collection">
+											<a href="#" class="collection-item waves-effect waves-light center" id="carpeta"></a>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="col s7">
+							<div class="row">
+								<div class="col s12">
+									<canvas id="capVistos" width="400" height="400"></canvas>
+								</div>
+								<div class="col s12">
+									<div class="container btn-eliminar-anime">
+										<div class="collection">
+											<a href="#" class="collection-item waves-effect waves-light black-text red center">Eliminar<i class="icon-trash-empty right"></i></a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cerrar</a>
+				</div>
+			</div>
+		</div>`
+		$('body').append(modalWindow)
+		$('.modal').modal()
+		$('.collapsible').collapsible()
+		$('#modalStats').find('.modal-trigger').click()
+        buscarPorId(key);
 	}
 
 	_setHistoriaAnime(anime){
