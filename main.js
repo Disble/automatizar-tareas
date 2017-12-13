@@ -64,25 +64,12 @@ let template = [{
 	},
 	{
 		label: 'Animes Viendo',
-		accelerator: 'CmdOrCtrl+e',
+		accelerator: 'CmdOrCtrl+g',
 		click: function (item, focusedWindow) {
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {
 					BrowserWindow.getAllWindows().forEach(function (win) {
 						win.loadURL(`file://${__dirname}/views/estadisticas/viendo.html`)
-					})
-				}
-			}
-		}
-	},
-	{
-		label: 'Historia del Anime',
-		accelerator: 'CmdOrCtrl+f',
-		click: function (item, focusedWindow) {
-			if (focusedWindow) {
-				if (focusedWindow.id === 1) {
-					BrowserWindow.getAllWindows().forEach(function (win) {
-						win.loadURL(`file://${__dirname}/views/estadisticas/historia-anime.html`)
 					})
 				}
 			}
