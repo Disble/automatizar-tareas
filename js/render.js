@@ -17,7 +17,7 @@ class Render {
 									<td>${consulta[i].nrocapvisto}</td>
 									<td ${this.isNoData(consulta[i].estado) ? '' : 'class="' + this._estadoColor(consulta[i].estado) + '"'}>${this.isNoData(consulta[i].estado) ? 0 : consulta[i].estado}</td>
 									<td>${consulta[i].pagina}</td>
-									<td>${consulta[i].carpeta}</td>
+									<td>${this.isNoData(consulta[i].carpeta) ? '' : consulta[i].carpeta}</td>
 									<td class="hidden">${consulta[i]._id}</td>
 								</tr>"`
 		})

@@ -105,6 +105,13 @@ function borrarFila(id){
 	})
 }
 
-function borrarAnime(key) {
-	alert(`Anime ${key} borrado`)
+function borrarAnime(id) {
+	animesdb.remove({ _id : id }, {}, function (err, numRemoved) {
+		if (err) {
+			console.error(err);
+			process.exit(0);
+		}
+		let render = new Historial()
+		render._reloadHistorial();
+	});
 }

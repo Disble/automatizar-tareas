@@ -144,12 +144,16 @@ class Historial {
 		$('#fechaEliminacion').html(this.render.isNoData(anime.fechaEliminacion) ? 'No Eliminado' : this._setFullDate(anime.fechaEliminacion))
 		$('#pagina').html(anime.pagina)
 		let carpeta = $('#carpeta')
-		carpeta.html(anime.carpeta)
+		carpeta.html(this.render.isNoData(anime.carpeta) ? 'No asignada' : anime.carpeta)
 		carpeta.click(() => {
 			this.render.abrirCarpeta(anime.carpeta)
 		})
 		$('.btn-eliminar-anime').find('a').attr('onclick', `borrarAnime('${anime._id}')`)
 		//$('.btn-eliminar-anime').find('a').click(() => alert('borrar'))
+	}
+
+	_reloadHistorial() {
+		window.location.href = `file://${__dirname}/historial.html`;
 	}
 
 	_chartCapVistos(listFilter, tipo){
