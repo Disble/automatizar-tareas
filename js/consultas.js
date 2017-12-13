@@ -106,12 +106,14 @@ function borrarFila(id){
 }
 
 function borrarAnime(id) {
-	animesdb.remove({ _id : id }, {}, function (err, numRemoved) {
-		if (err) {
-			console.error(err);
-			process.exit(0);
-		}
-		let render = new Historial()
-		render._reloadHistorial();
-	});
+	if (confirm('¿Estás seguro que quieres borrar este anime?','Advertencia')){
+		animesdb.remove({ _id : id }, {}, function (err, numRemoved) {
+			if (err) {
+				console.error(err);
+				process.exit(0);
+			}
+			let render = new Historial()
+			render._reloadHistorial();
+		});
+	}
 }
