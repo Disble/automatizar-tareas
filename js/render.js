@@ -25,8 +25,6 @@ class Render {
 	}
 
 	actualizarLista(consulta, dia) {
-		/*NOTE: no se que onda con el id="estadoX"*/
-		/*<input class="btn btn-small" type="button" id="estado${consulta[i].orden}" value="${consulta[i].orden}" />*/
 		let tblListaAnimes = ''
 		$.each(consulta, (i, item) => {
 			tblListaAnimes += `<tr>
@@ -122,7 +120,6 @@ class Render {
 	}
 
 	/*------------------------- RENDER DINAMICO ---------------------------------------*/
-	/* NOTE: falta activar la validacion*/
 	increNuevosAnimes(){
 		let nuevaConsulta = `<tr>
 								<td><input type="number" name="orden" min="1" required></td>
@@ -325,7 +322,6 @@ class Render {
 
 	_quitaAcentos(str) {
 		var res = str.toLowerCase()
-		//res = res.replace(new RegExp(/\s/g),'')
 		res = res.replace(new RegExp(/[àáâãäå]/g),'a')
 		res = res.replace(new RegExp(/[èéêë]/g),'e')
 		res = res.replace(new RegExp(/[ìíîï]/g),'i')

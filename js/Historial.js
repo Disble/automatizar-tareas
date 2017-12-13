@@ -149,7 +149,6 @@ class Historial {
 			this.render.abrirCarpeta(anime.carpeta)
 		})
 		$('.btn-eliminar-anime').find('a').attr('onclick', `borrarAnime('${anime._id}')`)
-		//$('.btn-eliminar-anime').find('a').click(() => alert('borrar'))
 	}
 
 	_reloadHistorial() {
@@ -192,7 +191,7 @@ class Historial {
 	_setFullDate(date){
 		let year = date.getFullYear()
 		let month = date.getMonth()
-		let day = date.getDate()// < 10 ? '0' + date.getDate() : date.getDate()
+		let day = date.getDate()
 		let months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 		return `${day} de ${months[month]}, ${year}`
 	}
