@@ -104,3 +104,7 @@ function borrarFila(id){
 		buscarTodo()
 	})
 }
+
+function borrarAnime(key) {
+	alert(`Anime ${key} borrado`)
+}

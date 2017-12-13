@@ -40,7 +40,6 @@ class Historial {
 			$(this).parent().click(() => {
 				let key = $(this).parent().children('#key').html()
 				that._createModalStats(key)
-				//alert('hola usuario ' + $(this).parent().children('#key').html())
 			})
 		})
 	}
@@ -59,7 +58,7 @@ class Historial {
 									<div class="collapsible-header flex-center cyan active">Nombre</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center" id="nombre"></a>
+											<a href="#" class="collection-item waves-effect waves-light center no-link" id="nombre"></a>
 										</div>
 									</div>
 								</li>
@@ -67,7 +66,7 @@ class Historial {
 									<div class="collapsible-header flex-center cyan active">Estado</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center" id="estado"><i class="icon-play left"></i></a>
+											<a href="#" class="collection-item waves-effect waves-light center no-link" id="estado"><i class="icon-play left"></i></a>
 										</div>
 									</div>
 								</li>
@@ -75,7 +74,7 @@ class Historial {
 									<div class="collapsible-header flex-center cyan lighten-1 active">Fecha Creación</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center" id="fechaCreacion"></a>
+											<a href="#" class="collection-item waves-effect waves-light center no-link" id="fechaCreacion"></a>
 										</div>
 									</div>
 								</li>
@@ -83,7 +82,7 @@ class Historial {
 									<div class="collapsible-header flex-center cyan lighten-2 active">Fecha Eliminación</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center" id="fechaEliminacion"></a>
+											<a href="#" class="collection-item waves-effect waves-light center no-link" id="fechaEliminacion"></a>
 										</div>
 									</div>
 								</li>
@@ -91,7 +90,7 @@ class Historial {
 									<div class="collapsible-header flex-center cyan lighten-3 active">Página</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center" id="pagina"></a>
+											<a href="#" class="collection-item waves-effect waves-light center no-link" id="pagina"></a>
 										</div>
 									</div>
 								</li>
@@ -99,7 +98,7 @@ class Historial {
 									<div class="collapsible-header flex-center cyan lighten-4 active">Carpeta</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center" id="carpeta"></a>
+											<a href="#" class="collection-item waves-effect waves-light center no-link" id="carpeta"></a>
 										</div>
 									</div>
 								</li>
@@ -113,7 +112,7 @@ class Historial {
 								<div class="col s12">
 									<div class="container btn-eliminar-anime">
 										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light black-text red center">Eliminar<i class="icon-trash-empty right"></i></a>
+											<a href="#" class="collection-item waves-effect waves-light black-text red center no-link">Eliminar<i class="icon-trash-empty right"></i></a>
 										</div>
 									</div>
 								</div>
@@ -130,7 +129,11 @@ class Historial {
 		$('.modal').modal()
 		$('.collapsible').collapsible()
 		$('#modalStats').find('.modal-trigger').click()
-        buscarPorId(key);
+		$('.no-link').click(function (e) {
+			e.preventDefault()
+			e.stopPropagation()
+		})
+        buscarPorId(key)
 	}
 
 	_setHistoriaAnime(anime){
@@ -145,6 +148,8 @@ class Historial {
 		carpeta.click(() => {
 			this.render.abrirCarpeta(anime.carpeta)
 		})
+		$('.btn-eliminar-anime').find('a').attr('onclick', `borrarAnime('${anime._id}')`)
+		//$('.btn-eliminar-anime').find('a').click(() => alert('borrar'))
 	}
 
 	_chartCapVistos(listFilter, tipo){

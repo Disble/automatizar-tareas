@@ -187,7 +187,7 @@ class Render {
 
 	abrirCarpeta(folder){
 		if (!shell.showItemInFolder(`${folder}/*`))
-			alert('Hubo problemas al abrir la carpeta.\nPor favor revise el formato de la dirección de la carpeta en Editar Animes.', 'Error')
+			alert('Hubo problemas al abrir la carpeta.\nPor favor revise el formato de la dirección de la carpeta \nen Editar Animes o compruebe que la carpeta exista.', 'Error')
 	}
 
 	getFolder(dir){
