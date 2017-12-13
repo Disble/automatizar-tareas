@@ -214,7 +214,7 @@ class Render {
 		}
 		return path
 	}
-
+	/*NOTE: Borrar el estado de aqui y los que sigan, para futuras actualizaciones*/
 	cellEdit(){
 		let that = this
 		$('td').each(function(key, value){
