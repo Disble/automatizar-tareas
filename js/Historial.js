@@ -15,7 +15,7 @@ class Historial {
 									<td>${consulta[i].nombre}</td>
 									<td>${this.render.isNoData(consulta[i].nrocapvisto) ? 'No Data': consulta[i].nrocapvisto}</td>
 									<td>${this.render.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._setFullDate(consulta[i].fechaUltCapVisto)}</td>
-									<td>${this.render.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this.render.diaSemana(consulta[i].fechaUltCapVisto)}</td>
+									<td>${this.render.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._getDiaSemana(consulta[i].fechaUltCapVisto)}</td>
 									<td class="hidden" id="key">${consulta[i]._id}</td>
 								</tr>"`
 		})
@@ -194,6 +194,11 @@ class Historial {
 		let day = date.getDate()
 		let months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 		return `${day} de ${months[month]}, ${year}`
+	}
+
+	_getDiaSemana(date){
+		let diasSemana = new Array("domingo","lunes","martes","miercoles","jueves","viernes","sabado")
+		return diasSemana[date.getDay()]
 	}
 
 	_filterCapActiveChart(list){
