@@ -65,6 +65,8 @@ Ver anime.
 ---
 Las versiones de esta aplicación fueron creadas basándose en [Versionado Semántico](http://semver.org/).
 
+**Next Update: ¡Pagination Update!**
+
 ## Licencia
 ---
 Este proyecto está bajo la licencia [MIT](./blob/master/LICENSE) que esta adjuntado en el mismo.
