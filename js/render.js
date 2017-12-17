@@ -3,6 +3,15 @@
 class Render {
 	constructor() {
 		this.contNewFolder = 0
+		/*Bloquea el drag and drop en la pagina*/
+		document.addEventListener('dragover', function (e) {
+			e.preventDefault()
+			e.stopPropagation()
+		})
+		document.addEventListener('drop', function (e) {
+			e.preventDefault()
+			e.stopPropagation()
+		})
 	}
 	/*------------------------- RENDER CARGA CON LA PAGINA ---------------------------------------*/
 	actualizarListaCompleta(consulta) {
@@ -170,13 +179,13 @@ class Render {
 
 	crearJsonActualizar(row){
 		let json = {
-			'orden': parseInt(row[2]) < 0 ? 0 : parseInt(row[2]),
+			'orden': parseInt(row[2]) < 1 ? 1 : parseInt(row[2]),
 			'nombre': row[0],
 			'dia': this._quitaAcentos(row[1]),
 			'nrocapvisto': this._estadoNumCap(row[3]),
 			'estado': parseInt(row[4]) < 0 ? 0 : parseInt(row[4]),
 			'pagina': row[5],
-			'carpeta': row[6] == 'null' || row[6] == '' ? null : this.slashFolder(row[6])
+			'carpeta': this.isNoData(row[6]) ? null : this.slashFolder(row[6])
 		}
 		//console.log(json)
 		return json
@@ -188,10 +197,10 @@ class Render {
 	}
 
 	getFolder(dir){
-		if (dir === undefined || dir === null || dir.files[0] === undefined) return
+		if (this.isNoData(dir) || dir.files[0] === undefined) return
 		let folder = dir.files[0].path
 		let path = this.slashFolder(folder)
-		console.log(path)
+		//console.log(path)
 		$(dir).attr('value', path)
 		$(dir).siblings().html('Cargado')
 		$(dir).siblings().attr('data-tooltip', path)
@@ -280,7 +289,7 @@ class Render {
 	}
 
 	_addDiasAccents(dia){
-		if (dia == 'sabado')
+		if (dia === 'sabado')
 			return 'sábado'
 		else if (dia === 'miercoles')
 			return 'miércoles'
@@ -332,12 +341,10 @@ class Render {
 	}
 
 	_estadoSerie(estado){
-		if (this.isNoData(estado) || estado == 0)
-			return 'Viendo'
-		else if (estado === 1)
-			return 'Finalizado'
-		else if (estado === 2)
-			return 'No me gusto'
+		let nombreEstado = ['Viendo', 'Finalizado', 'No me gusto']
+		if (this.isNoData(estado))
+			return
+		return nombreEstado[estado]
 	}
 
 	_blockSerie(estado){
@@ -353,11 +360,7 @@ class Render {
 
 	_estadoColor(estado){
 		/*0 => Viendo, 1 => Finalizado, 2 => No me Gusto*/
-		if (estado == 0)
-			return 'green accent-2'
-		else if (estado == 1)
-			return 'light-blue accent-2'
-		else if (estado == 2)
-			return 'red accent-2'
+		let estados = ['green accent-2', 'light-blue accent-2', 'red accent-2']
+		return estados[estado]
 	}
 }

@@ -44,6 +44,57 @@ class Historial {
 		})
 	}
 
+	_setHistoriaAnime(anime){
+		$('#nombre').html(anime.nombre)
+		$('#estado').html(this.render._estadoSerie(anime.estado))
+		$('#fechaCreacion').html(this._setFullDate(anime.fechaCreacion))
+		$('#fechaEliminacion').html(this.render.isNoData(anime.fechaEliminacion) ? 'No Eliminado' : this._setFullDate(anime.fechaEliminacion))
+		$('#pagina').html(anime.pagina)
+		let carpeta = $('#carpeta')
+		carpeta.html(this.render.isNoData(anime.carpeta) ? 'No asignada' : anime.carpeta)
+		carpeta.click(() => {
+			this.render.abrirCarpeta(anime.carpeta)
+		})
+		$('.btn-eliminar-anime').find('a').attr('onclick', `borrarAnime('${anime._id}')`)
+	}
+
+	_reloadHistorial() {
+		window.location.href = `file://${__dirname}/historial.html`;
+	}
+
+	_chartCapVistos(listFilter, tipo){
+		let ctx = document.getElementById('capVistos')
+        let capVistos = new Chart(ctx, {
+            type: tipo,
+            data: {
+                labels: listFilter.nombres,
+                datasets: [{
+                    data: listFilter.nroCap,
+                    backgroundColor: listFilter.colorTransparente,
+                    borderColor: listFilter.color,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+            				min: 0
+                        }
+                    }]
+                },
+				title: {
+					display: true,
+					text: 'Capítulos Vistos'
+				},
+				legend : {
+					display: false
+				}
+            }
+        });
+	}
+
 	_createModalStats(key) {
 		$('#modalStats').remove()
 		let modalWindow = `
@@ -134,58 +185,6 @@ class Historial {
 			e.stopPropagation()
 		})
         buscarPorId(key)
-	}
-
-	_setHistoriaAnime(anime){
-		document.title = 'Historia de ' + anime.nombre
-		$('#nombre').html(anime.nombre)
-		$('#estado').html(this.render._estadoSerie(anime.estado))
-		$('#fechaCreacion').html(this._setFullDate(anime.fechaCreacion))
-		$('#fechaEliminacion').html(this.render.isNoData(anime.fechaEliminacion) ? 'No Eliminado' : this._setFullDate(anime.fechaEliminacion))
-		$('#pagina').html(anime.pagina)
-		let carpeta = $('#carpeta')
-		carpeta.html(this.render.isNoData(anime.carpeta) ? 'No asignada' : anime.carpeta)
-		carpeta.click(() => {
-			this.render.abrirCarpeta(anime.carpeta)
-		})
-		$('.btn-eliminar-anime').find('a').attr('onclick', `borrarAnime('${anime._id}')`)
-	}
-
-	_reloadHistorial() {
-		window.location.href = `file://${__dirname}/historial.html`;
-	}
-
-	_chartCapVistos(listFilter, tipo){
-		let ctx = document.getElementById('capVistos')
-        let capVistos = new Chart(ctx, {
-            type: tipo,
-            data: {
-                labels: listFilter.nombres,
-                datasets: [{
-                    data: listFilter.nroCap,
-                    backgroundColor: listFilter.colorTransparente,
-                    borderColor: listFilter.color,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-            				min: 0
-                        }
-                    }]
-                },
-				title: {
-					display: true,
-					text: 'Capítulos Vistos'
-				},
-				legend : {
-					display: false
-				}
-            }
-        });
 	}
 
 	_setFullDate(date){
