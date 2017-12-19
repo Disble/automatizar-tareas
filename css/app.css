@@ -86,3 +86,7 @@ table.highlight>tbody>tr:hover{
 	background-color: #4fd8fe;
 	cursor: pointer;
 }
+
+.icon-pag{
+	font-size: 1.2em !important;
+}
