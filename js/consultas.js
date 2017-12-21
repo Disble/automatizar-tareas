@@ -25,16 +25,29 @@ function buscar(dia){
 	})
 }
 
-function buscarTodo(){
-	animesdb.find({$or : [{"activo" : true}, {"activo" : {$exists : false} }]}).sort({"fechaCreacion":-1}).exec(function(err, record) {
+function cargarEditar(pag = 1){
+	animesdb.count({$or : [{"activo" : true}, {"activo" : {$exists : false} }]}).exec(function(err, record) {
 		if (err) {
 			console.error(err)
 			process.exit(0)
 		}
-		let render = new Render()
-		render.actualizarListaCompleta(record)
+		buscarTodo(pag, record)
+	})
+}
+
+function buscarTodo(pag, totalReg){
+	let render = new Render()
+	let salto = render.saltoPaginacion(pag, totalReg)
+	let limite = render.numReg
+	animesdb.find({$or : [{"activo" : true}, {"activo" : {$exists : false} }]}).sort({"fechaCreacion":-1}).skip(salto).limit(limite).exec(function(err, record) {
+		if (err) {
+			console.error(err)
+			process.exit(0)
+		}
+		render.actualizarListaCompleta(record, salto)
 		render.cellEdit()
 		render.eraserRow()
+		render.imprimirPagination(totalReg, pag)
 	})
 }
 
@@ -49,17 +62,32 @@ function buscarPorId(id){
 	})
 }
 
-function buscarTodoHistorial(option){
-	animesdb.find({}).sort({"fechaUltCapVisto":-1}).exec(function(err, record) {
+function cargarHistorial(pag = 1, option = 1){
+	animesdb.count({}).exec(function(err, record) {
 		if (err) {
 			console.error(err)
 			process.exit(0)
 		}
-		let render = new Historial()
-		if (option == 1)
-			render.imprimirHistorial(record)
-		else
-			render.capitulosVistos(record)
+		buscarTodoHistorial(pag, record, option)
+	})
+}
+
+function buscarTodoHistorial(pag, totalReg, option){
+	let render = new Render()
+	let salto = render.saltoPaginacion(pag, totalReg)
+	let limite = render.numReg
+	animesdb.find({}).sort({"fechaUltCapVisto":-1}).skip(salto).limit(limite).exec(function(err, record) {
+		if (err) {
+			console.error(err)
+			process.exit(0)
+		}
+		let historial = new Historial()
+		if (option == 1){
+			historial.imprimirHistorial(record, salto)
+			historial.imprimirPagination(totalReg, pag)
+		} else {
+			historial.capitulosVistos(record)
+		}
 	})
 }
 

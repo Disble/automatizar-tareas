@@ -3,6 +3,7 @@
 class Render {
 	constructor() {
 		this.contNewFolder = 0
+		this.numReg = 10
 		/*Bloquea el drag and drop en la pagina*/
 		document.addEventListener('dragover', function (e) {
 			e.preventDefault()
@@ -14,9 +15,9 @@ class Render {
 		})
 	}
 	/*------------------------- RENDER CARGA CON LA PAGINA ---------------------------------------*/
-	actualizarListaCompleta(consulta) {
+	actualizarListaCompleta(consulta, salto) {
 		let tblListaAnimes = ''
-		let cont = 0
+		let cont = salto
 		$.each(consulta, (i, item) => {
 			tblListaAnimes += `<tr>
 									<td><input class="btn btn-small" type="button" id="eraser${++cont}" value="${cont}" /></td>
@@ -362,5 +363,49 @@ class Render {
 		/*0 => Viendo, 1 => Finalizado, 2 => No me Gusto*/
 		let estados = ['green accent-2', 'light-blue accent-2', 'red accent-2']
 		return estados[estado]
+	}
+
+	_totalPag(totalReg) {
+		return Math.ceil(totalReg / this.numReg)
+	}
+
+	saltoPaginacion(pag, totalReg) {
+		return this.numReg  * (pag - 1)
+	}
+
+	limitePaginas(todasPag) {
+		/*10 es el límite de las paginas a mostrar*/
+		return todasPag > 10
+	}
+
+	limitePaginasInicio(pagActual, totalPag) {
+		let inicio = pagActual - 5
+		let passLimitEnd = totalPag - 9
+		if (inicio < 2)
+			return 1
+		else
+			return pagActual + 4 > totalPag ? passLimitEnd : inicio
+	}
+
+	limitePaginasFin(pagActual, totalPag) {
+		let inicio = pagActual - 5
+		let fin = pagActual + 4 > totalPag ? totalPag : pagActual + 4
+		if (inicio < 2)
+			return 10
+		else
+			return fin
+	}
+
+	imprimirPagination(totalReg, actual) {
+		let todasPag = this._totalPag(totalReg)
+		let ini = this.limitePaginas(todasPag) ? this.limitePaginasInicio(actual, todasPag) : 1
+		let fin = this.limitePaginas(todasPag) ? this.limitePaginasFin(actual, todasPag) : todasPag
+		let paginas = `<li class="waves-effect ${actual == ini ? 'disabled' : ''}"><a href="#!" onclick="cargarEditar(1);"><i class="icon-pag icon-left-open"></i></a></li>`
+		for (let i = ini; i <= fin; i++) {
+			paginas += `<li class="waves-effect ${actual == i ? 'active' : ''}"><a href="#!" onclick="cargarEditar(${i});">${i}</a></li>`
+		}
+		paginas += `<li class="waves-effect ${actual == fin ? 'disabled' : ''}"><a href="#!" onclick="cargarEditar(${todasPag});"><i class="icon-pag icon-right-open"></i></a></li>`
+		$('#paginas').html(paginas)
+		//console.log("total reg :" + totalReg, ', todas pag : ' + todasPag, ', pag actual : ' + actual);
 	}
 }

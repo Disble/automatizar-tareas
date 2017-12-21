@@ -6,9 +6,9 @@ class Historial {
 		this.render = new Render()
 	}
 
-	imprimirHistorial(consulta) {
+	imprimirHistorial(consulta, salto) {
 		let tblListaAnimes = ''
-		let cont = 0
+		let cont = salto
 		$.each(consulta, (i, item) => {
 			tblListaAnimes += `<tr>
 									<td>${++cont}</td>
@@ -21,6 +21,19 @@ class Historial {
 		})
 		$('#contenido').html(tblListaAnimes)
 		this._enlaceHistAnime()
+	}
+
+	imprimirPagination(totalReg, actual) {
+		let todasPag = this.render._totalPag(totalReg)
+		let ini = this.render.limitePaginas(todasPag) ? this.render.limitePaginasInicio(actual, todasPag) : 1
+		let fin = this.render.limitePaginas(todasPag) ? this.render.limitePaginasFin(actual, todasPag) : todasPag
+		let paginas = `<li class="waves-effect ${actual == ini ? 'disabled' : ''}"><a href="#!" onclick="cargarHistorial(1);"><i class="icon-pag icon-left-open"></i></a></li>`
+		for (let i = ini; i <= fin; i++) {
+			paginas += `<li class="waves-effect ${actual == i ? 'active' : ''}"><a href="#!" onclick="cargarHistorial(${i});">${i}</a></li>`
+		}
+		paginas += `<li class="waves-effect ${actual == fin ? 'disabled' : ''}"><a href="#!" onclick="cargarHistorial(${todasPag});"><i class="icon-pag icon-right-open"></i></a></li>`
+		$('#paginas').html(paginas)
+		//console.log("total reg :" + totalReg, ', todas pag : ' + todasPag, ', pag actual : ' + actual);
 	}
 
 	capitulosVistos(lista){

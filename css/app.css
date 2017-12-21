@@ -90,3 +90,7 @@ table.highlight>tbody>tr:hover{
 .icon-pag{
 	font-size: 1.2em !important;
 }
+
+.pagination li.active {
+	background-color: #40b8d9;
+}
