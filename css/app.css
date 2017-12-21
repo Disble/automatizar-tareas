@@ -73,12 +73,12 @@ h1.titulo {
 	padding-top: 5px;
 }
 
-.btn-eliminar-anime i {
+.btn-eliminar-anime i, .btn-restaurar-anime i{
 	font-weight: bold;
     font-size: 1.3em;
 }
 
-.btn-eliminar-anime a{
+.btn-eliminar-anime a, .btn-restaurar-anime a{
     font-weight: 500;
 }
 

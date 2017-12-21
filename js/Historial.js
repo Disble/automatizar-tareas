@@ -27,11 +27,11 @@ class Historial {
 		let todasPag = this.render._totalPag(totalReg)
 		let ini = this.render.limitePaginas(todasPag) ? this.render.limitePaginasInicio(actual, todasPag) : 1
 		let fin = this.render.limitePaginas(todasPag) ? this.render.limitePaginasFin(actual, todasPag) : todasPag
-		let paginas = `<li class="waves-effect ${actual == ini ? 'disabled' : ''}"><a href="#!" onclick="cargarHistorial(1);"><i class="icon-pag icon-left-open"></i></a></li>`
+		let paginas = `<li class="waves-effect ${actual == ini ? 'disabled' : ''}"><a href="#!" ${actual == ini ? '' : 'onclick="cargarHistorial(1);"'}><i class="icon-pag icon-left-open"></i></a></li>`
 		for (let i = ini; i <= fin; i++) {
 			paginas += `<li class="waves-effect ${actual == i ? 'active' : ''}"><a href="#!" onclick="cargarHistorial(${i});">${i}</a></li>`
 		}
-		paginas += `<li class="waves-effect ${actual == fin ? 'disabled' : ''}"><a href="#!" onclick="cargarHistorial(${todasPag});"><i class="icon-pag icon-right-open"></i></a></li>`
+		paginas += `<li class="waves-effect ${actual == fin ? 'disabled' : ''}"><a href="#!" ${actual == fin ? 'disabled' : `onclick="cargarHistorial(${todasPag});"`}><i class="icon-pag icon-right-open"></i></a></li>`
 		$('#paginas').html(paginas)
 		//console.log("total reg :" + totalReg, ', todas pag : ' + todasPag, ', pag actual : ' + actual);
 	}
@@ -69,6 +69,11 @@ class Historial {
 			this.render.abrirCarpeta(anime.carpeta)
 		})
 		$('.btn-eliminar-anime').find('a').attr('onclick', `borrarAnime('${anime._id}')`)
+		if (anime.activo == false) {
+			$('#restaurar-anime').html(`<div class="collection">
+					<a href="#" class="collection-item waves-effect waves-light black-text orange center no-link" onclick="restaurarFila('${anime._id}')">Restaurar<i class="icon-attention-alt right"></i></a>
+				</div>`)
+		}
 	}
 
 	_reloadHistorial() {
@@ -178,6 +183,10 @@ class Historial {
 										<div class="collection">
 											<a href="#" class="collection-item waves-effect waves-light black-text red center no-link">Eliminar<i class="icon-trash-empty right"></i></a>
 										</div>
+									</div>
+								</div>
+								<div class="col s12">
+									<div class="container btn-restaurar-anime" id="restaurar-anime">
 									</div>
 								</div>
 							</div>

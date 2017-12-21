@@ -31,11 +31,11 @@ function cargarEditar(pag = 1){
 			console.error(err)
 			process.exit(0)
 		}
-		buscarTodo(pag, record)
+		buscarTodoEditar(pag, record)
 	})
 }
 
-function buscarTodo(pag, totalReg){
+function buscarTodoEditar(pag, totalReg){
 	let render = new Render()
 	let salto = render.saltoPaginacion(pag, totalReg)
 	let limite = render.numReg
@@ -119,7 +119,7 @@ function actualizarFila(id, json){
 			Materialize.toast('Houston, tenemos un problema', 4000)
 			return
 		}
-		buscarTodo()
+		cargarEditar()
 	})
 }
 
@@ -129,12 +129,25 @@ function borrarFila(id){
 			console.error(err)
 			return
 		}
-		buscarTodo()
+		cargarEditar()
 	})
 }
 
+function restaurarFila(id) {
+	if (confirm('¿Estás seguro que quieres restaurar este anime?','Advertencia')){
+		animesdb.update({"_id" : id}, {$set: {"activo": true, "fechaEliminacion" : null}}, function(err, numUpdate) {
+			if (err) {
+				console.error(err)
+				return
+			}
+			let render = new Historial()
+			render._reloadHistorial();
+		})
+	}
+}
+
 function borrarAnime(id) {
-	if (confirm('¿Estás seguro que quieres borrar este anime?','Advertencia')){
+	if (confirm('¿Estás seguro que quieres borrar de forma permamente este anime?','Advertencia')){
 		animesdb.remove({ _id : id }, {}, function (err, numRemoved) {
 			if (err) {
 				console.error(err);
