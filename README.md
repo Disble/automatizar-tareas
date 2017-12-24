@@ -51,7 +51,7 @@ Una vez instalados, abrir la terminal, ir al lugar donde planea guardar la aplic
 
 ## Autor/es
 ---
-Proyecto creado por [Disble](decoder@hotmail.es).
+Proyecto creado por @Disble
 
 ## Información adicional
 ---
@@ -65,7 +65,7 @@ Ver anime.
 ---
 Las versiones de esta aplicación fueron creadas basándose en [Versionado Semántico](http://semver.org/).
 
-**Next Update: ¡Pagination Update!**
+**Next Update: ¡Pending Update!**
 
 ## Licencia
 ---
