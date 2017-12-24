@@ -18,7 +18,7 @@ function buscar(dia){
 			console.error(err)
 			process.exit(0)
 		}
-		console.log(record)
+		//console.log(record)
 		let render = new Render()
 		render.actualizarLista(record, dia)
 		render.changeState()
@@ -112,24 +112,24 @@ function estadoCap(dia, id, estado){
 	})
 }
 
-function actualizarFila(id, json){
-	animesdb.update({"_id" : id}, {$set: {"orden": json.orden, "nombre": json.nombre, "dia": json.dia, "nrocapvisto": json.nrocapvisto, "estado": json.estado, "pagina": json.pagina, "carpeta": json.carpeta}}, function(err, num) {
+function actualizarFila(id, json, pag){
+	animesdb.update({"_id" : id}, {$set: {"orden": json.orden, "nombre": json.nombre, "dia": json.dia, "nrocapvisto": json.nrocapvisto, "pagina": json.pagina, "carpeta": json.carpeta}}, function(err, num) {
 		if (err) {
 			console.error(err)
 			Materialize.toast('Houston, tenemos un problema', 4000)
 			return
 		}
-		cargarEditar()
+		cargarEditar(pag)
 	})
 }
 
-function borrarFila(id){
+function borrarFila(id, pag){
 	animesdb.update({"_id" : id}, {$set: {"activo": false, "fechaEliminacion" : new Date()}}, function(err, numUpdate) {
 		if (err) {
 			console.error(err)
 			return
 		}
-		cargarEditar()
+		cargarEditar(pag)
 	})
 }
 

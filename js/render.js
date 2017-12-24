@@ -25,10 +25,9 @@ class Render {
 									<td>${this._addDiasAccents(consulta[i].dia)}</td>
 									<td>${consulta[i].orden}</td>
 									<td>${consulta[i].nrocapvisto}</td>
-									<td ${this.isNoData(consulta[i].estado) ? '' : 'class="' + this._estadoColor(consulta[i].estado) + '"'}>${this.isNoData(consulta[i].estado) ? 0 : consulta[i].estado}</td>
 									<td>${consulta[i].pagina}</td>
 									<td>${this.isNoData(consulta[i].carpeta) ? '' : consulta[i].carpeta}</td>
-									<td class="hidden">${consulta[i]._id}</td>
+									<td class="hidden" id="key">${consulta[i]._id}</td>
 								</tr>"`
 		})
 		$('#contenido').html(tblListaAnimes)
@@ -180,13 +179,12 @@ class Render {
 
 	crearJsonActualizar(row){
 		let json = {
-			'orden': parseInt(row[2]) < 1 ? 1 : parseInt(row[2]),
 			'nombre': row[0],
 			'dia': this._quitaAcentos(row[1]),
+			'orden': parseInt(row[2]) < 1 ? 1 : parseInt(row[2]),
 			'nrocapvisto': this._estadoNumCap(row[3]),
-			'estado': parseInt(row[4]) < 0 ? 0 : parseInt(row[4]),
-			'pagina': row[5],
-			'carpeta': this.isNoData(row[6]) ? null : this.slashFolder(row[6])
+			'pagina': row[4],
+			'carpeta': this.isNoData(row[6]) ? null : this.slashFolder(row[5])
 		}
 		//console.log(json)
 		return json
@@ -233,12 +231,13 @@ class Render {
 				$(this).removeAttr('contenteditable')
 				let row = Array()
 				$(this).parent().children().each((key, value) => {
-					if (key != 0)
+					if (key != 0 && key != this.length)
 						row.push(value.textContent)
 				})
-				let id = row[7]
-				//console.log(id)
-				actualizarFila(id, that.crearJsonActualizar(row))
+				let id = $(this).parent().find('#key').text()
+				//console.log('id : ' + id)
+				let pag = parseInt($('#paginas').find('.active a').text())
+				actualizarFila(id, that.crearJsonActualizar(row), pag)
 			})
 			$(value).bind('keypress', function(e) {
 				if(e.keyCode==13)
@@ -260,7 +259,9 @@ class Render {
 				if (confirm('¿Estás seguro que quieres borrar esta fila?','Advertencia')){
 					let id = ''
 					$(this).parent().parent().find('.hidden').each((key, value) => id = value.textContent)
-					borrarFila(id)
+					let pag = parseInt($('#paginas').find('.active a').text())
+					//console.log(pag);
+					borrarFila(id, pag)
 				}
 			})
 		})
@@ -357,12 +358,6 @@ class Render {
 
 	isNoData(data){
 		return data === undefined || data === null
-	}
-
-	_estadoColor(estado){
-		/*0 => Viendo, 1 => Finalizado, 2 => No me Gusto*/
-		let estados = ['green accent-2', 'light-blue accent-2', 'red accent-2']
-		return estados[estado]
 	}
 
 	_totalPag(totalReg) {

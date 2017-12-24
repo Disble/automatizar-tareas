@@ -77,7 +77,7 @@ class Historial {
 	}
 
 	_reloadHistorial() {
-		window.location.href = `file://${__dirname}/historial.html`;
+		window.location.href = `file://${__dirname}/historial.html`
 	}
 
 	_chartCapVistos(listFilter, tipo){
@@ -110,7 +110,7 @@ class Historial {
 					display: false
 				}
             }
-        });
+        })
 	}
 
 	_createModalStats(key) {
@@ -263,7 +263,7 @@ class Historial {
 	}
 
 	_getRandom() {
-		return Math.round(Math.random() * 255);
+		return Math.round(Math.random() * 255)
 	}
 }
 
