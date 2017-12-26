@@ -184,9 +184,9 @@ class Render {
 			'orden': parseInt(row[2]) < 1 ? 1 : parseInt(row[2]),
 			'nrocapvisto': this._estadoNumCap(row[3]),
 			'pagina': row[4],
-			'carpeta': this.isNoData(row[6]) ? null : this.slashFolder(row[5])
+			'carpeta': this.isNoData(row[5]) || row[5].length == 0 ? null : this.slashFolder(row[5])
 		}
-		//console.log(json)
+		console.log(json)
 		return json
 	}
 
