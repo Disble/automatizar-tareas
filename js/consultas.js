@@ -25,6 +25,23 @@ function buscar(dia){
 	})
 }
 
+function buscarMedallasDia(menu) {
+	contNombres = 0
+	$.each(menu, (nivel1, value1) => {
+		$.each(value1, (nivel2, value2) => {
+			let render = new Render()
+			let dia = render._quitaAcentos(nivel2)
+			animesdb.count({$and : [{"dia":dia}, {$or : [{"activo" : true}, {"activo" : {$exists : false} }] }, {"estado" : 0}] }).sort({"orden":1}).exec(function(err, record) {
+				if (err) {
+					console.error(err)
+					process.exit(0)
+				}
+				render.cargarMedallas(contNombres++, record)
+			})
+		})
+	})
+}
+
 function cargarEditar(pag = 1){
 	animesdb.count({$or : [{"activo" : true}, {"activo" : {$exists : false} }]}).exec(function(err, record) {
 		if (err) {

@@ -97,7 +97,7 @@ class Render {
 				$.each(value2, (nivel3, value3) => {
 					salidaMenu += `${nivel3}="${value3}" `
 				})
-				salidaMenu += `>${this._firstUpperCase(nivel2)}</a>`
+				salidaMenu += `>${this._firstUpperCase(nivel2)} </a>`
 			})
 			if (value1 != null){
 				salidaMenu += `</div>
@@ -110,6 +110,15 @@ class Render {
 			e.preventDefault()
 			e.stopPropagation()
 		})
+		buscarMedallasDia(menu)
+	}
+
+	cargarMedallas(dia, cont) {
+		//console.log($('#menu').find('a')[dia], cont)
+		if (cont > 0) {
+			let tagDia = $($('#menu').find('a')[dia])
+			tagDia.append(`<span class="badge">${cont}</span>`)
+		}
 	}
 
 	cargarTablasAnime(){
@@ -186,7 +195,7 @@ class Render {
 			'pagina': row[4],
 			'carpeta': this.isNoData(row[5]) || row[5].length == 0 ? null : this.slashFolder(row[5])
 		}
-		console.log(json)
+		//console.log(json)
 		return json
 	}
 
