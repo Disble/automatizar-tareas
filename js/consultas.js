@@ -85,11 +85,26 @@ function cargarHistorial(pag = 1, option = 1){
 			console.error(err)
 			process.exit(0)
 		}
-		buscarTodoHistorial(pag, record, option)
+		if (option == 1){
+			buscarTodoHistorial(pag, record)
+		} else {
+			buscarAnimesViendo()
+		}
 	})
 }
 
-function buscarTodoHistorial(pag, totalReg, option){
+function buscarAnimesViendo() {
+	animesdb.find({}).sort({"fechaUltCapVisto":-1}).exec(function(err, record) {
+		if (err) {
+			console.error(err)
+			process.exit(0)
+		}
+		let historial = new Historial()
+		historial.capitulosVistos(record)
+	})
+}
+
+function buscarTodoHistorial(pag, totalReg){
 	let render = new Render()
 	let salto = render.saltoPaginacion(pag, totalReg)
 	let limite = render.numReg
@@ -99,12 +114,8 @@ function buscarTodoHistorial(pag, totalReg, option){
 			process.exit(0)
 		}
 		let historial = new Historial()
-		if (option == 1){
-			historial.imprimirHistorial(record, salto)
-			historial.imprimirPagination(totalReg, pag)
-		} else {
-			historial.capitulosVistos(record)
-		}
+		historial.imprimirHistorial(record, salto)
+		historial.imprimirPagination(totalReg, pag)
 	})
 }
 
