@@ -31,7 +31,7 @@ function buscarMedallasDia(menu) {
 		$.each(value1, (nivel2, value2) => {
 			let render = new Render()
 			let dia = render._quitaAcentos(nivel2)
-			animesdb.count({$and : [{"dia":dia}, {$or : [{"activo" : true}, {"activo" : {$exists : false} }] }, {$or : [{"estado" : 1}, {"estado" : 2}]}] }).sort({"orden":1}).exec(function(err, record) {
+			animesdb.count({$and : [{"dia":dia}, {$or : [{"activo" : true}, {"activo" : {$exists : false} }] }, {"estado" : {$gt : 0}}] }).sort({"orden":1}).exec(function(err, record) {
 				if (err) {
 					console.error(err)
 					process.exit(0)
