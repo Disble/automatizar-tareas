@@ -91,6 +91,10 @@ table.highlight>tbody>tr:hover{
 	font-size: 1.2em !important;
 }
 
+.icon-state-historial {
+    font-size: 1.4em;
+}
+
 .pagination li.active {
 	background-color: #40b8d9;
 }

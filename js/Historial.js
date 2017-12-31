@@ -14,8 +14,10 @@ class Historial {
 									<td>${++cont}</td>
 									<td>${consulta[i].nombre}</td>
 									<td>${this.render.isNoData(consulta[i].nrocapvisto) ? 'No Data': consulta[i].nrocapvisto}</td>
-									<td>${this.render.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._setFullDate(consulta[i].fechaUltCapVisto)}</td>
+									<td>${this.render.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._setCalendarDate(consulta[i].fechaUltCapVisto)}</td>
 									<td>${this.render.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._getDiaSemana(consulta[i].fechaUltCapVisto)}</td>
+									<td>${this.render.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._setHourDate(consulta[i].fechaUltCapVisto)}</td>
+									<td>${this.render.isNoData(consulta[i].estado) ? 'No Data': `<i class="icon-state-historial ${this._getIconState(consulta[i].estado).icon} ${this._getIconState(consulta[i].estado).color}"></i>`}</td>
 									<td class="hidden" id="key">${consulta[i]._id}</td>
 								</tr>"`
 		})
@@ -209,12 +211,22 @@ class Historial {
         buscarPorId(key)
 	}
 
-	_setFullDate(date){
+	_setCalendarDate(date){
 		let year = date.getFullYear()
 		let month = date.getMonth()
 		let day = date.getDate()
 		let months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 		return `${day} de ${months[month]}, ${year}`
+	}
+
+	_setHourDate(date) {
+		let hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+		let minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+		return `${hour}:${minutes}`
+	}
+
+	_setFullDate(date){
+		return `${this._setCalendarDate(date)} ${this._setHourDate(date)}`
 	}
 
 	_getDiaSemana(date){
@@ -264,6 +276,24 @@ class Historial {
 
 	_getRandom() {
 		return Math.round(Math.random() * 255)
+	}
+
+	_getIconState(estado) {
+		let allstates = {
+			0 : {
+				icon : 'icon-play',
+				color : 'green-text'
+			},
+			1 : {
+				icon : 'icon-ok-squared',
+				color : 'teal-text'
+			},
+			2 : {
+				icon : 'icon-emo-unhappy',
+				color : 'red-text'
+			}
+		}
+		return allstates[estado]
 	}
 }
 
