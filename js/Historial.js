@@ -12,7 +12,7 @@ class Historial {
 		$.each(consulta, (i, item) => {
 			tblListaAnimes += `<tr>
 									<td>${++cont}</td>
-									<td>${consulta[i].nombre}</td>
+									<td>${consulta[i].nombre}${consulta[i].activo === false ? '<i class="icon-trash-empty right">' : ''}</td>
 									<td>${this.render.isNoData(consulta[i].nrocapvisto) ? 'No Data': consulta[i].nrocapvisto}</td>
 									<td>${this.render.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._setCalendarDate(consulta[i].fechaUltCapVisto)}</td>
 									<td>${this.render.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._getDiaSemana(consulta[i].fechaUltCapVisto)}</td>
