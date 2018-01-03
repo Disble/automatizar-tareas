@@ -6,7 +6,7 @@ console.log('Automatizador de tareas')
 console.log('Version : ' + app.getVersion())
 
 let template = [{
-	label: 'Index',
+	label: 'Animes',
 	submenu: [{
 		label: 'Ver Animes',
 		accelerator: 'CmdOrCtrl+1',
@@ -45,11 +45,11 @@ let template = [{
 				}
 			}
 		}
-	}]
-},
-{
-	label: 'Estadisticas',
-	submenu: [{
+	},
+	{
+		type: 'separator'
+	},
+	{
 		label: 'Historial',
 		accelerator: 'CmdOrCtrl+h',
 		click: function (item, focusedWindow) {
@@ -70,6 +70,48 @@ let template = [{
 				if (focusedWindow.id === 1) {
 					BrowserWindow.getAllWindows().forEach(function (win) {
 						win.loadURL(`file://${__dirname}/views/estadisticas/viendo.html`)
+					})
+				}
+			}
+		}
+	}]
+},
+{
+	label: 'Pendientes',
+	submenu: [{
+		label: 'Ver Pendientes',
+		accelerator: 'Alt+1',
+		click: function (item, focusedWindow) {
+			if (focusedWindow) {
+				if (focusedWindow.id === 1) {
+					BrowserWindow.getAllWindows().forEach(function (win) {
+						win.loadURL(`file://${__dirname}/views/index.html`)
+					})
+				}
+			}
+		}
+	},
+	{
+		label: 'Agregar Pendientes',
+		accelerator: 'Alt+2',
+		click: function (item, focusedWindow) {
+			if (focusedWindow) {
+				if (focusedWindow.id === 1) {
+					BrowserWindow.getAllWindows().forEach(function (win) {
+						win.loadURL(`file://${__dirname}/views/agregar-animes.html`)
+					})
+				}
+			}
+		}
+	},
+	{
+		label: 'Editar Pendientes',
+		accelerator: 'Alt+3',
+		click: function (item, focusedWindow) {
+			if (focusedWindow) {
+				if (focusedWindow.id === 1) {
+					BrowserWindow.getAllWindows().forEach(function (win) {
+						win.loadURL(`file://${__dirname}/views/editar-animes.html`)
 					})
 				}
 			}

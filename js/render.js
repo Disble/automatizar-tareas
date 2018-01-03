@@ -19,7 +19,7 @@ class Render {
 		let tblListaAnimes = ''
 		let cont = salto
 		$.each(consulta, (i, item) => {
-			tblListaAnimes += `<tr>
+			tblListaAnimes += `<tr ${this.isNoData(consulta[i].estado) ? '' : `class="${this.getState(consulta[i].estado).backgroundColor} lighten-4"`}>
 									<td><input class="btn btn-small" type="button" id="eraser${++cont}" value="${cont}" /></td>
 									<td>${consulta[i].nombre}</td>
 									<td>${this._addDiasAccents(consulta[i].dia)}</td>
@@ -55,7 +55,7 @@ class Render {
 										</div>
 									</td>
 									<td>${consulta[i].nombre}</td>
-									<td>${this._blockSerie(consulta[i].estado) ? this._estadoSerie(consulta[i].estado) : consulta[i].nrocapvisto}</td>
+									<td>${this._blockSerie(consulta[i].estado) ? this.getState(consulta[i].estado).name : consulta[i].nrocapvisto}</td>
 									<td>${this._paginaConstructor(consulta[i].pagina)}</td>
 									<td>
 										<div class="btnIncremento">
@@ -351,11 +351,28 @@ class Render {
 		return res
 	}
 
-	_estadoSerie(estado){
-		let nombreEstado = ['Viendo', 'Finalizado', 'No me gusto']
-		if (this.isNoData(estado))
-			return
-		return nombreEstado[estado]
+	getState(estado) {
+		let allstates = {
+			0 : {
+				name : 'Viendo',
+				icon : 'icon-play',
+				color : 'green-text',
+				backgroundColor : 'green'
+			},
+			1 : {
+				name : 'Finalizado',
+				icon : 'icon-ok-squared',
+				color : 'teal-text',
+				backgroundColor : 'teal'
+			},
+			2 : {
+				name : 'No me gusto',
+				icon : 'icon-emo-unhappy',
+				color : 'red-text',
+				backgroundColor : 'red'
+			}
+		}
+		return allstates[estado]
 	}
 
 	_blockSerie(estado){

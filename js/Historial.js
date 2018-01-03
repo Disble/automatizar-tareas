@@ -17,7 +17,7 @@ class Historial {
 									<td>${this.render.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._setCalendarDate(consulta[i].fechaUltCapVisto)}</td>
 									<td>${this.render.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._getDiaSemana(consulta[i].fechaUltCapVisto)}</td>
 									<td>${this.render.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._setHourDate(consulta[i].fechaUltCapVisto)}</td>
-									<td>${this.render.isNoData(consulta[i].estado) ? 'No Data': `<i class="icon-state-historial ${this._getIconState(consulta[i].estado).icon} ${this._getIconState(consulta[i].estado).color}"></i>`}</td>
+									<td>${this.render.isNoData(consulta[i].estado) ? 'No Data': `<i class="icon-state-historial ${this.render.getState(consulta[i].estado).icon} ${this.render.getState(consulta[i].estado).color}"></i>`}</td>
 									<td class="hidden" id="key">${consulta[i]._id}</td>
 								</tr>"`
 		})
@@ -61,7 +61,7 @@ class Historial {
 
 	_setHistoriaAnime(anime){
 		$('#nombre').html(anime.nombre)
-		$('#estado').html(this.render._estadoSerie(anime.estado))
+		$('#estado').html(this.render.getState(anime.estado).name)
 		$('#fechaCreacion').html(this._setFullDate(anime.fechaCreacion))
 		$('#fechaEliminacion').html(this.render.isNoData(anime.fechaEliminacion) ? 'No Eliminado' : this._setFullDate(anime.fechaEliminacion))
 		$('#pagina').html(anime.pagina)
@@ -276,24 +276,6 @@ class Historial {
 
 	_getRandom() {
 		return Math.round(Math.random() * 255)
-	}
-
-	_getIconState(estado) {
-		let allstates = {
-			0 : {
-				icon : 'icon-play',
-				color : 'green-text'
-			},
-			1 : {
-				icon : 'icon-ok-squared',
-				color : 'teal-text'
-			},
-			2 : {
-				icon : 'icon-emo-unhappy',
-				color : 'red-text'
-			}
-		}
-		return allstates[estado]
 	}
 }
 
