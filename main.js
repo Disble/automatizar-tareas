@@ -14,7 +14,7 @@ let template = [{
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {
 					BrowserWindow.getAllWindows().forEach(function (win) {
-						win.loadURL(`file://${__dirname}/views/index.html`)
+						win.loadURL(`file://${__dirname}/views/animes/index.html`)
 					})
 				}
 			}
@@ -27,7 +27,7 @@ let template = [{
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {
 					BrowserWindow.getAllWindows().forEach(function (win) {
-						win.loadURL(`file://${__dirname}/views/agregar-animes.html`);
+						win.loadURL(`file://${__dirname}/views/animes/agregar-animes.html`);
 					})
 				}
 			}
@@ -40,7 +40,7 @@ let template = [{
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {
 					BrowserWindow.getAllWindows().forEach(function (win) {
-						win.loadURL(`file://${__dirname}/views/editar-animes.html`)
+						win.loadURL(`file://${__dirname}/views/animes/editar-animes.html`)
 					})
 				}
 			}
@@ -56,7 +56,7 @@ let template = [{
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {
 					BrowserWindow.getAllWindows().forEach(function (win) {
-						win.loadURL(`file://${__dirname}/views/estadisticas/historial.html`)
+						win.loadURL(`file://${__dirname}/views/animes/historial.html`)
 					})
 				}
 			}
@@ -69,7 +69,7 @@ let template = [{
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {
 					BrowserWindow.getAllWindows().forEach(function (win) {
-						win.loadURL(`file://${__dirname}/views/estadisticas/viendo.html`)
+						win.loadURL(`file://${__dirname}/views/animes/viendo.html`)
 					})
 				}
 			}
@@ -85,7 +85,7 @@ let template = [{
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {
 					BrowserWindow.getAllWindows().forEach(function (win) {
-						win.loadURL(`file://${__dirname}/views/index.html`)
+						win.loadURL(`file://${__dirname}/views/animes/index.html`)
 					})
 				}
 			}
@@ -98,7 +98,7 @@ let template = [{
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {
 					BrowserWindow.getAllWindows().forEach(function (win) {
-						win.loadURL(`file://${__dirname}/views/agregar-animes.html`)
+						win.loadURL(`file://${__dirname}/views/animes/agregar-animes.html`)
 					})
 				}
 			}
@@ -111,7 +111,7 @@ let template = [{
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {
 					BrowserWindow.getAllWindows().forEach(function (win) {
-						win.loadURL(`file://${__dirname}/views/editar-animes.html`)
+						win.loadURL(`file://${__dirname}/views/animes/editar-animes.html`)
 					})
 				}
 			}
@@ -295,7 +295,7 @@ app.on('window-all-closed', function () {
 })
 app.on('ready', function () {
 	let win = new BrowserWindow({width: 800, height: 600});
-	win.loadURL(`file://${__dirname}/views/index.html`);
+	win.loadURL(`file://${__dirname}/views/animes/index.html`);
 	const menu = Menu.buildFromTemplate(template)
 	Menu.setApplicationMenu(menu)
 })

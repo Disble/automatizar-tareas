@@ -46,9 +46,9 @@ class Render {
 											<div class="modal-content">
 												<h4>Mensaje de confirmación</h4>
 												<p>Escoga uno de los siguientes estados</p>
-												<button class="btn btn-small modal-close green" onclick="estadoCap('${dia}', '${consulta[i]._id}', ${0})"><i class="icon-play"></i> Viendo</button>
-												<button class="btn btn-small modal-close" onclick="estadoCap('${dia}', '${consulta[i]._id}', ${1})"><i class="icon-ok-squared"></i> Finalizar</button>
-												<button class="btn btn-small modal-close red" onclick="estadoCap('${dia}', '${consulta[i]._id}', ${2})"><i class="icon-emo-unhappy"></i> No me Gusto</button>
+												<button class="btn btn-small modal-close green" onclick="estadoCap('${dia}', '${consulta[i]._id}', 0)"><i class="icon-play"></i> Viendo</button>
+												<button class="btn btn-small modal-close" onclick="estadoCap('${dia}', '${consulta[i]._id}', 1)"><i class="icon-ok-squared"></i> Finalizar</button>
+												<button class="btn btn-small modal-close red" onclick="estadoCap('${dia}', '${consulta[i]._id}', 2)"><i class="icon-emo-unhappy"></i> No me Gusto</button>
 											</div>
 											<div class="modal-footer">
 											</div>
@@ -156,8 +156,8 @@ class Render {
 
 	crearJson(){
 		var inputs = $('input[type]')
-		var listaEnviar = Array()
-		var contenido = Array()
+		var listaEnviar = []
+		var contenido = []
 		inputs.each((key, value) => {
 			let llave = inputs[key].getAttribute('name')
 			let valor = inputs[key].value
@@ -168,18 +168,18 @@ class Render {
 			//console.log(contenido)
 			if(llave=="carpeta"){
 				var json = {
-					'orden' : contenido['orden'],
-					'nombre': contenido['nombre'],
-					'dia': this._quitaAcentos(contenido['dia']),
-					'nrocapvisto': contenido['nrocapvisto'],
-					'pagina': contenido['pagina'].toLowerCase(),
-					'carpeta': inputs[key].getAttribute('value'),
-					'estado' : 0,
-					'activo' : true,
-					'fechaCreacion' : new Date()
+					orden : contenido['orden'],
+					nombre: contenido['nombre'],
+					dia: this._quitaAcentos(contenido['dia']),
+					nrocapvisto: contenido['nrocapvisto'],
+					pagina: contenido['pagina'].toLowerCase(),
+					carpeta: inputs[key].getAttribute('value'),
+					estado : 0,
+					activo : true,
+					fechaCreacion : new Date()
 				}
 				listaEnviar.push(json)
-				contenido = Array()
+				contenido = []
 			}
 		})
 		//console.log(listaEnviar)
@@ -188,12 +188,12 @@ class Render {
 
 	crearJsonActualizar(row){
 		let json = {
-			'nombre': row[0],
-			'dia': this._quitaAcentos(row[1]),
-			'orden': parseInt(row[2]) < 1 ? 1 : parseInt(row[2]),
-			'nrocapvisto': this._estadoNumCap(row[3]),
-			'pagina': row[4],
-			'carpeta': this.isNoData(row[5]) || row[5].length == 0 ? null : this.slashFolder(row[5])
+			nombre: row[0],
+			dia: this._quitaAcentos(row[1]),
+			orden: parseInt(row[2]) < 1 ? 1 : parseInt(row[2]),
+			nrocapvisto: this._estadoNumCap(row[3]),
+			pagina: row[4],
+			carpeta: this.isNoData(row[5]) || row[5].length == 0 ? null : this.slashFolder(row[5])
 		}
 		//console.log(json)
 		return json
@@ -352,7 +352,7 @@ class Render {
 	}
 
 	getState(estado) {
-		let allstates = {
+		return {
 			0 : {
 				name : 'Viendo',
 				icon : 'icon-play',
@@ -371,8 +371,7 @@ class Render {
 				color : 'red-text',
 				backgroundColor : 'red'
 			}
-		}
-		return allstates[estado]
+		}[estado]
 	}
 
 	_blockSerie(estado){
