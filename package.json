@@ -10,7 +10,7 @@
   "author": "Disble",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^1.7.6",
+    "electron": "^1.7.11",
     "nedb": "^1.8.0"
   },
   "dependencies": {
