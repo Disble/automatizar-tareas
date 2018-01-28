@@ -1,5 +1,6 @@
 $(document).ready(() => {
-	render = new Render()
+	render = new Render();
+	buscar(render.diaSemana());
 	render.menuRender({
 		'día': {
 			'lunes': {
@@ -56,7 +57,5 @@ $(document).ready(() => {
 			}
 		}
 	});
-	render.cargarTablasAnime()
-	buscar(render.diaSemana())
-	$('.collapsible').collapsible('open', 0)
+	$('.collapsible').collapsible('open', 0);
 })

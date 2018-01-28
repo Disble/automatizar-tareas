@@ -65,7 +65,11 @@ h1.titulo {
 }
 
 .no-padding{
-	padding: ;
+	padding: 0;
+}
+
+.no-margin {
+	margin: 0;
 }
 
 .btn-eliminar-anime{

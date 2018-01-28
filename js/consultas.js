@@ -13,7 +13,10 @@ function cargarDatos(){
 }
 
 function buscar(dia){
-	animesdb.find({$and : [{"dia":dia}, {$or : [{"activo" : true}, {"activo" : {$exists : false} }] }] }).sort({"orden":1}).exec(function(err, record) {
+	animesdb
+	.find({$and : [{"dia":dia}, {$or : [{"activo" : true}, {"activo" : {$exists : false} }] }] })
+	.sort({"orden":1})
+	.exec(function(err, record) {
 		if (err) {
 			console.error(err)
 			process.exit(0)
@@ -21,7 +24,6 @@ function buscar(dia){
 		//console.log(record)
 		let render = new Render()
 		render.actualizarLista(record, dia)
-		render.changeState()
 	})
 }
 
@@ -31,7 +33,10 @@ function buscarMedallasDia(menu) {
 		$.each(value1, (nivel2, value2) => {
 			let render = new Render()
 			let dia = render._quitaAcentos(nivel2)
-			animesdb.count({$and : [{"dia":dia}, {$or : [{"activo" : true}, {"activo" : {$exists : false} }] }, {"estado" : {$gt : 0}}] }).sort({"orden":1}).exec(function(err, record) {
+			animesdb
+			.count({$and : [{"dia":dia}, {$or : [{"activo" : true}, {"activo" : {$exists : false} }] }, {"estado" : {$gt : 0}}] })
+			.sort({"orden":1})
+			.exec(function(err, record) {
 				if (err) {
 					console.error(err)
 					process.exit(0)
@@ -43,7 +48,9 @@ function buscarMedallasDia(menu) {
 }
 
 function cargarEditar(pag = 1){
-	animesdb.count({$or : [{"activo" : true}, {"activo" : {$exists : false} }]}).exec(function(err, record) {
+	animesdb
+	.count({$or : [{"activo" : true}, {"activo" : {$exists : false} }]})
+	.exec(function(err, record) {
 		if (err) {
 			console.error(err)
 			process.exit(0)
@@ -56,7 +63,11 @@ function buscarTodoEditar(pag, totalReg){
 	let render = new Render()
 	let salto = render.saltoPaginacion(pag, totalReg)
 	let limite = render.numReg
-	animesdb.find({$or : [{"activo" : true}, {"activo" : {$exists : false} }]}).sort({"fechaCreacion":-1}).skip(salto).limit(limite).exec(function(err, record) {
+	animesdb
+	.find({$or : [{"activo" : true}, {"activo" : {$exists : false} }]})
+	.sort({"fechaCreacion":-1})
+	.skip(salto).limit(limite)
+	.exec(function(err, record) {
 		if (err) {
 			console.error(err)
 			process.exit(0)

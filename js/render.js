@@ -121,22 +121,6 @@ class Render {
 		}
 	}
 
-	cargarTablasAnime(){
-		let anime = [
-					'Órden/\nEstado',
-					'Nombre',
-					'Capítulos Vistos',
-					'Página',
-					'Min/Add',
-					'Carpeta'
-				]
-		let myHtml = ''
-		$.each(anime, function(i, item){
-			myHtml += `<th>${item}</th>`
-		})
-		$('#cabecera').html(myHtml)
-	}
-
 	/*------------------------- RENDER DINAMICO ---------------------------------------*/
 	increNuevosAnimes(){
 		let nuevaConsulta = `<tr>
@@ -271,22 +255,6 @@ class Render {
 					let pag = parseInt($('#paginas').find('.active a').text())
 					//console.log(pag);
 					borrarFila(id, pag)
-				}
-			})
-		})
-	}
-
-	changeState(){
-		let that = this
-		let btnBorrar = $('td').find('input')
-		btnBorrar.parent().unbind()
-		btnBorrar.each(function(key, value){
-			$(value).click(function(){
-				if (confirm('¿Desea marcar este anime como Finalizado?','Advertencia')){
-					let id = ''
-					$(this).parent().parent().find('.hidden').each((key, value) => id = value.textContent)
-					let dia = that._quitaAcentos($('.titulo').text().toLowerCase())
-					estadoCap(dia, id, 1)
 				}
 			})
 		})
