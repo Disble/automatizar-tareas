@@ -56,9 +56,13 @@
 			</div>
 		</div>
 	</div>
-	<script src="../../routers/animes.js"></script>
+	<script type="text/javascript" src="../../routers/animes.js"></script>
 	<script type="text/javascript" src="../../js/render.js"></script>
 	<script type="text/javascript" src="../../js/consultas.js"></script>
-	<script type="text/javascript" src="../../js/agregar-animes-initialize.js"></script>
+	<script type="text/javascript">
+    $(document).ready(() => {
+      render = new Render()
+    });
+  </script>
 </body>
 </html>

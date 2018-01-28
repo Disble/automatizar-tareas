@@ -34,9 +34,13 @@
             </ul>
 		</div>
 	</div>
-	<script src="../../routers/animes.js"></script>
+	<script type="text/javascript" src="../../routers/animes.js"></script>
 	<script type="text/javascript" src="../../js/render.js"></script>
 	<script type="text/javascript" src="../../js/consultas.js"></script>
-	<script type="text/javascript" src="../../js/editar-animes-initialize.js"></script>
+	<script type="text/javascript">
+    $(document).ready(() => {
+      cargarEditar();
+    });
+  </script>
 </body>
 </html>

@@ -85,7 +85,7 @@ let template = [{
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {
 					BrowserWindow.getAllWindows().forEach(function (win) {
-						win.loadURL(`file://${__dirname}/views/animes/index.html`)
+						win.loadURL(`file://${__dirname}/views/pendientes/pendientes.html`)
 					})
 				}
 			}
