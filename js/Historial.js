@@ -60,21 +60,25 @@ class Historial {
 	}
 
 	_setHistoriaAnime(anime){
-		$('#nombre').html(anime.nombre)
-		$('#estado').html(this.render.getState(anime.estado).name)
-		$('#fechaCreacion').html(this._setFullDate(anime.fechaCreacion))
-		$('#fechaEliminacion').html(this.render.isNoData(anime.fechaEliminacion) ? 'No Eliminado' : this._setFullDate(anime.fechaEliminacion))
-		$('#pagina').html(anime.pagina)
-		let carpeta = $('#carpeta')
-		carpeta.html(this.render.isNoData(anime.carpeta) ? 'No asignada' : anime.carpeta)
-		carpeta.click(() => {
-			this.render.abrirCarpeta(anime.carpeta)
-		})
-		$('.btn-eliminar-anime').find('a').attr('onclick', `borrarAnime('${anime._id}')`)
+		$('#nombre').html(anime.nombre);
+		$('#estado').html(this.render.getState(anime.estado).name);
+		$('#fechaCreacion').html(this._setFullDate(anime.fechaCreacion));
+		$('#fechaEliminacion').html(this.render.isNoData(anime.fechaEliminacion) ? 'No Eliminado' : this._setFullDate(anime.fechaEliminacion));
+		$('#pagina').html(anime.pagina);
+		let carpeta = $('#carpeta');
+		if (this.render.isNoData(anime.carpeta)) {
+			carpeta.html('No asignada');
+		} else {
+			carpeta.html(anime.carpeta);
+			carpeta.click(() => {
+				this.render.abrirCarpeta(anime.carpeta);
+			});
+		}
+		$('.btn-eliminar-anime').find('a').attr('onclick', `borrarAnime('${anime._id}')`);
 		if (anime.activo == false) {
 			$('#restaurar-anime').html(`<div class="collection">
 					<a href="#" class="collection-item waves-effect waves-light black-text orange center no-link" onclick="restaurarFila('${anime._id}')">Restaurar<i class="icon-attention-alt right"></i></a>
-				</div>`)
+				</div>`);
 		}
 	}
 

@@ -1,17 +1,18 @@
 'use strict'
 /*NOTE: Quitar comentarios al acabar*/
+require('sweetalert');
 class Render {
 	constructor() {
-		this.contNewFolder = 0
-		this.numReg = 10
+		this.contNewFolder = 0;
+		this.numReg = 10;
 		/*Bloquea el drag and drop en la pagina*/
 		document.addEventListener('dragover', function (e) {
-			e.preventDefault()
-			e.stopPropagation()
+			e.preventDefault();
+			e.stopPropagation();
 		})
 		document.addEventListener('drop', function (e) {
-			e.preventDefault()
-			e.stopPropagation()
+			e.preventDefault();
+			e.stopPropagation();
 		})
 	}
 	/*------------------------- RENDER CARGA CON LA PAGINA ---------------------------------------*/
@@ -34,7 +35,7 @@ class Render {
 	}
 
 	actualizarLista(consulta, dia) {
-		let tblListaAnimes = ''
+		let tblListaAnimes = '';
 		$.each(consulta, (i, item) => {
 			tblListaAnimes += `<tr>
 									<td>
@@ -68,19 +69,19 @@ class Render {
 									</td>
 									<td class="hidden" id="key">${consulta[i]._id}</td>
 								</tr>"`
-		})
-		$('#contenido').html(tblListaAnimes)
-		$('.titulo').html(this._addDiasAccents(dia))
+		});
+		$('#contenido').html(tblListaAnimes);
+		$('.titulo').html(this._addDiasAccents(dia));
 		$('.url-external').click(function (e) {
-			e.preventDefault()
-			e.stopPropagation()
+			e.preventDefault();
+			e.stopPropagation();
 			$(this).each(function(key, value) {
 				if (!shell.openExternal(value.href))
-					alert('Hubo problemas al abrir la url.\nPor favor revise el formato de la url en Editar Animes.', 'Error')
-			})
-		})
-		$('.tooltipped').tooltip({delay: 50})
-		$('.modal').modal()
+					swal("Hubo problemas al abrir la url.", "Por favor revise el formato de la url en Editar Animes.", "error");
+			});
+		});
+		$('.tooltipped').tooltip({delay: 50});
+		$('.modal').modal();
 	}
 
 	menuRender(menu){
@@ -185,7 +186,7 @@ class Render {
 
 	abrirCarpeta(folder){
 		if (!shell.showItemInFolder(`${folder}/*`))
-			alert('Hubo problemas al abrir la carpeta.\nPor favor revise el formato de la dirección de la carpeta \nen Editar Animes o compruebe que la carpeta exista.', 'Error')
+			swal("Hubo problemas al abrir la carpeta.", "Por favor revise el formato de la dirección de la carpeta en Editar Animes o compruebe que la carpeta exista.", "error");
 	}
 
 	getFolder(dir){
@@ -249,13 +250,24 @@ class Render {
 		btnBorrar.parent().unbind()
 		btnBorrar.each(function(key, value){
 			$(value).click(function(){
-				if (confirm('¿Estás seguro que quieres borrar esta fila?','Advertencia')){
-					let id = ''
-					$(this).parent().parent().find('.hidden').each((key, value) => id = value.textContent)
-					let pag = parseInt($('#paginas').find('.active a').text())
-					//console.log(pag);
-					borrarFila(id, pag)
-				}
+				swal({
+				  title: "¿Estás seguro?",
+				  text: "¡Una vez borrado, no vas a poder recuperarlo!",
+				  icon: "warning",
+				  buttons: ["Cancelar", "OK"],
+				  dangerMode: true,
+				})
+				.then((willDelete) => {
+				  if (willDelete) {
+						let id = '';
+						$(this).parent().parent().find('.hidden').each((key, value) => id = value.textContent);
+						let pag = parseInt($('#paginas').find('.active a').text());
+						//console.log(pag);
+						borrarFila(id, pag);
+				  } else {
+				    swal("¡Acción cancelada!");
+				  }
+				});
 			})
 		})
 	}

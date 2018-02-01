@@ -1,3 +1,4 @@
+require('sweetalert');
 function cargarDatos(){
 	let render = new Render()
 	let nuevo = render.crearJson()
@@ -173,27 +174,49 @@ function borrarFila(id, pag){
 }
 
 function restaurarFila(id) {
-	if (confirm('¿Estás seguro que quieres restaurar este anime?','Advertencia')){
-		animesdb.update({"_id" : id}, {$set: {"activo": true, "fechaEliminacion" : null}}, function(err, numUpdate) {
-			if (err) {
-				console.error(err)
-				return
-			}
-			let render = new Historial()
-			render._reloadHistorial();
-		})
-	}
+	swal({
+	  title: "¿Estás seguro?",
+	  text: "¡Volvera a aparecer en la lista de ver animes!",
+	  icon: "warning",
+	  buttons: ["Cancelar", "OK"],
+	  dangerMode: true,
+	})
+	.then((willDelete) => {
+	  if (willDelete) {
+			animesdb.update({"_id" : id}, {$set: {"activo": true, "fechaEliminacion" : null}}, function(err, numUpdate) {
+				if (err) {
+					console.error(err);
+					return;
+				}
+				let render = new Historial();
+				render._reloadHistorial();
+			})
+	  } else {
+	    swal("¡Acción cancelada!");
+	  }
+	});
 }
 
 function borrarAnime(id) {
-	if (confirm('¿Estás seguro que quieres borrar de forma permamente este anime?','Advertencia')){
-		animesdb.remove({ _id : id }, {}, function (err, numRemoved) {
-			if (err) {
-				console.error(err);
-				process.exit(0);
-			}
-			let render = new Historial()
-			render._reloadHistorial();
-		});
-	}
+	swal({
+	  title: "¿Estás seguro?",
+	  text: "¡Una vez borrado, no vas a poder recuperarlo!",
+	  icon: "warning",
+	  buttons: ["Cancelar", "OK"],
+	  dangerMode: true,
+	})
+	.then((willDelete) => {
+	  if (willDelete) {
+			animesdb.remove({ _id : id }, {}, function (err, numRemoved) {
+				if (err) {
+					console.error(err);
+					process.exit(0);
+				}
+				let render = new Historial();
+				render._reloadHistorial();
+			});
+	  } else {
+	    swal("¡Acción cancelada!");
+	  }
+	});
 }
