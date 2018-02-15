@@ -119,6 +119,65 @@ class Historial {
         })
 	}
 
+	paginasAnimesActivos() {
+		//let datos = ;
+		buscarPaginas().then((resolve) => {
+			return this._filterPageActiveChart(resolve);
+		}).then((resolve) => {
+			let template = this._generatorTemplate(resolve.nombres);
+			this.render.menuRender(template);
+			this._piePagesSaw(resolve);
+		});
+	}
+
+	_generatorTemplate(nombres, paginas) {
+		let aux = {};
+		let template = {};
+		for (let key in nombres) {
+			nombres[key] = nombres[key];
+			let subData = {};
+			nombres[key].map((value, index) => {
+				subData[value] = {
+					'href': '#!',
+					'class': 'collection-item no-link'
+				}
+				//console.log('subdata:', subData);
+			});
+			aux[nombres[key]] = subData;
+			template[key] = aux[nombres[key]];
+		}
+		//console.log(template);
+		return template;
+	}
+
+	_piePagesSaw(listFiltered){
+		let ctx = document.getElementById('pagCapVistos');
+    let capVistos = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: listFiltered.paginas,
+            datasets: [{
+                data: listFiltered.contador,
+								backgroundColor: listFiltered.colorTransparente,
+            }]
+        },
+        options: {
+					responsive: true,
+					title: {
+						display: true,
+						text: 'Paginas'
+					},
+					legend : {
+						display: true
+					},
+          animation: {
+              animateScale: true,
+              animateRotate: true
+          }
+        }
+    });
+	}
+
 	_createModalStats(key) {
 		$('#modalStats').remove()
 		let modalWindow = `
@@ -212,7 +271,7 @@ class Historial {
 			e.preventDefault()
 			e.stopPropagation()
 		})
-        buscarPorId(key)
+    buscarPorId(key)
 	}
 
 	_setCalendarDate(date){
@@ -245,8 +304,8 @@ class Historial {
 		let color = []
 		$.each(list, (i, item) => {
 			if (list[i].estado == 0) {
-				let colorRand = this._getColorRandom(0.2)
-				let colorT = colorRand.replace('0.2', '1')
+				let colorRand = this._getColorRandom(0.4)
+				let colorT = colorRand.replace('0.4', '1')
 				nombres.push(list[i].nombre)
 				nroCap.push(list[i].nrocapvisto)
 				colorTransparente.push(colorRand)
@@ -263,8 +322,8 @@ class Historial {
 	}
 
 	_filterCapChart(anime){
-		let colorRand = this._getColorRandom(0.2)
-		let colorT = colorRand.replace('0.2', '1')
+		let colorRand = this._getColorRandom(0.4)
+		let colorT = colorRand.replace('0.4', '1')
 		let data = {
 			'nombres' : [anime.nombre],
 			'nroCap' : [anime.nrocapvisto],
@@ -274,12 +333,49 @@ class Historial {
 		return data
 	}
 
+	_filterPageActiveChart(data) {
+		let pages = [];
+		let count = [];
+		let nombres = [];
+		let contador = [];
+		let paginas = [];
+		let colorTransparente = [];
+		data.map((value, index) => {
+			let url = document.createElement('a');
+			url.href = value.pagina;
+			let hostname = url.hostname === "" ? "otros" : url.hostname;
+			pages[hostname] = hostname;
+			nombres[hostname] += [','+value.nombre];
+			nombres[hostname] = nombres[hostname].split(',');
+			count[hostname] = (count[hostname] || 0) + 1;
+		});
+		for (let value in nombres) {
+			nombres[value] = nombres[value].slice(1, nombres[value].length);
+		}
+
+		for (let value in pages) {
+			paginas.push(value);
+		}
+		for (let value in count) {
+			contador.push(count[value]);
+			let colorRand = this._getColorRandom(0.8);
+			colorTransparente.push(colorRand);
+		}
+
+		return {
+			'paginas' : paginas,
+			'contador' : contador,
+			'colorTransparente' : colorTransparente,
+			'nombres': nombres
+		}
+	}
+
 	_getColorRandom(transparent) {
-		return `rgba(${this._getRandom()}, ${this._getRandom()}, ${this._getRandom()}, ${transparent})`
+		return `rgba(${this._getRandom()}, ${this._getRandom()}, ${this._getRandom()}, ${transparent})`;0
 	}
 
 	_getRandom() {
-		return Math.round(Math.random() * 255)
+		return Math.round(Math.random() * 255) - Math.round(Math.random() * 85);
 	}
 }
 

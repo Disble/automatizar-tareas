@@ -74,6 +74,19 @@ let template = [{
 				}
 			}
 		}
+	},
+	{
+		label: 'Paginas (Viendo)',
+		accelerator: 'CmdOrCtrl+p',
+		click: function (item, focusedWindow) {
+			if (focusedWindow) {
+				if (focusedWindow.id === 1) {
+					BrowserWindow.getAllWindows().forEach(function (win) {
+						win.loadURL(`file://${__dirname}/views/animes/paginas.html`)
+					})
+				}
+			}
+		}
 	}]
 },
 {
@@ -98,7 +111,7 @@ let template = [{
 			if (focusedWindow) {
 				if (focusedWindow.id === 1) {
 					BrowserWindow.getAllWindows().forEach(function (win) {
-						win.loadURL(`file://${__dirname}/views/animes/agregar-animes.html`)
+						win.loadURL(`file://${__dirname}/views/pendientes/agregar.html`)
 					})
 				}
 			}

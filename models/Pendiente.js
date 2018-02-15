@@ -8,12 +8,4 @@ class Pendiente {
         this.fechaFin = fechaFin;
         this.fechaCreacion = fechaCreacion;
     }
-
-    set nombre() {
-      this.nombre = nombre;
-    }
-
-    get nombre() {
-      return this.nombre;
-    }
 }

@@ -252,7 +252,7 @@ class Render {
 			$(value).click(function(){
 				swal({
 				  title: "¿Estás seguro?",
-				  text: "¡Una vez borrado, no vas a poder recuperarlo!",
+				  text: "¡Una vez borrado aún se podra restaurar en historial!",
 				  icon: "warning",
 				  buttons: ["Cancelar", "OK"],
 				  dangerMode: true,
