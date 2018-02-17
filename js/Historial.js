@@ -134,7 +134,6 @@ class Historial {
 		let aux = {};
 		let template = {};
 		for (let key in nombres) {
-			nombres[key] = nombres[key];
 			let subData = {};
 			nombres[key].map((value, index) => {
 				subData[value] = {
@@ -153,7 +152,7 @@ class Historial {
 	_piePagesSaw(listFiltered){
 		let ctx = document.getElementById('pagCapVistos');
     let capVistos = new Chart(ctx, {
-        type: 'pie',
+        type: 'doughnut',
         data: {
             labels: listFiltered.paginas,
             datasets: [{
@@ -173,7 +172,22 @@ class Historial {
           animation: {
               animateScale: true,
               animateRotate: true
-          }
+          },
+					tooltips: {
+            callbacks: {
+                label: function(tooltipItem, data) {
+                    let allData = data.datasets[tooltipItem.datasetIndex].data;
+                    let tooltipLabel = data.labels[tooltipItem.index];
+                    let tooltipData = allData[tooltipItem.index];
+                    let total = 0;
+                    for (let i in allData) {
+                        total += allData[i];
+                    }
+                    let tooltipPercentage = Math.round((tooltipData / total) * 100);
+										return `${tooltipLabel} : ${tooltipData} (${tooltipPercentage}%)`;
+                }
+            }
+        	}
         }
     });
 	}
