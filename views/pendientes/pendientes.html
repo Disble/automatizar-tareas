@@ -5,24 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Pendientes</title>
-  <link rel="stylesheet" type="text/css" href="../node_modules/materialize-css/dist/css/materialize.min.css" />
-  <link rel="stylesheet" type="text/css" href="../css/app.css" />
+  <link rel="stylesheet" type="text/css" href="../../node_modules/materialize-css/dist/css/materialize.min.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/app.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/fontello.css" />
 </head>
 <body>
 	<div class="row">
-		<div class="col s3">
-			<ul class="collapsible" id="menu" data-collapsible="accordion">
-			</ul>
-		</div>
-		<div class="col s9">
-			<h1 class="center">Pendientes</h1>
+		<div class="col s12">
+			<h3 class="center">Pendientes</h3>
 			<hr>
 			<div class="container">
+        <ul id='data-pendientes' class="collapsible popout collection" data-collapsible="accordion">
+        </ul>
 			</div>
 		</div>
 	</div>
-	<scrip type="text/javascript"t src="../routers/pendientes.js"></script>
-	<script type="text/javascript" src="../js/render.js"></script>
-	<script type="text/javascript" src="../js/consultas.js"></script>
+  <script type="text/javascript" src="../../routers/pendientes.js"></script>
+  <script type="text/javascript" src="../../models/Pendiente.js"></script>
+	<script type="text/javascript" src="../../models/ModelPendiente.js"></script>
+  <script type="text/javascript" src="../../models/RenderPendiente.js"></script>
+	<script type="text/javascript">
+    $(document).ready(() => {
+      let render = new RenderPendiente();
+      render.getAllData();
+      render.setDragDrop();
+    });
+  </script>
 </body>
 </html>

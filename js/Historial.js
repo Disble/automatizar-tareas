@@ -126,7 +126,7 @@ class Historial {
 		}).then((resolve) => {
 			let template = this._generatorTemplate(resolve.nombres);
 			this.render.menuRender(template);
-			this._piePagesSaw(resolve);
+			this._statisticsPagesSaw(resolve);
 		});
 	}
 
@@ -149,7 +149,7 @@ class Historial {
 		return template;
 	}
 
-	_piePagesSaw(listFiltered){
+	_statisticsPagesSaw(listFiltered){
 		let ctx = document.getElementById('pagCapVistos');
     let capVistos = new Chart(ctx, {
         type: 'doughnut',

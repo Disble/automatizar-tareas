@@ -5,7 +5,6 @@
 }
 .barra-sumar > hr{
 	width: 90%;
-	/*border: 1px solid gray;*/
 }
 .barra-sumar > a{
 	display: flex;
@@ -13,25 +12,24 @@
 }
 .triangle{
 	top: 10px;
-    position: absolute;
-    right: 34px;
-    border-right: 25px solid #2196F3;
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
-    z-index: 2;
+  position: absolute;
+  right: 34px;
+  border-right: 25px solid #2196F3;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  z-index: 2;
 }
-h1.titulo {
+.titulo {
     text-transform:capitalize;
 }
 .btnIncremento{
 	width: 105px;
 }
 .btn-small {
-    padding: 0 1rem;
-    font-size: 0.9em !important;
+  padding: 0 1rem;
+  font-size: 0.9em !important;
 	font-weight: 300;
 }
-
 .inputfile {
 	width: 0.1px;
 	height: 0.1px;
@@ -51,54 +49,58 @@ h1.titulo {
 	display: inline-block;
 	cursor: pointer; /* "hand" cursor */
 }
-
 .inputfile + label:hover {
 	background-color: #4CAF50 ;
 }
-
 .flex-center{
 	justify-content: center;
 }
-
 .hidden{
 	display: none;
 }
-
 .no-padding{
 	padding: 0;
 }
-
 .no-margin {
 	margin: 0;
 }
-
 .btn-eliminar-anime{
     /*padding-top: 96px;*/
 	padding-top: 5px;
 }
-
 .btn-eliminar-anime i, .btn-restaurar-anime i{
 	font-weight: bold;
-    font-size: 1.3em;
+  font-size: 1.3em;
 }
-
 .btn-eliminar-anime a, .btn-restaurar-anime a{
     font-weight: 500;
 }
-
 table.highlight>tbody>tr:hover{
 	background-color: #4fd8fe;
 	cursor: pointer;
 }
-
 .icon-pag{
 	font-size: 1.2em !important;
 }
-
 .icon-state-historial {
     font-size: 1.4em;
 }
-
+.icon-normal {
+	font-size: 1em !important;
+	position: relative;
+  left: 1px;
+  top: 1px;
+}
 .pagination li.active {
 	background-color: #40b8d9;
+}
+.text-icon {
+	width: 100%;
+}
+.hover-icon:hover {
+	color: black;
+	cursor: context-menu;
+}
+.btn-sortable:hover {
+	cursor: move;
 }
