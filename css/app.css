@@ -91,15 +91,18 @@ table.highlight>tbody>tr:hover{
   left: 1px;
   top: 1px;
 }
+.icon-big {
+	font-size: 24px;
+}
 .pagination li.active {
 	background-color: #40b8d9;
 }
 .text-icon {
 	width: 100%;
 }
-.hover-icon:hover {
-	color: black;
-	cursor: context-menu;
+.hover-icon-complete:hover {
+	/* color: black !important; */
+	cursor: pointer;
 }
 .btn-sortable:hover {
 	cursor: move;

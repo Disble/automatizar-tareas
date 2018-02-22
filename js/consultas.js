@@ -1,4 +1,3 @@
-require('sweetalert');
 function cargarDatos(){
 	let render = new Render()
 	let nuevo = render.crearJson()

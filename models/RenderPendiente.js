@@ -13,7 +13,7 @@ class RenderPendiente {
             <i class="icon-menu-1 left icon-pag btn-sortable"></i>
             <span class="text-icon">${value.nombre}
             <a href="#!" class="secondary-content right">
-              <i class="icon-check hover-icon js-remove tooltipped" data-position="right" data-tooltip="¡Completar!"></i>
+              <i class="icon-check hover-icon-complete js-remove tooltipped" data-position="right" data-tooltip="¡Completar!"></i>
             </a>
             </span>
           </div>
@@ -23,6 +23,8 @@ class RenderPendiente {
             <div class="divider"></div>
             <p><b>Pagina : </b>${this._paginaConstructor(value.pagina)}</p>
             <span class="hidden" id="key">${value._id}</span>
+            <div class="divider"></div>
+            <i class="icon-fork deep-orange-text icon-big hover-icon-complete btn-forking-anime tooltipped disabled" data-position="right" data-tooltip="¡Crear anime a partir de pendiente!"></i>
           </div>
         </li>`;
       });
@@ -31,6 +33,7 @@ class RenderPendiente {
       $('#data-pendientes').html(resolve);
       $('.tooltipped').tooltip({delay: 50});
       this._urlExternal();
+      this._forkToAnime();
     })
     .catch((err) => { return console.log(err.message) });;
   }
@@ -123,6 +126,27 @@ class RenderPendiente {
           }
         });
       }
+    });
+  }
+
+  _forkToAnime() {
+    $('.btn-forking-anime').click(() => {
+      swal({
+        title: "¿Estás seguro?",
+        text: "Este pendiente se marcara como completado y se borrara de esta lista, una vez se transfiera a la lista de animes.",
+        icon: "info",
+        buttons: ["NO", "SI"],
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          var el = sortable.closest(evt.item);
+          el && el.parentNode.removeChild(el);
+          self._setOffPendiente(evt.item);
+        } else {
+          swal("¡Acción cancelada!", "", "info");
+        }
+      });
     });
   }
 
