@@ -1,3 +1,6 @@
+:root {
+	--icon-hover: #4fd8fe;
+}
 .barra-sumar {
 	display: flex;
 	position: relative;
@@ -76,7 +79,7 @@
     font-weight: 500;
 }
 table.highlight>tbody>tr:hover{
-	background-color: #4fd8fe;
+	background-color: var(--icon-hover);
 	cursor: pointer;
 }
 .icon-pag{
@@ -88,8 +91,8 @@ table.highlight>tbody>tr:hover{
 .icon-normal {
 	font-size: 1em !important;
 	position: relative;
-  left: 1px;
-  top: 1px;
+	left: 1px;
+	top: 1px;
 }
 .icon-big {
 	font-size: 24px;
@@ -101,8 +104,9 @@ table.highlight>tbody>tr:hover{
 	width: 100%;
 }
 .hover-icon-complete:hover {
-	/* color: black !important; */
 	cursor: pointer;
+	text-decoration: var(--icon-hover);
+	color: var(--icon-hover) !important; /* Este !important es porque los de materialize ponen sus clases con !important y asi no se puede ¬¬ */
 }
 .btn-sortable:hover {
 	cursor: move;

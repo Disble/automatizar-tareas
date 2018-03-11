@@ -51,15 +51,15 @@ class ModelPendiente {
     }
 
     getOnce(id) {
-      return new Promise((resolve, reject) => {
-        pendientesdb.findOne({_id : id}).exec(function(err, record) {
-      		if (err) {
-            reject(new Error(err));
-      			process.exit(0);
-      		}
-          resolve(new Pendiente(record.nombre, record.detalle, record.orden, record.pagina, record.activo, record.fechaFin, record.fechaCreacion));
-      	});
-      });
+		return new Promise((resolve, reject) => {
+			pendientesdb.findOne({ _id: id }).exec(function (err, record) {
+				if (err) {
+					reject(new Error(err));
+					process.exit(0);
+				}
+				resolve(new Pendiente(record.nombre, record.detalle, record.orden, record.pagina, record.activo, record.fechaFin, record.fechaCreacion));
+			});
+		});
     }
 
     getAll() {

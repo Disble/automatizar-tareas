@@ -1,156 +1,183 @@
 class RenderPendiente {
-  constructor() {
-    this.model = new ModelPendiente();
-  }
+	constructor() {
+		this.model = new ModelPendiente();
+	}
 
-  getAllData() {
-    this.model.getAllActive()
-    .then((resolve) => {
-      let data = '';
-      resolve.map((value, index) => {
-        data += `<li>
-          <div class="collapsible-header">
-            <i class="icon-menu-1 left icon-pag btn-sortable"></i>
-            <span class="text-icon">${value.nombre}
-            <a href="#!" class="secondary-content right">
-              <i class="icon-check hover-icon-complete js-remove tooltipped" data-position="right" data-tooltip="¡Completar!"></i>
-            </a>
-            </span>
-          </div>
-          <div class="collapsible-body">
-            <span><b>Detalle</b></span>
-            <p>${value.detalle}</p>
-            <div class="divider"></div>
-            <p><b>Pagina : </b>${this._paginaConstructor(value.pagina)}</p>
-            <span class="hidden" id="key">${value._id}</span>
-            <div class="divider"></div>
-            <i class="icon-fork deep-orange-text icon-big hover-icon-complete btn-forking-anime tooltipped disabled" data-position="right" data-tooltip="¡Crear anime a partir de pendiente!"></i>
-          </div>
-        </li>`;
-      });
-      return data;
-    }).then((resolve) => {
-      $('#data-pendientes').html(resolve);
-      $('.tooltipped').tooltip({delay: 50});
-      this._urlExternal();
-      this._forkToAnime();
-    })
-    .catch((err) => { return console.log(err.message) });;
-  }
+	getAllData() {
+		this.model.getAllActive()
+			.then((resolve) => {
+				let data = '';
+				resolve.map((value, index) => {
+					data += `<li>
+					<div class="collapsible-header">
+						<i class="icon-menu left icon-pag btn-sortable"></i>
+						<span class="text-icon">${value.nombre}
+						<a href="#!" class="secondary-content right">
+						<i class="icon-ok-squared grey-text hover-icon-complete js-remove tooltipped" data-position="right" data-tooltip="¡Completar!"></i>
+						</a>
+						</span>
+					</div>
+					<div class="collapsible-body">
+						<span><b>Detalle</b></span>
+						<p>${value.detalle}</p>
+						<div class="divider"></div>
+						<p><b>Pagina : </b>${this._paginaConstructor(value.pagina)}</p>
+						<span class="hidden" id="key">${value._id}</span>
+					</div>
+					</li>`;
+				});
+				return data;
+			}).then((resolve) => {
+				$('#data-pendientes').html(resolve);
+				$('.tooltipped').tooltip({ delay: 50 });
+				this._urlExternal();
+			})
+			.catch((err) => { return console.log(err.message) });
+	}
 
-  _setDataPendiente() {
-    this.model.getMaxOrder()
-    .then((resolve) => {
-      let orden = resolve + 1;
-      let nombre = $('#nombre').val();
-      let pagina = $('#pagina').val();
-      let detalles = $('#detalles').val();
-      let pendiente = new Pendiente(nombre, detalles, orden, pagina);
-      this.model.new(pendiente)
-      .then((resolve) => {
-        if (resolve) {
-          Materialize.toast('Datos Ingresados Correctamente', 4000);
-        } else {
-          Materialize.toast('Houston, tenemos un problema', 4000);
-        }
-      })
-      .catch((err) => { return console.log(err.message) });
-    })
-    .catch((err) => { return console.log(err.message) });;
-  }
+	_setDataPendiente() {
+		this.model.getMaxOrder()
+			.then((resolve) => {
+				let orden = resolve + 1;
+				let nombre = $('#nombre').val();
+				let pagina = $('#pagina').val();
+				let detalles = $('#detalles').val();
+				let pendiente = new Pendiente(nombre, detalles, orden, pagina);
+				this.model.new(pendiente)
+					.then((resolve) => {
+						if (resolve) {
+							Materialize.toast('Datos Ingresados Correctamente', 4000);
+						} else {
+							Materialize.toast('Houston, tenemos un problema', 4000);
+						}
+					})
+					.catch((err) => { return console.log(err.message) });
+			})
+			.catch((err) => { return console.log(err.message) });;
+	}
 
-  _setSubmitNew() {
-    $('#submitPendiente').submit(() => {
-      this._setDataPendiente();
-      return false;
-    });
-  }
+	_setSubmitNew() {
+		$('#submitPendiente').submit(() => {
+			this._setDataPendiente();
+			return false;
+		});
+	}
 
-  _setNewOrder(oldIndex, newIndex) {
-    let keyCurrent = $($('#data-pendientes').find('li')[newIndex]).find('#key').html();
-    let keyOld = $($('#data-pendientes').find('li')[oldIndex]).find('#key').html();
-    this.model.getOnce(keyCurrent)
-    .then((resolve) => {
-      let penCurrent = resolve;
-      this.model.getOnce(keyOld)
-      .then((resolve) => {
-        let penOld = resolve;
-        let aux = 0;
-        aux = penCurrent.orden;
-        penCurrent.orden = penOld.orden;
-        penOld.orden = aux;
-        this.model.update(keyCurrent, penCurrent);
-        this.model.update(keyOld, penOld);
-      });
-    });
-  }
+	_setOrderView(oldIndex, newIndex) {
+		let keyCurrent = $($('#data-pendientes').find('li')[newIndex]).find('#key').html();
+		let keyOld = $($('#data-pendientes').find('li')[oldIndex]).find('#key').html();
+		this._setNewOrder(keyCurrent, keyOld);
+	}
+	
+	_setOrderEdit(oldIndex, newIndex) {
+		let keyCurrent = $($('#edit-pen').find('li')[newIndex]).find('#key').html();
+		let keyOld = $($('#edit-pen').find('li')[oldIndex]).find('#key').html();
+		this._setNewOrder(keyCurrent, keyOld);
+	}
 
-  _setOffPendiente(item) {
-    let id = $(item).find('#key').html();
-    this.model.activeOff(id)
-    .then((resolve) => {
-      if (resolve) {
-        Materialize.toast('Marcado como completado correctamente', 4000);
-      } else {
-        Materialize.toast('Houston, tenemos un problema', 4000);
-      }
-    })
-    .catch((err) => { return console.log(err.message) });
-  }
+	_setNewOrder(keyCurrent, keyOld) {
+		this.model
+			.getOnce(keyCurrent)
+			.then((resolve) => {
+				let penCurrent = resolve;
+				this.model.getOnce(keyOld)
+					.then((resolve) => {
+						let penOld = resolve;
+						let aux = 0;
+						aux = penCurrent.orden;
+						penCurrent.orden = penOld.orden;
+						penOld.orden = aux;
+						this.model.update(keyCurrent, penCurrent);
+						this.model.update(keyOld, penOld);
+					});
+			});
+	}
 
-  setDragDrop() {
-    var self = this;
-    var el = document.getElementById('data-pendientes');
-    var sortable = Sortable.create(el, {
-      handle: '.btn-sortable',
-      animation: 150,
-      onUpdate: function (evt){
-        self._setNewOrder(evt.oldIndex, evt.newIndex);
-      },
-      filter: '.js-remove',
-      onFilter: function (evt) {
-        swal({
-          title: "¿Estás seguro?",
-          text: "¡Si lo marcas como completado, se borrara de esta lista!",
-          icon: "info",
-          buttons: ["NO", "SI"],
-          dangerMode: true,
-        })
-        .then((willDelete) => {
-          if (willDelete) {
-            var el = sortable.closest(evt.item);
-            el && el.parentNode.removeChild(el);
-            self._setOffPendiente(evt.item);
-          } else {
-            swal("¡Acción cancelada!", "", "info");
-          }
-        });
-      }
-    });
-  }
+	_setOffPendiente(item) {
+		let id = $(item).find('#key').html();
+		this.model.activeOff(id)
+			.then((resolve) => {
+				if (resolve) {
+					Materialize.toast('Marcado como completado correctamente', 4000);
+				} else {
+					Materialize.toast('Houston, tenemos un problema', 4000);
+				}
+			})
+			.catch((err) => { return console.log(err.message) });
+	}
 
-  _forkToAnime() {
-    $('.btn-forking-anime').click(() => {
-      swal({
-        title: "¿Estás seguro?",
-        text: "Este pendiente se marcara como completado y se borrara de esta lista, una vez se transfiera a la lista de animes.",
-        icon: "info",
-        buttons: ["NO", "SI"],
-        dangerMode: true,
-      })
-      .then((willDelete) => {
-        if (willDelete) {
-          var el = sortable.closest(evt.item);
-          el && el.parentNode.removeChild(el);
-          self._setOffPendiente(evt.item);
-        } else {
-          swal("¡Acción cancelada!", "", "info");
-        }
-      });
-    });
-  }
+	setDragDrop() {
+		var self = this;
+		var el = document.getElementById('data-pendientes');
+		var sortable = Sortable.create(el, {
+			handle: '.btn-sortable',
+			animation: 150,
+			onUpdate: function (evt) {
+				self._setOrderView(evt.oldIndex, evt.newIndex);
+			},
+			filter: '.js-remove',
+			onFilter: function (evt) {
+				swal({
+					title: "¿Estás seguro?",
+					text: "¡Si lo marcas como completado, se borrara de esta lista!",
+					icon: "info",
+					buttons: ["NO", "SI"],
+					dangerMode: true,
+				})
+					.then((willDelete) => {
+						if (willDelete) {
+							var el = sortable.closest(evt.item);
+							el && el.parentNode.removeChild(el);
+							self._setOffPendiente(evt.item);
+						} else {
+							swal("¡Acción cancelada!", "", "info");
+						}
+					});
+			}
+		});
+	}
 
-  _paginaConstructor(pagina){
+	_setEdit() {
+		this.model.getAllActive()
+			.then((resolve) => {
+				let data = '';
+				resolve.map((value, index) => {
+					data += `
+						<li>
+							<div class="row">
+								<div class="col s1"><span class="hidden" id="key">${value._id}</span><i class="icon-menu left icon-pag btn-sortable"></i></div>
+								<div class="col s3">${value.nombre}</div>
+								<div class="col s4">${value.detalle}</div>
+								<div class="col s4">${value.pagina}</div>
+							</div>
+						</li> 
+					`;
+				});
+				return data;
+			})
+			.then((resolve) => {
+				document.getElementById('edit-pen').innerHTML = resolve;
+				this._setReorderEditPen();
+			})
+			.catch((err) => { console.log(err.message) });
+
+	}
+
+	_setReorderEditPen() {
+		var self = this;
+		var el = document.getElementById('edit-pen');
+		var sortable = Sortable.create(el, {
+			handle: '.btn-sortable',
+			animation: 150,
+			onUpdate: function (evt) {
+				//self._setNewOrder(evt.oldIndex, evt.newIndex);
+				//console.log(evt.oldIndex, evt.newIndex);
+				self._setOrderEdit(evt.oldIndex, evt.newIndex);
+			}
+		});
+	}
+
+	_paginaConstructor(pagina) {
 		if (this._isUrl(pagina))
 			return this._redirectExternalConstructor(pagina);
 		else
@@ -162,7 +189,7 @@ class RenderPendiente {
 		return regexp.test(path)
 	}
 
-	_redirectExternalConstructor(path){
+	_redirectExternalConstructor(path) {
 		let url = document.createElement('a');
 		url.href = path;
 		url.innerText = url.href;
@@ -170,14 +197,14 @@ class RenderPendiente {
 		return url.outerHTML;
 	}
 
-  _urlExternal() {
-    $('.url-external').click(function (e) {
+	_urlExternal() {
+		$('.url-external').click(function (e) {
 			e.preventDefault();
 			e.stopPropagation();
-			$(this).each(function(key, value) {
+			$(this).each(function (key, value) {
 				if (!shell.openExternal(value.href))
 					swal("Hubo problemas al abrir la url.", "Por favor revise el formato de la url en Editar Animes.", "error");
 			});
 		});
-  }
+	}
 }

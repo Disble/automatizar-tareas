@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Editar Pendientes</title>
+  <link rel="stylesheet" type="text/css" href="../../node_modules/materialize-css/dist/css/materialize.min.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/app.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/fontello.css" />
+</head>
+<body>
+	<div class="row">
+		<div class="col s12">
+			<h3 class="center">Lista de Pendientes</h3>
+			<div class="divider"></div>
+			<div class="row">
+				<!-- <div class="col s1 center"><b>Núm</b></div> -->
+				<div class="col s3 push-s1 center"><b>Nombre</b></div>
+				<div class="col s4 center"><b>Descripciòn</b></div>
+				<div class="col s4 center"><b>Pagina</b></div>
+			</div>
+			<ul id="edit-pen">
+				<li>
+					<div class="row">
+						<div class="col s4"></div>
+						<div class="col s4"></div>
+						<div class="col s4"></div>
+					</div>
+				</li>
+			</ul>
+            <ul class="pagination center" id="paginas">
+            </ul>
+		</div>
+	</div>
+	<script src="../../routers/pendientes.js"></script>
+	<script src="../../models/Pendiente.js"></script>
+	<script src="../../models/ModelPendiente.js"></script>
+	<script src="../../models/RenderPendiente.js"></script>
+	<script type="text/javascript">
+    $(document).ready(() => {
+		$(document).ready(() => {
+		let render = new RenderPendiente();
+		render._setEdit();
+    });
+    });
+  </script>
+</body>
+</html>
