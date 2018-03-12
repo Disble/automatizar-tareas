@@ -11,29 +11,31 @@ Enfocada principalmente como un Sistema de Control de Capítulos (o SCC siglas q
 
 Como parte del programa, diseñado al comienzo del desarrollo se presentarán como mínimo las siguientes funciones en la versión reléase 1.0.0. De las cuales actualmente ya se tienen cumplidas las siguientes funciones (sujetos a posibles cambios).
 
-- **Lista de Animes (enlazado a carpetas y web)**
+### **Lista de Animes (enlazado a carpetas y web)**
+- **Animes**
  - [x] Agregar
  - [x] Editar
  - [x] Ver
  - [x] Borrar (no permanente)
  - [x] Cambiar estado (finalizado, viendo, no me gusto)
-- **Lista de Pendientes (solo como lista)**
- - [ ] Agregar
- - [ ] Editar
- - [ ] Ver
- - [ ] Borrar
 - **Estadisticas**
  - [x] Historial de Animes vistos (todos)
     - Datos por anime
     - Borrar (permanente)
  - [x] Gráfica de capítulos vistos de todos los animes (viendo)
+ - [x] Gráfica de las páginas de los animes (viendo)
 
-- [ ] **Alternar entre tema claro y oscuro**
+### **Lista de Pendientes (solo como lista)**
+ - [x] Agregar
+ - [x] Editar
+ - [x] Ver
+ - [x] Borrar
 
 ### Características escondidas por Función
 - **Lista de Animes**
  - [x] Si se guarda como página la url de la misma, se activa un link de redirección externo.
  - [x] No se necesita poner tíldes, ni mayúsculas a los días de la semana.
+ - [x] Cuando se finaliza un anime pero no se elimina, aparece un contador en el menú de días de Ver Animes.
 
 ## Guía de usuario
 ---
@@ -65,8 +67,8 @@ Ver anime.
 ---
 Las versiones de esta aplicación fueron creadas basándose en [Versionado Semántico](http://semver.org/).
 
-**Next Update: ¡Pending Update!**
+**Next Update:**
 
 ## Licencia
 ---
-Este proyecto está bajo la licencia [MIT](./blob/master/LICENSE) que esta adjuntado en el mismo.
+Este proyecto está bajo la licencia [MIT](./LICENSE) que esta adjuntado en el mismo.
