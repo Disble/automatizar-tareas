@@ -1,5 +1,6 @@
 :root {
 	--icon-hover: #4fd8fe;
+	--border-grey: #333;
 }
 .barra-sumar {
 	display: flex;
@@ -15,12 +16,12 @@
 }
 .triangle{
 	top: 10px;
-  position: absolute;
-  right: 34px;
-  border-right: 25px solid #2196F3;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  z-index: 2;
+	position: absolute;
+	right: 34px;
+	border-right: 25px solid #2196F3;
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent;
+	z-index: 2;
 }
 .titulo {
     text-transform:capitalize;
@@ -110,4 +111,13 @@ table.highlight>tbody>tr:hover{
 }
 .btn-sortable:hover {
 	cursor: move;
+}
+.border-bottom {
+	border-bottom: 1px solid var(--border-grey);
+}
+.editable-pen {
+    min-height: 21px !important; /* !important porque no pude poner un min-height con un div vacio */
+}
+.editable-link-pen:hover {
+	border: 1px solid var(--border-grey);
 }

@@ -113,6 +113,7 @@ class RenderPendiente {
 			handle: '.btn-sortable',
 			animation: 150,
 			onUpdate: function (evt) {
+				console.log(evt.oldIndex, evt.newIndex);
 				self._setOrderView(evt.oldIndex, evt.newIndex);
 			},
 			filter: '.js-remove',
@@ -144,11 +145,11 @@ class RenderPendiente {
 				resolve.map((value, index) => {
 					data += `
 						<li>
-							<div class="row">
+							<div class="row border-bottom">
 								<div class="col s1"><span class="hidden" id="key">${value._id}</span><i class="icon-menu left icon-pag btn-sortable"></i></div>
-								<div class="col s3">${value.nombre}</div>
-								<div class="col s4">${value.detalle}</div>
-								<div class="col s4">${value.pagina}</div>
+								<div class="col s3 editable-pen" id="nombre">${value.nombre}</div>
+								<div class="col s4 editable-pen ${value.detalle === '' ? 'editable-link-pen': ''}" id="detalle">${value.detalle}</div>
+								<div class="col s4 editable-pen ${value.pagina === '' ? 'editable-link-pen': ''}" id="pagina">${value.pagina}</div>
 							</div>
 						</li> 
 					`;
@@ -158,9 +159,44 @@ class RenderPendiente {
 			.then((resolve) => {
 				document.getElementById('edit-pen').innerHTML = resolve;
 				this._setReorderEditPen();
+				this._cellEdit();
 			})
 			.catch((err) => { console.log(err.message) });
+	}
 
+	_cellEdit(){
+		let self = this;
+		$('.editable-pen').each(function(key, value) {
+			$(value).dblclick(function() {
+				$(this).attr('contenteditable', 'true');
+				$(this).focus();
+			});
+			$(value).focusout(function() {
+				$(this).removeAttr('contenteditable');
+				let nombre = $(this).parent().parent().find('#nombre').text();
+				let detalle = $(this).parent().parent().find('#detalle').text();
+				let pagina = $(this).parent().parent().find('#pagina').text();
+				let key = $(this).parent().parent().find('#key').text();
+				let row = [nombre, detalle, pagina];
+				self.model
+					.getOnce(key)
+					.then((resolve) => {
+						resolve.nombre = nombre;
+						resolve.detalle = detalle;
+						resolve.pagina = pagina;
+						return resolve;
+					})
+					.then((resolve) => {
+						self.model.update(key, resolve);
+					})
+					.catch((err) => { return console.log(err.message) });
+			});
+			$(value).bind('keypress', function(e) {
+				if(e.keyCode==13) {
+					$(this).trigger('focusout');
+				}
+			});
+		});
 	}
 
 	_setReorderEditPen() {
@@ -170,8 +206,6 @@ class RenderPendiente {
 			handle: '.btn-sortable',
 			animation: 150,
 			onUpdate: function (evt) {
-				//self._setNewOrder(evt.oldIndex, evt.newIndex);
-				//console.log(evt.oldIndex, evt.newIndex);
 				self._setOrderEdit(evt.oldIndex, evt.newIndex);
 			}
 		});
