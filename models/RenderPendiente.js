@@ -23,6 +23,8 @@ class RenderPendiente {
 						<div class="divider"></div>
 						<p><b>Pagina : </b>${this._paginaConstructor(value.pagina)}</p>
 						<span class="hidden" id="key">${value._id}</span>
+						<div class="divider"></div>
+            <i class="icon-fork deep-orange-text icon-big hover-icon-complete btn-forking-anime tooltipped disabled" data-position="right" data-tooltip="¡Crear anime a partir de pendiente!"></i>
 					</div>
 					</li>`;
 				});
@@ -31,8 +33,30 @@ class RenderPendiente {
 				$('#data-pendientes').html(resolve);
 				$('.tooltipped').tooltip({ delay: 50 });
 				this._urlExternal();
+				this._forkToAnime();
 			})
 			.catch((err) => { return console.log(err.message) });
+	}
+
+	_forkToAnime() {
+		$('.btn-forking-anime').click(() => {
+			swal({
+				title: "¿Estás seguro?",
+				text: "Cuando este pendiente se transfiera a la lista de animes se marcara como completado y se borrara de esta lista.",
+				icon: "info",
+				buttons: ["NO", "SI"],
+				dangerMode: true,
+			})
+			.then((willDelete) => {
+				if (willDelete) {
+					var el = sortable.closest(evt.item);
+					el && el.parentNode.removeChild(el);
+					self._setOffPendiente(evt.item);
+				} else {
+					swal("¡Acción cancelada!", "", "info");
+				}
+			});
+		});
 	}
 
 	_setDataPendiente() {
