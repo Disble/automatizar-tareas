@@ -3,9 +3,9 @@ class ModelAnime {
 
   }
 
-  new() {
+  new(anime) {
     return new Promise((resolve, reject) => {
-      animesdb.insert(nuevo, function(err, record) {
+      animesdb.insert(anime, function(err, record) {
     		if (err) {
           reject(new Error(err));
     			return;

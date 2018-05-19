@@ -37,7 +37,7 @@ class Render {
 	actualizarLista(consulta, dia) {
 		let tblListaAnimes = '';
 		$.each(consulta, (i, item) => {
-			tblListaAnimes += `<tr>
+			tblListaAnimes += /*html*/`<tr>
 									<td>
 										<button data-target="modal${i}" class="btn btn-small modal-trigger">${consulta[i].orden}</button>
 										<div id="modal${i}" class="modal">
@@ -124,7 +124,7 @@ class Render {
 
 	/*------------------------- RENDER DINAMICO ---------------------------------------*/
 	increNuevosAnimes(){
-		let nuevaConsulta = `<tr>
+		let nuevaConsulta = /*html*/`<tr>
 								<td><input type="number" name="orden" min="1" required></td>
 								<td><input type="text" name="nombre" required></td>
 								<td><input type="text" name="dia" required></td>

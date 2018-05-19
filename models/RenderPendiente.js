@@ -1,6 +1,7 @@
 class RenderPendiente {
 	constructor() {
 		this.model = new ModelPendiente();
+		this.modelAnime = new ModelAnime();
 	}
 
 	getAllData() {
@@ -8,7 +9,7 @@ class RenderPendiente {
 			.then((resolve) => {
 				let data = '';
 				resolve.map((value, index) => {
-					data += `<li>
+					data += /*html*/`<li>
 					<div class="collapsible-header">
 						<i class="icon-menu left icon-pag btn-sortable"></i>
 						<span class="text-icon">${value.nombre}
@@ -24,39 +25,114 @@ class RenderPendiente {
 						<p><b>Pagina : </b>${this._paginaConstructor(value.pagina)}</p>
 						<span class="hidden" id="key">${value._id}</span>
 						<div class="divider"></div>
-            <i class="icon-fork deep-orange-text icon-big hover-icon-complete btn-forking-anime tooltipped disabled" data-position="right" data-tooltip="¡Crear anime a partir de pendiente!"></i>
+						<a class="modal-trigger" href="#modal${index}"><i class="icon-fork deep-orange-text icon-big hover-icon-complete btn-forking-anime tooltipped disabled" data-position="right" data-tooltip="¡Crear anime a partir de pendiente!"></i></a>
+						<!-- Modal Structure -->
+						<div id="modal${index}" class="modal modal-fixed-footer">
+							<form class="form-form-anime">
+							<div class="modal-content">
+								<h4 class="center">Crear nuevo Anime</h4>
+								
+								<div class="row">
+									<div class="col s12">
+										<div class="input-field">
+											<input id="nombre" value="${value.nombre}" type="text" name="nombre" class="validate">
+										</div>
+										<div class="input-field">
+											<select name="dia">
+												<option value="" disabled selected>Escoga un día</option>
+												<option value="lunes">Lunes</option>
+												<option value="martes">Martes</option>
+												<option value="miercoles">Miércoles</option>
+												<option value="jueves">Jueves</option>
+												<option value="viernes">Viernes</option>
+												<option value="sabado">Sábado</option>
+												<option value="domingo">Domingo</option>
+											</select>
+										</div>
+										<div class="input-field">
+											<input type="number" name="orden" id="orden" min="1" class="validate">
+											<label for="orden">Orden</label>
+										</div>
+										<div class="input-field">
+											<input id="pagina" name="pagina" value="${value.pagina}" type="text" class="validate">
+										</div>
+									</div>
+								</div>
+								
+							</div>
+							<div class="modal-footer">
+								<!-- <a href="#!" >Crear</a> -->
+								<input type="submit" class="waves-effect btn-flat green-text" value="crear">
+								<a href="#!" class="modal-action modal-close waves-effect btn-flat red-text">Cancelar</a>
+							</div>
+						</form>
+						</div>
 					</div>
 					</li>`;
 				});
 				return data;
 			}).then((resolve) => {
+				self = this;
 				$('#data-pendientes').html(resolve);
 				$('.tooltipped').tooltip({ delay: 50 });
+				$('.modal').modal({
+					dismissible: true, // Modal can be dismissed by clicking outside of the modal
+					opacity: .5, // Opacity of modal background
+					inDuration: 300, // Transition in duration
+					outDuration: 200, // Transition out duration
+					startingTop: '4%', // Starting top style attribute
+					endingTop: '10%', // Ending top style attribute
+					ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+						self._forkToAnimeOpen(self);
+					}// Callback for Modal close
+				});
+				$('select').material_select();
 				this._urlExternal();
-				this._forkToAnime();
 			})
 			.catch((err) => { return console.log(err.message) });
 	}
 
-	_forkToAnime() {
-		$('.btn-forking-anime').click(() => {
-			swal({
-				title: "¿Estás seguro?",
-				text: "Cuando este pendiente se transfiera a la lista de animes se marcara como completado y se borrara de esta lista.",
-				icon: "info",
-				buttons: ["NO", "SI"],
-				dangerMode: true,
-			})
-			.then((willDelete) => {
-				if (willDelete) {
-					var el = sortable.closest(evt.item);
-					el && el.parentNode.removeChild(el);
-					self._setOffPendiente(evt.item);
-				} else {
-					swal("¡Acción cancelada!", "", "info");
-				}
-			});
-		});
+	_forkToAnimeOpen(self) {
+		$('.form-form-anime').submit(function(e) {
+			e.preventDefault();
+			let form = new FormData(this);
+			
+			if (form.get('nombre').length === 0 || form.get('dia') === null || form.get('orden').length === 0) {
+				swal("¡Opss!", `Necesitamos más datos para crearlo.`, "warning");
+				return false;
+			}
+			
+			let container = $(this).parent().parent().parent()[0];
+			let nombre = form.get('nombre');
+			let dia = form.get('dia');
+			let orden = parseInt(form.get('orden'));
+			let pagina = form.get('pagina');
+			
+			let anime = new Anime(orden, nombre, dia, 0, pagina, '', 0, true, new Date(), null, null);
+			
+			self.modelAnime.new(anime)
+				.then((resolve) => {
+					swal({
+						title: "¡Anime creado!",
+						text: "¿Deseas borrar el pendiente?",
+						icon: "success",
+						buttons: ["NO", "SI"],
+						dangerMode: true,
+					})
+						.then((willDelete) => {
+							if (willDelete) {
+								self._setOffPendiente(container);
+								swal("¡Pendiente borrado!", "", "success")
+									.then((value) => {
+										window.location.href = `file://${__dirname}/pendientes.html`;
+									});
+							} else {
+								window.location.href = `file://${__dirname}/pendientes.html`;
+							}
+						});
+				})
+				.catch((err) => { swal("¡Opss!", `Tuvimos problemas creando "${nombre}".\nPor favor vuelva a intentarlo.`, "error"); });
+		})
 	}
 
 	_setDataPendiente() {
@@ -153,6 +229,7 @@ class RenderPendiente {
 						if (willDelete) {
 							var el = sortable.closest(evt.item);
 							el && el.parentNode.removeChild(el);
+							console.log('Justo antes de borrar', evt.item);
 							self._setOffPendiente(evt.item);
 						} else {
 							swal("¡Acción cancelada!", "", "info");
