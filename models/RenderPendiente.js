@@ -132,7 +132,7 @@ class RenderPendiente {
 						});
 				})
 				.catch((err) => { swal("¡Opss!", `Tuvimos problemas creando "${nombre}".\nPor favor vuelva a intentarlo.`, "error"); });
-		})
+		});
 	}
 
 	_setDataPendiente() {
