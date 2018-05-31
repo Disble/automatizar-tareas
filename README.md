@@ -7,7 +7,7 @@ Esta aplicación tiene como principio la sencillez y accesibilidad de uso, ayuda
 
 >Apoyando la vagancia desde tiempos inmemoriales.
 
-Enfocada principalmente como un Sistema de Control de Capítulos (o SCC siglas que acabo de inventar) de animes vistos. Teniendo un ciclo completo (agregar, ver, editar, borrar) en su presente versión Alpha.
+Enfocada principalmente como un Sistema de Control de Capítulos (o SCC siglas que acabo de inventar) de animes vistos. Teniendo un ciclo completo (agregar, ver, editar, borrar) en su presente versión Beta.
 
 Como parte del programa, diseñado al comienzo del desarrollo se presentarán como mínimo las siguientes funciones en la versión reléase 1.0.0. De las cuales actualmente ya se tienen cumplidas las siguientes funciones (sujetos a posibles cambios).
 
@@ -30,6 +30,7 @@ Como parte del programa, diseñado al comienzo del desarrollo se presentarán co
  - [x] Editar
  - [x] Ver
  - [x] Borrar
+ - [x] Crear Anime a partir de Pendiente (fork)
 
 ### Características escondidas por Función
 - **Lista de Animes**
