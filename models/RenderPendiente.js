@@ -9,7 +9,7 @@ class RenderPendiente {
 			.then((resolve) => {
 				let data = '';
 				resolve.map((value, index) => {
-					data += /*html*/`<li>
+					data += /*html*/`<li id="item-list">
 					<div class="collapsible-header">
 						<i class="icon-menu left icon-pag btn-sortable"></i>
 						<span class="text-icon">${value.nombre}
@@ -164,8 +164,9 @@ class RenderPendiente {
 	}
 
 	_setOrderView(oldIndex, newIndex) {
-		let keyCurrent = $($('#data-pendientes').find('li')[newIndex]).find('#key').html();
-		let keyOld = $($('#data-pendientes').find('li')[oldIndex]).find('#key').html();
+		let keyCurrent = $($('#data-pendientes').find('li#item-list')[newIndex]).find('#key').html();
+		let keyOld = $($('#data-pendientes').find('li#item-list')[oldIndex]).find('#key').html();
+		console.log(keyCurrent, keyOld);
 		this._setNewOrder(keyCurrent, keyOld);
 	}
 	
