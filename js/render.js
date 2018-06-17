@@ -56,7 +56,7 @@ class Render {
 										</div>
 									</td>
 									<td>${consulta[i].nombre}</td>
-									<td>${this._blockSerie(consulta[i].estado) ? this.getState(consulta[i].estado).name : consulta[i].nrocapvisto}</td>
+									<td><span onmouseover="render.numCapituloInvertido(this, ${this._setNumCapitulo(consulta, i)}, 21)" onmouseout="render.numCapituloNormal(this, '${this._setNumCapitulo(consulta, i)}')" >${this._setNumCapitulo(consulta, i)}</span></td>
 									<td>${this._paginaConstructor(consulta[i].pagina)}</td>
 									<td>
 										<div class="btnIncremento">
@@ -82,6 +82,21 @@ class Render {
 		});
 		$('.tooltipped').tooltip({delay: 50});
 		$('.modal').modal();
+	}
+
+	_setNumCapitulo(consulta, i) {
+		return this._blockSerie(consulta[i].estado) ? this.getState(consulta[i].estado).name : consulta[i].nrocapvisto;
+	}
+
+	numCapituloInvertido(el, num, total) {
+		if (num <= total) {
+			let capInv = total - num;
+			el.innerText = '- ' + capInv;
+		}
+	}
+
+	numCapituloNormal(el, num) {
+		el.innerText = num;
 	}
 
 	menuRender(menu){
@@ -185,8 +200,19 @@ class Render {
 	}
 
 	abrirCarpeta(folder){
-		if (!shell.showItemInFolder(`${folder}/*`))
-			swal("Hubo problemas al abrir la carpeta.", "Por favor revise el formato de la dirección de la carpeta en Editar Animes o compruebe que la carpeta exista.", "error");
+		if (!shell.showItemInFolder(`${folder}/*`)) {
+			//swal("Hubo problemas al abrir la carpeta.", "Por favor revise el formato de la dirección de la carpeta en Editar Animes o compruebe que la carpeta exista.", "error");
+			swal("Hubo problemas al abrir la carpeta.", "Es posible que la dirección haya cambiado o que la carpeta ha sido borrada.\n\n¿Quieres volver a escoger la carpeta?", "info", {
+				buttons: ['No', 'Si']
+			})
+				.then((confirm) => { // escoge la direccion de una nueva carpeta
+					if (confirm) {
+						console.log('Nueva Carpeta');
+					} else {
+						swal("No hay problema.", "También es posible cambiar la dirección de la carpeta en Editar Animes.", "success")
+					}
+				});
+		}
 	}
 
 	getFolder(dir){
@@ -265,7 +291,7 @@ class Render {
 						//console.log(pag);
 						borrarFila(id, pag);
 				  } else {
-				    swal("¡Acción cancelada!");
+				    swal("¡Acción cancelada!", "", "info");
 				  }
 				});
 			})

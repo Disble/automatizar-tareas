@@ -50,18 +50,24 @@ class RenderPendiente {
 											</select>
 										</div>
 										<div class="input-field">
-											<input type="number" name="orden" id="orden" min="1" class="validate">
-											<label for="orden">Orden</label>
+										<input type="text" id="pagina" name="pagina" value="${value.pagina}"  class="validate">
+										<label for="pagina">Pagina</label>
 										</div>
-										<div class="input-field">
-											<input id="pagina" name="pagina" value="${value.pagina}" type="text" class="validate">
+										<div class="row">
+											<div class="input-field col s6">
+												<input type="number" name="orden" id="orden" min="1" class="validate">
+												<label for="orden">Orden</label>
+											</div>
+											<div class="col s3 push-s3">
+												<input type="file" name="carpeta" id="file${index}" class="inputfile" webkitdirectory />
+												<label for="file${index}" class="tooltipped blue mt-10" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
+											</div>
 										</div>
 									</div>
 								</div>
 								
 							</div>
 							<div class="modal-footer">
-								<!-- <a href="#!" >Crear</a> -->
 								<input type="submit" class="waves-effect btn-flat green-text" value="crear">
 								<a href="#!" class="modal-action modal-close waves-effect btn-flat red-text">Cancelar</a>
 							</div>
@@ -88,6 +94,9 @@ class RenderPendiente {
 				});
 				$('select').material_select();
 				this._urlExternal();
+				$('.inputfile').change((e) => {
+					this._getFolder(e.target);
+				});
 			})
 			.catch((err) => { return console.log(err.message) });
 	}
@@ -107,8 +116,9 @@ class RenderPendiente {
 			let dia = form.get('dia');
 			let orden = parseInt(form.get('orden'));
 			let pagina = form.get('pagina');
+			let carpeta = $(e.target).find('input[type=file]')[0].getAttribute('value');
 			
-			let anime = new Anime(orden, nombre, dia, 0, pagina, '', 0, true, new Date(), null, null);
+			let anime = new Anime(orden, nombre, dia, 0, pagina, carpeta, 0, true, new Date(), null, null);
 			
 			self.modelAnime.new(anime)
 				.then((resolve) => {
@@ -342,5 +352,30 @@ class RenderPendiente {
 					swal("Hubo problemas al abrir la url.", "Por favor revise el formato de la url en Editar Animes.", "error");
 			});
 		});
+	}
+
+	_getFolder(dir){
+		if (dir === undefined || dir === null || dir.files[0] === undefined) return;
+		let folder = dir.files[0].path;
+		let path = this._slashFolder(folder)
+		// console.log(path)
+		$(dir).attr('value', path)
+		$(dir).siblings().html('Cargado')
+		$(dir).siblings().attr('data-tooltip', path)
+		$(dir).siblings().removeClass('blue')
+		$(dir).siblings().addClass('green')
+		$('.tooltipped').tooltip({delay: 50})
+	}
+
+	_slashFolder(folder){
+		let path = ''
+		for(let i in folder){
+			if (folder.charCodeAt(i) === 92){
+				path += '/'
+				continue
+			}
+			path += folder[i]
+		}
+		return path
 	}
 }

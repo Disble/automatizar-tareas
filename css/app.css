@@ -51,7 +51,10 @@
 	width: 80px;
 	border-radius: 4px;
 	display: inline-block;
-	cursor: pointer; /* "hand" cursor */
+	cursor: pointer;
+}
+.mt-10 {
+	margin-top: 10px;
 }
 .inputfile + label:hover {
 	background-color: #4CAF50 ;
@@ -69,7 +72,6 @@
 	margin: 0;
 }
 .btn-eliminar-anime{
-    /*padding-top: 96px;*/
 	padding-top: 5px;
 }
 .btn-eliminar-anime i, .btn-restaurar-anime i{
@@ -79,7 +81,7 @@
 .btn-eliminar-anime a, .btn-restaurar-anime a{
     font-weight: 500;
 }
-table.highlight>tbody>tr:hover{
+table.highlight > tbody > tr:hover{
 	background-color: var(--icon-hover);
 	cursor: pointer;
 }
