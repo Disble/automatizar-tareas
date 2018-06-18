@@ -66,7 +66,7 @@ class Render {
 										</div>
 									</td>
 									<td>
-										<button class="btn btn-small green ${this.isNoData(consulta[i].carpeta) ? 'disabled': ''}" onclick="render.abrirCarpeta('${consulta[i].carpeta}')"><span style="display: flex" class="tooltipped" data-position="left" data-delay="500" data-tooltip="Abrir carpeta"><i class="icon-folder-open"></i></span></button>
+										<button class="btn btn-small green ${this.isNoData(consulta[i].carpeta) ? 'disabled': ''}" onclick="render.abrirCarpeta('${consulta[i].carpeta}', '${consulta[i].dia}', '${consulta[i]._id}')"><span style="display: flex" class="tooltipped" data-position="left" data-delay="500" data-tooltip="Abrir carpeta"><i class="icon-folder-open"></i></span></button>
 									</td>
 									<td class="hidden" id="key">${consulta[i]._id}</td>
 								</tr>"`
@@ -204,15 +204,28 @@ class Render {
 		return json
 	}
 
-	abrirCarpeta(folder){
+	abrirCarpeta(folder, dia, id){
 		if (!shell.showItemInFolder(`${folder}/*`)) {
-			//swal("Hubo problemas al abrir la carpeta.", "Por favor revise el formato de la dirección de la carpeta en Editar Animes o compruebe que la carpeta exista.", "error");
 			swal("Hubo problemas al abrir la carpeta.", "Es posible que la dirección haya cambiado o que la carpeta ha sido borrada.\n\n¿Quieres volver a escoger la carpeta?", "info", {
 				buttons: ['No', 'Si']
 			})
 				.then((confirm) => { // escoge la direccion de una nueva carpeta
 					if (confirm) {
-						console.log('Nueva Carpeta');
+						swal({
+							title: "Nueva dirección",
+							content: {
+								element: "input",
+								attributes: {
+									placeholder: "Dirección de la carpeta",
+									type: "text"
+								},
+							},
+						})
+						.then((direccion) => {
+							direccion = this.slashFolder(direccion);
+							actualizarCarpeta(dia, id, direccion);
+							swal("Dirección cambiada a:", direccion, "success");
+						});
 					} else {
 						swal("No hay problema.", "También es posible cambiar la dirección de la carpeta en Editar Animes.", "success")
 					}

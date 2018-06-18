@@ -155,6 +155,16 @@ function actualizarCap(dia, id, cont){
 	})
 }
 
+function actualizarCarpeta(dia, id, carpeta) {
+	animesdb.update({"_id" : id}, {$set: {"carpeta": carpeta}}, function(err, numUpdate) {
+		if (err) {
+			console.error(err)
+			return
+		}
+		buscar(dia)
+	})
+}
+
 function estadoCap(dia, id, estado){
 	animesdb.update({"_id" : id}, {$set: {"estado": estado}}, function(err, numUpdate) {
 		if (err) {
