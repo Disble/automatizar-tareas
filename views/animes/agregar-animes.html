@@ -22,6 +22,7 @@
 								<th>Nombre</th>
 								<th>Día</th>
 								<th>Cáp Vistos</th>
+								<th>Total Cáp</th>
 								<th>Página</th>
 								<th>Carpeta</th>
 							</tr>
@@ -32,6 +33,7 @@
 								<td><input type="text" name="nombre" placeholder="Megalo Box" required></td>
 								<td><input type="text" name="dia" placeholder="sábado" required></td>
 								<td><input type="number" name="nrocapvisto" min="0" placeholder="0" required></td>
+								<td><input type="number" name="totalcap" min="0" placeholder="13" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio"></td>
 								<td><input type="text" name="pagina" placeholder="https://animeflv.net/anime/5085/megalo-box" required></td>
 								<td>
 									<input type="file" name="carpeta" onchange="render.getFolder(this)" id="file" class="inputfile" webkitdirectory />

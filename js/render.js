@@ -56,7 +56,7 @@ class Render {
 										</div>
 									</td>
 									<td>${consulta[i].nombre}</td>
-									<td><span onmouseover="render.numCapituloInvertido(this, ${this._setNumCapitulo(consulta, i)}, 21)" onmouseout="render.numCapituloNormal(this, '${this._setNumCapitulo(consulta, i)}')" >${this._setNumCapitulo(consulta, i)}</span></td>
+									<td><span onmouseover="render.numCapituloInvertido(this, '${this._setNumCapitulo(consulta, i)}', ${consulta[i].totalcap})" onmouseout="render.numCapituloNormal(this, '${this._setNumCapitulo(consulta, i)}')" >${this._setNumCapitulo(consulta, i)}</span></td>
 									<td>${this._paginaConstructor(consulta[i].pagina)}</td>
 									<td>
 										<div class="btnIncremento">
@@ -89,7 +89,8 @@ class Render {
 	}
 
 	numCapituloInvertido(el, num, total) {
-		if (num <= total) {
+		if (typeof total == "number" && num <= total) {
+			num = parseInt(num);
 			let capInv = total - num;
 			el.innerText = '- ' + capInv;
 		}
@@ -144,6 +145,7 @@ class Render {
 								<td><input type="text" name="nombre" required></td>
 								<td><input type="text" name="dia" required></td>
 								<td><input type="number" name="nrocapvisto" min="0" required></td>
+								<td><input type="number" name="totalcap" min="0"  class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio"></td>
 								<td><input type="text" name="pagina" required></td>
 								<td>
 									<input type="file" name="carpeta" onchange="render.getFolder(this)" id="file${++this.contNewFolder}" class="inputfile" webkitdirectory />
@@ -155,23 +157,24 @@ class Render {
 	}
 
 	crearJson(){
-		var inputs = $('input[type]')
-		var listaEnviar = []
-		var contenido = []
+		let inputs = $('input[type]')
+		let listaEnviar = []
+		let contenido = []
 		inputs.each((key, value) => {
 			let llave = inputs[key].getAttribute('name')
 			let valor = inputs[key].value
-			if (llave == "orden" || llave == "nrocapvisto")
+			if (llave == "orden" || llave == "nrocapvisto" || llave == "totalcap")
 				contenido[llave] = parseInt(valor)
 			else
 				contenido[llave] = valor
-			//console.log(contenido)
+			// console.log(contenido)
 			if(llave=="carpeta"){
-				var json = {
+				let json = {
 					orden : contenido['orden'],
 					nombre: contenido['nombre'],
 					dia: this._quitaAcentos(contenido['dia']),
 					nrocapvisto: contenido['nrocapvisto'],
+					totalcap: contenido['totalcap'],
 					pagina: contenido['pagina'].toLowerCase(),
 					carpeta: inputs[key].getAttribute('value'),
 					estado : 0,
@@ -182,7 +185,7 @@ class Render {
 				contenido = []
 			}
 		})
-		//console.log(listaEnviar)
+		// console.log(listaEnviar)
 		return listaEnviar
 	}
 
