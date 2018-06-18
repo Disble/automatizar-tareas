@@ -26,6 +26,7 @@ class Render {
 									<td>${this._addDiasAccents(consulta[i].dia)}</td>
 									<td>${consulta[i].orden}</td>
 									<td>${consulta[i].nrocapvisto}</td>
+									<td>${this.isNoData(consulta[i].totalcap) ? '' : consulta[i].totalcap}</td>
 									<td>${consulta[i].pagina}</td>
 									<td>${this.isNoData(consulta[i].carpeta) ? '' : consulta[i].carpeta}</td>
 									<td class="hidden" id="key">${consulta[i]._id}</td>
@@ -195,10 +196,11 @@ class Render {
 			dia: this._quitaAcentos(row[1]),
 			orden: parseInt(row[2]) < 1 ? 1 : parseInt(row[2]),
 			nrocapvisto: this._estadoNumCap(row[3]),
-			pagina: row[4],
-			carpeta: this.isNoData(row[5]) || row[5].length == 0 ? null : this.slashFolder(row[5])
+			totalcap: row[4] === '' ? undefined : row[4],
+			pagina: row[5],
+			carpeta: this.isNoData(row[6]) || row[6].length == 0 ? null : this.slashFolder(row[6])
 		}
-		//console.log(json)
+		console.log(json)
 		return json
 	}
 

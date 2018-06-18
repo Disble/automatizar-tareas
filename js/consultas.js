@@ -167,7 +167,7 @@ function estadoCap(dia, id, estado){
 }
 
 function actualizarFila(id, json, pag){
-	animesdb.update({"_id" : id}, {$set: {"orden": json.orden, "nombre": json.nombre, "dia": json.dia, "nrocapvisto": json.nrocapvisto, "pagina": json.pagina, "carpeta": json.carpeta}}, function(err, num) {
+	animesdb.update({"_id" : id}, {$set: {"orden": json.orden, "nombre": json.nombre, "dia": json.dia, "nrocapvisto": json.nrocapvisto, "totalcap": json.totalcap , "pagina": json.pagina, "carpeta": json.carpeta}}, function(err, num) {
 		if (err) {
 			console.error(err)
 			Materialize.toast('Houston, tenemos un problema', 4000)

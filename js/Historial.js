@@ -62,6 +62,7 @@ class Historial {
 	_setHistoriaAnime(anime){
 		$('#nombre').html(anime.nombre);
 		$('#estado').html(this.render.getState(anime.estado).name);
+		$('#totalcap').html(this.render.isNoData(anime.totalcap) ? 'Desconocido' : anime.totalcap);
 		$('#fechaCreacion').html(this._setFullDate(anime.fechaCreacion));
 		$('#fechaEliminacion').html(this.render.isNoData(anime.fechaEliminacion) ? 'No Eliminado' : this._setFullDate(anime.fechaEliminacion));
 		$('#pagina').html(anime.pagina);
@@ -194,7 +195,7 @@ class Historial {
 
 	_createModalStats(key) {
 		$('#modalStats').remove()
-		let modalWindow = `
+		let modalWindow = /*html*/`
 		<div id="modalStats">
 			<button data-target="modalWin" class="btn btn-small modal-trigger hidden"></button>
 			<div id="modalWin" class="modal modal-fixed-footer">
@@ -203,7 +204,7 @@ class Historial {
 						<div class="col s5">
 							<ul class="collapsible popout" data-collapsible="expandable">
 								<li>
-									<div class="collapsible-header flex-center cyan active">Nombre</div>
+									<div class="collapsible-header flex-center cyan darken-2 active">Nombre</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
 											<a href="#" class="collection-item waves-effect waves-light center no-link" id="nombre"></a>
@@ -211,10 +212,18 @@ class Historial {
 									</div>
 								</li>
 								<li>
-									<div class="collapsible-header flex-center cyan active">Estado</div>
+									<div class="collapsible-header flex-center cyan darken-1 active">Estado</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
 											<a href="#" class="collection-item waves-effect waves-light center no-link" id="estado"><i class="icon-play left"></i></a>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="collapsible-header flex-center cyan active">Total Capítulos</div>
+									<div class="collapsible-body no-padding">
+										<div class="collection">
+											<a href="#" class="collection-item waves-effect waves-light center no-link" id="totalcap"></i></a>
 										</div>
 									</div>
 								</li>

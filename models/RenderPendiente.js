@@ -54,11 +54,15 @@ class RenderPendiente {
 										<label for="pagina">Pagina</label>
 										</div>
 										<div class="row">
-											<div class="input-field col s6">
+											<div class="input-field col s4">
 												<input type="number" name="orden" id="orden" min="1" class="validate">
 												<label for="orden">Orden</label>
 											</div>
-											<div class="col s3 push-s3">
+											<div class="input-field col s4">
+												<input type="number" name="totalcap" id="totalcap" min="0" class="validate">
+												<label for="totalcap">Total Cap</label>
+											</div>
+											<div class="col s2 push-s1">
 												<input type="file" name="carpeta" id="file${index}" class="inputfile" webkitdirectory />
 												<label for="file${index}" class="tooltipped blue mt-10" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
 											</div>
@@ -117,8 +121,9 @@ class RenderPendiente {
 			let orden = parseInt(form.get('orden'));
 			let pagina = form.get('pagina');
 			let carpeta = $(e.target).find('input[type=file]')[0].getAttribute('value');
+			let totalcap = parseInt(form.get('totalcap'));
 			
-			let anime = new Anime(orden, nombre, dia, 0, pagina, carpeta, 0, true, new Date(), null, null);
+			let anime = new Anime(orden, nombre, dia, 0, totalcap, pagina, carpeta, 0, true, new Date(), null, null);
 			
 			self.modelAnime.new(anime)
 				.then((resolve) => {
