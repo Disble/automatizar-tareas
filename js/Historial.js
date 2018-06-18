@@ -212,18 +212,18 @@ class Historial {
 									</div>
 								</li>
 								<li>
-									<div class="collapsible-header flex-center cyan darken-1 active">Estado</div>
+									<div class="collapsible-header flex-center cyan darken-1 active">Total Capítulos</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center no-link" id="estado"><i class="icon-play left"></i></a>
+											<a href="#" class="collection-item waves-effect waves-light center no-link" id="totalcap"></i></a>
 										</div>
 									</div>
 								</li>
 								<li>
-									<div class="collapsible-header flex-center cyan active">Total Capítulos</div>
+									<div class="collapsible-header flex-center cyan active">Estado</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center no-link" id="totalcap"></i></a>
+											<a href="#" class="collection-item waves-effect waves-light center no-link" id="estado"><i class="icon-play left"></i></a>
 										</div>
 									</div>
 								</li>

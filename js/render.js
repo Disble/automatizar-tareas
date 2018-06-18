@@ -200,7 +200,7 @@ class Render {
 			pagina: row[5],
 			carpeta: this.isNoData(row[6]) || row[6].length == 0 ? null : this.slashFolder(row[6])
 		}
-		console.log(json)
+		// console.log(json)
 		return json
 	}
 
