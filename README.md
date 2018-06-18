@@ -37,6 +37,7 @@ Como parte del programa, diseñado al comienzo del desarrollo se presentarán co
  - [x] Si se guarda como página la url de la misma, se activa un link de redirección externo.
  - [x] No se necesita poner tíldes, ni mayúsculas a los días de la semana.
  - [x] Cuando se finaliza un anime pero no se elimina, aparece un contador en el menú de días de Ver Animes.
+ - [x] Cuando se posa el puntero encima de los capítulos vistos, muestra los capítulos restantes.
 
 ## Guía de usuario
 ---
