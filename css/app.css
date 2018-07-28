@@ -1,6 +1,6 @@
 :root {
 	--icon-hover: #4fd8fe;
-	--border-grey: #333;
+	--border-color: #1ca7ce;
 }
 .barra-sumar {
 	display: flex;
@@ -59,8 +59,14 @@
 .inputfile + label:hover {
 	background-color: #4CAF50 ;
 }
-.flex-center{
+.flex {
+	display: flex;
+}
+.flex-x-center{
 	justify-content: center;
+}
+.flex-y-center {
+	align-items: center;
 }
 .hidden{
 	display: none;
@@ -114,12 +120,33 @@ table.highlight > tbody > tr:hover{
 .btn-sortable:hover {
 	cursor: move;
 }
+.border-top {
+	border-top: 1px solid var(--border-color);
+}
 .border-bottom {
-	border-bottom: 1px solid var(--border-grey);
+	border-bottom: 1px solid var(--border-color);
 }
-.editable-pen {
-    min-height: 21px !important; /* !important porque no pude poner un min-height con un div vacio */
+.border-right {
+	border-right: 1px solid var(--border-color);
 }
-.editable-link-pen:hover {
-	border: 1px solid var(--border-grey);
+.border-left {
+	border-left: 1px solid var(--border-color);
+}
+.border-solid {
+	border: 1px solid var(--border-color);
+}
+.editable-pen:hover {
+	border: 1px solid var(--border-color);
+}
+.editable-pen.mh-small { /* mh : min-height */
+	min-height: 65px;
+}
+.mb-0 {
+	margin-bottom: 0;
+}
+.mt-0 {
+	margin-top: 0;
+}
+.overflow-a {
+	overflow: auto;
 }

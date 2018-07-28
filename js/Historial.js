@@ -204,7 +204,7 @@ class Historial {
 						<div class="col s5">
 							<ul class="collapsible popout" data-collapsible="expandable">
 								<li>
-									<div class="collapsible-header flex-center cyan darken-2 active">Nombre</div>
+									<div class="collapsible-header flex-x-center cyan darken-2 active">Nombre</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
 											<a href="#" class="collection-item waves-effect waves-light center no-link" id="nombre"></a>
@@ -212,7 +212,7 @@ class Historial {
 									</div>
 								</li>
 								<li>
-									<div class="collapsible-header flex-center cyan darken-1 active">Total Capítulos</div>
+									<div class="collapsible-header flex-x-center cyan darken-1 active">Total Capítulos</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
 											<a href="#" class="collection-item waves-effect waves-light center no-link" id="totalcap"></i></a>
@@ -220,7 +220,7 @@ class Historial {
 									</div>
 								</li>
 								<li>
-									<div class="collapsible-header flex-center cyan active">Estado</div>
+									<div class="collapsible-header flex-x-center cyan active">Estado</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
 											<a href="#" class="collection-item waves-effect waves-light center no-link" id="estado"><i class="icon-play left"></i></a>
@@ -228,7 +228,7 @@ class Historial {
 									</div>
 								</li>
 								<li>
-									<div class="collapsible-header flex-center cyan lighten-1 active">Fecha Creación</div>
+									<div class="collapsible-header flex-x-center cyan lighten-1 active">Fecha Creación</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
 											<a href="#" class="collection-item waves-effect waves-light center no-link" id="fechaCreacion"></a>
@@ -236,7 +236,7 @@ class Historial {
 									</div>
 								</li>
 								<li>
-									<div class="collapsible-header flex-center cyan lighten-2 active">Fecha Eliminación</div>
+									<div class="collapsible-header flex-x-center cyan lighten-2 active">Fecha Eliminación</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
 											<a href="#" class="collection-item waves-effect waves-light center no-link" id="fechaEliminacion"></a>
@@ -244,7 +244,7 @@ class Historial {
 									</div>
 								</li>
 								<li>
-									<div class="collapsible-header flex-center cyan lighten-3 active">Página</div>
+									<div class="collapsible-header flex-x-center cyan lighten-3 active">Página</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
 											<a href="#" class="collection-item waves-effect waves-light center no-link" id="pagina"></a>
@@ -252,7 +252,7 @@ class Historial {
 									</div>
 								</li>
 								<li>
-									<div class="collapsible-header flex-center cyan lighten-4 active">Carpeta</div>
+									<div class="collapsible-header flex-x-center cyan lighten-4 active">Carpeta</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
 											<a href="#" class="collection-item waves-effect waves-light center no-link" id="carpeta"></a>

@@ -51,7 +51,7 @@ class RenderPendiente {
 										</div>
 										<div class="input-field">
 										<input type="text" id="pagina" name="pagina" value="${value.pagina}"  class="validate">
-										<label for="pagina">Pagina</label>
+										<label for="pagina">Pagina (No obligatorio)</label>
 										</div>
 										<div class="row">
 											<div class="input-field col s4">
@@ -60,7 +60,7 @@ class RenderPendiente {
 											</div>
 											<div class="input-field col s4">
 												<input type="number" name="totalcap" id="totalcap" min="0" class="validate">
-												<label for="totalcap">Total Cap</label>
+												<label for="totalcap">Total Cap (No obligatorio)</label>
 											</div>
 											<div class="col s2 push-s1">
 												<input type="file" name="carpeta" id="file${index}" class="inputfile" webkitdirectory />
@@ -262,11 +262,11 @@ class RenderPendiente {
 				resolve.map((value, index) => {
 					data += `
 						<li>
-							<div class="row border-bottom">
-								<div class="col s1"><span class="hidden" id="key">${value._id}</span><i class="icon-menu left icon-pag btn-sortable"></i></div>
-								<div class="col s3 editable-pen" id="nombre">${value.nombre}</div>
-								<div class="col s4 editable-pen ${value.detalle === '' ? 'editable-link-pen': ''}" id="detalle">${value.detalle}</div>
-								<div class="col s4 editable-pen ${value.pagina === '' ? 'editable-link-pen': ''}" id="pagina">${value.pagina}</div>
+							<div class="row border-bottom mb-0 flex">
+								<div class="col s1 border-left border-right flex flex-y-center"><span class="hidden" id="key">${value._id}</span><i class="icon-menu left icon-pag btn-sortable"></i></div>
+								<div class="col s3 border-right flex flex-y-center editable-pen mh-small" id="nombre">${value.nombre}</div>
+								<div class="col s4 border-right flex flex-y-center editable-pen mh-small" id="detalle">${value.detalle}</div>
+								<div class="col s4 border-right flex flex-y-center overflow-a editable-pen mh-small" id="pagina">${value.pagina}</div>
 							</div>
 						</li> 
 					`;
