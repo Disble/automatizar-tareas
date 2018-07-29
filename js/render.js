@@ -105,7 +105,7 @@ class Render {
 		var salidaMenu = ''
 		$.each(menu, (nivel1, value1) => {
 			salidaMenu += `<li>
-								<div class="collapsible-header flex-center">${this._firstUpperCase(nivel1)}</div>`
+								<div class="collapsible-header flex-x-center">${this._firstUpperCase(nivel1)}</div>`
 			if (value1 != null){
 				salidaMenu += `<div class="collapsible-body no-padding">
 									<div class="collection">`
@@ -257,13 +257,13 @@ class Render {
 		}
 		return path
 	}
-	/*NOTE: Borrar el estado de aqui y los que sigan, para futuras actualizaciones*/
+	
 	cellEdit(){
-		let that = this
+		let that = this;
 		$('td').each(function(key, value){
 			$(value).dblclick(function(){
-				$(this).attr('contenteditable', 'true')
-				$(this).focus()
+				$(this).attr('contenteditable', 'true');
+				$(this).focus();
 			})
 			$(value).focusout(function(){
 				$(this).removeAttr('contenteditable')
