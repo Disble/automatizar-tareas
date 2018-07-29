@@ -57,7 +57,7 @@ class ModelPendiente {
 					reject(new Error(err));
 					process.exit(0);
 				}
-				resolve(new Pendiente(record.nombre, record.detalle, record.orden, record.pagina, record.activo, record.fechaFin, record.fechaCreacion));
+				resolve(new Pendiente(record.nombre, record.detalle, record.orden, record.pagina, record.activo, record.fechaFin, record.fechaCreacion, record._id));
 			});
 		});
     }

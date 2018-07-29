@@ -101,6 +101,7 @@ class RenderPendiente {
 				$('.inputfile').change((e) => {
 					this._getFolder(e.target);
 				});
+				this.elementsPen = $('#data-pendientes').find('li#item-list');
 			})
 			.catch((err) => { return console.log(err.message) });
 	}
@@ -178,35 +179,59 @@ class RenderPendiente {
 		});
 	}
 
-	_setOrderView(oldIndex, newIndex) {
-		let keyCurrent = $($('#data-pendientes').find('li#item-list')[newIndex]).find('#key').html();
-		let keyOld = $($('#data-pendientes').find('li#item-list')[oldIndex]).find('#key').html();
-		console.log(keyCurrent, keyOld);
-		this._setNewOrder(keyCurrent, keyOld);
+	async _setOrderView() {
+		let allPenElemModificados = $('#data-pendientes').find('li#item-list');
+		let allPendientes = await this._reorderOrderDatabase(allPenElemModificados);
+		this._setNewOrder(allPendientes);
 	}
 	
-	_setOrderEdit(oldIndex, newIndex) {
-		let keyCurrent = $($('#edit-pen').find('li')[newIndex]).find('#key').html();
-		let keyOld = $($('#edit-pen').find('li')[oldIndex]).find('#key').html();
-		this._setNewOrder(keyCurrent, keyOld);
+	async _setOrderEdit() {
+		let allPenElemModificados = $('#edit-pen').find('li');
+		let allPendientes = await this._reorderOrderDatabase(allPenElemModificados);
+		this._setNewOrder(allPendientes);
 	}
 
-	_setNewOrder(keyCurrent, keyOld) {
-		this.model
-			.getOnce(keyCurrent)
-			.then((resolve) => {
-				let penCurrent = resolve;
-				this.model.getOnce(keyOld)
-					.then((resolve) => {
-						let penOld = resolve;
-						let aux = 0;
-						aux = penCurrent.orden;
-						penCurrent.orden = penOld.orden;
-						penOld.orden = aux;
-						this.model.update(keyCurrent, penCurrent);
-						this.model.update(keyOld, penOld);
-					});
-			});
+	async _setNewOrder(allPendientes) {
+		for (const i in allPendientes) {
+			this.model.update(allPendientes[i]._id, allPendientes[i]);
+		}
+	}
+
+	async _reorderOrderDatabase(allPenElemModificados) {
+		let allPendientes = [];
+		let allOrders = [];
+		// Aqui estamos recorriendo los elementos originales, antes de moverlos
+		for (const elem of this.elementsPen) {
+			let key = $(elem).find('#key').html();
+			let pendiente = await this.model.getOnce(key); // consegimos los pendiente de la BDD
+			allOrders.push(pendiente.orden); // Guardamos todos los orden de los elementos originales
+		}
+
+		//let allPenElemModificados = $('#data-pendientes').find('li#item-list'); // Esta es la lista actualizada de los elementos, que ya se movieron
+
+		// Aqui estamos recorriendo los elementos modificados, los que ya movimos
+		for (const elem of allPenElemModificados) {
+			let key = $(elem).find('#key').html();
+			let pendiente = await this.model.getOnce(key); // consegimos los pendiente de la BDD
+			allPendientes.push(pendiente); // Guardamos los objetos pendiente de la vista modificada
+		}
+
+		/**
+		 * Aqui reemplazamos los valores de orden originales
+		 * en los nuevos elementos. Asi se mantiene el mismo
+		 * orden pero con otros elementos.
+		 */
+		for (const key in allPendientes) {
+			allPendientes[key].orden = allOrders[key];
+		}
+		
+		/**
+		 * aqui estamos guardando los elementos modificados 
+		 * para que la siguiente iteracion los tome como los originales.
+		 */
+		this.elementsPen = allPenElemModificados;
+
+		return allPendientes;
 	}
 
 	_setOffPendiente(item) {
@@ -229,7 +254,6 @@ class RenderPendiente {
 			handle: '.btn-sortable',
 			animation: 150,
 			onUpdate: function (evt) {
-				console.log(evt.oldIndex, evt.newIndex);
 				self._setOrderView(evt.oldIndex, evt.newIndex);
 			},
 			filter: '.js-remove',
@@ -277,6 +301,7 @@ class RenderPendiente {
 				document.getElementById('edit-pen').innerHTML = resolve;
 				this._setReorderEditPen();
 				this._cellEdit();
+				this.elementsPen = $('#edit-pen').find('li');
 			})
 			.catch((err) => { console.log(err.message) });
 	}
