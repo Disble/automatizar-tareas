@@ -40,12 +40,12 @@ class Historial {
 
 	capitulosVistos(lista){
 		let listFilter = this._filterCapActiveChart(lista)
-		this._chartCapVistos(listFilter, 'horizontalBar')
+		this._chartCapVistos(listFilter, 'horizontalBar', 'Capítulos Vistos')
 	}
 
 	capitulosVistosUnAnime(anime){
 		let animeFilter = this._filterCapChart(anime)
-		this._chartCapVistos(animeFilter, 'bar')
+		this._chartCapVistos(animeFilter, 'bar', 'Capítulos Vistos')
 		this._setHistoriaAnime(anime)
 	}
 
@@ -87,7 +87,7 @@ class Historial {
 		window.location.href = `file://${__dirname}/historial.html`
 	}
 
-	_chartCapVistos(listFilter, tipo){
+	_chartCapVistos(listFilter, tipo, title){
 		let ctx = document.getElementById('capVistos')
         let capVistos = new Chart(ctx, {
             type: tipo,
@@ -111,7 +111,7 @@ class Historial {
                 },
 				title: {
 					display: true,
-					text: 'Capítulos Vistos'
+					text: title
 				},
 				legend : {
 					display: false
@@ -128,6 +128,17 @@ class Historial {
 			let template = this._generatorTemplate(resolve.nombres);
 			this.render.menuRender(template);
 			this._statisticsPagesSaw(resolve);
+		});
+	}
+
+	async numCapRestantes() {
+		capRestantes().then((capRestantes) => {
+			console.log(capRestantes);
+			
+			let listFilter = this._filterCapResChart(capRestantes);
+			console.log(listFilter);
+			
+			this._chartCapVistos(listFilter, 'horizontalBar', 'Capítulos Restantes');
 		});
 	}
 
@@ -326,7 +337,7 @@ class Historial {
 		let colorTransparente = []
 		let color = []
 		$.each(list, (i, item) => {
-			if (list[i].estado == 0) {
+			if (list[i].estado == 0) { // estado 0 significa 'anime viendo'
 				let colorRand = this._getColorRandom(0.4)
 				let colorT = colorRand.replace('0.4', '1')
 				nombres.push(list[i].nombre)
@@ -352,6 +363,31 @@ class Historial {
 			'nroCap' : [anime.nrocapvisto],
 			'colorTransparente' : [colorRand],
 			'color' : [colorT]
+		}
+		return data
+	}
+
+	_filterCapResChart(list){
+		let nombres = []
+		let nroCap = []
+		let colorTransparente = []
+		let color = []
+		$.each(list, (i, item) => {
+			if (list[i].estado == 0) { // estado 0 significa 'anime viendo'
+				let colorRand = this._getColorRandom(0.4)
+				let colorT = colorRand.replace('0.4', '1')
+				let capRestantes = list[i].totalcap - list[i].nrocapvisto < 0 ? 0 : list[i].totalcap - list[i].nrocapvisto;
+				nombres.push(list[i].nombre)
+				nroCap.push(capRestantes)
+				colorTransparente.push(colorRand)
+				color.push(colorT)
+			}
+		})
+		let data = {
+			'nombres' : nombres,
+			'nroCap' : nroCap,
+			'colorTransparente' : colorTransparente,
+			'color' : color
 		}
 		return data
 	}

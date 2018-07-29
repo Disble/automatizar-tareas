@@ -87,6 +87,19 @@ let template = [{
 				}
 			}
 		}
+	},
+	{
+		label: 'Capítulos Restantes (Viendo)',
+		accelerator: 'CmdOrCtrl+j',
+		click: function (item, focusedWindow) {
+			if (focusedWindow) {
+				if (focusedWindow.id === 1) {
+					BrowserWindow.getAllWindows().forEach(function (win) {
+						win.loadURL(`file://${__dirname}/views/animes/capitulos_restantes.html`)
+					})
+				}
+			}
+		}
 	}]
 },
 {

@@ -42,6 +42,21 @@ function buscarPaginas(){
 	});
 }
 
+function capRestantes(){
+	return new Promise((resolve, reject) => {
+		animesdb.find({$and : [{"totalcap" : {$exists : true}}, {$or : [{"activo" : true}, {"activo" : {$exists : false} }]}]}, {nombre:1, totalcap: 1, nrocapvisto: 1, estado: 1})
+		.sort({"orden":1})
+		.exec(function(err, record) {
+			if (err) {
+				//console.error(err)
+				reject(new Error(err));
+				process.exit(0);
+			}
+			resolve(record);
+		});
+	});
+}
+
 function buscarMedallasDia(menu) {
 	contNombres = 0
 	$.each(menu, (nivel1, value1) => {
