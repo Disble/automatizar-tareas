@@ -24,6 +24,7 @@ Como parte del programa, diseñado al comienzo del desarrollo se presentarán co
     - Borrar (permanente)
  - [x] Gráfica de capítulos vistos de todos los animes (viendo)
  - [x] Gráfica de las páginas de los animes (viendo)
+ - [x] Gráfica de los capítulos restantes de los animes (viendo y con capítulos restantes asignado)
 
 ### **Lista de Pendientes (solo como lista)**
  - [x] Agregar
@@ -38,6 +39,7 @@ Como parte del programa, diseñado al comienzo del desarrollo se presentarán co
  - [x] No se necesita poner tíldes, ni mayúsculas a los días de la semana.
  - [x] Cuando se finaliza un anime pero no se elimina, aparece un contador en el menú de días de Ver Animes.
  - [x] Cuando se posa el puntero encima de los capítulos vistos, muestra los capítulos restantes.
+ - [x] Si se hace click derecho en los botones [Cap -] y [Cap +] solo resta o aumenta 0.5 al número de capítulos respectivamente.
 
 ## Guía de usuario
 ---
@@ -50,6 +52,7 @@ Primero, se necesita tener instalado [nodejs](https://nodejs.org/en/download/) y
 Una vez instalados, abrir la terminal, ir al lugar donde planea guardar la aplicación y ejecutar los siguientes comandos.
 
     git clone https://gitlab.com/Disble/automatizar-tareas.git
+    cd automatizar-tareas/
     npm install
     npm start
 
