@@ -239,6 +239,7 @@ class RenderPendiente {
 		this.model.activeOff(id)
 			.then((resolve) => {
 				if (resolve) {
+					this.elementsPen = $('#data-pendientes').find('li#item-list');
 					Materialize.toast('Marcado como completado correctamente', 4000);
 				} else {
 					Materialize.toast('Houston, tenemos un problema', 4000);
