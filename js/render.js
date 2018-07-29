@@ -61,8 +61,8 @@ class Render {
 									<td>${this._paginaConstructor(consulta[i].pagina)}</td>
 									<td>
 										<div class="btnIncremento">
-										<a class="btn-floating btn waves-effect waves-light red ${this._blockSerie(consulta[i].estado) ? 'disabled': ''}" onclick="render.actualizarCapitulo('${consulta[i].dia}', this, ${consulta[i].nrocapvisto <= 0 ? 0 : (consulta[i].nrocapvisto - 1)})" ><i class="icon-minus icon-normal"></i></a>
-										<a class="btn-floating btn waves-effect waves-light blue ${this._blockSerie(consulta[i].estado) ? 'disabled': ''}" onclick="render.actualizarCapitulo('${consulta[i].dia}', this, ${(consulta[i].nrocapvisto + 1)})" ><i class="icon-plus icon-normal"></i></a>
+										<a class="btn-floating btn waves-effect waves-light btn-right-click-minus red ${this._blockSerie(consulta[i].estado) ? 'disabled': ''}" dia="${consulta[i].dia}" cap="${consulta[i].nrocapvisto}" onclick="render.actualizarCapitulo('${consulta[i].dia}', this, ${consulta[i].nrocapvisto <= 0 ? 0 : (consulta[i].nrocapvisto - 1)})" ><i class="icon-minus icon-normal"></i></a>
+										<a class="btn-floating btn waves-effect waves-light btn-right-click-plus blue ${this._blockSerie(consulta[i].estado) ? 'disabled': ''}" dia="${consulta[i].dia}" cap="${consulta[i].nrocapvisto}" onclick="render.actualizarCapitulo('${consulta[i].dia}', this, ${(consulta[i].nrocapvisto + 1)})" ><i class="icon-plus icon-normal"></i></a>
 										</div>
 									</td>
 									<td>
@@ -83,6 +83,38 @@ class Render {
 		});
 		$('.tooltipped').tooltip({delay: 50});
 		$('.modal').modal();
+		// Click derecho para aumentar medio capitulo
+		
+		$('.btn-right-click-minus').on('mouseup', function(e) {
+			if (e.button === 2) {
+				// console.log('Click derecho para minus');
+				let cap = parseFloat(e.target.parentElement.getAttribute('cap'));
+				let dia = e.target.parentElement.getAttribute('dia');
+				cap = cap <= 0 ? 0 : cap - 0.5;
+				// console.log(e.target.parentElement, cap, dia);
+				
+				render.actualizarCapitulo(dia, e.target.parentElement, cap);
+			}
+		});
+		$('.btn-right-click-plus').on('mouseup', function(e) {
+			if (e.button === 2) {
+				// console.log('Click derecho para plus');
+				let cap = parseFloat(e.target.parentElement.getAttribute('cap'));
+				let dia = e.target.parentElement.getAttribute('dia');
+				cap += 0.5;
+				// console.log(e.target.parentElement, cap, dia);
+				
+				render.actualizarCapitulo(dia, e.target.parentElement, cap);
+			}
+		});
+		
+	}
+
+	_clickD(e) {
+		console.log(e);
+		
+		console.log('click derecho');
+		
 	}
 
 	_setNumCapitulo(consulta, i) {
