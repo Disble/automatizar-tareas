@@ -71,7 +71,7 @@ function buscarMedallasDia(menu) {
 					console.error(err)
 					process.exit(0)
 				}
-				render.cargarMedallas(contNombres++, record)
+				render.cargarMedallas(contNombres++, record);
 			})
 		})
 	})
@@ -187,6 +187,7 @@ function estadoCap(dia, id, estado){
 			return
 		}
 		buscar(dia)
+		buscarMedallasDia(render.menu)
 		Materialize.toast('Estado modificado correctamente', 4000)
 	})
 }

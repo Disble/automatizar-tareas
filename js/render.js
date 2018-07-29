@@ -2,9 +2,10 @@
 /*NOTE: Quitar comentarios al acabar*/
 require('sweetalert');
 class Render {
-	constructor() {
+	constructor(menu) {
 		this.contNewFolder = 0;
 		this.numReg = 10;
+		this.menu = menu;
 		/*Bloquea el drag and drop en la pagina*/
 		document.addEventListener('dragover', function (e) {
 			e.preventDefault();
@@ -83,8 +84,8 @@ class Render {
 		});
 		$('.tooltipped').tooltip({delay: 50});
 		$('.modal').modal();
-		// Click derecho para aumentar medio capitulo
 		
+		// Click derecho para aumentar medio capitulo
 		$('.btn-right-click-minus').on('mouseup', function(e) {
 			if (e.button === 2) {
 				// console.log('Click derecho para minus');
@@ -110,13 +111,6 @@ class Render {
 		
 	}
 
-	_clickD(e) {
-		console.log(e);
-		
-		console.log('click derecho');
-		
-	}
-
 	_setNumCapitulo(consulta, i) {
 		return this._blockSerie(consulta[i].estado) ? this.getState(consulta[i].estado).name : consulta[i].nrocapvisto;
 	}
@@ -133,9 +127,9 @@ class Render {
 		el.innerText = num;
 	}
 
-	menuRender(menu){
+	menuRender(){
 		var salidaMenu = ''
-		$.each(menu, (nivel1, value1) => {
+		$.each(this.menu, (nivel1, value1) => {
 			salidaMenu += `<li>
 								<div class="collapsible-header flex-x-center">${this._firstUpperCase(nivel1)}</div>`
 			if (value1 != null){
@@ -147,27 +141,28 @@ class Render {
 				$.each(value2, (nivel3, value3) => {
 					salidaMenu += `${nivel3}="${value3}" `
 				})
-				salidaMenu += `>${this._firstUpperCase(nivel2)} </a>`
+				salidaMenu += `><span class="badge"></span>${this._firstUpperCase(nivel2)} </a>`
 			})
 			if (value1 != null){
 				salidaMenu += `</div>
-						  </div>`
+						  </div>`;
 			}
-			salidaMenu += `</li>`
+			salidaMenu += `</li>`;
 		})
-		$('#menu').html(salidaMenu)
+		$('#menu').html(salidaMenu);
 		$('.no-link').click(function (e) {
-			e.preventDefault()
-			e.stopPropagation()
+			e.preventDefault();
+			e.stopPropagation();
 		})
-		buscarMedallasDia(menu)
+		buscarMedallasDia(this.menu);
 	}
 
 	cargarMedallas(dia, cont) {
-		//console.log($('#menu').find('a')[dia], cont)
-		if (cont > 0) {
-			let tagDia = $($('#menu').find('a')[dia])
-			tagDia.append(`<span class="badge">${cont}</span>`)
+		// console.log($('#menu').find('a').find('span')[dia], cont, dia)
+		if (cont >= 0) {
+			let tagDia = $($('#menu').find('a').find('span')[dia]);
+			let numMedallas = cont == 0 ? '' : cont;
+			tagDia.html(numMedallas);
 		}
 	}
 

@@ -1,7 +1,5 @@
 $(document).ready(() => {
-	render = new Render();
-	buscar(render.diaSemana());
-	render.menuRender({
+	render = new Render({
 		'día': {
 			'lunes': {
 				'href': '#!',
@@ -57,5 +55,7 @@ $(document).ready(() => {
 			}
 		}
 	});
+	buscar(render.diaSemana());
+	render.menuRender();
 	$('.collapsible').collapsible('open', 0);
 })
