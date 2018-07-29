@@ -120,7 +120,7 @@ class RenderPendiente {
 			let nombre = form.get('nombre');
 			let dia = form.get('dia');
 			let orden = parseInt(form.get('orden'));
-			let pagina = form.get('pagina');
+			let pagina = form.get('pagina') == "" ? "No Asignada" : form.get('pagina');
 			let carpeta = $(e.target).find('input[type=file]')[0].getAttribute('value');
 			let totalcap = parseInt(form.get('totalcap'));
 			

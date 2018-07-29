@@ -7,6 +7,8 @@ class Pendiente {
         this.activo = activo;
         this.fechaFin = fechaFin;
         this.fechaCreacion = fechaCreacion;
-        this._id = _id;
+        if (_id !== "") {
+            this._id = _id;
+        }
     }
 }
