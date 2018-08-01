@@ -67,7 +67,7 @@ class Render {
 										</div>
 									</td>
 									<td>
-										<button class="btn btn-small green ${this.isNoData(consulta[i].carpeta) ? 'disabled': ''}" onclick="render.abrirCarpeta('${consulta[i].carpeta}', '${consulta[i].dia}', '${consulta[i]._id}')"><span style="display: flex" class="tooltipped" data-position="left" data-delay="500" data-tooltip="Abrir carpeta"><i class="icon-folder-open"></i></span></button>
+										<button class="btn btn-small green ${this.isNoData(consulta[i].carpeta) ? 'disabled': ''}" onclick="render.abrirCarpeta('${this._noApostrophe(consulta[i].carpeta)}', '${consulta[i].dia}', '${consulta[i]._id}')"><span style="display: flex" class="tooltipped" data-position="left" data-delay="500" data-tooltip="Abrir carpeta"><i class="icon-folder-open"></i></span></button>
 									</td>
 									<td class="hidden" id="key">${consulta[i]._id}</td>
 								</tr>"`
@@ -109,6 +109,18 @@ class Render {
 			}
 		});
 		
+	}
+
+	_noApostrophe(folder) {
+		let path = ''
+		for(let i in folder){
+			if (folder.charCodeAt(i) === 39){
+				path += '\\\''
+				continue
+			}
+			path += folder[i]
+		}		
+		return path
 	}
 
 	_setNumCapitulo(consulta, i) {
