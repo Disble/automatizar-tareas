@@ -35,16 +35,12 @@ class Historial {
 		}
 		paginas += `<li class="waves-effect ${actual == fin ? 'disabled' : ''}"><a href="#!" ${actual == fin ? 'disabled' : `onclick="cargarHistorial(${todasPag});"`}><i class="icon-pag icon-right-open"></i></a></li>`
 		$('#paginas').html(paginas)
-		console.log("total reg :" + totalReg, ', todas pag : ' + todasPag, ', pag actual : ' + actual);
+		// console.log("total reg :" + totalReg, ', todas pag : ' + todasPag, ', pag actual : ' + actual);
 	}
 
 	async configurarBuscador() {
 		let data = await buscarAutocompleteHistorial();
-		//let pagina = $('li[class$="active"]')[0].innerText === undefined ? 0 : parseInt($('li[class$="active"]')[0].innerText);
-		// document.getElementById('search-history').removeEventListener('keyup', true);
-		
 		document.getElementById('search-history').addEventListener('keyup', (e) => {
-			console.log(e);
 			let query = document.getElementById('search-history').value;
 			if (query.length > 0) {
 				buscarAutocompleteAnimes(query);

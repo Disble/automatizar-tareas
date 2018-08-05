@@ -182,44 +182,15 @@ function buscarAutocompleteHistorial(){
 }
 
 async function buscarAutocompleteAnimes(query){
-	// let totalReg = await buscadorAnimesCount(query);
-	// let render = new Render();
-	// let salto = render.saltoPaginacion(1, totalReg);
-	// let limite = render.numReg;
-	/* Con Paginacion - No funciona bien
-	animesdb.find({nombre: new RegExp(query, 'i')}).sort({"fechaUltCapVisto":-1}).skip(salto).limit(limite).exec(function(err, record) {
+	animesdb.find({nombre: new RegExp(query, 'i')}).sort({"nombre":1}).exec(function(err, record) {
 		if (err) {
 			console.error(err);
 			process.exit(0)
 		}
-		console.log(record);
-		let historial = new Historial();
-		historial.imprimirHistorial(record, salto);
-		historial.imprimirPagination(totalReg, 1);
-	});
-	*/
-	animesdb.find({nombre: new RegExp(query, 'i')}).sort({"fechaUltCapVisto":-1}).exec(function(err, record) {
-		if (err) {
-			console.error(err);
-			process.exit(0)
-		}
-		console.log(record);
+		// console.log(record);
 		let historial = new Historial();
 		historial.imprimirHistorial(record, 0);
 		historial.imprimirPagination(undefined, 1);
-	});
-}
-
-async function buscadorAnimesCount(query) {
-	return new Promise((resolve, reject) => {
-        animesdb.count({nombre: new RegExp(query, 'i')}).exec(function(err, record) {
-			if (err) {
-				reject(new Error(err));
-				process.exit(0)
-			}
-			console.log(record);
-			return resolve(record);
-		});
 	});
 }
 
