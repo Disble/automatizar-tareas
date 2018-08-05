@@ -35,7 +35,32 @@ class Historial {
 		}
 		paginas += `<li class="waves-effect ${actual == fin ? 'disabled' : ''}"><a href="#!" ${actual == fin ? 'disabled' : `onclick="cargarHistorial(${todasPag});"`}><i class="icon-pag icon-right-open"></i></a></li>`
 		$('#paginas').html(paginas)
-		//console.log("total reg :" + totalReg, ', todas pag : ' + todasPag, ', pag actual : ' + actual);
+		console.log("total reg :" + totalReg, ', todas pag : ' + todasPag, ', pag actual : ' + actual);
+	}
+
+	async configurarBuscador() {
+		let data = await buscarAutocompleteHistorial();
+		//let pagina = $('li[class$="active"]')[0].innerText === undefined ? 0 : parseInt($('li[class$="active"]')[0].innerText);
+		// document.getElementById('search-history').removeEventListener('keyup', true);
+		
+		document.getElementById('search-history').addEventListener('keyup', (e) => {
+			console.log(e);
+			let query = document.getElementById('search-history').value;
+			if (query.length > 0) {
+				buscarAutocompleteAnimes(query);
+			} else {
+				cargarHistorial(1, 1);
+			}
+		});
+		
+		$('input.autocomplete').autocomplete({
+			data,
+			limit: 4, // The max amount of results that can be shown at once. Default: Infinity.
+			onAutocomplete: function(val) {
+			  //buscarAutocompleteAnimes(val, count);
+			},
+			minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
+		});
 	}
 
 	capitulosVistos(lista){

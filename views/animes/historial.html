@@ -13,7 +13,14 @@
 	<div class="row">
 		<div class="col s12">
 			<table class="bordered centered highlight">
-        <h3 class="center">Historial</h3>
+				<h3 class="center">Historial</h3>
+				<div class="row">
+					<div class="input-field col s12">
+						<i class="icon-pag mt-10 icon-search prefix"></i>
+						<input id="search-history" type="text" class="validate autocomplete">
+						<label for="search-history">Buscar</label>
+					</div>
+				</div>
 				<thead>
 						<tr>
 							<th>Núm</th>
@@ -37,7 +44,9 @@
 	<script type="text/javascript" src="../../js/Historial.js"></script>
 	<script type="text/javascript" src="../../js/consultas.js"></script>
 	<script type="text/javascript">
-	    cargarHistorial(1, 1);
+		cargarHistorial(1, 1);
+		let historial = new Historial();
+		historial.configurarBuscador();
 	</script>
 </body>
 </html>
