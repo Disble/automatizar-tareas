@@ -150,3 +150,9 @@ table.highlight > tbody > tr:hover{
 .overflow-a {
 	overflow: auto;
 }
+.float-l {
+	float: left;
+}
+.float-r {
+	float: right;
+}

@@ -13,12 +13,26 @@
 	<div class="row">
 		<div class="col s12">
 			<table class="bordered centered highlight">
-				<h3 class="center">Historial</h3>
-				<div class="row">
-					<div class="input-field col s12">
-						<i class="icon-pag mt-10 icon-search prefix"></i>
-						<input id="search-history" type="text" class="validate autocomplete">
-						<label for="search-history">Buscar</label>
+				<h3 class="center">Historial
+					<a class="modal-trigger" href="#modal-search">
+						<i class="icon-search deep-blue-text icon-big hover-icon-complete float-r tooltipped" data-position="left" data-tooltip="¡Encuentra el anime que estas buscando!"></i>
+					</a>
+					<i id="reload-history" class="icon-arrows-cw indigo-text icon-big hover-icon-complete float-r tooltipped hidden" data-position="left" data-tooltip="Cargar el historial completo"></i>
+				</h3>		
+				<!-- Modal Structure -->
+				<div id="modal-search" class="modal">
+					<div class="modal-content">
+						<div class="row">
+							<div class="input-field col s12">
+								<i class="icon-pag icon-search prefix"></i>
+								<input id="search-history" type="text" class="validate autocomplete">
+								<label for="search-history">Buscar</label>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer hidden">
+						<a href="#!" id="search-confirm" class="modal-action modal-close waves-effect btn-flat blue-text">Buscar</a>
+						<a href="#!" class="modal-action modal-close waves-effect btn-flat red-text">Cancelar</a>
 					</div>
 				</div>
 				<thead>

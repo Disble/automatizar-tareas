@@ -44,19 +44,40 @@ class Historial {
 			let query = document.getElementById('search-history').value;
 			if (query.length > 0) {
 				buscarAutocompleteAnimes(query);
+				$('#reload-history').css('display', 'block');
+				$('#paginas').css('display', 'none');
 			} else {
-				cargarHistorial(1, 1);
+				this._recargarHistorial();
 			}
 		});
 		
 		$('input.autocomplete').autocomplete({
 			data,
-			limit: 4, // The max amount of results that can be shown at once. Default: Infinity.
+			limit: 5, // The max amount of results that can be shown at once. Default: Infinity.
 			onAutocomplete: function(val) {
-			  //buscarAutocompleteAnimes(val, count);
+			  //buscarAutocompleteAnimes(val, count); // No utilizo el onAutocomplete porque el evento keyup ya hace la busqueda.
 			},
 			minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
 		});
+		// Inizializando el modal con el campo de búsqueda
+		$('.modal').modal();
+		// Configurando que el modal se cierre al aplastar enter
+		let searchConfirm = document.getElementById('search-confirm');
+		document.getElementById('search-history').addEventListener('keypress', (e) => {
+			if (e.keyCode === 13) {
+				searchConfirm.click();
+			}
+		});
+		// Botón para recargar el historial
+		$('#reload-history').click((e) => {
+			this._recargarHistorial();
+		});
+	}
+
+	_recargarHistorial() {
+		cargarHistorial(1, 1);
+		$('#reload-history').css('display', 'none');
+		$('#paginas').css('display', 'block');
 	}
 
 	capitulosVistos(lista){
@@ -72,7 +93,7 @@ class Historial {
 
 	_enlaceHistAnime() {
 		let that = this
-		$('.hidden').each(function (i, item) {
+		$('td.hidden').each(function (i, item) {
 			$(this).parent().click(() => {
 				let key = $(this).parent().children('#key').html()
 				that._createModalStats(key)

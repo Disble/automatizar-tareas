@@ -181,16 +181,15 @@ function buscarAutocompleteHistorial(){
 	});
 }
 
-async function buscarAutocompleteAnimes(query){
+function buscarAutocompleteAnimes(query){
 	animesdb.find({nombre: new RegExp(query, 'i')}).sort({"nombre":1}).exec(function(err, record) {
 		if (err) {
 			console.error(err);
-			process.exit(0)
+			process.exit(0);
 		}
 		// console.log(record);
 		let historial = new Historial();
 		historial.imprimirHistorial(record, 0);
-		historial.imprimirPagination(undefined, 1);
 	});
 }
 
