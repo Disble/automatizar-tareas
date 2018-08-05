@@ -139,9 +139,9 @@ class Render {
 		el.innerText = num;
 	}
 
-	menuRender(){
-		var salidaMenu = ''
-		$.each(this.menu, (nivel1, value1) => {
+	menuRender(menu = this.menu){
+		var salidaMenu = '';
+		$.each(menu, (nivel1, value1) => {
 			salidaMenu += `<li>
 								<div class="collapsible-header flex-x-center">${this._firstUpperCase(nivel1)}</div>`
 			if (value1 != null){
@@ -166,7 +166,7 @@ class Render {
 			e.preventDefault();
 			e.stopPropagation();
 		})
-		buscarMedallasDia(this.menu);
+		buscarMedallasDia(menu);
 	}
 
 	cargarMedallas(dia, cont) {

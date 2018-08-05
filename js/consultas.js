@@ -121,6 +121,8 @@ function buscarPorId(id){
 }
 
 function cargarHistorial(pag = 1, option = 1){
+	console.log(pag, option);
+	
 	animesdb.count({}).exec(function(err, record) {
 		if (err) {
 			console.error(err)
