@@ -54,13 +54,18 @@ class Historial {
 		$('input.autocomplete').autocomplete({
 			data,
 			limit: 5, // The max amount of results that can be shown at once. Default: Infinity.
-			onAutocomplete: function(val) {
-			  //buscarAutocompleteAnimes(val, count); // No utilizo el onAutocomplete porque el evento keyup ya hace la busqueda.
-			},
-			minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
+			onAutocomplete(val) {
+				buscarAutocompleteAnimes(val);
+				$('#reload-history').css('display', 'block');
+				$('#paginas').css('display', 'none');
+			}
 		});
 		// Inizializando el modal con el campo de búsqueda
-		$('.modal').modal();
+		$('.modal').modal({
+			ready() { // Callback for Modal open. Modal and trigger parameters available.
+			  document.getElementById('search-history').focus();
+			}
+		  });
 		// Configurando que el modal se cierre al aplastar enter
 		let searchConfirm = document.getElementById('search-confirm');
 		document.getElementById('search-history').addEventListener('keypress', (e) => {
