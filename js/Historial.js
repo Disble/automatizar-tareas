@@ -77,6 +77,12 @@ class Historial {
 		$('#reload-history').click((e) => {
 			this._recargarHistorial();
 		});
+		// Combinación de Ctrl + f global para activar el buscador
+		document.addEventListener('keypress', (e) => {
+			if (e.ctrlKey === true && e.keyCode === 6){ //e.code === "KeyF") {
+				$('#modal-search').modal('open');
+			}
+		});		
 	}
 
 	_recargarHistorial() {
@@ -180,11 +186,7 @@ class Historial {
 
 	async numCapRestantes() {
 		capRestantes().then((capRestantes) => {
-			console.log(capRestantes);
-			
 			let listFilter = this._filterCapResChart(capRestantes);
-			console.log(listFilter);
-			
 			this._chartCapVistos(listFilter, 'horizontalBar', 'Capítulos Restantes');
 		});
 	}
