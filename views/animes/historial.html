@@ -13,10 +13,11 @@
 	<div class="row">
 		<div class="col s12">
 			<table class="bordered centered highlight">
-				<h3 class="center">Historial
+				<h3 class="center title-historial">Historial
 					<a class="modal-trigger" href="#modal-search">
 						<i class="icon-search deep-blue-text icon-big hover-icon-complete float-r tooltipped" data-position="left" data-tooltip="¡Encuentra el anime que estas buscando!"></i>
 					</a>
+					<i id="filter-history" class="icon-filter indigo-text icon-big hover-icon-complete float-r"></i>
 					<i id="reload-history" class="icon-arrows-cw indigo-text icon-big hover-icon-complete float-r tooltipped hidden" data-position="left" data-tooltip="Cargar el historial completo"></i>
 				</h3>		
 				<!-- Modal Structure -->
@@ -35,17 +36,52 @@
 						<a href="#!" class="modal-action modal-close waves-effect btn-flat red-text">Cancelar</a>
 					</div>
 				</div>
+				<div id="div-filter" show="false" class="row hidden">
+					<div class="input-field col s3">
+						<select id="estado-select" multiple>
+							<option value="" disabled selected>Estado</option>
+							<option value="0">Viendo</option>
+							<option value="1">Finalizado</option>
+							<option value="2">No me gusto</option>
+						</select>
+						<label>Estado</label>
+					</div>
+					<div class="input-field col s3">
+						<select id="tipo-select" multiple>
+							<option value="" disabled selected>Tipo</option>
+							<option value="0">TV</option>
+							<option value="1">Película</option>
+							<option value="2">Especial</option>
+							<option value="3">OVA</option>
+						</select>
+						<label>Tipo</label>
+					</div>
+					<div class="input-field col s3">
+						<select id="orden-select">
+							<option value="" disabled selected>Orden</option>
+							<option value="1">Nombre A-Z</option>
+							<option value="2">Últ Cap Visto</option>
+							<option value="3">Fecha Creación</option>
+						</select>
+						<label>Orden</label>
+					</div>
+					<div class="col s3 mt-20 center">
+						<button class="btn btn-small waves-effect waves-light blue" id="btn-filter">Filtrar
+							<i class="right icon-filter"></i>
+						</button>
+					</div>
+				</div>
 				<thead>
-						<tr>
-							<th>Núm</th>
-							<th>Nombre</th>
-							<th>Núm Cap Vistos</th>
-              <th>Fecha Últ Cap Visto</th>
-              <th>Día</th>
-              <th>Hora</th>
-              <th>Estado</th>
-						</tr>
-					</thead>
+					<tr>
+						<th>Núm</th>
+						<th>Nombre</th>
+						<th>Núm Cap Vistos</th>
+						<th>Fecha Últ Cap Visto</th>
+						<th>Día</th>
+						<th>Hora</th>
+						<th>Estado</th>
+					</tr>
+				</thead>
 				<tbody id="contenido">
 				</tbody>
 			</table>

@@ -3,12 +3,12 @@
 class Historial {
 
 	constructor() {
-		this.render = new Render()
+		this.render = new Render();
 	}
 
 	imprimirHistorial(consulta, salto) {
-		let tblListaAnimes = ''
-		let cont = salto
+		let tblListaAnimes = '';
+		let cont = salto;
 		$.each(consulta, (i, item) => {
 			tblListaAnimes += `<tr>
 									<td>${++cont}</td>
@@ -20,9 +20,10 @@ class Historial {
 									<td>${this.render.isNoData(consulta[i].estado) ? 'No Data': `<i class="icon-state-historial ${this.render.getState(consulta[i].estado).icon} ${this.render.getState(consulta[i].estado).color}"></i>`}</td>
 									<td class="hidden" id="key">${consulta[i]._id}</td>
 								</tr>"`
-		})
-		$('#contenido').html(tblListaAnimes)
-		this._enlaceHistAnime()
+		});
+		$('#contenido').html(tblListaAnimes);
+		this._enlaceHistAnime();
+		$('select').material_select();
 	}
 
 	imprimirPagination(totalReg, actual) {
@@ -43,9 +44,7 @@ class Historial {
 		document.getElementById('search-history').addEventListener('keyup', (e) => {
 			let query = document.getElementById('search-history').value;
 			if (query.length > 0) {
-				buscarAutocompleteAnimes(query);
-				$('#reload-history').css('display', 'block');
-				$('#paginas').css('display', 'none');
+				this._buscarAnimes(query, false);
 			} else {
 				this._recargarHistorial();
 			}
@@ -54,10 +53,8 @@ class Historial {
 		$('input.autocomplete').autocomplete({
 			data,
 			limit: 5, // The max amount of results that can be shown at once. Default: Infinity.
-			onAutocomplete(val) {
-				buscarAutocompleteAnimes(val);
-				$('#reload-history').css('display', 'block');
-				$('#paginas').css('display', 'none');
+			onAutocomplete: val => {
+				this._buscarAnimes(val, false);
 			}
 		});
 		// Inizializando el modal con el campo de búsqueda
@@ -83,12 +80,91 @@ class Historial {
 				$('#modal-search').modal('open');
 			}
 		});		
+		this._fitrarOpciones();
+	}
+
+	_buscarAnimes(query, esFiltro, opcionOrden) {
+		buscarAutocompleteAnimes(query, esFiltro, opcionOrden);
+		this._ocultarOpciones();
+		$('#div-filter').css('display', 'block');
+	}
+
+	_ocultarOpciones() {
+		$('#reload-history').css('display', 'block');
+		$('#paginas').css('display', 'none');
+		$('#div-filter').attr('show', 'true');
 	}
 
 	_recargarHistorial() {
 		cargarHistorial(1, 1);
 		$('#reload-history').css('display', 'none');
 		$('#paginas').css('display', 'block');
+		$('#div-filter').css('display', 'none');
+		$('#div-filter').attr('show', 'false');
+		$('#search-history').val('');
+	}
+
+	_fitrarOpciones() {
+		document.getElementById('filter-history').addEventListener('click', (e) => {
+			let show = $('#div-filter').attr('show');
+
+			if (show == 'true') {
+				$('#div-filter').css('display', 'none');
+				$('#div-filter').attr('show', 'false');
+			} else if (show == 'false') {
+				$('#div-filter').css('display', 'block');
+				$('#div-filter').attr('show', 'true');
+			}
+		});
+		document.getElementById('btn-filter').addEventListener('click', (e) => {
+			let query = document.getElementById('search-history').value;
+			let estados = $('#estado-select').val();
+			let tipos = $('#tipo-select').val();
+			let orden = $('#orden-select').val();
+			let opcionesFiltro = [];
+			let opcionOrden = {};
+			
+			// console.log('datos: ', estados, tipos, orden);
+
+			if (parseInt(orden) === 1) {
+				opcionOrden = {
+					"nombre" : 1
+				}
+			} else if (parseInt(orden) === 2) {
+				opcionOrden = {
+					"fechaUltCapVisto" : -1
+				}
+			} else if (parseInt(orden) === 3) {
+				opcionOrden = {
+					"fechaCreacion" : -1
+				}
+			} else {
+				opcionOrden = {
+					"fechaUltCapVisto" : -1
+				}
+			}
+			
+			if (estados.length === 0 && tipos.length === 0) {
+				return this._buscarAnimes(query, true, opcionOrden);
+			}
+
+			for (const estado of estados) {
+				opcionesFiltro.push({
+					"estado" : parseInt(estado)
+				});
+			}
+
+			for (const tipo of tipos) {
+				opcionesFiltro.push({
+					"tipo" : parseInt(tipo)
+				});
+			}
+
+			// console.log('filtros: ', query, {$or : opcionesFiltro}, opcionOrden);
+			
+			filtrarBuscadorHistorial(query, {$or : opcionesFiltro}, opcionOrden);
+			this._ocultarOpciones();
+		});
 	}
 
 	capitulosVistos(lista){
@@ -283,7 +359,7 @@ class Historial {
 									<div class="collapsible-header flex-x-center cyan active">Estado</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center no-link" id="estado"><i class="icon-play left"></i></a>
+											<a href="#" class="collection-item waves-effect waves-light center no-link" id="estado"></a>
 										</div>
 									</div>
 								</li>

@@ -169,7 +169,6 @@ function buscarAutocompleteHistorial(){
 			}
 			// console.log(record);
 			let data = {};
-
 			for (const i in record) {
 				if (record.hasOwnProperty(i)) {
 					const element = record[i];
@@ -181,16 +180,44 @@ function buscarAutocompleteHistorial(){
 	});
 }
 
-function buscarAutocompleteAnimes(query){
-	animesdb.find({nombre: new RegExp(query, 'i')}).sort({"nombre":1}).exec(function(err, record) {
+function buscarAutocompleteAnimes(query, esFiltro, orden = {"fechaUltCapVisto" : -1}){
+	queryReg = escaparQuery(query);
+	animesdb.find({nombre: new RegExp(queryReg, 'i')}).sort(orden).exec(function(err, record) {
 		if (err) {
 			console.error(err);
 			process.exit(0);
 		}
 		// console.log(record);
+		if (esFiltro) {
+			Materialize.toast(`Filtrando ${query == "" ? 'todo' : '"'+query+'"'}: ${record.length} resultados`, 4000);
+		}
 		let historial = new Historial();
 		historial.imprimirHistorial(record, 0);
 	});
+}
+
+function filtrarBuscadorHistorial(query, opciones, orden) {
+	queryReg = escaparQuery(query);
+	animesdb
+		.find({$and : [{nombre: new RegExp(queryReg, 'i')}, opciones] })
+		.sort(orden)
+		.exec(function(err, record) {
+		if (err) {
+			console.error(err);
+			process.exit(0);
+		}
+		Materialize.toast(`Filtrando ${query == "" ? 'todo' : '"'+query+'"'}: ${record.length} resultados`, 4000);
+		// console.log(record);
+		let historial = new Historial();
+		historial.imprimirHistorial(record, 0);
+	});
+}
+
+function escaparQuery(query) {
+	query = query.replace(/\(|\)|\{|\}|\./g, (x) => {
+		return `\\${x}`;
+	});
+	return query;
 }
 
 function actualizarCap(dia, id, cont){

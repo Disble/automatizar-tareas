@@ -30,8 +30,8 @@
 	width: 105px;
 }
 .btn-small {
-  padding: 0 1rem;
-  font-size: 0.9em !important;
+	padding: 0 1rem;
+	font-size: 0.9em !important;
 	font-weight: 300;
 }
 .inputfile {
@@ -52,9 +52,6 @@
 	border-radius: 4px;
 	display: inline-block;
 	cursor: pointer;
-}
-.mt-10 {
-	margin-top: 10px;
 }
 .inputfile + label:hover {
 	background-color: #4CAF50 ;
@@ -82,7 +79,7 @@
 }
 .btn-eliminar-anime i, .btn-restaurar-anime i{
 	font-weight: bold;
-  font-size: 1.3em;
+	font-size: 1.3em;
 }
 .btn-eliminar-anime a, .btn-restaurar-anime a{
     font-weight: 500;
@@ -141,6 +138,12 @@ table.highlight > tbody > tr:hover{
 .editable-pen.mh-small { /* mh : min-height */
 	min-height: 65px;
 }
+.mt-20 {
+	margin-top: 20px;
+}
+.mt-10 {
+	margin-top: 10px;
+}
 .mb-0 {
 	margin-bottom: 0;
 }
@@ -155,4 +158,34 @@ table.highlight > tbody > tr:hover{
 }
 .float-r {
 	float: right;
+}
+.dropdown-content li>a, .dropdown-content[class*="multiple-select-dropdown"] li>span {
+	font-size: small;
+	color: var(--border-color);
+	line-height: initial;
+    padding: 1px 16px;
+}
+.dropdown-content li>a, .dropdown-content li>span {
+	font-size: small;
+	color: var(--border-color);
+	line-height: initial;
+}
+[type="checkbox"]+label:before, [type="checkbox"]:not(.filled-in)+label:after {
+	width: 15px;
+	height: 15px;
+}
+.input-field.col .dropdown-content [type="checkbox"]+label {
+	height: 26px;
+}
+[type="checkbox"]:checked+label:before {
+	width: 8px;
+	height: 18px;
+	border-right-color: #4caf50;
+	border-bottom-color: #4CAF50;
+}
+.dropdown-content li {
+    min-height: 45px;
+}
+.title-historial {
+	padding-left: 80px;
 }

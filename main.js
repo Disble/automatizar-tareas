@@ -2,8 +2,8 @@ const electron = require('electron')
 const {app, BrowserWindow} = electron
 const Menu = electron.Menu
 /*-------------------------------------------*/
-console.log('Automatizador de tareas')
-console.log('Version : ' + app.getVersion())
+// console.log('Automatizador de tareas')
+// console.log('Version : ' + app.getVersion())
 
 let template = [{
 	label: 'Animes',
@@ -316,12 +316,19 @@ app.on('browser-window-created', function () {
 })
 
 app.on('window-all-closed', function () {
-	let reopenMenuItem = findReopenMenuItem()
-	if (reopenMenuItem) reopenMenuItem.enabled = true
+	if (process.platform !== 'darwin') {
+		let reopenMenuItem = findReopenMenuItem()
+		if (reopenMenuItem) reopenMenuItem.enabled = true
+		app.quit()
+	}
 })
 app.on('ready', function () {
 	let win = new BrowserWindow({width: 800, height: 600});
 	win.loadURL(`file://${__dirname}/views/animes/index.html`);
 	const menu = Menu.buildFromTemplate(template)
 	Menu.setApplicationMenu(menu)
+	
+	win.on('closed', function () {
+		mainWindow = null
+	})
 })

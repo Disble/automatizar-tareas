@@ -12,51 +12,51 @@
 	<div class="row">
 		<div class="col s12">
 			<h3 class="center">Agregar Animes</h3>
-			<hr>
-			<div class="container">
-				<form action="" onsubmit="return cargarDatos();" id="nuevaListaAnimes">
-					<table >
-						<thead>
-							<tr>
-								<th>Orden</th>
-								<th>Nombre</th>
-								<th>Día</th>
-								<th>Cap Vistos</th>
-								<th>Total Cap</th>
-								<th>Página</th>
-								<th>Carpeta</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td><input type="number" name="orden" min="1" placeholder="1" required></td>
-								<td><input type="text" name="nombre" placeholder="Hyouka" required></td>
-								<td><input type="text" name="dia" placeholder="domingo" required></td>
-								<td><input type="number" name="nrocapvisto" min="0" placeholder="0" required></td>
-								<td><input type="number" name="totalcap" min="0" placeholder="22" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio"></td>
-								<td><input type="text" name="pagina" placeholder="https://animeflv.net/anime/782/hyouka" required></td>
-								<td>
-									<input type="file" name="carpeta" onchange="render.getFolder(this)" id="file" class="inputfile" webkitdirectory />
-									<label for="file" class="tooltipped blue" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="6">
-									<div class="barra-sumar">
-										<hr>
-										<div class="triangle"></div>
-										<a id="agregarNuevoAnime" onclick="render.increNuevosAnimes();" class="right btn-floating btn blue">+</a>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th colspan="6" class="center"><input class="btn green" type="submit" value="Agregar"></th>
-							</tr>
-						</tbody>
-					</table>
-				</form>
-			</div>
 		</div>
+	</div>
+	<hr>
+	<div class="container">
+		<form action="" onsubmit="return cargarDatos();" id="nuevaListaAnimes">
+			<table >
+				<thead>
+					<tr>
+						<th>Orden</th>
+						<th>Nombre</th>
+						<th>Día</th>
+						<th>Cap Vistos</th>
+						<th>Total Cap</th>
+						<th>Página</th>
+						<th>Carpeta</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><input type="number" name="orden" min="1" placeholder="1" required></td>
+						<td><input type="text" name="nombre" placeholder="Hyouka" required></td>
+						<td><input type="text" name="dia" placeholder="domingo" required></td>
+						<td><input type="number" name="nrocapvisto" min="0" placeholder="0" required></td>
+						<td><input type="number" name="totalcap" min="0" placeholder="22" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio"></td>
+						<td><input type="text" name="pagina" placeholder="https://animeflv.net/anime/782/hyouka" required></td>
+						<td>
+							<input type="file" name="carpeta" onchange="render.getFolder(this)" id="file" class="inputfile" webkitdirectory />
+							<label for="file" class="tooltipped blue" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="7">
+							<div class="barra-sumar">
+								<hr>
+								<div class="triangle"></div>
+								<a id="agregarNuevoAnime" onclick="render.increNuevosAnimes();" class="right btn-floating btn blue">+</a>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th colspan="7" class="center"><input class="btn green" type="submit" value="Agregar"></th>
+					</tr>
+				</tbody>
+			</table>
+		</form>
 	</div>
 	<script type="text/javascript" src="../../routers/animes.js"></script>
 	<script type="text/javascript" src="../../js/render.js"></script>
