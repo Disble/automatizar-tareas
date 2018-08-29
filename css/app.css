@@ -8,7 +8,7 @@
 	align-items: center;
 }
 .barra-sumar > hr{
-	width: 90%;
+	width: 100%;
 }
 .barra-sumar > a{
 	display: flex;
@@ -189,3 +189,19 @@ table.highlight > tbody > tr:hover{
 .title-historial {
 	padding-left: 80px;
 }
+.container-big {
+	width: 97%;
+}
+select.browser-default {
+    min-width: 90px;
+}
+input[type="number"] {
+	max-width: 105px;
+}
+.chart-container {
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	height: 100vh;
+	width: 98vw;
+  }

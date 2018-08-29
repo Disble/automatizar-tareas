@@ -7,15 +7,16 @@
   <title>Capítulos Restantes</title>
   <link rel="stylesheet" type="text/css" href="../../node_modules/materialize-css/dist/css/materialize.min.css" />
   <link rel="stylesheet" type="text/css" href="../../css/app.css" />
+  <style>
+    #capVistos {
+      height: 800px;
+    }
+  </style>
 </head>
 <body>
-	<div class="row">
-        <div class="col s12">
-            <div class="chart-container" style="position: relative; height:50vh; width:95vw">
-              <canvas id="capVistos"></canvas>
-            </div>
-        </div>
-	</div>
+  <div class="chart-container">
+    <canvas id="capVistos"></canvas>
+  </div>
   <script type="text/javascript" src="../../routers/animes.js"></script>
   <script type="text/javascript" src="../../js/render.js"></script>
 	<script type="text/javascript" src="../../js/Historial.js"></script>
@@ -23,6 +24,7 @@
 	<script type="text/javascript">
 	    let historial = new Historial();
       historial.numCapRestantes();
+      document.getElementById('capVistos').style.height = "800px";
 	</script>
 </body>
 </html>

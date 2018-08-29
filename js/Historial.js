@@ -190,6 +190,7 @@ class Historial {
 
 	_setHistoriaAnime(anime){
 		$('#nombre').html(anime.nombre);
+		$('#tipo').html(this.render.isNoData(anime.tipo) ? 'Desconocido' : this.render.getStateType(anime.tipo).name);
 		$('#estado').html(this.render.getState(anime.estado).name);
 		$('#totalcap').html(this.render.isNoData(anime.totalcap) ? 'Desconocido' : anime.totalcap);
 		$('#fechaCreacion').html(this._setFullDate(anime.fechaCreacion));
@@ -230,6 +231,8 @@ class Historial {
                 }]
             },
             options: {
+				responsive: true,
+				maintainAspectRatio: false,
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -288,45 +291,46 @@ class Historial {
 
 	_statisticsPagesSaw(listFiltered){
 		let ctx = document.getElementById('pagCapVistos');
-    let capVistos = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: listFiltered.paginas,
-            datasets: [{
-                data: listFiltered.contador,
-								backgroundColor: listFiltered.colorTransparente,
-            }]
-        },
-        options: {
-					responsive: true,
-					title: {
-						display: true,
-						text: 'Paginas'
-					},
-					legend : {
-						display: true
-					},
-          animation: {
-              animateScale: true,
-              animateRotate: true
-          },
-					tooltips: {
-            callbacks: {
-                label: function(tooltipItem, data) {
-                    let allData = data.datasets[tooltipItem.datasetIndex].data;
-                    let tooltipLabel = data.labels[tooltipItem.index];
-                    let tooltipData = allData[tooltipItem.index];
-                    let total = 0;
-                    for (let i in allData) {
-                        total += allData[i];
-                    }
-                    let tooltipPercentage = Math.round((tooltipData / total) * 100);
-										return `${tooltipLabel} : ${tooltipData} (${tooltipPercentage}%)`;
-                }
-            }
-        	}
-        }
-    });
+		let capVistos = new Chart(ctx, {
+			type: 'doughnut',
+			data: {
+				labels: listFiltered.paginas,
+				datasets: [{
+					data: listFiltered.contador,
+					backgroundColor: listFiltered.colorTransparente,
+				}]
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				title: {
+					display: true,
+					text: 'Paginas'
+				},
+				legend: {
+					display: true
+				},
+				animation: {
+					animateScale: true,
+					animateRotate: true
+				},
+				tooltips: {
+					callbacks: {
+						label: function (tooltipItem, data) {
+							let allData = data.datasets[tooltipItem.datasetIndex].data;
+							let tooltipLabel = data.labels[tooltipItem.index];
+							let tooltipData = allData[tooltipItem.index];
+							let total = 0;
+							for (let i in allData) {
+								total += allData[i];
+							}
+							let tooltipPercentage = Math.round((tooltipData / total) * 100);
+							return `${tooltipLabel} : ${tooltipData} (${tooltipPercentage}%)`;
+						}
+					}
+				}
+			}
+		});
 	}
 
 	_createModalStats(key) {
@@ -344,6 +348,14 @@ class Historial {
 									<div class="collapsible-body no-padding">
 										<div class="collection">
 											<a href="#" class="collection-item waves-effect waves-light center no-link" id="nombre"></a>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="collapsible-header flex-x-center cyan darken-2 active">Tipo</div>
+									<div class="collapsible-body no-padding">
+										<div class="collection">
+											<a href="#" class="collection-item waves-effect waves-light center no-link" id="tipo"></a>
 										</div>
 									</div>
 								</li>
@@ -400,7 +412,7 @@ class Historial {
 						<div class="col s7">
 							<div class="row">
 								<div class="col s12">
-									<canvas id="capVistos" width="400" height="400"></canvas>
+									<canvas id="capVistos" height="300"></canvas>
 								</div>
 								<div class="col s12">
 									<div class="container btn-eliminar-anime">

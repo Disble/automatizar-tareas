@@ -1,15 +1,15 @@
 function cargarDatos(){
-	let render = new Render()
-	let nuevo = render.crearJson()
+	let render = new Render();
+	let nuevo = render.crearJson();
 	animesdb.insert(nuevo, function(err, record) {
 		if (err) {
-			console.error(err)
-			Materialize.toast('Houston, tenemos un problema', 4000)
-			return
+			console.error(err);
+			Materialize.toast('Houston, tenemos un problema', 4000);
+			return;
 		}
-		Materialize.toast('Datos Ingresados Correctamente', 4000)
+		Materialize.toast('Datos Ingresados Correctamente', 4000);
 	})
-	return false
+	return false;
 }
 
 function buscar(dia){
@@ -253,7 +253,7 @@ function estadoCap(dia, id, estado){
 }
 
 function actualizarFila(id, json, pag){
-	animesdb.update({"_id" : id}, {$set: {"orden": json.orden, "nombre": json.nombre, "dia": json.dia, "nrocapvisto": json.nrocapvisto, "totalcap": json.totalcap , "pagina": json.pagina, "carpeta": json.carpeta}}, function(err, num) {
+	animesdb.update({"_id" : id}, {$set: {"orden": json.orden, "nombre": json.nombre, "dia": json.dia, "nrocapvisto": json.nrocapvisto, "totalcap": json.totalcap , "tipo": json.tipo , "pagina": json.pagina, "carpeta": json.carpeta}}, function(err, num) {
 		if (err) {
 			console.error(err)
 			Materialize.toast('Houston, tenemos un problema', 4000)

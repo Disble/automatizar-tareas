@@ -50,6 +50,15 @@ class RenderPendiente {
 											</select>
 										</div>
 										<div class="input-field">
+											<select name="tipo">
+												<option value="" disabled selected>Escoga un tipo de anime</option>
+												<option value="0">TV</option>
+												<option value="1">Película</option>
+												<option value="2">Especial</option>
+												<option value="3">OVA</option>
+											</select>
+										</div>
+										<div class="input-field">
 										<input type="text" id="pagina" name="pagina" value="${value.pagina}"  class="validate">
 										<label for="pagina">Pagina (No obligatorio)</label>
 										</div>
@@ -111,20 +120,21 @@ class RenderPendiente {
 			e.preventDefault();
 			let form = new FormData(this);
 			
-			if (form.get('nombre').length === 0 || form.get('dia') === null || form.get('orden').length === 0) {
+			if (form.get('nombre').length === 0 || form.get('dia') === null || form.get('orden').length === 0 || form.get('tipo') === null) {
 				swal("¡Opss!", `Necesitamos más datos para crearlo.`, "warning");
 				return false;
 			}
 			
 			let container = $(this).parent().parent().parent()[0];
-			let nombre = form.get('nombre');
-			let dia = form.get('dia');
+			let nombre = form.get('nombre').trim();
+			let dia = form.get('dia').trim();
+			let tipo = parseInt(form.get('tipo'));
 			let orden = parseInt(form.get('orden'));
-			let pagina = form.get('pagina') == "" ? "No Asignada" : form.get('pagina');
+			let pagina = form.get('pagina') == "" ? "No Asignada" : form.get('pagina').trim();
 			let carpeta = $(e.target).find('input[type=file]')[0].getAttribute('value');
 			let totalcap = parseInt(form.get('totalcap'));
 			
-			let anime = new Anime(orden, nombre, dia, 0, totalcap, pagina, carpeta, 0, true, new Date(), null, null);
+			let anime = new Anime(orden, nombre, dia, 0, totalcap, tipo, pagina, carpeta, 0, true, new Date(), null, null);
 			
 			self.modelAnime.new(anime)
 				.then((resolve) => {
@@ -270,7 +280,7 @@ class RenderPendiente {
 						if (willDelete) {
 							var el = sortable.closest(evt.item);
 							el && el.parentNode.removeChild(el);
-							console.log('Justo antes de borrar', evt.item);
+							// console.log('Justo antes de borrar', evt.item);
 							self._setOffPendiente(evt.item);
 						} else {
 							swal("¡Acción cancelada!", "", "info");

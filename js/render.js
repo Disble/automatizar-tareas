@@ -28,6 +28,7 @@ class Render {
 									<td>${consulta[i].orden}</td>
 									<td>${consulta[i].nrocapvisto}</td>
 									<td>${this.isNoData(consulta[i].totalcap) ? '' : consulta[i].totalcap}</td>
+									<td>${this.isNoData(consulta[i].tipo) ? '' : consulta[i].tipo}</td>
 									<td>${consulta[i].pagina}</td>
 									<td>${this.isNoData(consulta[i].carpeta) ? '' : consulta[i].carpeta}</td>
 									<td class="hidden" id="key">${consulta[i]._id}</td>
@@ -180,65 +181,75 @@ class Render {
 
 	/*------------------------- RENDER DINAMICO ---------------------------------------*/
 	increNuevosAnimes(){
-		let nuevaConsulta = /*html*/`<tr>
-								<td><input type="number" name="orden" min="1" required></td>
-								<td><input type="text" name="nombre" required></td>
-								<td><input type="text" name="dia" required></td>
-								<td><input type="number" name="nrocapvisto" min="0" required></td>
-								<td><input type="number" name="totalcap" min="0"  class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio"></td>
-								<td><input type="text" name="pagina" required></td>
-								<td>
-									<input type="file" name="carpeta" onchange="render.getFolder(this)" id="file${++this.contNewFolder}" class="inputfile" webkitdirectory />
-									<label for="file${this.contNewFolder}" class="tooltipped blue" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
-								</td>
-							</tr>`
-		$('#agregarNuevoAnime').parent().parent().parent().before(nuevaConsulta)
-		$('.tooltipped').tooltip({delay: 50})
+		let nuevaConsulta = /*html*/ `<tr id="datos-anime-nuevo">
+				<td><input type="number" name="orden" min="1" class="validate" required></td>
+				<td><input type="text" name="nombre" class="validate" required></td>
+				<td><input type="text" name="dia" class="validate" required></td>
+				<td><input type="number" name="nrocapvisto" min="0" class="validate" required></td>
+				<td><input type="number" name="totalcap" min="0" class="tooltipped validate" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio"></td>
+				<td>
+					<select name="tipo" class="validate browser-default" required>
+						<option value="" disabled selected>Tipo</option>
+						<option value="0">TV</option>
+						<option value="1">Película</option>
+						<option value="2">Especial</option>
+						<option value="3">OVA</option>
+					</select>
+				</td>
+				<td><input type="text" name="pagina" class="validate" required></td>
+				<td>
+					<input type="file" name="carpeta" onchange="render.getFolder(this)" id="file${++this.contNewFolder}" class="inputfile" webkitdirectory />
+					<label for="file${this.contNewFolder}" class="tooltipped blue" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
+				</td>
+			</tr>`;
+		$('#agregarNuevoAnime').parent().parent().parent().before(nuevaConsulta);
+		$('.tooltipped').tooltip({delay: 50});
+		$('select').material_select();
 	}
 
 	crearJson(){
-		let inputs = $('input[type]')
-		let listaEnviar = []
-		let contenido = []
-		inputs.each((key, value) => {
-			let llave = inputs[key].getAttribute('name')
-			let valor = inputs[key].value
-			if (llave == "orden" || llave == "nrocapvisto" || llave == "totalcap")
-				contenido[llave] = parseInt(valor)
-			else
-				contenido[llave] = valor
-			// console.log(contenido)
-			if(llave=="carpeta"){
-				let json = {
-					orden : contenido['orden'],
-					nombre: contenido['nombre'],
-					dia: this._quitaAcentos(contenido['dia']),
-					nrocapvisto: contenido['nrocapvisto'],
-					totalcap: contenido['totalcap'],
-					pagina: contenido['pagina'].toLowerCase(),
-					carpeta: inputs[key].getAttribute('value'),
-					estado : 0,
-					activo : true,
-					fechaCreacion : new Date()
+		let listaEnviar = [];
+		let nuevosAnimes = $('tr[id="datos-anime-nuevo"]');
+		// console.log('nuevos animes: ', nuevosAnimes);
+
+		for (const nuevoAnime of nuevosAnimes) {
+			let anime = {};
+			let inputs = $(nuevoAnime).find('input[type]');
+			let tipo = parseInt($(nuevoAnime).find('select[name="tipo"]').val());
+			
+			for (const input of inputs) {
+				const valor = input.value;
+				let llave = input.getAttribute('name');
+				if (llave === "orden" || llave === "nrocapvisto" || llave === "totalcap" || llave === "tipo") {
+					anime[llave] = parseInt(valor);
+				} else if (llave === 'carpeta') {
+					anime[llave] = input.getAttribute('value');
+				} else {
+					anime[llave] = valor.trim();
 				}
-				listaEnviar.push(json)
-				contenido = []
+				// console.log(anime);
 			}
-		})
-		// console.log(listaEnviar)
-		return listaEnviar
+			anime.tipo = tipo;
+			anime.estado = 0;
+			anime.activo = true;
+			anime.fechaCreacion = new Date();
+			// console.log('Full nuevo anime: ', anime);
+			listaEnviar.push(anime);
+		}
+		// console.log(listaEnviar);
+		return listaEnviar;
 	}
 
 	crearJsonActualizar(row){
-		let json = {
-			nombre: row[0],
-			dia: this._quitaAcentos(row[1]),
-			orden: parseInt(row[2]) < 1 ? 1 : parseInt(row[2]),
-			nrocapvisto: this._estadoNumCap(row[3]),
-			totalcap: row[4] === '' ? undefined : row[4],
-			pagina: row[5],
-			carpeta: this.isNoData(row[6]) || row[6].length == 0 ? null : this.slashFolder(row[6])
-		}
+		let json = {};
+		json.nombre = row[0];
+		json.dia = this._quitaAcentos(row[1]);
+		json.orden = parseInt(row[2]) < 1 ? 1 : parseInt(row[2]);
+		json.nrocapvisto = this._estadoNumCap(row[3]);
+		json.totalcap = row[4] === '' ? undefined : row[4];
+		json.tipo = row[5] === '' ? undefined : parseInt(row[5]);
+		json.pagina = row[6];
+		json.carpeta = this.isNoData(row[7]) || row[7].length == 0 ? null : this.slashFolder(row[7]);
 		// console.log(json)
 		return json
 	}
@@ -435,6 +446,23 @@ class Render {
 				backgroundColor : 'red'
 			}
 		}[estado]
+	}
+
+	getStateType(tipo) {
+		return {
+			0 : {
+				name : 'TV',
+			},
+			1 : {
+				name : 'Película',
+			},
+			2 : {
+				name : 'Especial',
+			},
+			3 : {
+				name : 'OVA',
+			}
+		}[tipo];
 	}
 
 	_blockSerie(estado){
