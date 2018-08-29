@@ -1,15 +1,15 @@
 function cargarDatos(){
-	let render = new Render()
-	let nuevo = render.crearJson()
+	let render = new Render();
+	let nuevo = render.crearJson();
 	animesdb.insert(nuevo, function(err, record) {
 		if (err) {
-			console.error(err)
-			Materialize.toast('Houston, tenemos un problema', 4000)
-			return
+			console.error(err);
+			Materialize.toast('Houston, tenemos un problema', 4000);
+			return;
 		}
-		Materialize.toast('Datos Ingresados Correctamente', 4000)
+		Materialize.toast('Datos Ingresados Correctamente', 4000);
 	})
-	return false
+	return false;
 }
 
 function buscar(dia){
@@ -156,10 +156,70 @@ function buscarTodoHistorial(pag, totalReg){
 			console.error(err)
 			process.exit(0)
 		}
-		let historial = new Historial()
-		historial.imprimirHistorial(record, salto)
-		historial.imprimirPagination(totalReg, pag)
+		let historial = new Historial();
+		historial.imprimirHistorial(record, salto);
+		historial.imprimirPagination(totalReg, pag);
 	})
+}
+
+function buscarAutocompleteHistorial(){
+	return new Promise((resolve, reject) => {
+        animesdb.find({}, {"nombre" : 1} ).sort({"fechaUltCapVisto":-1}).exec(function(err, record) {
+			if (err) {
+				reject(new Error(err));
+				process.exit(0)
+			}
+			// console.log(record);
+			let data = {};
+			for (const i in record) {
+				if (record.hasOwnProperty(i)) {
+					const element = record[i];
+					data[element.nombre] = null;
+				}
+			}
+			return resolve(data);
+		});
+	});
+}
+
+function buscarAutocompleteAnimes(query, esFiltro, orden = {"fechaUltCapVisto" : -1}){
+	queryReg = escaparQuery(query);
+	animesdb.find({nombre: new RegExp(queryReg, 'i')}).sort(orden).exec(function(err, record) {
+		if (err) {
+			console.error(err);
+			process.exit(0);
+		}
+		// console.log(record);
+		if (esFiltro) {
+			Materialize.toast(`Filtrando ${query == "" ? 'todo' : '"'+query+'"'}: ${record.length} resultados`, 4000);
+		}
+		let historial = new Historial();
+		historial.imprimirHistorial(record, 0);
+	});
+}
+
+function filtrarBuscadorHistorial(query, opciones, orden) {
+	queryReg = escaparQuery(query);
+	animesdb
+		.find({$and : [{nombre: new RegExp(queryReg, 'i')}, opciones] })
+		.sort(orden)
+		.exec(function(err, record) {
+		if (err) {
+			console.error(err);
+			process.exit(0);
+		}
+		Materialize.toast(`Filtrando ${query == "" ? 'todo' : '"'+query+'"'}: ${record.length} resultados`, 4000);
+		// console.log(record);
+		let historial = new Historial();
+		historial.imprimirHistorial(record, 0);
+	});
+}
+
+function escaparQuery(query) {
+	query = query.replace(/\(|\)|\{|\}|\./g, (x) => {
+		return `\\${x}`;
+	});
+	return query;
 }
 
 function actualizarCap(dia, id, cont){
@@ -195,7 +255,7 @@ function estadoCap(dia, id, estado){
 }
 
 function actualizarFila(id, json, pag){
-	animesdb.update({"_id" : id}, {$set: {"orden": json.orden, "nombre": json.nombre, "dia": json.dia, "nrocapvisto": json.nrocapvisto, "totalcap": json.totalcap , "pagina": json.pagina, "carpeta": json.carpeta}}, function(err, num) {
+	animesdb.update({"_id" : id}, {$set: {"orden": json.orden, "nombre": json.nombre, "dia": json.dia, "nrocapvisto": json.nrocapvisto, "totalcap": json.totalcap , "tipo": json.tipo , "pagina": json.pagina, "carpeta": json.carpeta}}, function(err, num) {
 		if (err) {
 			console.error(err)
 			Materialize.toast('Houston, tenemos un problema', 4000)

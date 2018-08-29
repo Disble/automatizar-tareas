@@ -3,12 +3,12 @@
 class Historial {
 
 	constructor() {
-		this.render = new Render()
+		this.render = new Render();
 	}
 
 	imprimirHistorial(consulta, salto) {
-		let tblListaAnimes = ''
-		let cont = salto
+		let tblListaAnimes = '';
+		let cont = salto;
 		$.each(consulta, (i, item) => {
 			tblListaAnimes += `<tr>
 									<td>${++cont}</td>
@@ -20,9 +20,10 @@ class Historial {
 									<td>${this.render.isNoData(consulta[i].estado) ? 'No Data': `<i class="icon-state-historial ${this.render.getState(consulta[i].estado).icon} ${this.render.getState(consulta[i].estado).color}"></i>`}</td>
 									<td class="hidden" id="key">${consulta[i]._id}</td>
 								</tr>"`
-		})
-		$('#contenido').html(tblListaAnimes)
-		this._enlaceHistAnime()
+		});
+		$('#contenido').html(tblListaAnimes);
+		this._enlaceHistAnime();
+		$('select').material_select();
 	}
 
 	imprimirPagination(totalReg, actual) {
@@ -35,7 +36,135 @@ class Historial {
 		}
 		paginas += `<li class="waves-effect ${actual == fin ? 'disabled' : ''}"><a href="#!" ${actual == fin ? 'disabled' : `onclick="cargarHistorial(${todasPag});"`}><i class="icon-pag icon-right-open"></i></a></li>`
 		$('#paginas').html(paginas)
-		//console.log("total reg :" + totalReg, ', todas pag : ' + todasPag, ', pag actual : ' + actual);
+		// console.log("total reg :" + totalReg, ', todas pag : ' + todasPag, ', pag actual : ' + actual);
+	}
+
+	async configurarBuscador() {
+		let data = await buscarAutocompleteHistorial();
+		document.getElementById('search-history').addEventListener('keyup', (e) => {
+			let query = document.getElementById('search-history').value;
+			if (query.length > 0) {
+				this._buscarAnimes(query, false);
+			} else {
+				this._recargarHistorial();
+			}
+		});
+		
+		$('input.autocomplete').autocomplete({
+			data,
+			limit: 5, // The max amount of results that can be shown at once. Default: Infinity.
+			onAutocomplete: val => {
+				this._buscarAnimes(val, false);
+			}
+		});
+		// Inizializando el modal con el campo de búsqueda
+		$('.modal').modal({
+			ready() { // Callback for Modal open. Modal and trigger parameters available.
+			  document.getElementById('search-history').focus();
+			}
+		  });
+		// Configurando que el modal se cierre al aplastar enter
+		let searchConfirm = document.getElementById('search-confirm');
+		document.getElementById('search-history').addEventListener('keypress', (e) => {
+			if (e.keyCode === 13) {
+				searchConfirm.click();
+			}
+		});
+		// Botón para recargar el historial
+		$('#reload-history').click((e) => {
+			this._recargarHistorial();
+		});
+		// Combinación de Ctrl + f global para activar el buscador
+		document.addEventListener('keypress', (e) => {
+			if (e.ctrlKey === true && e.keyCode === 6){ //e.code === "KeyF") {
+				$('#modal-search').modal('open');
+			}
+		});		
+		this._fitrarOpciones();
+	}
+
+	_buscarAnimes(query, esFiltro, opcionOrden) {
+		buscarAutocompleteAnimes(query, esFiltro, opcionOrden);
+		this._ocultarOpciones();
+		$('#div-filter').css('display', 'block');
+	}
+
+	_ocultarOpciones() {
+		$('#reload-history').css('display', 'block');
+		$('#paginas').css('display', 'none');
+		$('#div-filter').attr('show', 'true');
+	}
+
+	_recargarHistorial() {
+		cargarHistorial(1, 1);
+		$('#reload-history').css('display', 'none');
+		$('#paginas').css('display', 'block');
+		$('#div-filter').css('display', 'none');
+		$('#div-filter').attr('show', 'false');
+		$('#search-history').val('');
+	}
+
+	_fitrarOpciones() {
+		document.getElementById('filter-history').addEventListener('click', (e) => {
+			let show = $('#div-filter').attr('show');
+
+			if (show == 'true') {
+				$('#div-filter').css('display', 'none');
+				$('#div-filter').attr('show', 'false');
+			} else if (show == 'false') {
+				$('#div-filter').css('display', 'block');
+				$('#div-filter').attr('show', 'true');
+			}
+		});
+		document.getElementById('btn-filter').addEventListener('click', (e) => {
+			let query = document.getElementById('search-history').value;
+			let estados = $('#estado-select').val();
+			let tipos = $('#tipo-select').val();
+			let orden = $('#orden-select').val();
+			let opcionesFiltro = [];
+			let opcionOrden = {};
+			
+			// console.log('datos: ', estados, tipos, orden);
+
+			if (parseInt(orden) === 1) {
+				opcionOrden = {
+					"nombre" : 1
+				}
+			} else if (parseInt(orden) === 2) {
+				opcionOrden = {
+					"fechaUltCapVisto" : -1
+				}
+			} else if (parseInt(orden) === 3) {
+				opcionOrden = {
+					"fechaCreacion" : -1
+				}
+			} else {
+				opcionOrden = {
+					"fechaUltCapVisto" : -1
+				}
+			}
+			
+			if (estados.length === 0 && tipos.length === 0) {
+				return this._buscarAnimes(query, true, opcionOrden);
+			}
+
+			for (const estado of estados) {
+				opcionesFiltro.push({
+					"estado" : parseInt(estado)
+				});
+			}
+
+			for (const tipo of tipos) {
+				opcionesFiltro.push({
+					"tipo" : parseInt(tipo)
+				});
+			}
+
+			// console.log('filtros: ', query, {$or : opcionesFiltro}, opcionOrden);
+			
+			filtrarBuscadorHistorial(query, {$or : opcionesFiltro}, opcionOrden);
+			this._ocultarOpciones();
+		});
 	}
 
 	capitulosVistos(lista){
@@ -51,7 +180,7 @@ class Historial {
 
 	_enlaceHistAnime() {
 		let that = this
-		$('.hidden').each(function (i, item) {
+		$('td.hidden').each(function (i, item) {
 			$(this).parent().click(() => {
 				let key = $(this).parent().children('#key').html()
 				that._createModalStats(key)
@@ -61,6 +190,7 @@ class Historial {
 
 	_setHistoriaAnime(anime){
 		$('#nombre').html(anime.nombre);
+		$('#tipo').html(this.render.isNoData(anime.tipo) ? 'Desconocido' : this.render.getStateType(anime.tipo).name);
 		$('#estado').html(this.render.getState(anime.estado).name);
 		$('#totalcap').html(this.render.isNoData(anime.totalcap) ? 'Desconocido' : anime.totalcap);
 		$('#fechaCreacion').html(this._setFullDate(anime.fechaCreacion));
@@ -101,6 +231,8 @@ class Historial {
                 }]
             },
             options: {
+				responsive: true,
+				maintainAspectRatio: false,
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -133,11 +265,7 @@ class Historial {
 
 	async numCapRestantes() {
 		capRestantes().then((capRestantes) => {
-			console.log(capRestantes);
-			
 			let listFilter = this._filterCapResChart(capRestantes);
-			console.log(listFilter);
-			
 			this._chartCapVistos(listFilter, 'horizontalBar', 'Capítulos Restantes');
 		});
 	}
@@ -163,45 +291,46 @@ class Historial {
 
 	_statisticsPagesSaw(listFiltered){
 		let ctx = document.getElementById('pagCapVistos');
-    let capVistos = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: listFiltered.paginas,
-            datasets: [{
-                data: listFiltered.contador,
-								backgroundColor: listFiltered.colorTransparente,
-            }]
-        },
-        options: {
-					responsive: true,
-					title: {
-						display: true,
-						text: 'Paginas'
-					},
-					legend : {
-						display: true
-					},
-          animation: {
-              animateScale: true,
-              animateRotate: true
-          },
-					tooltips: {
-            callbacks: {
-                label: function(tooltipItem, data) {
-                    let allData = data.datasets[tooltipItem.datasetIndex].data;
-                    let tooltipLabel = data.labels[tooltipItem.index];
-                    let tooltipData = allData[tooltipItem.index];
-                    let total = 0;
-                    for (let i in allData) {
-                        total += allData[i];
-                    }
-                    let tooltipPercentage = Math.round((tooltipData / total) * 100);
-										return `${tooltipLabel} : ${tooltipData} (${tooltipPercentage}%)`;
-                }
-            }
-        	}
-        }
-    });
+		let capVistos = new Chart(ctx, {
+			type: 'doughnut',
+			data: {
+				labels: listFiltered.paginas,
+				datasets: [{
+					data: listFiltered.contador,
+					backgroundColor: listFiltered.colorTransparente,
+				}]
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				title: {
+					display: true,
+					text: 'Paginas'
+				},
+				legend: {
+					display: true
+				},
+				animation: {
+					animateScale: true,
+					animateRotate: true
+				},
+				tooltips: {
+					callbacks: {
+						label: function (tooltipItem, data) {
+							let allData = data.datasets[tooltipItem.datasetIndex].data;
+							let tooltipLabel = data.labels[tooltipItem.index];
+							let tooltipData = allData[tooltipItem.index];
+							let total = 0;
+							for (let i in allData) {
+								total += allData[i];
+							}
+							let tooltipPercentage = Math.round((tooltipData / total) * 100);
+							return `${tooltipLabel} : ${tooltipData} (${tooltipPercentage}%)`;
+						}
+					}
+				}
+			}
+		});
 	}
 
 	_createModalStats(key) {
@@ -223,6 +352,14 @@ class Historial {
 									</div>
 								</li>
 								<li>
+									<div class="collapsible-header flex-x-center cyan darken-2 active">Tipo</div>
+									<div class="collapsible-body no-padding">
+										<div class="collection">
+											<a href="#" class="collection-item waves-effect waves-light center no-link" id="tipo"></a>
+										</div>
+									</div>
+								</li>
+								<li>
 									<div class="collapsible-header flex-x-center cyan darken-1 active">Total Capítulos</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
@@ -234,7 +371,7 @@ class Historial {
 									<div class="collapsible-header flex-x-center cyan active">Estado</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center no-link" id="estado"><i class="icon-play left"></i></a>
+											<a href="#" class="collection-item waves-effect waves-light center no-link" id="estado"></a>
 										</div>
 									</div>
 								</li>
@@ -275,7 +412,7 @@ class Historial {
 						<div class="col s7">
 							<div class="row">
 								<div class="col s12">
-									<canvas id="capVistos" width="400" height="400"></canvas>
+									<canvas id="capVistos" height="300"></canvas>
 								</div>
 								<div class="col s12">
 									<div class="container btn-eliminar-anime">
