@@ -5,7 +5,7 @@
 
 Esta aplicación tiene como principio la sencillez y accesibilidad de uso, ayudando al usuario con un sistema de control rápido y seguro. O como el lema que precede a esta aplicación dice.
 
->Apoyando la vagancia desde tiempos inmemoriales.
+> Apoyando la vagancia desde tiempos inmemoriales.
 
 Enfocada principalmente como un Sistema de Control de Capítulos (o SCC siglas que acabo de inventar) de animes vistos. Teniendo un ciclo completo (agregar, ver, editar, borrar) en su presente versión Beta.
 
@@ -22,6 +22,9 @@ Como parte del programa, diseñado al comienzo del desarrollo se presentarán co
  - [x] Historial de Animes vistos (todos)
     - Datos por anime
     - Borrar (permanente)
+    - Restaurar (regresa a la lista de Ver Animes)
+    - Buscador
+    - Filtros para el buscador e historial
  - [x] Gráfica de capítulos vistos de todos los animes (viendo)
  - [x] Gráfica de las páginas de los animes (viendo)
  - [x] Gráfica de los capítulos restantes de los animes (viendo y con capítulos restantes asignado)
@@ -72,7 +75,7 @@ Ver anime.
 ---
 Las versiones de esta aplicación fueron creadas basándose en [Versionado Semántico](http://semver.org/).
 
-**Next Update: Sherlock Update**
+**Next Update: RE:Style Update**
 
 ## Licencia
 ---
