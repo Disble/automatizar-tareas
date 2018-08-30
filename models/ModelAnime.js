@@ -15,3 +15,5 @@ class ModelAnime {
     });
   }
 }
+
+exports.ModelAnime = ModelAnime;

@@ -285,7 +285,7 @@ class Historial {
 			aux[nombres[key]] = subData;
 			template[key] = aux[nombres[key]];
 		}
-		//console.log(template);
+		console.log(template);
 		return template;
 	}
 

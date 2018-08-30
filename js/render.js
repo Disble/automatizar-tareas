@@ -307,6 +307,70 @@ class Render {
 		}
 		return path
 	}
+
+	initEditAnime() {
+		this._initEditAnimeHTML();
+		this._editAnime();
+		//
+
+	}
+
+	_initEditAnimeHTML() {
+		$("select").material_select();
+		$("select[required]").css({
+			display: 'inline',
+			position: 'absolute',
+			top: 10,
+			padding: 0,
+			margin: 0,
+			border: 0,
+			height: 0,
+			width: 0,
+			'z-index': -10
+		});
+		document.querySelectorAll('button[type="submit"]').forEach((button) => {
+			button.addEventListener('click', () => {
+				document.querySelectorAll('select.initialized').forEach((select, key) => {
+					let label = select.parentNode.nextElementSibling;
+					if (select.value === "") {
+						let error = label.getAttribute('data-error');
+						label.setAttribute('data-value', error);
+					} else {
+						label.setAttribute('data-value', '');
+					}
+				});
+			});
+		});
+	}
+
+	_editAnime() {
+		document.getElementById('form-edit-anime').addEventListener('submit', e => {
+			e.preventDefault();
+			console.log('dentro submit', e.target);
+			
+			let form = new FormData(e.target);
+			let nombre = form.get('nombre').trim();
+			let dia = form.get('dia').trim();
+			let orden = parseInt(form.get('orden'));
+			let capVistos = parseInt(form.get('cap-vistos'));
+			let totalCap = parseInt(form.get('total-cap'));
+			let tipo = parseInt(form.get('tipo'));
+			let estado = parseInt(form.get('estado'));
+			let pagina = form.get('pagina').trim();
+			let carpeta = form.get('carpeta').path;
+
+			console.log(nombre,
+				dia,
+				orden,
+				capVistos,
+				totalCap,
+				tipo,
+				estado,
+				pagina,
+				carpeta)
+			
+		})
+	}
 	
 	cellEdit(){
 		let that = this;

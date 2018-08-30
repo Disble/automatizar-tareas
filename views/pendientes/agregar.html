@@ -41,10 +41,8 @@
 	<script type="text/javascript" src="../../routers/animes_pendientes.js"></script>
   <script type="text/javascript" src="../../models/Pendiente.js"></script>
 	<script type="text/javascript" src="../../models/ModelPendiente.js"></script>
-	<script type="text/javascript" src="../../models/Anime.js"></script>
-	<script type="text/javascript" src="../../models/ModelAnime.js"></script>
-  <script type="text/javascript" src="../../models/RenderPendiente.js"></script>
-	<script type="text/javascript">
+  <script>
+    const { RenderPendiente } = require('../../models/RenderPendiente.js');
     $(document).ready(() => {
       let render = new RenderPendiente();
       render._setSubmitNew();

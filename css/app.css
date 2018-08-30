@@ -144,6 +144,12 @@ table.highlight > tbody > tr:hover{
 .mt-10 {
 	margin-top: 10px;
 }
+.mb-10 {
+	margin-bottom: 10px;
+}
+.mb-20 {
+	margin-bottom: 20px;
+}
 .mb-0 {
 	margin-bottom: 0;
 }
@@ -195,7 +201,7 @@ table.highlight > tbody > tr:hover{
 select.browser-default {
     min-width: 90px;
 }
-input[type="number"] {
+#datos-anime-nuevo input[type="number"] {
 	max-width: 105px;
 }
 .chart-container {
@@ -204,4 +210,38 @@ input[type="number"] {
 	margin-right: auto;
 	height: 100vh;
 	width: 98vw;
-  }
+}
+/* Editar Animes */
+.edit-anime-list .collection.with-header .collection-header {
+	padding: 5px 10px;
+}
+.edit-anime-list .collection .collection-item {
+	padding: 5px 10px;
+}
+.edit-anime-list .collection.with-header .collection-item {
+	padding-left: 30px;
+}
+.paragraph-btn-right {
+	padding-right: 160px;
+}
+.danger-border {
+	border: 1px solid #d73a49;
+}
+.normal-border {
+	border: 1px solid #d1d5da
+}
+.badge-left-edit {
+	position: absolute;
+	left: 2px;
+	width: 24px;
+	overflow-x: auto;
+}
+.select-wrapper+label {
+	width: 100%;
+}
+.select-wrapper+label::after {
+	content: attr(data-value);
+	opacity: 1;
+	top: 91%;
+	color: red;
+}

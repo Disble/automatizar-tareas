@@ -1,3 +1,6 @@
+const { Anime } = require('./Anime.js');
+const { ModelAnime } = require('./ModelAnime.js');
+
 class RenderPendiente {
 	constructor() {
 		this.model = new ModelPendiente();
@@ -150,10 +153,12 @@ class RenderPendiente {
 								self._setOffPendiente(container);
 								swal("¡Pendiente borrado!", "", "success")
 									.then((value) => {
-										window.location.href = `file://${__dirname}/pendientes.html`;
+										// esta dirección toca hacerla relativa a la carpeta /models por el request()
+										window.location.href = `file://${__dirname}/../views/pendientes/pendientes.html`;
 									});
 							} else {
-								window.location.href = `file://${__dirname}/pendientes.html`;
+								// esta dirección toca hacerla relativa a la carpeta /models por el request()
+								window.location.href = `file://${__dirname}/../views/pendientes/pendientes.html`;
 							}
 						});
 				})
@@ -420,3 +425,5 @@ class RenderPendiente {
 		return path
 	}
 }
+
+exports.RenderPendiente = RenderPendiente;

@@ -15,3 +15,5 @@ class Anime {
     this.fechaEliminacion = fechaEliminacion;
   }
 }
+
+exports.Anime = Anime;
