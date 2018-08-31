@@ -1,5 +1,5 @@
 class Anime {
-  constructor(orden, nombre, dia, nrocapvisto, totalcap, tipo, pagina, carpeta, estado, activo, fechaCreacion, fechaUltCapVisto, fechaEliminacion) {
+  constructor(orden, nombre, dia, nrocapvisto, totalcap, tipo, pagina, carpeta, estado, activo, fechaCreacion, fechaUltCapVisto, fechaEliminacion, _id = "") {
     this.orden = orden;
     this.nombre = nombre;
     this.dia = dia;
@@ -13,6 +13,9 @@ class Anime {
     this.fechaCreacion = fechaCreacion;
     this.fechaUltCapVisto = fechaUltCapVisto;
     this.fechaEliminacion = fechaEliminacion;
+    if (_id !== "") {
+      this._id = _id;
+    }
   }
 }
 

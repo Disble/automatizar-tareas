@@ -17,26 +17,6 @@ class Render {
 		})
 	}
 	/*------------------------- RENDER CARGA CON LA PAGINA ---------------------------------------*/
-	actualizarListaCompleta(consulta, salto) {
-		let tblListaAnimes = ''
-		let cont = salto
-		$.each(consulta, (i, item) => {
-			tblListaAnimes += `<tr ${this.isNoData(consulta[i].estado) ? '' : `class="${this.getState(consulta[i].estado).backgroundColor} lighten-4"`}>
-									<td><input class="btn btn-small" type="button" id="eraser${++cont}" value="${cont}" /></td>
-									<td>${consulta[i].nombre}</td>
-									<td>${this._addDiasAccents(consulta[i].dia)}</td>
-									<td>${consulta[i].orden}</td>
-									<td>${consulta[i].nrocapvisto}</td>
-									<td>${this.isNoData(consulta[i].totalcap) ? '' : consulta[i].totalcap}</td>
-									<td>${this.isNoData(consulta[i].tipo) ? '' : consulta[i].tipo}</td>
-									<td>${consulta[i].pagina}</td>
-									<td>${this.isNoData(consulta[i].carpeta) ? '' : consulta[i].carpeta}</td>
-									<td class="hidden" id="key">${consulta[i]._id}</td>
-								</tr>"`
-		})
-		$('#contenido').html(tblListaAnimes)
-	}
-
 	actualizarLista(consulta, dia) {
 		let tblListaAnimes = '';
 		$.each(consulta, (i, item) => {
@@ -207,7 +187,7 @@ class Render {
 		$('select').material_select();
 	}
 
-	crearJson(){
+	crearAnime(){
 		let listaEnviar = [];
 		let nuevosAnimes = $('tr[id="datos-anime-nuevo"]');
 		// console.log('nuevos animes: ', nuevosAnimes);
@@ -238,20 +218,6 @@ class Render {
 		}
 		// console.log(listaEnviar);
 		return listaEnviar;
-	}
-
-	crearJsonActualizar(row){
-		let json = {};
-		json.nombre = row[0];
-		json.dia = this._quitaAcentos(row[1]);
-		json.orden = parseInt(row[2]) < 1 ? 1 : parseInt(row[2]);
-		json.nrocapvisto = this._estadoNumCap(row[3]);
-		json.totalcap = row[4] === '' ? undefined : row[4];
-		json.tipo = row[5] === '' ? undefined : parseInt(row[5]);
-		json.pagina = row[6];
-		json.carpeta = this.isNoData(row[7]) || row[7].length == 0 ? null : this.slashFolder(row[7]);
-		// console.log(json)
-		return json
 	}
 
 	abrirCarpeta(folder, dia, id){
@@ -308,11 +274,95 @@ class Render {
 		return path
 	}
 
-	initEditAnime() {
+	async initEditAnime() {
 		this._initEditAnimeHTML();
 		this._editAnime();
-		//
+		this._loadEditAnime();
+		this._editAnimebtnDelete();
+	}
 
+	async _loadEditAnime() {
+		let data = await buscarTodoEditar();
+		let lista = document.getElementById('edit-anime-list');
+		lista.innerHTML = '';
+		// console.log(data);
+		//
+		let i = 0;
+		for (const anime of data) {
+			var item = document.createElement('a');
+			item.href = "#!";
+			item.setAttribute('data-value', anime._id);
+			item.className = "collection-item blue-text";
+			// item.innerHTML = `<a href="#!" data-value="${anime._id}" class="collection-item blue-text"><span class="grey-text badge-left-edit">${++i}</span>${anime.nombre}</a>`;
+			item.innerHTML = `<span class="grey-text badge-left-edit">${++i}</span>${anime.nombre}`;
+			lista.appendChild(item);
+			//
+			item.addEventListener('click', (e) => {
+				e.preventDefault();
+				let id = e.target.getAttribute('data-value');
+				this._getAnimeData(id);
+			});
+		}
+		//
+		if (data.length > 0) {
+			this._getAnimeData(data[0]._id);
+		}
+	}
+
+	async _getAnimeData(id) {
+		let data = await buscarAnimePorId(id);
+		let form = document.getElementById('form-edit-anime');
+		let nombre = document.getElementById('nombre');
+		let dia = document.getElementById('dia');
+		let orden = document.getElementById('orden');
+		let capVistos = document.getElementById('cap-vistos');
+		let totalCap = document.getElementById('total-cap');
+		let tipo = document.getElementById('tipo');
+		let estado = document.getElementById('estado');
+		let pagina = document.getElementById('pagina');
+		let carpeta = document.getElementById('carpeta');
+		//
+		form.setAttribute('data-value', id);
+		//
+		nombre.value = data.nombre;
+		dia.value = data.dia;
+		orden.value = data.orden;
+		capVistos.value = data.nrocapvisto;
+		totalCap.value = data.totalcap;
+		tipo.value = data.tipo;
+		estado.value = data.estado;
+		pagina.value = data.pagina;
+		carpeta.value = data.carpeta;
+		//
+		Materialize.updateTextFields();
+		$('select').material_select('destroy');
+		$('select').material_select();
+	}
+
+	_editAnimebtnDelete() {
+		document.getElementById('borrar-anime').addEventListener('click', async (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+			//
+			let nombreAnime = document.getElementById('nombre').value;
+			let id = document.getElementById('form-edit-anime').getAttribute('data-value');
+			//
+			if (id === null) return;
+			//
+			let borrar = await swal({
+				title: "¿Estás seguro?",
+				text: `Estas a punto de borrar "${nombreAnime}". \n\n¡Una vez borrado aún se podra restaurar en historial!`,
+				icon: "warning",
+				buttons: ["Cancelar", "OK"],
+				dangerMode: true,
+			});
+			if (borrar) {
+				await desactivarAnime(id);
+				await this._loadEditAnime();
+			} else {
+				swal("¡Acción cancelada!", "", "info");
+			}
+		});
 	}
 
 	_initEditAnimeHTML() {
@@ -328,6 +378,10 @@ class Render {
 			width: 0,
 			'z-index': -10
 		});
+		/**
+		 * Este addEventListener() es porque la validación del select 
+		 * de materialize no funciona, y este es un fix para eso.
+		 */
 		document.querySelectorAll('button[type="submit"]').forEach((button) => {
 			button.addEventListener('click', () => {
 				document.querySelectorAll('select.initialized').forEach((select, key) => {
@@ -341,13 +395,26 @@ class Render {
 				});
 			});
 		});
+		/**
+		 * Reemplazo para método de materialize para input[type=file].
+		 * El setTimeout() es porque materialize ya tiene un método que hace lo mismo
+		 * pero que solo devuelve el nombre, y este método se ejecutaba mas rápido.
+		 * Es solo para se tarde un poco mas que el de materialize y haga efecto.
+		 */
+		document.getElementById('carpeta-input').addEventListener('change', (e) => {
+			setTimeout(() => {
+				if (this.isNoData(e.target) || e.target.files[0] === undefined) return;
+				let folder = e.target.files[0].path;
+				let path = this.slashFolder(folder);
+				document.getElementById('carpeta').value = path;
+			}, 1);
+		});
 	}
 
 	_editAnime() {
 		document.getElementById('form-edit-anime').addEventListener('submit', e => {
 			e.preventDefault();
-			console.log('dentro submit', e.target);
-			
+
 			let form = new FormData(e.target);
 			let nombre = form.get('nombre').trim();
 			let dia = form.get('dia').trim();
@@ -357,77 +424,29 @@ class Render {
 			let tipo = parseInt(form.get('tipo'));
 			let estado = parseInt(form.get('estado'));
 			let pagina = form.get('pagina').trim();
-			let carpeta = form.get('carpeta').path;
+			let carpeta = form.get('carpeta') === "" ? null : form.get('carpeta').trim();
 
-			console.log(nombre,
-				dia,
-				orden,
-				capVistos,
-				totalCap,
-				tipo,
-				estado,
-				pagina,
-				carpeta)
+			//console.log(nombre, dia, orden, capVistos, totalCap, tipo, estado, pagina, carpeta);
+
+			let setValues = {};
+			setValues.$set = {};
+			setValues.$set.orden = orden;
+			setValues.$set.nombre = nombre;
+			setValues.$set.dia = dia;
+			setValues.$set.nrocapvisto = capVistos;
+			setValues.$set.totalcap = totalCap;
+			setValues.$set.estado = estado;
+			setValues.$set.tipo = tipo;
+			setValues.$set.pagina = pagina;
+			setValues.$set.carpeta = carpeta;
 			
-		})
-	}
-	
-	cellEdit(){
-		let that = this;
-		$('td').each(function(key, value){
-			$(value).dblclick(function(){
-				$(this).attr('contenteditable', 'true');
-				$(this).focus();
-			})
-			$(value).focusout(function(){
-				$(this).removeAttr('contenteditable')
-				let row = Array()
-				$(this).parent().children().each((key, value) => {
-					if (key != 0 && key != this.length)
-						row.push(value.textContent)
-				})
-				let id = $(this).parent().find('#key').text()
-				//console.log('id : ' + id)
-				let pag = parseInt($('#paginas').find('.active a').text())
-				actualizarFila(id, that.crearJsonActualizar(row), pag)
-			})
-			$(value).bind('keypress', function(e) {
-				if(e.keyCode==13)
-					$(this).trigger('focusout')
-			})
-		})
+			actualizarAnime(e.target.getAttribute('data-value'), setValues);
+		});
 	}
 
 	actualizarCapitulo(dia, fila, cont){
 		let id = $(fila).parent().parent().parent().find('#key').text()
 		actualizarCap(dia, id, cont)
-	}
-
-	eraserRow(){
-		let btnBorrar = $('td').find('input')
-		btnBorrar.parent().unbind()
-		btnBorrar.each(function(key, value){
-			$(value).click(function(){
-				swal({
-				  title: "¿Estás seguro?",
-				  text: "¡Una vez borrado aún se podra restaurar en historial!",
-				  icon: "warning",
-				  buttons: ["Cancelar", "OK"],
-				  dangerMode: true,
-				})
-				.then((willDelete) => {
-				  if (willDelete) {
-						let id = '';
-						$(this).parent().parent().find('.hidden').each((key, value) => id = value.textContent);
-						let pag = parseInt($('#paginas').find('.active a').text());
-						//console.log(pag);
-						borrarFila(id, pag);
-				  } else {
-				    swal("¡Acción cancelada!", "", "info");
-				  }
-				});
-			})
-		})
 	}
 
 	/*------------------------- FUNCIONES ADICIONALES ---------------------------------------*/
@@ -569,18 +588,5 @@ class Render {
 			return 10
 		else
 			return fin
-	}
-
-	imprimirPagination(totalReg, actual) {
-		let todasPag = this._totalPag(totalReg)
-		let ini = this.limitePaginas(todasPag) ? this.limitePaginasInicio(actual, todasPag) : 1
-		let fin = this.limitePaginas(todasPag) ? this.limitePaginasFin(actual, todasPag) : todasPag
-		let paginas = `<li class="waves-effect ${actual == ini ? 'disabled' : ''}"><a href="#!" ${actual == ini ? '' : `onclick="cargarEditar(1);"`}><i class="icon-pag icon-left-open"></i></a></li>`
-		for (let i = ini; i <= fin; i++) {
-			paginas += `<li class="waves-effect ${actual == i ? 'active' : ''}"><a href="#!" onclick="cargarEditar(${i});">${i}</a></li>`
-		}
-		paginas += `<li class="waves-effect ${actual == fin ? 'disabled' : ''}"><a href="#!" ${actual == fin ? '' : `onclick="cargarEditar(${todasPag});"`}><i class="icon-pag icon-right-open"></i></a></li>`
-		$('#paginas').html(paginas)
-		//console.log("total reg :" + totalReg, ', todas pag : ' + todasPag, ', pag actual : ' + actual);
 	}
 }

@@ -1,6 +1,6 @@
 function cargarDatos(){
 	let render = new Render();
-	let nuevo = render.crearJson();
+	let nuevo = render.crearAnime();
 	animesdb.insert(nuevo, function(err, record) {
 		if (err) {
 			console.error(err);
@@ -89,24 +89,56 @@ function cargarEditar(pag = 1){
 	})
 }
 
-function buscarTodoEditar(pag, totalReg){
-	let render = new Render()
-	let salto = render.saltoPaginacion(pag, totalReg)
-	let limite = render.numReg
-	animesdb
-	.find({$or : [{"activo" : true}, {"activo" : {$exists : false} }]})
-	.sort({"fechaCreacion":-1})
-	.skip(salto).limit(limite)
-	.exec(function(err, record) {
+function buscarTodoEditar(){	
+	return new Promise((resolve, reject) => {
+		animesdb
+		.find({$or : [{"activo" : true}, {"activo" : {$exists : false} }]}, {"nombre" : 1})
+		.sort({"fechaCreacion":-1})
+		.exec(function(err, record) {
+			if (err) {
+				reject(new Error(err));
+				process.exit(0)
+			}
+			return resolve(record);
+		})
+	});
+}
+
+function actualizarAnime(id, setValues){
+	animesdb.update({"_id" : id}, setValues, function(err, num) {
 		if (err) {
-			console.error(err)
-			process.exit(0)
+			console.error(err);
+			Materialize.toast('Houston, tenemos un problema', 4000);
+			return;
 		}
-		render.actualizarListaCompleta(record, salto)
-		render.cellEdit()
-		render.eraserRow()
-		render.imprimirPagination(totalReg, pag)
-	})
+		Materialize.toast('Datos actualizado correctamente', 4000);
+	});
+}
+
+function buscarAnimePorId(id){
+	return new Promise((resolve, reject) => {
+		animesdb.findOne({
+			_id: id
+		}, function (err, doc) {
+			if (err) {
+				reject(new Error(err));
+				process.exit(0)
+			}
+			return resolve(doc);
+		});
+	});
+}
+
+function desactivarAnime(id){
+	return new Promise((resolve, reject) => {
+		animesdb.update({"_id" : id}, {$set: {"activo": false, "fechaEliminacion" : new Date()}}, function(err, numUpdate) {
+			if (err) {
+				reject(new Error(err));
+				return
+			}
+			return resolve(numUpdate);
+		});
+	});
 }
 
 function buscarPorId(id){
@@ -251,27 +283,6 @@ function estadoCap(dia, id, estado){
 		buscar(dia)
 		buscarMedallasDia(render.menu)
 		Materialize.toast('Estado modificado correctamente', 4000)
-	})
-}
-
-function actualizarFila(id, json, pag){
-	animesdb.update({"_id" : id}, {$set: {"orden": json.orden, "nombre": json.nombre, "dia": json.dia, "nrocapvisto": json.nrocapvisto, "totalcap": json.totalcap , "tipo": json.tipo , "pagina": json.pagina, "carpeta": json.carpeta}}, function(err, num) {
-		if (err) {
-			console.error(err)
-			Materialize.toast('Houston, tenemos un problema', 4000)
-			return
-		}
-		cargarEditar(pag)
-	})
-}
-
-function borrarFila(id, pag){
-	animesdb.update({"_id" : id}, {$set: {"activo": false, "fechaEliminacion" : new Date()}}, function(err, numUpdate) {
-		if (err) {
-			console.error(err)
-			return
-		}
-		cargarEditar(pag)
 	})
 }
 

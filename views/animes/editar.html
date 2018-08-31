@@ -18,22 +18,7 @@
                 <li class="collection-header">
                     <h5>Animes</h5>
                 </li>
-                <a href="#!" class="collection-item blue-text"><span class="grey-text badge-left-edit">1</span>Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka OVA</a>
-                <a href="#!" class="collection-item blue-text"><span class="grey-text badge-left-edit">2</span>Grand Blue</a>
-                <a href="#!" class="collection-item blue-text"><span class="grey-text badge-left-edit">3</span>Kujira no Kora wa Sajou ni Utau</a>
-                <a href="#!" class="collection-item blue-text"><span class="grey-text badge-left-edit">4</span>Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka OVA</a>
-                <a href="#!" class="collection-item blue-text"><span class="grey-text badge-left-edit">5</span>Grand Blue</a>
-                <a href="#!" class="collection-item blue-text"><span class="grey-text badge-left-edit">6</span>Kujira no Kora wa Sajou ni Utau</a>
-                <a href="#!" class="collection-item blue-text"><span class="grey-text badge-left-edit">7</span>Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka OVA</a>
-                <a href="#!" class="collection-item blue-text"><span class="grey-text badge-left-edit">8</span>Grand Blue</a>
-                <a href="#!" class="collection-item blue-text"><span class="grey-text badge-left-edit">9</span>Kujira no Kora wa Sajou ni Utau</a>
-                <a href="#!" class="collection-item blue-text"><span class="grey-text badge-left-edit">10</span>Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka OVA</a>
-                <a href="#!" class="collection-item blue-text"><span class="grey-text badge-left-edit">11</span>Grand Blue</a>
-                <a href="#!" class="collection-item blue-text"><span class="grey-text badge-left-edit">12</span>Kujira no Kora wa Sajou ni Utau</a>
-                <a href="#!" class="collection-item blue-text"><span class="grey-text badge-left-edit">13</span>Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka OVA</a>
-                <a href="#!" class="collection-item blue-text"><span class="grey-text badge-left-edit">14</span>Grand Blue</a>
-                <a href="#!" class="collection-item blue-text"><span class="grey-text badge-left-edit">15</span>Kujira no Kora wa Sajou ni Utau</a>
-                <a href="#!" class="collection-item blue-text"><span class="grey-text badge-left-edit">160</span>Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka OVA</a>
+                <div id="edit-anime-list"></div>
             </ul>
         </div>
 
@@ -55,18 +40,18 @@
                     <div class="input-field col s12">
                         <select id="dia" name="dia" class="validate" required>
                             <optgroup label="Día">
-                                <option value="1">Lunes</option>
-                                <option value="2">Martes</option>
-                                <option value="2">Miércoles</option>
-                                <option value="2">Jueves</option>
-                                <option value="2">Viernes</option>
-                                <option value="2">Sábado</option>
-                                <option value="2">Domingo</option>
+                                <option value="lunes">Lunes</option>
+                                <option value="martes">Martes</option>
+                                <option value="miercoles">Miércoles</option>
+                                <option value="jueves">Jueves</option>
+                                <option value="viernes">Viernes</option>
+                                <option value="sabado">Sábado</option>
+                                <option value="domingo">Domingo</option>
                             </optgroup>
                             <optgroup label="Estrenos">
-                                <option value="3">Sin ver</option>
-                                <option value="4">Visto</option>
-                                <option value="4">Ver hoy</option>
+                                <option value="sin ver">Sin ver</option>
+                                <option value="visto">Visto</option>
+                                <option value="ver hoy">Ver hoy</option>
                             </optgroup>
                         </select>
                         <label for="dia" data-error="Seleccione una opción">Día</label>
@@ -109,10 +94,10 @@
                     <div class="file-field input-field col s12">
                         <div class="btn btn-small blue">
                             <span>Carpeta</span>
-                            <input type="file" name="carpeta" webkitdirectory>
+                            <input type="file"  id="carpeta-input" webkitdirectory>
                         </div>
                         <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text">
+                            <input class="file-path validate" name="carpeta" type="text" id="carpeta">
                         </div>
                     </div>
                     <div class="col s12 center">
@@ -132,7 +117,7 @@
                 <div class="col s12">
                     <h5>
                         Borrar anime
-                        <a class="right waves-effect waves-light btn red"><i class="icon-trash-empty material-icons right"></i>Borrar</a>
+                        <a class="right waves-effect waves-light btn red" id="borrar-anime"><i class="icon-trash-empty material-icons right"></i>Borrar</a>
                     </h5>
                     <p class="paragraph-btn-right">Una vez borrado el anime todavia es posible recuperarlo en el Historial.</p>
                 </div>

@@ -41,3 +41,10 @@
     }
 }
 ```
+
+# Anime Activo o Inactivo
+
+```javacript
+    true = "activo";
+    false = "inactivo";
+```
