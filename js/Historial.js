@@ -121,7 +121,9 @@ class Historial {
 			let estados = $('#estado-select').val();
 			let tipos = $('#tipo-select').val();
 			let orden = $('#orden-select').val();
-			let opcionesFiltro = [];
+			let opcionesFiltro = {};
+			let opcionesEstado = [];
+			let opcionesTipo = [];
 			let opcionOrden = {};
 			
 			// console.log('datos: ', estados, tipos, orden);
@@ -149,20 +151,30 @@ class Historial {
 			}
 
 			for (const estado of estados) {
-				opcionesFiltro.push({
+				opcionesEstado.push({
 					"estado" : parseInt(estado)
 				});
 			}
 
 			for (const tipo of tipos) {
-				opcionesFiltro.push({
+				opcionesTipo.push({
 					"tipo" : parseInt(tipo)
 				});
 			}
 
-			// console.log('filtros: ', query, {$or : opcionesFiltro}, opcionOrden);
+			if (opcionesEstado.length > 0 && opcionesTipo.length > 0){
+				opcionesFiltro.$and = [];
+				opcionesFiltro.$and.push({$or: opcionesEstado});
+				opcionesFiltro.$and.push({$or: opcionesTipo});
+			} else if (opcionesEstado.length > 0) {
+				opcionesFiltro.$or = opcionesEstado;
+			} else if (opcionesTipo.length > 0) {
+				opcionesFiltro.$or = opcionesTipo;
+			}
+
+			// console.log('filtros: ', query, opcionesFiltro, opcionOrden);
 			
-			filtrarBuscadorHistorial(query, {$or : opcionesFiltro}, opcionOrden);
+			filtrarBuscadorHistorial(query, opcionesFiltro, opcionOrden);
 			this._ocultarOpciones();
 		});
 	}
@@ -344,7 +356,7 @@ class Historial {
 						<div class="col s5">
 							<ul class="collapsible popout" data-collapsible="expandable">
 								<li>
-									<div class="collapsible-header flex-x-center cyan darken-2 active">Nombre</div>
+									<div class="collapsible-header flex-x-center cyan darken-3 active">Nombre</div>
 									<div class="collapsible-body no-padding">
 										<div class="collection">
 											<a href="#" class="collection-item waves-effect waves-light center no-link" id="nombre"></a>
