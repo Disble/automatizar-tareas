@@ -77,18 +77,6 @@ function buscarMedallasDia(menu) {
 	})
 }
 
-function cargarEditar(pag = 1){
-	animesdb
-	.count({$or : [{"activo" : true}, {"activo" : {$exists : false} }]})
-	.exec(function(err, record) {
-		if (err) {
-			console.error(err)
-			process.exit(0)
-		}
-		buscarTodoEditar(pag, record)
-	})
-}
-
 function buscarTodoEditar(){	
 	return new Promise((resolve, reject) => {
 		animesdb
@@ -111,7 +99,7 @@ function actualizarAnime(id, setValues){
 			Materialize.toast('Houston, tenemos un problema', 4000);
 			return;
 		}
-		Materialize.toast('Datos actualizado correctamente', 4000);
+		Materialize.toast('Datos actualizados correctamente', 4000);
 	});
 }
 
