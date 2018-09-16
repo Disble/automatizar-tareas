@@ -1,8 +1,12 @@
 'use strict'
-/*NOTE: Quitar comentarios al acabar*/
-require('sweetalert');
-class Render {
+const { shell } = require('electron');
+const { BDAnimes } = require('./consultas.js');
+const { RenderBase } = require('./RenderBase.js');
+
+class Render extends RenderBase {
 	constructor(menu) {
+		super();
+		this.db = new BDAnimes();
 		this.contNewFolder = 0;
 		this.numReg = 10;
 		this.menu = menu;
@@ -19,83 +23,150 @@ class Render {
 	/*------------------------- RENDER CARGA CON LA PAGINA ---------------------------------------*/
 	actualizarLista(consulta, dia) {
 		let tblListaAnimes = '';
-		$.each(consulta, (i, item) => {
-			tblListaAnimes += /*html*/`<tr>
-									<td>
-										<button data-target="modal${i}" class="btn btn-small modal-trigger">${consulta[i].orden}</button>
-										<div id="modal${i}" class="modal">
-											<div class="modal-footer">
-												<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">X</a>
-											</div>
-											<div class="modal-content">
-												<h4>Mensaje de confirmación</h4>
-												<p>Escoga uno de los siguientes estados</p>
-												<button class="btn btn-small modal-close green" onclick="estadoCap('${dia}', '${consulta[i]._id}', 0)"><i class="icon-play"></i> Viendo</button>
-												<button class="btn btn-small modal-close" onclick="estadoCap('${dia}', '${consulta[i]._id}', 1)"><i class="icon-ok-squared"></i> Finalizar</button>
-												<button class="btn btn-small modal-close red" onclick="estadoCap('${dia}', '${consulta[i]._id}', 2)"><i class="icon-emo-unhappy"></i> No me Gusto</button>
-											</div>
-											<div class="modal-footer">
-											</div>
-										</div>
-									</td>
-									<td>${consulta[i].nombre}</td>
-									<td><span onmouseover="render.numCapituloInvertido(this, '${this._setNumCapitulo(consulta, i)}', ${consulta[i].totalcap})" onmouseout="render.numCapituloNormal(this, '${this._setNumCapitulo(consulta, i)}')" >${this._setNumCapitulo(consulta, i)}</span></td>
-									<td>${this._paginaConstructor(consulta[i].pagina)}</td>
-									<td>
-										<div class="btnIncremento">
-										<a class="btn-floating btn waves-effect waves-light btn-right-click-minus red ${this._blockSerie(consulta[i].estado) ? 'disabled': ''}" dia="${consulta[i].dia}" cap="${consulta[i].nrocapvisto}" onclick="render.actualizarCapitulo('${consulta[i].dia}', this, ${consulta[i].nrocapvisto <= 0.5 ? 0 : (consulta[i].nrocapvisto - 1)})" ><i class="icon-minus icon-normal"></i></a>
-										<a class="btn-floating btn waves-effect waves-light btn-right-click-plus blue ${this._blockSerie(consulta[i].estado) ? 'disabled': ''}" dia="${consulta[i].dia}" cap="${consulta[i].nrocapvisto}" onclick="render.actualizarCapitulo('${consulta[i].dia}', this, ${(consulta[i].nrocapvisto + 1)})" ><i class="icon-plus icon-normal"></i></a>
-										</div>
-									</td>
-									<td>
-										<button class="btn btn-small green ${this.isNoData(consulta[i].carpeta) ? 'disabled': ''}" onclick="render.abrirCarpeta('${this._noApostrophe(consulta[i].carpeta)}', '${consulta[i].dia}', '${consulta[i]._id}')"><span style="display: flex" class="tooltipped" data-position="left" data-delay="500" data-tooltip="Abrir carpeta"><i class="icon-folder-open"></i></span></button>
-									</td>
-									<td class="hidden" id="key">${consulta[i]._id}</td>
-								</tr>"`
+		consulta.forEach((value, i) => {
+			tblListaAnimes += /*html*/ `
+			<tr>
+				<td>
+					<button data-target="modal${i}" class="btn btn-small modal-trigger">${consulta[i].orden}</button>
+					<div id="modal${i}" class="modal">
+						<div class="modal-footer">
+							<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">X</a>
+						</div>
+						<div class="modal-content">
+							<h4>Mensaje de confirmación</h4>
+							<p>Escoga uno de los siguientes estados</p>
+							<button class="btn btn-small modal-close green btn-estado-cap-viendo" dia="${dia}" id="${consulta[i]._id}"><i class="icon-play"></i> Viendo</button>
+							<button class="btn btn-small modal-close btn-estado-cap-fin" dia="${dia}" id="${consulta[i]._id}"><i class="icon-ok-squared"></i> Finalizar</button>
+							<button class="btn btn-small modal-close red btn-estado-cap-no-gusto" dia="${dia}" id="${consulta[i]._id}"><i class="icon-emo-unhappy"></i> No me Gusto</button>
+						</div>
+						<div class="modal-footer">
+						</div>
+					</div>
+				</td>
+				<td>${consulta[i].nombre}</td>
+				<td><span class="span-cap-vistos" cap="${consulta[i].nrocapvisto}" capTotal="${consulta[i].totalcap}">${this._setNumCapitulo(consulta, i)}</span></td>
+				<td>${this._paginaConstructor(consulta[i].pagina)}</td>
+				<td>
+					<div class="btnIncremento">
+					<a class="btn-floating btn waves-effect waves-light btn-anime-minus red ${this._blockSerie(consulta[i].estado) ? 'disabled' : ''}" dia="${consulta[i].dia}" cap="${consulta[i].nrocapvisto}"><i class="icon-minus icon-normal"></i></a>
+					<a class="btn-floating btn waves-effect waves-light btn-anime-plus blue ${this._blockSerie(consulta[i].estado) ? 'disabled' : ''}" dia="${consulta[i].dia}" cap="${consulta[i].nrocapvisto}"><i class="icon-plus icon-normal"></i></a>
+					</div>
+				</td>
+				<td>
+					<button class="btn btn-small green tooltipped btn-abrir-carpeta ${this.isNoData(consulta[i].carpeta) ? 'disabled' : ''}" carpeta="${this._noApostrophe(consulta[i].carpeta)}" dia="${consulta[i].dia}" id="${consulta[i]._id}" data-position="left" data-tooltip="Abrir carpeta"><span style="display: flex"><i class="icon-folder-open"></i></span></button>
+				</td>
+				<td class="hidden" id="key">${consulta[i]._id}</td>
+			</tr>`
 		});
-		$('#contenido').html(tblListaAnimes);
-		$('.titulo').html(this._addDiasAccents(dia));
-		$('.url-external').click(function (e) {
+		this._iniciarListaAnimes(tblListaAnimes, dia);
+	}
+
+	_iniciarListaAnimes(tblListaAnimes, dia) {
+		document.getElementById('contenido').innerHTML = tblListaAnimes;
+		document.querySelector('.titulo').innerHTML = this._addDiasAccents(dia);
+		document.querySelectorAll('.url-external').forEach((value) => {
+			value.addEventListener('click', e => {
 			e.preventDefault();
 			e.stopPropagation();
-			$(this).each(function(key, value) {
-				if (!shell.openExternal(value.href))
+				if (!shell.openExternal(value.href)) {
 					swal("Hubo problemas al abrir la url.", "Por favor revise el formato de la url en Editar Animes.", "error");
+				}
 			});
 		});
-		$('.tooltipped').tooltip({delay: 50});
-		$('.modal').modal();
-		
-		// Click derecho para aumentar medio capitulo
-		$('.btn-right-click-minus').on('mouseup', function(e) {
+		// Inicializando tooltipes
+		M.Tooltip.init(document.querySelectorAll('.tooltipped'), {
+			exitDelay: 50,
+			enterDelay: 350
+		});
+		M.Modal.init(document.querySelectorAll('.modal'));
+		// Eventos de mouse para la lista de animes
+		document.querySelectorAll('.span-cap-vistos').forEach((value) => {
+			value.addEventListener('mouseover', e => {
+				let cap = parseFloat(value.getAttribute('cap'));
+				let capTotal = parseFloat(value.getAttribute('capTotal'));
+				this.numCapituloInvertido(value, cap, capTotal);
+			});
+			value.addEventListener('mouseout', e => {
+				let cap = parseFloat(value.getAttribute('cap'));
+				this.numCapituloNormal(value, cap);
+			});
+		});
+		document.querySelectorAll('.btn-anime-minus').forEach((value) => {
+			value.addEventListener('click', e => {
+				let cap = parseFloat(e.target.parentElement.getAttribute('cap'));
+				let dia = e.target.parentElement.getAttribute('dia');
+				cap = cap <= 0.5 ? 0 : cap - 1;
+				this.actualizarCapitulo(dia, e.target.parentElement, cap);
+			});
+			value.addEventListener('mouseup', e => {
 			if (e.button === 2) {
 				// console.log('Click derecho para minus');
 				let cap = parseFloat(e.target.parentElement.getAttribute('cap'));
 				let dia = e.target.parentElement.getAttribute('dia');
 				cap = cap <= 0 ? 0 : cap - 0.5;
-				// console.log(e.target.parentElement, cap, dia);
-				
-				render.actualizarCapitulo(dia, e.target.parentElement, cap);
+					this.actualizarCapitulo(dia, e.target.parentElement, cap);
 			}
 		});
-		$('.btn-right-click-plus').on('mouseup', function(e) {
+		});
+		document.querySelectorAll('.btn-anime-plus').forEach((value) => {
+			value.addEventListener('click', e => {
+				let cap = parseFloat(e.target.parentElement.getAttribute('cap'));
+				let dia = e.target.parentElement.getAttribute('dia');
+				cap += 1;
+				this.actualizarCapitulo(dia, e.target.parentElement, cap);
+			});
+			value.addEventListener('mouseup', e => {
 			if (e.button === 2) {
 				// console.log('Click derecho para plus');
 				let cap = parseFloat(e.target.parentElement.getAttribute('cap'));
 				let dia = e.target.parentElement.getAttribute('dia');
 				cap += 0.5;
-				// console.log(e.target.parentElement, cap, dia);
-				
-				render.actualizarCapitulo(dia, e.target.parentElement, cap);
+					this.actualizarCapitulo(dia, e.target.parentElement, cap);
 			}
 		});
+		});
+		document.querySelectorAll('.btn-estado-cap-viendo').forEach((value) => {
+			value.addEventListener('click', async e => {
+				this._actualizarEstado(value, 0);
+			});
+		});
+		document.querySelectorAll('.btn-estado-cap-fin').forEach((value) => {
+			value.addEventListener('click', async e => {
+				this._actualizarEstado(value, 1);
+			});
+		});
+		document.querySelectorAll('.btn-estado-cap-no-gusto').forEach((value) => {
+			value.addEventListener('click', async e => {
+				this._actualizarEstado(value, 2);
+			});
+		});
+		document.querySelectorAll('.btn-abrir-carpeta').forEach((value) => {
+			value.addEventListener('click', async e => {
+				let carpeta = value.getAttribute('carpeta');
+				let dia = value.getAttribute('dia');
+				let id = value.getAttribute('id');
+				this.abrirCarpeta(carpeta, dia, id);
+			});
+		});
+	}
 		
+	async _actualizarEstado(el, estado) {
+		let dia = el.getAttribute('dia');
+		let id = el.getAttribute('id');
+		await this.db.estadoCap(id, estado);
+		this._recargarListaAnimes(dia);
+		this._buscarMedallas();
+	}
+
+	async _recargarListaAnimes(dia) {
+		let { datos } = await this.db.buscar(dia);
+		this.actualizarLista(datos, dia);
 	}
 
 	_noApostrophe(folder) {
 		let path = ''
-		for(let i in folder){
-			if (folder.charCodeAt(i) === 39){
+		for (let i in folder) {
+			if (folder.charCodeAt(i) === 39) {
 				path += '\\\''
 				continue
 			}
@@ -103,13 +174,24 @@ class Render {
 		}		
 		return path
 	}
-
+	/**
+	 * Comprueba que el índice indicado sea un número de 
+	 * capítulo válido. En caso de no serlo, se retornara el 
+	 * estado correspondiente en string.
+	 * @param {any[]} consulta Lista de animes de la base de datos.
+	 * @param {number} i Índice a comprobar
+	 */
 	_setNumCapitulo(consulta, i) {
 		return this._blockSerie(consulta[i].estado) ? this.getState(consulta[i].estado).name : consulta[i].nrocapvisto;
 	}
-
+	/**
+	 * Muestra en el elemento el número de capítulos restantes de un anime.
+	 * @param {HTMLElement} el Span donde se muestra el número de capítulos.
+	 * @param {number} num Número de capítulos actuales anime
+	 * @param {number} total Número total de capítulos del anime.
+	 */
 	numCapituloInvertido(el, num, total) {
-		if (typeof total == "number" && num <= total) {
+		if (typeof total === "number" && num <= total) {
 			num = parseInt(num);
 			let capInv = total - num;
 			el.innerText = '- ' + capInv;
@@ -120,47 +202,65 @@ class Render {
 		el.innerText = num;
 	}
 
-	menuRender(menu = this.menu){
+	async menuRender(menu = this.menu) {
 		var salidaMenu = '';
-		$.each(menu, (nivel1, value1) => {
+		for (const index1 in menu) {
+			const value1 = menu[index1];
 			salidaMenu += `<li>
-								<div class="collapsible-header flex-x-center">${this._firstUpperCase(nivel1)}</div>`
-			if (value1 != null){
+			<div class="collapsible-header flex-x-center">${this._firstUpperCase(index1)}</div>`;
+			if (value1 != null) {
 				salidaMenu += `<div class="collapsible-body no-padding">
-									<div class="collection">`
+				<div class="collection">`;
 			}
-			$.each(value1, (nivel2, value2) => {
-				salidaMenu += `<a `
-				$.each(value2, (nivel3, value3) => {
-					salidaMenu += `${nivel3}="${value3}" `
-				})
-				salidaMenu += `><span class="badge"></span>${this._firstUpperCase(nivel2)} </a>`
-			})
-			if (value1 != null){
+			for (const index2 in value1) {
+				const value2 = value1[index2];
+				salidaMenu += `<a `;
+				for (const index3 in value2) {
+					const value3 = value2[index3];
+					salidaMenu += `${index3}="${value3}" `;
+				}
+				salidaMenu += `><span class="badge"></span>${this._firstUpperCase(index2)} </a>`;
+			}
+			if (value1 != null) {
 				salidaMenu += `</div>
 						  </div>`;
 			}
 			salidaMenu += `</li>`;
-		})
-		$('#menu').html(salidaMenu);
-		$('.no-link').click(function (e) {
+		}
+		document.getElementById('menu').innerHTML = salidaMenu;
+		document.querySelectorAll('.no-link').forEach((value) => {
+			value.addEventListener('click', e => {
 			e.preventDefault();
 			e.stopPropagation();
 		})
-		buscarMedallasDia(menu);
+		});
+		document.querySelectorAll('.btn-buscar-animes').forEach((value) => {
+			value.addEventListener('click', async (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+				//
+				let dia = value.getAttribute('id');
+				this._recargarListaAnimes(dia);
+			});
+		});
+		// carganddo medallas
+		this._buscarMedallas(menu);
 	}
 
-	cargarMedallas(dia, cont) {
-		// console.log($('#menu').find('a').find('span')[dia], cont, dia)
-		if (cont >= 0) {
-			let tagDia = $($('#menu').find('a').find('span')[dia]);
-			let numMedallas = cont == 0 ? '' : cont;
-			tagDia.html(numMedallas);
-		}
+	async _buscarMedallas(menu = this.menu) {
+		let medallas = await this.db.buscarMedallasDia(menu);
+		medallas.forEach((medalla) => {
+			let { datos, itemMenu } = medalla;
+			if (datos >= 0) {
+				let tagDia = document.getElementById('menu').querySelectorAll('a')[itemMenu].querySelector('span');
+				let numMedallas = datos == 0 ? '' : datos;
+				tagDia.innerText = numMedallas;
+			}
+		});
 	}
 
 	/*------------------------- RENDER DINAMICO ---------------------------------------*/
-	increNuevosAnimes(){
+	increNuevosAnimes() {
 		let nuevaConsulta = /*html*/ `<tr id="datos-anime-nuevo">
 				<td><input type="number" name="orden" min="1" class="validate" required></td>
 				<td><input type="text" name="nombre" class="validate" required></td>
@@ -183,11 +283,13 @@ class Render {
 				</td>
 			</tr>`;
 		$('#agregarNuevoAnime').parent().parent().parent().before(nuevaConsulta);
-		$('.tooltipped').tooltip({delay: 50});
+		$('.tooltipped').tooltip({
+			delay: 50
+		});
 		$('select').material_select();
 	}
 
-	crearAnime(){
+	crearAnime() {
 		let listaEnviar = [];
 		let nuevosAnimes = $('tr[id="datos-anime-nuevo"]');
 		// console.log('nuevos animes: ', nuevosAnimes);
@@ -219,8 +321,15 @@ class Render {
 		// console.log(listaEnviar);
 		return listaEnviar;
 	}
-
-	abrirCarpeta(folder, dia, id){
+	/**
+	 * Abre la carpeta en el explorador de archivos.
+	 * En caso de error, se le pedira al usuario que
+	 * vuelva a ingresar la dirección de la carpeta.
+	 * @param {string} folder Dirección de la carpeta.
+	 * @param {string} dia Día seleccionado.
+	 * @param {string} id Id del anime.
+	 */
+	abrirCarpeta(folder, dia, id) {
 		if (!shell.showItemInFolder(`${folder}/*`)) {
 			swal("Hubo problemas al abrir la carpeta.", "Es posible que la dirección haya cambiado o que la carpeta ha sido borrada.\n\n¿Quieres volver a escoger la carpeta?", "info", {
 				buttons: ['No', 'Si']
@@ -239,7 +348,15 @@ class Render {
 						})
 						.then((direccion) => {
 							direccion = this.slashFolder(direccion);
-							actualizarCarpeta(dia, id, direccion);
+							this.db.actualizarCarpeta(id, direccion).then(res => {
+								if (res === 0) {
+									M.toast({
+										html: 'Houston, tenemos un problema',
+										displayLength: 4000
+									});
+								}
+							});
+							this._recargarListaAnimes(dia);
 							swal("Dirección cambiada a:", direccion, "success");
 						});
 					} else {
@@ -249,7 +366,7 @@ class Render {
 		}
 	}
 
-	getFolder(dir){
+	getFolder(dir) {
 		if (this.isNoData(dir) || dir.files[0] === undefined) return
 		let folder = dir.files[0].path
 		let path = this.slashFolder(folder)
@@ -259,13 +376,15 @@ class Render {
 		$(dir).siblings().attr('data-tooltip', path)
 		$(dir).siblings().removeClass('blue')
 		$(dir).siblings().addClass('green')
-		$('.tooltipped').tooltip({delay: 50})
+		$('.tooltipped').tooltip({
+			delay: 50
+		})
 	}
 
-	slashFolder(folder){
+	slashFolder(folder) {
 		let path = ''
-		for(let i in folder){
-			if (folder.charCodeAt(i) === 92){
+		for (let i in folder) {
+			if (folder.charCodeAt(i) === 92) {
 				path += '/'
 				continue
 			}
@@ -384,7 +503,7 @@ class Render {
 		 */
 		document.querySelectorAll('button[type="submit"]').forEach((button) => {
 			button.addEventListener('click', () => {
-				document.querySelectorAll('select.initialized').forEach((select, key) => {
+				document.querySelectorAll('select.initialized').forEach((select) => {
 					let label = select.parentNode.nextElementSibling;
 					if (select.value === "") {
 						let error = label.getAttribute('data-error');
@@ -444,9 +563,17 @@ class Render {
 		});
 	}
 
-	actualizarCapitulo(dia, fila, cont){
-		let id = $(fila).parent().parent().parent().find('#key').text()
-		actualizarCap(dia, id, cont)
+	async actualizarCapitulo(dia, fila, cont) {
+		let id = fila.parentElement.parentElement.parentElement.querySelector('#key').innerText;
+		this.db.actualizarCap(id, cont).then(res => {
+			if (res === 0) {
+				M.toast({
+					html: 'Houston, tenemos un problema',
+					displayLength: 4000
+				});
+			}
+		});
+		this._recargarListaAnimes(dia);
 	}
 
 	/*------------------------- FUNCIONES ADICIONALES ---------------------------------------*/
@@ -497,57 +624,6 @@ class Render {
 		return url.outerHTML
 	}
 
-	_quitaAcentos(str) {
-		var res = str.toLowerCase()
-		res = res.replace(new RegExp(/[àáâãäå]/g),'a')
-		res = res.replace(new RegExp(/[èéêë]/g),'e')
-		res = res.replace(new RegExp(/[ìíîï]/g),'i')
-		res = res.replace(new RegExp(/ñ/g),'n')
-		res = res.replace(new RegExp(/[òóôõö]/g),'o')
-		res = res.replace(new RegExp(/[ùúûü]/g),'u')
-		return res
-	}
-
-	getState(estado) {
-		return {
-			0 : {
-				name : 'Viendo',
-				icon : 'icon-play',
-				color : 'green-text',
-				backgroundColor : 'green'
-			},
-			1 : {
-				name : 'Finalizado',
-				icon : 'icon-ok-squared',
-				color : 'teal-text',
-				backgroundColor : 'teal'
-			},
-			2 : {
-				name : 'No me gusto',
-				icon : 'icon-emo-unhappy',
-				color : 'red-text',
-				backgroundColor : 'red'
-			}
-		}[estado]
-	}
-
-	getStateType(tipo) {
-		return {
-			0 : {
-				name : 'TV',
-			},
-			1 : {
-				name : 'Película',
-			},
-			2 : {
-				name : 'Especial',
-			},
-			3 : {
-				name : 'OVA',
-			}
-		}[tipo];
-	}
-
 	_blockSerie(estado){
 		if (estado == undefined || estado == 0)
 			return false
@@ -590,3 +666,5 @@ class Render {
 			return fin
 	}
 }
+
+exports.Render = Render;

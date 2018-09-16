@@ -1,61 +1,77 @@
-$(document).ready(() => {
-	render = new Render({
+// Archivos que estaban en routers y son globales
+const M = require('materialize-css');
+const swal = require('sweetalert');
+const Chart = require('chart.js');
+
+//
+const { Render } = require('./render.js');
+const { BDAnimes } = require('./consultas.js');
+const settings = require('electron-settings');
+
+document.addEventListener('DOMContentLoaded', async function () {
+	let menu = settings.get('menu', {
 		'día': {
 			'lunes': {
 				'href': '#!',
-				'onclick': "buscar('lunes');",
-				'class': 'collection-item no-link'
+				'id': "lunes",
+				'class': 'collection-item no-link btn-buscar-animes'
 			},
 			'martes': {
 				'href': '#!',
-				'onclick': "buscar('martes');",
-				'class': 'collection-item no-link'
+				'id': "martes",
+				'class': 'collection-item no-link btn-buscar-animes'
 			},
 			'miércoles': {
 				'href': '#!',
-				'onclick': "buscar('miercoles');",
-				'class': 'collection-item no-link'
+				'id': "miercoles",
+				'class': 'collection-item no-link btn-buscar-animes'
 			},
 			'jueves': {
 				'href': '#!',
-				'onclick': "buscar('jueves');",
-				'class': 'collection-item no-link'
+				'id': "jueves",
+				'class': 'collection-item no-link btn-buscar-animes'
 			},
 			'viernes': {
 				'href': '#!',
-				'onclick': "buscar('viernes');",
-				'class': 'collection-item no-link'
+				'id': "viernes",
+				'class': 'collection-item no-link btn-buscar-animes'
 			},
 			'sábado': {
 				'href': '#!',
-				'onclick': "buscar('sabado');",
-				'class': 'collection-item no-link'
+				'id': "sabado",
+				'class': 'collection-item no-link btn-buscar-animes'
 			},
 			'domingo': {
 				'href': '#!',
-				'onclick': "buscar('domingo');",
-				'class': 'collection-item no-link'
+				'id': "domingo",
+				'class': 'collection-item no-link btn-buscar-animes'
 			}
 		},
 		'estrenos': {
 			'Sin ver': {
 				'href': '#!',
-				'onclick': "buscar('sin ver');",
-				'class': 'collection-item no-link'
+				'id': "sin ver",
+				'class': 'collection-item no-link btn-buscar-animes'
 			},
 			'Visto': {
 				'href': '#!',
-				'onclick': "buscar('visto');",
-				'class': 'collection-item no-link'
+				'id': "visto",
+				'class': 'collection-item no-link btn-buscar-animes'
 			},
 			'Ver hoy': {
 				'href': '#!',
-				'onclick': "buscar('ver hoy');",
-				'class': 'collection-item no-link'
+				'id': "ver hoy",
+				'class': 'collection-item no-link btn-buscar-animes'
 			}
 		}
 	});
-	buscar(render.diaSemana());
+	let render = new Render(menu);
+	let consultas = new BDAnimes();
+	let dia = render.diaSemana();
+	let { datos } = await consultas.buscar(dia);
+	render.actualizarLista(datos, dia);
 	render.menuRender();
-	$('.collapsible').collapsible('open', 0);
-})
+
+	var instances = M.Collapsible.init(document.querySelectorAll('.collapsible'));
+	instances[0].open(0);
+});

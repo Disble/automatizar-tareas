@@ -1,5 +1,4 @@
 const {shell} = require('electron');
-require('hammerjs');
 require('materialize-css');
 require('sweetalert');
 var Chart = require('chart.js');
