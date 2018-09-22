@@ -6,7 +6,8 @@ const { Render } = require('./render.js');
 const settings = require('electron-settings');
 
 document.addEventListener('DOMContentLoaded', function () {
-	let render = new Render();
-    render.initEditAnime();
+    let render = new Render();
+    render.initAgregarAnime();
+    // render.initEditAnime();
+    M.FormSelect.init(document.querySelectorAll('select'));
 });
-

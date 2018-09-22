@@ -1,4 +1,15 @@
 exports.RenderBase = class RenderBase {
+	constructor() {
+		this.initPrototypes();
+	}
+	initPrototypes() {
+		HTMLElement.prototype.removeClass = this.removeClass;
+		HTMLElement.prototype.addClass = this.addClass;
+	}
+	/**
+	 * Quita los acentos del string proporcionado.
+	 * @param {string} str String a analizar.
+	 */
     quitaAcentos(str) {
 		var res = str.toLowerCase()
 		res = res.replace(new RegExp(/[àáâãäå]/g),'a')
@@ -39,7 +50,15 @@ exports.RenderBase = class RenderBase {
 			}
 		} [estado]
 	}
-
+	/**
+	 * Retorna un objeto con los metadatos del
+	 * tipo de anime.
+	 * 		- 0: TV
+	 * 		- 1: Película
+	 * 		- 2: Especial
+	 * 		- 3: OVA
+	 * @param {number} tipo Tipo de anime.
+	 */
 	getStateType(tipo) {
 		return {
 			0: {
@@ -55,5 +74,37 @@ exports.RenderBase = class RenderBase {
 				name: 'OVA',
 			}
 		} [tipo];
+	}
+	/**
+	 * Busca los hermanos de un elemento HTML.
+	 * @param {HTMLElement} el Elemento HTML.
+	 * @return {HTMLElement[]} Hermanos del elemento HTML.
+	 */
+	siblings(el) {
+		return Array.prototype.filter.call(el.parentNode.children, (child) => {
+			return child !== el;
+		});
+	}
+	/**
+	 * Remueve la clase CSS del elemento HTML.
+	 * @param {HTMLElement} el Elemento HTML:
+	 * @param {string} className Nombre de la clase.
+	 */
+	removeClass(el, className) {
+		if (el.classList)
+			el.classList.remove(className);
+		else
+			el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+	}
+	/**
+	 * Agrega la clase CSS al elemento HTML.
+	 * @param {HTMLElement} el Elemento HTML.
+	 * @param {string} className Nombre de la clase.
+	 */
+	addClass(el, className) {
+		if (el.classList)
+			el.classList.add(className);
+		else
+			el.className += ' ' + className;
 	}
 }

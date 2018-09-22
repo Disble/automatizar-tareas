@@ -39,20 +39,6 @@
                     </div>
                     <div class="input-field col s12">
                         <select id="dia" name="dia" class="validate" required>
-                            <optgroup label="Día">
-                                <option value="lunes">Lunes</option>
-                                <option value="martes">Martes</option>
-                                <option value="miercoles">Miércoles</option>
-                                <option value="jueves">Jueves</option>
-                                <option value="viernes">Viernes</option>
-                                <option value="sabado">Sábado</option>
-                                <option value="domingo">Domingo</option>
-                            </optgroup>
-                            <optgroup label="Estrenos">
-                                <option value="sin ver">Sin ver</option>
-                                <option value="visto">Visto</option>
-                                <option value="ver hoy">Ver hoy</option>
-                            </optgroup>
                         </select>
                         <label for="dia" data-error="Seleccione una opción">Día</label>
                     </div>
@@ -71,19 +57,12 @@
                     <div class="input-field col s12">
                         <select name="tipo" id="tipo" class="validate" required>
                             <option value="" disabled selected>Tipo</option>
-                            <option value="0">TV</option>
-                            <option value="1">Película</option>
-                            <option value="2">Especial</option>
-                            <option value="3">OVA</option>
                         </select>
                         <label for="tipo" data-error="Seleccione un tipo.">Tipo</label>
                     </div>
                     <div class="input-field col s12">
                         <select name="estado" id="estado" class="validate" required>
                             <option value="" disabled selected>Estado</option>
-                            <option value="0">Viendo</option>
-                            <option value="1">Finalizado</option>
-                            <option value="2">No me gusto</option>
                         </select>
                         <label for="estado" data-error="Seleccione un estado.">Estado</label>
                     </div>
@@ -125,9 +104,6 @@
         </div>
     </div>
     <!-- SCRIPTS -->
-    <script type="text/javascript" src="../../routers/animes.js"></script>
-    <script type="text/javascript" src="../../js/render.js"></script>
-    <script type="text/javascript" src="../../js/consultas.js"></script>
     <script>require('../../js/editar-anime-init.js')</script>
 </body>
 

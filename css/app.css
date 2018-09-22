@@ -171,6 +171,9 @@ table.highlight > tbody > tr:hover{
 	line-height: initial;
     padding: 1px 16px;
 }
+.select-dropdown li.optgroup ~ li.optgroup-option {
+	padding-left: 0;
+}
 .dropdown-content li>a, .dropdown-content li>span {
 	font-size: small;
 	color: var(--border-color);
@@ -202,7 +205,7 @@ select.browser-default {
     min-width: 90px;
 }
 #datos-anime-nuevo input[type="number"] {
-	max-width: 105px;
+	max-width: 100px;
 }
 .chart-container {
 	position: relative;
@@ -242,6 +245,11 @@ select.browser-default {
 .select-wrapper+label::after {
 	content: attr(data-value);
 	opacity: 1;
-	top: 91%;
+	top: 57px;
 	color: red;
+}
+.error-line.select-wrapper>input[class*="select-dropdown"] {
+	border-bottom: 1px solid #F44336;
+    -webkit-box-shadow: 0 1px 0 0 #F44336;
+    box-shadow: 0 1px 0 0 #F44336;
 }

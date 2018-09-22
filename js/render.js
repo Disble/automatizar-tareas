@@ -2,6 +2,8 @@
 const { shell } = require('electron');
 const { BDAnimes } = require('./consultas.js');
 const { RenderBase } = require('./RenderBase.js');
+const { Menu, Estados, Tipos } = require('./defaults-config.js');
+const settings = require('electron-settings');
 
 class Render extends RenderBase {
 	constructor(menu) {
@@ -44,7 +46,7 @@ class Render extends RenderBase {
 					</div>
 				</td>
 				<td>${consulta[i].nombre}</td>
-				<td><span class="span-cap-vistos" cap="${consulta[i].nrocapvisto}" capTotal="${consulta[i].totalcap}">${this._setNumCapitulo(consulta, i)}</span></td>
+				<td><span class="span-cap-vistos" cap="${this._setNumCapitulo(consulta, i)}" capTotal="${consulta[i].totalcap}">${this._setNumCapitulo(consulta, i)}</span></td>
 				<td>${this._paginaConstructor(consulta[i].pagina)}</td>
 				<td>
 					<div class="btnIncremento">
@@ -64,6 +66,13 @@ class Render extends RenderBase {
 	_iniciarListaAnimes(tblListaAnimes, dia) {
 		document.getElementById('contenido').innerHTML = tblListaAnimes;
 		document.querySelector('.titulo').innerHTML = this._addDiasAccents(dia);
+		// Inicializando tooltipes
+		M.Tooltip.init(document.querySelectorAll('.tooltipped'), {
+			exitDelay: 50,
+			enterDelay: 350
+		});
+		M.Modal.init(document.querySelectorAll('.modal'));
+		// Eventos de mouse para la lista de animes
 		document.querySelectorAll('.url-external').forEach((value) => {
 			value.addEventListener('click', e => {
 			e.preventDefault();
@@ -73,13 +82,6 @@ class Render extends RenderBase {
 				}
 			});
 		});
-		// Inicializando tooltipes
-		M.Tooltip.init(document.querySelectorAll('.tooltipped'), {
-			exitDelay: 50,
-			enterDelay: 350
-		});
-		M.Modal.init(document.querySelectorAll('.modal'));
-		// Eventos de mouse para la lista de animes
 		document.querySelectorAll('.span-cap-vistos').forEach((value) => {
 			value.addEventListener('mouseover', e => {
 				let cap = parseFloat(value.getAttribute('cap'));
@@ -88,7 +90,9 @@ class Render extends RenderBase {
 			});
 			value.addEventListener('mouseout', e => {
 				let cap = parseFloat(value.getAttribute('cap'));
-				this.numCapituloNormal(value, cap);
+				if (!isNaN(cap)) {
+					this.numCapituloNormal(value, cap);
+				}
 			});
 		});
 		document.querySelectorAll('.btn-anime-minus').forEach((value) => {
@@ -157,7 +161,11 @@ class Render extends RenderBase {
 		this._recargarListaAnimes(dia);
 		this._buscarMedallas();
 	}
-
+	/**
+	 * Carga todos los animes activos correspondientes
+	 * al día seleccionado.
+	 * @param {string} dia Día a cargar.
+	 */
 	async _recargarListaAnimes(dia) {
 		let { datos } = await this.db.buscar(dia);
 		this.actualizarLista(datos, dia);
@@ -191,7 +199,7 @@ class Render extends RenderBase {
 	 * @param {number} total Número total de capítulos del anime.
 	 */
 	numCapituloInvertido(el, num, total) {
-		if (typeof total === "number" && num <= total) {
+		if (!isNaN(total) && !isNaN(total) && num <= total) {
 			num = parseInt(num);
 			let capInv = total - num;
 			el.innerText = '- ' + capInv;
@@ -236,8 +244,8 @@ class Render extends RenderBase {
 		});
 		document.querySelectorAll('.btn-buscar-animes').forEach((value) => {
 			value.addEventListener('click', async (e) => {
-			e.preventDefault();
-			e.stopPropagation();
+				e.preventDefault();
+				e.stopPropagation();
 				//
 				let dia = value.getAttribute('id');
 				this._recargarListaAnimes(dia);
@@ -260,44 +268,131 @@ class Render extends RenderBase {
 	}
 
 	/*------------------------- RENDER DINAMICO ---------------------------------------*/
+	/**
+	 * Agrega una nueva fila al formulario
+	 * de la página Agregar Animes.
+	 */
 	increNuevosAnimes() {
+		this.contNewFolder++;
+		let menuSettings = settings.get('menu', Menu);
 		let nuevaConsulta = /*html*/ `<tr id="datos-anime-nuevo">
-				<td><input type="number" name="orden" min="1" class="validate" required></td>
-				<td><input type="text" name="nombre" class="validate" required></td>
-				<td><input type="text" name="dia" class="validate" required></td>
-				<td><input type="number" name="nrocapvisto" min="0" class="validate" required></td>
-				<td><input type="number" name="totalcap" min="0" class="tooltipped validate" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio"></td>
-				<td>
-					<select name="tipo" class="validate browser-default" required>
-						<option value="" disabled selected>Tipo</option>
-						<option value="0">TV</option>
-						<option value="1">Película</option>
-						<option value="2">Especial</option>
-						<option value="3">OVA</option>
+			<td><input type="number" name="orden" min="1" class="validate" required></td>
+			<td><input type="text" name="nombre" class="validate" required></td>
+			<td>
+				<div class="input-field">
+					<select id="dia-${this.contNewFolder}" name="dia" class="validate" required>`;
+			for (const tipoDia in menuSettings) {
+				const dias = Menu[tipoDia];
+				let outgroup = document.createElement('optgroup');
+				outgroup.label = this._firstUpperCase(tipoDia);
+				for (const dia in dias) {
+					let opcion = document.createElement('option');
+					opcion.value = dias[dia].id;
+					opcion.innerText = this._firstUpperCase(dia);
+					// nuevaConsulta += opcion.outerHTML;
+					outgroup.appendChild(opcion);
+				}
+				nuevaConsulta += outgroup.outerHTML;
+				// diasSelect.appendChild(outgroup);
+			}
+		nuevaConsulta +=/*html*/`
 					</select>
-				</td>
-				<td><input type="text" name="pagina" class="validate" required></td>
-				<td>
-					<input type="file" name="carpeta" onchange="render.getFolder(this)" id="file${++this.contNewFolder}" class="inputfile" webkitdirectory />
-					<label for="file${this.contNewFolder}" class="tooltipped blue" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
-				</td>
-			</tr>`;
-		$('#agregarNuevoAnime').parent().parent().parent().before(nuevaConsulta);
-		$('.tooltipped').tooltip({
-			delay: 50
-		});
-		$('select').material_select();
-	}
+				</div>
+			</td>
+			<td><input type="number" name="nrocapvisto" min="0" class="validate" required></td>
+			<td><input type="number" name="totalcap" min="0" class="tooltipped validate" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio"></td>
+			<td>
+				<div class="input-field">
+					<select name="tipo" class="validate" required>
+						<option value="" disabled selected>Tipo</option>`;
+			for (const tipo in Tipos) { // Tipos viene desde el import
+				const valor = Tipos[tipo];
+				let opcion = document.createElement('option');
+				opcion.value = valor;
+				opcion.innerText = tipo;
+				nuevaConsulta += opcion.outerHTML;
+				// tiposSelect.appendChild(opcion);
+			}
+		nuevaConsulta +=/*html*/`
+					</select>
+				</div>
+			</td>
+			<td><input type="text" name="pagina" class="validate" required></td>
+			<td>
+				<input type="file" name="carpeta" id="file${this.contNewFolder}" class="inputfile btn-carpeta-buscar" webkitdirectory />
+				<label for="file${this.contNewFolder}" class="tooltipped blue" data-position="bottom" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
+			</td>
+		</tr>`;
+		document.getElementById('agregarNuevoAnime').parentElement.parentElement.parentElement.insertAdjacentHTML('beforebegin', nuevaConsulta);
+		let filaNueva = document.getElementById('agregarNuevoAnime').parentElement.parentElement.parentElement.previousElementSibling;
 
+		filaNueva.querySelectorAll('.btn-carpeta-buscar').forEach((value) => {
+			value.addEventListener('change', e => {
+				this.getFolder(value);
+			});
+		});
+		M.Tooltip.init(document.querySelectorAll('.tooltipped'), {
+			exitDelay: 50
+		});
+		M.FormSelect.init(document.querySelectorAll('select'));
+		// this._fixSelectForm();
+		this._fixSelectForm();
+		this._fixSelectValidationLine();
+	}
+	/**
+	 * Inicializa el HTML y JavaScript
+	 * de la página Agregar Animes
+	 */
+	initAgregarAnime() {
+		let menuSettings = settings.get('menu', Menu);
+		let diasSelect = document.getElementById('dia');
+		for (const tipoDia in menuSettings) {
+			const dias = Menu[tipoDia];
+			let outgroup = document.createElement('optgroup');
+			outgroup.label = this._firstUpperCase(tipoDia);
+			for (const dia in dias) {
+				let opcion = document.createElement('option');
+				opcion.value = dias[dia].id;
+				opcion.innerText = this._firstUpperCase(dia);
+				outgroup.appendChild(opcion);
+			}
+			diasSelect.appendChild(outgroup);
+		}
+		document.getElementById('agregarNuevoAnime').addEventListener('click', e => {
+			this.increNuevosAnimes();
+		});
+		document.getElementById('nuevaListaAnimes').addEventListener('submit', e => {
+			e.preventDefault();
+			e.stopPropagation();
+			let anime = this.crearAnime();
+			this.db.crearAnime(anime);
+		});
+		document.querySelectorAll('#file').forEach((value) => {
+			value.addEventListener('change', e => {
+				this.getFolder(value);
+			});
+		});
+		M.Tooltip.init(document.querySelectorAll('.tooltipped'), {
+			exitDelay: 50
+		});
+		M.FormSelect.init(document.querySelectorAll('select'));
+		// this._fixSelectValidation();
+		this._fixSelectForm();
+		this._fixSelectValidationLine();
+	}
+	/**
+	 * Captura todos los campos del formulario
+	 * y genera un objeto javascript con ellos.
+	 */
 	crearAnime() {
 		let listaEnviar = [];
-		let nuevosAnimes = $('tr[id="datos-anime-nuevo"]');
-		// console.log('nuevos animes: ', nuevosAnimes);
+		let nuevosAnimes = document.querySelectorAll('tr[id="datos-anime-nuevo"]')
 
 		for (const nuevoAnime of nuevosAnimes) {
 			let anime = {};
-			let inputs = $(nuevoAnime).find('input[type]');
-			let tipo = parseInt($(nuevoAnime).find('select[name="tipo"]').val());
+			let inputs = nuevoAnime.querySelectorAll('input[type]:not(.select-dropdown)');
+			let tipo = parseInt(nuevoAnime.querySelector('select[name="tipo"]').value);
+			let dia = nuevoAnime.querySelector('select[name="dia"]').value;
 			
 			for (const input of inputs) {
 				const valor = input.value;
@@ -312,13 +407,14 @@ class Render extends RenderBase {
 				// console.log(anime);
 			}
 			anime.tipo = tipo;
+			anime.dia = dia;
 			anime.estado = 0;
 			anime.activo = true;
 			anime.fechaCreacion = new Date();
 			// console.log('Full nuevo anime: ', anime);
 			listaEnviar.push(anime);
 		}
-		// console.log(listaEnviar);
+		console.log(listaEnviar);
 		return listaEnviar;
 	}
 	/**
@@ -366,19 +462,21 @@ class Render extends RenderBase {
 		}
 	}
 
-	getFolder(dir) {
-		if (this.isNoData(dir) || dir.files[0] === undefined) return
-		let folder = dir.files[0].path
+	getFolder(input) {
+		if (this.isNoData(input) || input.files[0] === undefined) return
+		let folder = input.files[0].path
 		let path = this.slashFolder(folder)
-		//console.log(path)
-		$(dir).attr('value', path)
-		$(dir).siblings().html('Cargado')
-		$(dir).siblings().attr('data-tooltip', path)
-		$(dir).siblings().removeClass('blue')
-		$(dir).siblings().addClass('green')
-		$('.tooltipped').tooltip({
-			delay: 50
-		})
+		input.setAttribute('value', path);
+		
+		let label = this.siblings(input)[0];
+		label.innerHTML = 'Cargado';
+		label.setAttribute('data-tooltip', path);
+		label.removeClass(label, 'blue'); // método hecho con prototipos de la clase RenderBase
+		label.addClass(label, 'green'); // método hecho con prototipos de la clase RenderBase
+		M.Tooltip.init(document.querySelectorAll('.tooltipped'), {
+			exitDelay: 50,
+			enterDelay: 350
+		});
 	}
 
 	slashFolder(folder) {
@@ -396,23 +494,24 @@ class Render extends RenderBase {
 	async initEditAnime() {
 		this._initEditAnimeHTML();
 		this._editAnime();
-		this._loadEditAnime();
+		let data = await this._loadEditAnime();
+		if (data.length > 0) {
+			this._getAnimeData(data[0]._id);
+		}
 		this._editAnimebtnDelete();
 	}
 
 	async _loadEditAnime() {
-		let data = await buscarTodoEditar();
+		let data = await this.db.buscarTodoEditar();
 		let lista = document.getElementById('edit-anime-list');
 		lista.innerHTML = '';
 		// console.log(data);
-		//
 		let i = 0;
 		for (const anime of data) {
 			var item = document.createElement('a');
 			item.href = "#!";
 			item.setAttribute('data-value', anime._id);
 			item.className = "collection-item blue-text";
-			// item.innerHTML = `<a href="#!" data-value="${anime._id}" class="collection-item blue-text"><span class="grey-text badge-left-edit">${++i}</span>${anime.nombre}</a>`;
 			item.innerHTML = `<span class="grey-text badge-left-edit">${++i}</span>${anime.nombre}`;
 			lista.appendChild(item);
 			//
@@ -422,14 +521,11 @@ class Render extends RenderBase {
 				this._getAnimeData(id);
 			});
 		}
-		//
-		if (data.length > 0) {
-			this._getAnimeData(data[0]._id);
-		}
+		return data;
 	}
 
 	async _getAnimeData(id) {
-		let data = await buscarAnimePorId(id);
+		let data = await this.db.buscarAnimePorId(id);
 		let form = document.getElementById('form-edit-anime');
 		let nombre = document.getElementById('nombre');
 		let dia = document.getElementById('dia');
@@ -453,9 +549,17 @@ class Render extends RenderBase {
 		pagina.value = data.pagina;
 		carpeta.value = data.carpeta;
 		//
-		Materialize.updateTextFields();
-		$('select').material_select('destroy');
-		$('select').material_select();
+		M.updateTextFields();
+		document.querySelectorAll('select').forEach((select) => {
+			var instance = M.FormSelect.getInstance(select);
+			instance.destroy();
+			M.FormSelect.init(select);
+		});
+		// Quita el mensaje de error de los select en caso de estar activos.
+		document.querySelectorAll('select').forEach((select) => {
+			let label = select.parentNode.nextElementSibling;
+			label.setAttribute('data-value', '');
+		});
 	}
 
 	_editAnimebtnDelete() {
@@ -476,8 +580,11 @@ class Render extends RenderBase {
 				dangerMode: true,
 			});
 			if (borrar) {
-				await desactivarAnime(id);
-				await this._loadEditAnime();
+				await this.db.desactivarAnime(id);
+				let data = await this._loadEditAnime();
+				if (data.length > 0) {
+					this._getAnimeData(data[0]._id);
+				}
 			} else {
 				swal("¡Acción cancelada!", "", "info");
 			}
@@ -485,25 +592,62 @@ class Render extends RenderBase {
 	}
 
 	_initEditAnimeHTML() {
-		$("select").material_select();
-		$("select[required]").css({
-			display: 'inline',
-			position: 'absolute',
-			top: 10,
-			padding: 0,
-			margin: 0,
-			border: 0,
-			height: 0,
-			width: 0,
-			'z-index': -10
-		});
+		let diasSelect = document.getElementById('dia');
+		let estadosSelect = document.getElementById('estado');
+		let tiposSelect = document.getElementById('tipo');
+		let menuSettings = settings.get('menu', Menu);
+		for (const tipoDia in menuSettings) {
+			const dias = Menu[tipoDia];
+			let outgroup = document.createElement('optgroup');
+			outgroup.label = this._firstUpperCase(tipoDia);
+			for (const dia in dias) {
+				let opcion = document.createElement('option');
+				opcion.value = dias[dia].id;
+				opcion.innerText = this._firstUpperCase(dia);
+				outgroup.appendChild(opcion);
+			}
+			diasSelect.appendChild(outgroup);
+		}
+		for (const estado in Estados) { // Estados viene desde el import
+			const valor = Estados[estado];
+			let opcion = document.createElement('option');
+			opcion.value = valor;
+			opcion.innerText = estado;
+			estadosSelect.appendChild(opcion);
+		}
+		for (const tipo in Tipos) { // Tipos viene desde el import
+			const valor = Tipos[tipo];
+			let opcion = document.createElement('option');
+			opcion.value = valor;
+			opcion.innerText = tipo;
+			tiposSelect.appendChild(opcion);
+		}
+		
+		M.FormSelect.init(document.querySelectorAll('select'));
+		this._fixSelectValidation();
 		/**
-		 * Este addEventListener() es porque la validación del select 
+		 * Reemplazo para método de materialize para input[type=file].
+		 */
+		document.getElementById('carpeta-input').addEventListener('change', (e) => {
+			if (this.isNoData(e.target) || e.target.files[0] === undefined) return;
+			let folder = e.target.files[0].path;
+			let path = this.slashFolder(folder);
+			document.getElementById('carpeta').value = path;
+		});
+	}
+	/**
+	 * Arregla el bug de validación de los select
+	 * de Materialize-css.
+	 */
+	_fixSelectValidation() {
+		this._fixSelectForm();
+		/**
+		 * Este addEventListener() es porque la validación del select
 		 * de materialize no funciona, y este es un fix para eso.
 		 */
 		document.querySelectorAll('button[type="submit"]').forEach((button) => {
 			button.addEventListener('click', () => {
-				document.querySelectorAll('select.initialized').forEach((select) => {
+				document.querySelectorAll('select').forEach((select) => {
 					let label = select.parentNode.nextElementSibling;
 					if (select.value === "") {
 						let error = label.getAttribute('data-error');
@@ -514,25 +658,49 @@ class Render extends RenderBase {
 				});
 			});
 		});
-		/**
-		 * Reemplazo para método de materialize para input[type=file].
-		 * El setTimeout() es porque materialize ya tiene un método que hace lo mismo
-		 * pero que solo devuelve el nombre, y este método se ejecutaba mas rápido.
-		 * Es solo para se tarde un poco mas que el de materialize y haga efecto.
-		 */
-		document.getElementById('carpeta-input').addEventListener('change', (e) => {
-			setTimeout(() => {
-				if (this.isNoData(e.target) || e.target.files[0] === undefined) return;
-				let folder = e.target.files[0].path;
-				let path = this.slashFolder(folder);
-				document.getElementById('carpeta').value = path;
-			}, 1);
+	}
+	/**
+	 * Este addEventListener() es porque la validación del select
+	 * de materialize no funciona, y este es un fix para eso. Esta 
+	 * variación solo muestra una línea roja como indicativo de
+	 * error.
+	 */
+	_fixSelectValidationLine() {
+		document.querySelectorAll('button[type="submit"]').forEach((button) => {
+			button.addEventListener('click', () => {
+				document.querySelectorAll('select').forEach((select) => {
+					if (select.value === "") {
+						select.parentElement.classList.add('error-line');
+					} else {
+						select.parentElement.classList.remove('error-line');
+					}
+				});
+			});
+		});
+	}
+	/**
+	 * Corrigue el error de la validación de los select 
+	 * `An invalid form control with name='tipo' is not focusable.`
+	 */
+	_fixSelectForm() {
+		let selects = document.querySelectorAll('select[required]');
+		selects.forEach((value, key) => {
+			value.style.display = 'inline';
+			value.style.position = 'absolute';
+			value.style.top = '10px';
+			value.style.padding = 0;
+			value.style.margin = 0;
+			value.style.border = 0;
+			value.style.height = 0;
+			value.style.width = 0;
+			value.style.zIndex = -10;
 		});
 	}
 
 	_editAnime() {
 		document.getElementById('form-edit-anime').addEventListener('submit', e => {
 			e.preventDefault();
+			e.stopPropagation();
 
 			let form = new FormData(e.target);
 			let nombre = form.get('nombre').trim();
@@ -559,7 +727,10 @@ class Render extends RenderBase {
 			setValues.$set.pagina = pagina;
 			setValues.$set.carpeta = carpeta;
 			
-			actualizarAnime(e.target.getAttribute('data-value'), setValues);
+			this.db.actualizarAnime(e.target.getAttribute('data-value'), setValues)
+				.then(res => {
+					this._loadEditAnime();
+				});
 		});
 	}
 

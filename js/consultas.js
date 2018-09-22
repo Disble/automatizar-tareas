@@ -2,24 +2,29 @@ const { animesdb } = require('./db-animes');
 const { RenderBase } = require('./RenderBase.js');
 
 class BDAnimes extends RenderBase {
-	cargarDatos() {
-		let render = new Render();
-		let nuevo = render.crearAnime();
-		animesdb.insert(nuevo, function (err, record) {
-			if (err) {
-				console.error(err);
+	/**
+	 * Crear un anime en la base de datos.
+	 * @param {any} anime Anime a guardar en la base de datos.
+	 * @return {any} Objeto insertado en la base de datos.
+	 */
+	crearAnime(anime) {
+		return new Promise((resolve, reject) => {
+			animesdb.insert(anime, function (err, record) {
+				if (err) {
+					M.toast({
+						html: 'Houston, tenemos un problema',
+						displayLength: 4000
+					});
+					reject(new Error(err));
+					return;
+				}
 				M.toast({
-					html: 'Houston, tenemos un problema',
+					html: 'Datos Ingresados Correctamente',
 					displayLength: 4000
 				});
-				return;
-			}
-			M.toast({
-				html: 'Datos Ingresados Correctamente',
-				displayLength: 4000
-			});
-		})
-		return false;
+				return resolve(record);
+			})
+		});
 	}
 	/**
 	 * Busca todos los animes pertenecientes al día seleccionado.
@@ -108,7 +113,11 @@ class BDAnimes extends RenderBase {
 				});
 		});
 	}
-
+	/**
+	 * Retorna todos los animes activos
+	 * ordenados por su fecha de creación
+	 * del más reciente al más antiguo.
+	 */
 	buscarTodoEditar() {
 		return new Promise((resolve, reject) => {
 			animesdb
@@ -123,24 +132,35 @@ class BDAnimes extends RenderBase {
 				})
 		});
 	}
-
+	/**
+	 * Actualiza los campos de un anime en la base de datos.
+	 * @param {string} id Id del anime.
+	 * @param {any} setValues Objeto con los campos a modificar en la base de datos.
+	 */
 	actualizarAnime(id, setValues) {
-		animesdb.update({ "_id": id }, setValues, function (err, num) {
-			if (err) {
-				console.error(err);
+		return new Promise((resolve, reject) => {
+			animesdb.update({ "_id": id }, setValues, function (err, numUpdate) {
+				if (err) {
+					M.toast({
+						html: 'Houston, tenemos un problema',
+						displayLength: 4000
+					});
+					reject(new Error(err));
+					return;
+				}
 				M.toast({
-					html: 'Houston, tenemos un problema',
+					html: 'Datos actualizados correctamente',
 					displayLength: 4000
 				});
-				return;
-			}
-			M.toast({
-				html: 'Datos actualizados correctamente',
-				displayLength: 4000
+				resolve(numUpdate);
 			});
 		});
 	}
-
+	/**
+	 * Retorna el anime que coincida con
+	 * el id proporcionado.
+	 * @param {number} id Id del anime.
+	 */
 	buscarAnimePorId(id) {
 		return new Promise((resolve, reject) => {
 			animesdb.findOne({ _id: id }, function (err, doc) {
@@ -152,7 +172,11 @@ class BDAnimes extends RenderBase {
 			});
 		});
 	}
-
+	/**
+	 * Vuelve un anime inactivo y dejara de
+	 * verse en la listas de animes.
+	 * @param {string} id Id del anime.
+	 */
 	desactivarAnime(id) {
 		return new Promise((resolve, reject) => {
 			animesdb.update({ "_id": id }, { $set: { "activo": false, "fechaEliminacion": new Date() } }, function (err, numUpdate) {

@@ -16,7 +16,7 @@
 	</div>
 	<hr>
 	<div class="container container-big">
-		<form onsubmit="return cargarDatos();" id="nuevaListaAnimes">
+		<form id="nuevaListaAnimes">
 			<table class="centered">
 				<thead>
 					<tr>
@@ -34,22 +34,30 @@
 					<tr id="datos-anime-nuevo">
 						<td><input type="number" name="orden" min="1" placeholder="1" class="validate" required></td>
 						<td><input type="text" name="nombre" placeholder="Steins;Gate 0" class="validate" required></td>
-						<td><input type="text" name="dia" placeholder="jueves" class="validate" required></td>
+						<!-- <td><input type="text" name="dia" placeholder="jueves" class="validate" required></td> -->
+						<td>
+							<div class="input-field">
+								<select id="dia" name="dia" class="validate" required>
+								</select>
+							</div>
+						</td>
 						<td><input type="number" name="nrocapvisto" min="0" class="validate" placeholder="0" required></td>
 						<td><input type="number" name="totalcap" min="0" placeholder="23" class="tooltipped validate" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio"></td>
 						<td>
-							<select name="tipo" class="validate browser-default" required>
-								<option value="" disabled selected>Tipo</option>
-								<option value="0">TV</option>
-								<option value="1">Película</option>
-								<option value="2">Especial</option>
-								<option value="3">OVA</option>
-							</select>
+							<div class="input-field">
+								<select name="tipo" class="validate" required>
+									<option value="" disabled selected>Tipo</option>
+									<option value="0">TV</option>
+									<option value="1">Película</option>
+									<option value="2">Especial</option>
+									<option value="3">OVA</option>
+								</select>
+							</div>
 						</td>
 						<td><input type="text" name="pagina" class="validate" placeholder="https://animeflv.net/anime/782/hyouka" required></td>
 						<td>
-							<input type="file" name="carpeta" onchange="render.getFolder(this)" id="file" class="inputfile" webkitdirectory />
-							<label for="file" class="tooltipped blue" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
+							<input type="file" name="carpeta" id="file" class="inputfile" webkitdirectory />
+							<label for="file" class="tooltipped blue" data-position="bottom" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
 						</td>
 					</tr>
 					<tr>
@@ -57,25 +65,32 @@
 							<div class="barra-sumar">
 								<hr>
 								<div class="triangle"></div>
-								<a id="agregarNuevoAnime" onclick="render.increNuevosAnimes();" class="right btn-floating btn blue">+</a>
+								<a id="agregarNuevoAnime" class="right btn-floating btn blue">+</a>
 							</div>
 						</td>
 					</tr>
 					<tr>
-						<th colspan="8" class="center"><input class="btn green" type="submit" value="Agregar"></th>
+						<th colspan="8" class="center">
+							<!-- <input class="btn green" type="submit" value="Agregar"> -->
+							<button class="btn green waves-effect waves-light" type="submit" name="action">
+								Agregar
+								<i class="material-icons right icon-pencil"></i>
+							</button>
+						</th>
 					</tr>
 				</tbody>
 			</table>
 		</form>
 	</div>
-	<script type="text/javascript" src="../../routers/animes.js"></script>
+	<!-- <script type="text/javascript" src="../../routers/animes.js"></script>
 	<script type="text/javascript" src="../../js/render.js"></script>
-	<script type="text/javascript" src="../../js/consultas.js"></script>
-	<script type="text/javascript">
+	<script type="text/javascript" src="../../js/consultas.js"></script> -->
+	<!-- <script type="text/javascript">
     $(document).ready(() => {
 	  render = new Render();
 	  $('select').material_select();
     });
-  </script>
+  </script> -->
+  <script>require('../../js/agregar-anime-init.js')</script>
 </body>
 </html>
