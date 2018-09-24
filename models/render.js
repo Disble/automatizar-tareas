@@ -10,7 +10,6 @@ class Render extends RenderBase {
 		super();
 		this.db = new BDAnimes();
 		this.contNewFolder = 0;
-		this.numReg = 10;
 		this.menu = menu;
 		/*Bloquea el drag and drop en la pagina*/
 		document.addEventListener('dragover', function (e) {
@@ -215,7 +214,7 @@ class Render extends RenderBase {
 		for (const index1 in menu) {
 			const value1 = menu[index1];
 			salidaMenu += `<li>
-			<div class="collapsible-header flex-x-center">${this._firstUpperCase(index1)}</div>`;
+			<div class="collapsible-header flex-x-center">${this.firstUpperCase(index1)}</div>`;
 			if (value1 != null) {
 				salidaMenu += `<div class="collapsible-body no-padding">
 				<div class="collection">`;
@@ -227,7 +226,7 @@ class Render extends RenderBase {
 					const value3 = value2[index3];
 					salidaMenu += `${index3}="${value3}" `;
 				}
-				salidaMenu += `><span class="badge"></span>${this._firstUpperCase(index2)} </a>`;
+				salidaMenu += `><span class="badge"></span>${this.firstUpperCase(index2)} </a>`;
 			}
 			if (value1 != null) {
 				salidaMenu += `</div>
@@ -236,12 +235,7 @@ class Render extends RenderBase {
 			salidaMenu += `</li>`;
 		}
 		document.getElementById('menu').innerHTML = salidaMenu;
-		document.querySelectorAll('.no-link').forEach((value) => {
-			value.addEventListener('click', e => {
-			e.preventDefault();
-			e.stopPropagation();
-		})
-		});
+		this.noLink();
 		document.querySelectorAll('.btn-buscar-animes').forEach((value) => {
 			value.addEventListener('click', async (e) => {
 				e.preventDefault();
@@ -284,11 +278,11 @@ class Render extends RenderBase {
 			for (const tipoDia in menuSettings) {
 				const dias = Menu[tipoDia];
 				let outgroup = document.createElement('optgroup');
-				outgroup.label = this._firstUpperCase(tipoDia);
+				outgroup.label = this.firstUpperCase(tipoDia);
 				for (const dia in dias) {
 					let opcion = document.createElement('option');
 					opcion.value = dias[dia].id;
-					opcion.innerText = this._firstUpperCase(dia);
+					opcion.innerText = this.firstUpperCase(dia);
 					// nuevaConsulta += opcion.outerHTML;
 					outgroup.appendChild(opcion);
 				}
@@ -349,11 +343,11 @@ class Render extends RenderBase {
 		for (const tipoDia in menuSettings) {
 			const dias = Menu[tipoDia];
 			let outgroup = document.createElement('optgroup');
-			outgroup.label = this._firstUpperCase(tipoDia);
+			outgroup.label = this.firstUpperCase(tipoDia);
 			for (const dia in dias) {
 				let opcion = document.createElement('option');
 				opcion.value = dias[dia].id;
-				opcion.innerText = this._firstUpperCase(dia);
+				opcion.innerText = this.firstUpperCase(dia);
 				outgroup.appendChild(opcion);
 			}
 			diasSelect.appendChild(outgroup);
@@ -462,34 +456,7 @@ class Render extends RenderBase {
 		}
 	}
 
-	getFolder(input) {
-		if (this.isNoData(input) || input.files[0] === undefined) return
-		let folder = input.files[0].path
-		let path = this.slashFolder(folder)
-		input.setAttribute('value', path);
-		
-		let label = this.siblings(input)[0];
-		label.innerHTML = 'Cargado';
-		label.setAttribute('data-tooltip', path);
-		label.removeClass(label, 'blue'); // método hecho con prototipos de la clase RenderBase
-		label.addClass(label, 'green'); // método hecho con prototipos de la clase RenderBase
-		M.Tooltip.init(document.querySelectorAll('.tooltipped'), {
-			exitDelay: 50,
-			enterDelay: 350
-		});
-	}
-
-	slashFolder(folder) {
-		let path = ''
-		for (let i in folder) {
-			if (folder.charCodeAt(i) === 92) {
-				path += '/'
-				continue
-			}
-			path += folder[i]
-		}
-		return path
-	}
+	
 
 	async initEditAnime() {
 		this._initEditAnimeHTML();
@@ -599,11 +566,11 @@ class Render extends RenderBase {
 		for (const tipoDia in menuSettings) {
 			const dias = Menu[tipoDia];
 			let outgroup = document.createElement('optgroup');
-			outgroup.label = this._firstUpperCase(tipoDia);
+			outgroup.label = this.firstUpperCase(tipoDia);
 			for (const dia in dias) {
 				let opcion = document.createElement('option');
 				opcion.value = dias[dia].id;
-				opcion.innerText = this._firstUpperCase(dia);
+				opcion.innerText = this.firstUpperCase(dia);
 				outgroup.appendChild(opcion);
 			}
 			diasSelect.appendChild(outgroup);
@@ -763,10 +730,6 @@ class Render extends RenderBase {
 			return dia
 	}
 
-	_firstUpperCase(value){
-		return value.charAt(0).toUpperCase() + value.slice(1)
-	}
-
 	_estadoNumCap(numCap){
 		numCap = parseInt(numCap)
 		if (numCap < -1 || isNaN(numCap))
@@ -776,21 +739,16 @@ class Render extends RenderBase {
 	}
 
 	_paginaConstructor(pagina){
-		if (this._isUrl(pagina))
+		if (this.isUrl(pagina))
 			return this._redirectExternalConstructor(pagina)
 		else
-			return this._firstUpperCase(pagina)
-	}
-
-	_isUrl(path) {
-		var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
-		return regexp.test(path)
+			return this.firstUpperCase(pagina)
 	}
 
 	_redirectExternalConstructor(path){
 		let url = document.createElement('a')
 		url.href = path
-		url.innerText = this._firstUpperCase(url.hostname)
+		url.innerText = this.firstUpperCase(url.hostname)
 		url.setAttribute('class', 'url-external')
 		return url.outerHTML
 	}
@@ -800,41 +758,6 @@ class Render extends RenderBase {
 			return false
 		else if (estado === 1 || estado == 2)
 			return true
-	}
-
-	isNoData(data){
-		return data === undefined || data === null
-	}
-
-	_totalPag(totalReg) {
-		return Math.ceil(totalReg / this.numReg)
-	}
-
-	saltoPaginacion(pag, totalReg) {
-		return this.numReg  * (pag - 1)
-	}
-
-	limitePaginas(todasPag) {
-		/*10 es el límite de las paginas a mostrar*/
-		return todasPag > 10
-	}
-
-	limitePaginasInicio(pagActual, totalPag) {
-		let inicio = pagActual - 5
-		let passLimitEnd = totalPag - 9
-		if (inicio < 2)
-			return 1
-		else
-			return pagActual + 4 > totalPag ? passLimitEnd : inicio
-	}
-
-	limitePaginasFin(pagActual, totalPag) {
-		let inicio = pagActual - 5
-		let fin = pagActual + 4 > totalPag ? totalPag : pagActual + 4
-		if (inicio < 2)
-			return 10
-		else
-			return fin
 	}
 }
 

@@ -1,10 +1,13 @@
+const { pendientesdb } = require('./db-pendientes.js');
+const { Pendiente } = require('./Pendiente');
 class ModelPendiente {
     constructor() {
+      this.db = pendientesdb;
     }
 
     new(pendiente) {
       return new Promise((resolve, reject) => {
-        pendientesdb.insert(pendiente, function(err, record) {
+        this.db.insert(pendiente, function(err, record) {
       		if (err) {
       			reject(new Error(err));
       			return;
@@ -16,7 +19,7 @@ class ModelPendiente {
 
     update(id, pendiente) {
       return new Promise((resolve, reject) => {
-        pendientesdb.update({_id : id}, pendiente, function(err, record) {
+        this.db.update({_id : id}, pendiente, function(err, record) {
           if (err) {
             reject(new Error(err));
             return;
@@ -28,7 +31,7 @@ class ModelPendiente {
 
     remove(id) {
       return new Promise((resolve, reject) => {
-        pendientesdb.remove({ _id : id }, {}, function(err, record) {
+        this.db.remove({ _id : id }, {}, function(err, record) {
           if (err) {
             reject(new Error(err));
             return;
@@ -40,7 +43,7 @@ class ModelPendiente {
 
     activeOff(id) {
       return new Promise((resolve, reject) => {
-        pendientesdb.update({_id : id}, {$set: {activo: false, fechaFin : new Date()}}, function(err, record) {
+        this.db.update({_id : id}, {$set: {activo: false, fechaFin : new Date()}}, function(err, record) {
           if (err) {
             reject(new Error(err));
             return;
@@ -52,7 +55,7 @@ class ModelPendiente {
 
     getOnce(id) {
 		return new Promise((resolve, reject) => {
-			pendientesdb.findOne({ _id: id }).exec(function (err, record) {
+			this.db.findOne({ _id: id }).exec(function (err, record) {
 				if (err) {
 					reject(new Error(err));
 					process.exit(0);
@@ -64,7 +67,7 @@ class ModelPendiente {
 
     getAll() {
       return new Promise((resolve, reject) => {
-        pendientesdb.find({}).sort({"orden":-1}).exec(function(err, record) {
+        this.db.find({}).sort({"orden":-1}).exec(function(err, record) {
       		if (err) {
             reject(new Error(err));
       			process.exit(0);
@@ -76,7 +79,7 @@ class ModelPendiente {
 
     getAllActive() {
       return new Promise((resolve, reject) => {
-        pendientesdb.find({activo : true}).sort({"orden":-1}).exec(function(err, record) {
+        this.db.find({activo : true}).sort({"orden":-1}).exec(function(err, record) {
       		if (err) {
             reject(new Error(err));
       			process.exit(0);
@@ -88,7 +91,7 @@ class ModelPendiente {
 
     getAllCount() {
       return new Promise((resolve, reject) => {
-        pendientesdb.count({}).sort({"orden":-1}).exec(function(err, record) {
+        this.db.count({}).sort({"orden":-1}).exec(function(err, record) {
       		if (err) {
             reject(new Error(err));
       			process.exit(0);
@@ -100,7 +103,7 @@ class ModelPendiente {
 
     getMaxOrder() {
       return new Promise((resolve, reject) => {
-        pendientesdb.find({}, {orden : 1})
+        this.db.find({}, {orden : 1})
         .sort({"orden":-1}).exec(function(err, record) {
       		if (err) {
             reject(new Error(err));
@@ -121,3 +124,5 @@ class ModelPendiente {
       });
     }
 }
+
+exports.ModelPendiente = ModelPendiente;

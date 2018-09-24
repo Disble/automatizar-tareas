@@ -1,11 +1,12 @@
+const { animesdb } = require('./db-animes');
 class ModelAnime {
   constructor() {
-
+    this.db = animesdb;
   }
 
   new(anime) {
     return new Promise((resolve, reject) => {
-      animesdb.insert(anime, function(err, record) {
+      this.db.insert(anime, function(err, record) {
     		if (err) {
           reject(new Error(err));
     			return;

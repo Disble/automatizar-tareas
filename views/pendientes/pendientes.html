@@ -15,21 +15,11 @@
 			<h3 class="center">Pendientes</h3>
 			<hr>
 			<div class="container">
-        <ul id='data-pendientes' class="collapsible popout collection" data-collapsible="accordion">
+        <ul id='data-pendientes' class="collapsible popout collection">
         </ul>
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript" src="../../routers/animes_pendientes.js"></script>
-  <script type="text/javascript" src="../../models/Pendiente.js"></script>
-	<script type="text/javascript" src="../../models/ModelPendiente.js"></script>
-  <script>
-    const { RenderPendiente } = require('../../models/RenderPendiente.js');
-    $(document).ready(() => {
-      let render = new RenderPendiente();
-      render.getAllData();
-			render.setDragDrop();
-    });
-  </script>
+  <script>require('../../js/pen-init.js')</script>
 </body>
 </html>

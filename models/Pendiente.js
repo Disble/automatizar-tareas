@@ -12,3 +12,5 @@ class Pendiente {
         }
     }
 }
+
+exports.Pendiente = Pendiente;

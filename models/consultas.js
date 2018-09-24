@@ -1,5 +1,5 @@
 const { animesdb } = require('./db-animes');
-const { RenderBase } = require('./RenderBase.js');
+const { RenderBase } = require('./RenderBase');
 
 class BDAnimes extends RenderBase {
 	/**
@@ -190,58 +190,77 @@ class BDAnimes extends RenderBase {
 	}
 
 	buscarPorId(id) {
-		animesdb.findOne({ _id: id }, function (err, doc) {
-			if (err) {
-				console.error(err)
-				process.exit(0)
-			}
-			let render = new Historial()
-			render.capitulosVistosUnAnime(doc)
-		})
+		return new Promise((resolve, reject) => {
+			animesdb.findOne({ _id: id }, function (err, doc) {
+				if (err) {
+					reject(new Error(err));
+					process.exit(0)
+				}
+				return resolve(doc);
+			});
+		});
 	}
-
+	/**
+	 * Hace un conteo de todos los registros de 
+	 * animes, y retorna datos dependiendo de la
+	 * opcion escogida.
+	 * @param {number} pag Pagina a cargar.
+	 * @param {number} option Opción:
+	 * 		- 1: Retorna los datos de la paginación de Historial
+	 * 		- 2: Retorna los datos de los animes (viendo).
+	 */
 	cargarHistorial(pag = 1, option = 1) {
 		// console.log(pag, option);
-
-		animesdb.count({}).exec(function (err, record) {
-			if (err) {
-				console.error(err)
-				process.exit(0)
-			}
-			if (option == 1) {
-				buscarTodoHistorial(pag, record)
-			} else {
-				buscarAnimesViendo()
-			}
-		})
+		return new Promise((resolve, reject) => {
+			animesdb.count({}).exec((err, record) => {
+				if (err) {
+					reject(new Error(err));
+					process.exit(0);
+				}
+				if (option == 1) {
+					return resolve(this.buscarTodoHistorial(pag, record));
+				} else {
+					return resolve(this.buscarAnimesViendo());
+				}
+			});
+		});
 	}
 
 	buscarAnimesViendo() {
-		animesdb.find({}).sort({
-			"fechaUltCapVisto": -1
-		}).exec(function (err, record) {
-			if (err) {
-				console.error(err)
-				process.exit(0)
-			}
-			let historial = new Historial()
-			historial.capitulosVistos(record)
-		})
+		return new Promise((resolve, reject) => {
+			animesdb.find({}).sort({ "fechaUltCapVisto": -1 }).exec(function (err, record) {
+				if (err) {
+					reject(new Error(err));
+					process.exit(0)
+				}
+				return resolve(record);
+			})
+		});
 	}
-
+	/**
+	 * Genera todos los datos necesarios para
+	 * crear la paginación para Historial.
+	 * @param {number} pag Pagina a cargar.
+	 * @param {number} totalReg Conteo del total de registros de animes.
+	 */
 	buscarTodoHistorial(pag, totalReg) {
-		let render = new Render()
-		let salto = render.saltoPaginacion(pag, totalReg)
-		let limite = render.numReg
-		animesdb.find({}).sort({ "fechaUltCapVisto": -1 }).skip(salto).limit(limite).exec(function (err, record) {
-			if (err) {
-				console.error(err)
-				process.exit(0)
-			}
-			let historial = new Historial();
-			historial.imprimirHistorial(record, salto);
-			historial.imprimirPagination(totalReg, pag);
-		})
+		return new Promise((resolve, reject) => {
+			let salto = this.saltoPaginacion(pag, totalReg);
+			let limite = this.numReg; // este this pertenece a RenderBase
+			animesdb.find({}).sort({ "fechaUltCapVisto": -1 }).skip(salto).limit(limite).exec(function (err, record) {
+				if (err) {
+					reject(new Error(err));
+					process.exit(0);
+				}
+				return resolve({
+					datos: record,
+					salto,
+					totalReg,
+					pag
+				});
+				
+			});
+		});
 	}
 
 	buscarAutocompleteHistorial() {
@@ -263,44 +282,60 @@ class BDAnimes extends RenderBase {
 			});
 		});
 	}
-
+	/**
+	 * Busca solo los animes que coinciden con el query
+	 * proporcionado. Se utiliza para el buscador.
+	 * @param {string} query String a buscar.
+	 * @param {any} esFiltro Opciones de busqueda.
+	 * @param {any} orden Orden en se muestran las respuestas.
+	 */
 	buscarAutocompleteAnimes(query, esFiltro, orden = { "fechaUltCapVisto": -1 }) {
-		queryReg = escaparQuery(query);
-		animesdb.find({ nombre: new RegExp(queryReg, 'i') }).sort(orden).exec(function (err, record) {
-			if (err) {
-				console.error(err);
-				process.exit(0);
-			}
-			// console.log(record);
-			if (esFiltro) {
-				M.toast({
-					html: `Filtrando ${query == "" ? 'todo' : '"'+query+'"'}: ${record.length} resultados`,
-					displayLength: 4000
-				});
-			}
-			let historial = new Historial();
-			historial.imprimirHistorial(record, 0);
-		});
-	}
-
-	filtrarBuscadorHistorial(query, opciones, orden) {
-		queryReg = escaparQuery(query);
-		animesdb
-			.find({ $and: [{ nombre: new RegExp(queryReg, 'i') }, opciones] })
-			.sort(orden)
-			.exec(function (err, record) {
+		return new Promise((resolve, reject) => {
+			let queryReg = this.escaparQuery(query);
+			animesdb.find({ nombre: new RegExp(queryReg, 'i') }).sort(orden).exec(function (err, record) {
 				if (err) {
-					console.error(err);
+					reject(new Error(err));
 					process.exit(0);
 				}
-				M.toast({
-					html: `Filtrando ${query == "" ? 'todo' : '"'+query+'"'}: ${record.length} resultados`,
-					displayLength: 4000
-				});
 				// console.log(record);
-				let historial = new Historial();
-				historial.imprimirHistorial(record, 0);
+				if (esFiltro) {
+					M.toast({
+						html: `Filtrando ${query == "" ? 'todo' : '"'+query+'"'}: ${record.length} resultados`,
+						displayLength: 4000
+					});
+				}
+				return resolve(record);
 			});
+		});
+	}
+	/**
+	 * Busca solo los animes que coinciden con el query
+	 * proporcionado. Se utiliza para los filtros.
+	 * @param {string} query String a buscar.
+	 * @param {any} esFiltro Opciones de busqueda.
+	 * @param {any} orden Orden en se muestran las respuestas.
+	 */
+	filtrarBuscadorHistorial(query, opciones, orden) {
+		return new Promise((resolve, reject) => {
+			let queryReg = this.escaparQuery(query);
+			console.log(query, queryReg);
+			
+			animesdb
+				.find({ $and: [{ nombre: new RegExp(queryReg, 'i') }, opciones] })
+				.sort(orden)
+				.exec(function (err, record) {
+					if (err) {
+						reject(new Error(err));
+						process.exit(0);
+					}
+					M.toast({
+						html: `Filtrando ${query == "" ? 'todo' : '"'+query+'"'}: ${record.length} resultados`,
+						displayLength: 4000
+					});
+					console.log(record);
+					return resolve(record);
+				});
+		});
 	}
 
 	escaparQuery(query) {
@@ -372,51 +407,29 @@ class BDAnimes extends RenderBase {
 	}
 
 	restaurarFila(id) {
-		swal({
-				title: "¿Estás seguro?",
-				text: "¡Volvera a aparecer en la lista de ver animes!",
-				icon: "warning",
-				buttons: ["Cancelar", "OK"],
-				dangerMode: true,
-			})
-			.then((willDelete) => {
-				if (willDelete) {
-					animesdb.update({ "_id": id }, { $set: { "activo": true, "fechaEliminacion": null } }, function (err, numUpdate) {
-						if (err) {
-							console.error(err);
-							return;
-						}
-						let render = new Historial();
-						render._reloadHistorial();
-					})
-				} else {
-					swal("¡Acción cancelada!");
+		return new Promise((resolve, reject) => {
+			animesdb.update({ "_id": id }, { $set: { "activo": true, "fechaEliminacion": null } }, function (err, numUpdate) {
+				if (err) {
+					reject(new Error(err));
+					return;
 				}
+				return resolve(numUpdate);
 			});
+		});
 	}
-
+	/**
+	 * Borra un anime por su id.
+	 */
 	borrarAnime(id) {
-		swal({
-				title: "¿Estás seguro?",
-				text: "¡Una vez borrado, no vas a poder recuperarlo!",
-				icon: "warning",
-				buttons: ["Cancelar", "OK"],
-				dangerMode: true,
-			})
-			.then((willDelete) => {
-				if (willDelete) {
-					animesdb.remove({ _id: id }, {}, function (err, numRemoved) {
-						if (err) {
-							console.error(err);
-							process.exit(0);
-						}
-						let render = new Historial();
-						render._reloadHistorial();
-					});
-				} else {
-					swal("¡Acción cancelada!");
+		return new Promise((resolve, reject) => {
+			animesdb.remove({ _id: id }, {}, function (err, numRemoved) {
+				if (err) {
+					reject(new Error(err));
+					process.exit(0);
 				}
+				return resolve(numRemoved);
 			});
+		});
 	}
 }
 

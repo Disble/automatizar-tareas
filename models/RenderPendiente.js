@@ -1,8 +1,15 @@
+const { shell } = require('electron');
 const { Anime } = require('./Anime.js');
+const { Pendiente } = require('./Pendiente.js');
 const { ModelAnime } = require('./ModelAnime.js');
+const { ModelPendiente } = require('./ModelPendiente.js');
+const { RenderBase } = require('./RenderBase.js');
+var Sortable = require('sortablejs');
 
-class RenderPendiente {
+
+class RenderPendiente extends RenderBase{
 	constructor() {
+		super();
 		this.model = new ModelPendiente();
 		this.modelAnime = new ModelAnime();
 	}
@@ -34,7 +41,6 @@ class RenderPendiente {
 							<form class="form-form-anime">
 							<div class="modal-content">
 								<h4 class="center">Crear nuevo Anime</h4>
-								
 								<div class="row">
 									<div class="col s12">
 										<div class="input-field">
@@ -76,12 +82,11 @@ class RenderPendiente {
 											</div>
 											<div class="col s2 push-s1">
 												<input type="file" name="carpeta" id="file${index}" class="inputfile" webkitdirectory />
-												<label for="file${index}" class="tooltipped blue mt-10" data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
+												<label for="file${index}" class="tooltipped blue mt-10" data-position="bottom" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
 											</div>
 										</div>
 									</div>
 								</div>
-								
 							</div>
 							<div class="modal-footer">
 								<input type="submit" class="waves-effect btn-flat green-text" value="crear">
@@ -94,75 +99,80 @@ class RenderPendiente {
 				});
 				return data;
 			}).then((resolve) => {
-				self = this;
-				$('#data-pendientes').html(resolve);
-				$('.tooltipped').tooltip({ delay: 50 });
-				$('.modal').modal({
-					dismissible: true, // Modal can be dismissed by clicking outside of the modal
-					opacity: .5, // Opacity of modal background
-					inDuration: 300, // Transition in duration
-					outDuration: 200, // Transition out duration
-					startingTop: '4%', // Starting top style attribute
-					endingTop: '10%', // Ending top style attribute
-					ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-						self._forkToAnimeOpen(self);
-					}// Callback for Modal close
+				document.getElementById('data-pendientes').innerHTML = resolve;
+				M.Collapsible.init(document.querySelectorAll('.collapsible'));
+				M.Tooltip.init(document.querySelectorAll('.tooltipped'), { 
+					enterDelay: 350 
 				});
-				$('select').material_select();
+				M.Modal.init(document.querySelectorAll('.modal'), {
+					onOpenEnd: () => {
+						this._forkToAnimeOpen(this);
+					}
+				});
+				M.FormSelect.init(document.querySelectorAll('select'));
+				M.updateTextFields();
 				this._urlExternal();
-				$('.inputfile').change((e) => {
-					this._getFolder(e.target);
+				document.querySelectorAll('.inputfile').forEach((value) => {
+					value.addEventListener('change', e => {
+						this.getFolder(value);
+					})
 				});
-				this.elementsPen = $('#data-pendientes').find('li#item-list');
+				this.elementsPen = document.getElementById('data-pendientes').querySelectorAll('li#item-list');
+				
 			})
-			.catch((err) => { return console.log(err.message) });
+			.catch((err) => { return console.error(err) });
 	}
 
-	_forkToAnimeOpen(self) {
-		$('.form-form-anime').submit(function(e) {
-			e.preventDefault();
-			let form = new FormData(this);
-			
-			if (form.get('nombre').length === 0 || form.get('dia') === null || form.get('orden').length === 0 || form.get('tipo') === null) {
-				swal("¡Opss!", `Necesitamos más datos para crearlo.`, "warning");
-				return false;
-			}
-			
-			let container = $(this).parent().parent().parent()[0];
-			let nombre = form.get('nombre').trim();
-			let dia = form.get('dia').trim();
-			let tipo = parseInt(form.get('tipo'));
-			let orden = parseInt(form.get('orden'));
-			let pagina = form.get('pagina') == "" ? "No Asignada" : form.get('pagina').trim();
-			let carpeta = $(e.target).find('input[type=file]')[0].getAttribute('value');
-			let totalcap = parseInt(form.get('totalcap'));
-			
-			let anime = new Anime(orden, nombre, dia, 0, totalcap, tipo, pagina, carpeta, 0, true, new Date(), null, null);
-			
-			self.modelAnime.new(anime)
-				.then((resolve) => {
-					swal({
-						title: "¡Anime creado!",
-						text: "¿Deseas borrar el pendiente?",
-						icon: "success",
-						buttons: ["NO", "SI"],
-						dangerMode: true,
+	_forkToAnimeOpen() {
+		document.querySelectorAll('.form-form-anime').forEach(value => {
+			value.addEventListener('submit', e => {
+				e.preventDefault();
+				let form = new FormData(value);
+				
+				if (form.get('nombre').length === 0 || form.get('dia') === null || form.get('orden').length === 0 || form.get('tipo') === null) {
+					swal("¡Opss!", `Necesitamos más datos para crearlo.`, "warning");
+					return false;
+				}
+				
+				let container = value.parentElement.parentElement.parentElement;
+				let nombre = form.get('nombre').trim();
+				let dia = form.get('dia').trim();
+				let tipo = parseInt(form.get('tipo'));
+				let orden = parseInt(form.get('orden'));
+				let pagina = form.get('pagina') == "" ? "No Asignada" : form.get('pagina').trim();
+				let carpeta = value.querySelector('input[type=file]').getAttribute('value');
+				let totalcap = parseInt(form.get('totalcap'));
+
+				console.log(orden, nombre, dia, 0, totalcap, tipo, pagina, carpeta, 0, true, new Date(), null, null);
+				
+				
+				let anime = new Anime(orden, nombre, dia, 0, totalcap, tipo, pagina, carpeta, 0, true, new Date(), null, null);
+				
+				this.modelAnime.new(anime)
+					.then(async (resolve) => {
+						swal({
+							title: "¡Anime creado!",
+							text: "¿Deseas borrar el pendiente?",
+							icon: "success",
+							buttons: ["NO", "SI"],
+							dangerMode: true,
+						})
+							.then(async (willDelete) => {
+								if (willDelete) {
+									this._setOffPendiente(container);
+									await swal("¡Pendiente borrado!", "", "success");
+									this.recargarPagina();
+								} else {
+									await swal("No hay problema", "Este pendiente se mantendra en la lista.", "success")
+									this.recargarPagina();
+								}
+							});
 					})
-						.then((willDelete) => {
-							if (willDelete) {
-								self._setOffPendiente(container);
-								swal("¡Pendiente borrado!", "", "success")
-									.then((value) => {
-										// esta dirección toca hacerla relativa a la carpeta /models por el request()
-										window.location.href = `file://${__dirname}/../views/pendientes/pendientes.html`;
-									});
-							} else {
-								// esta dirección toca hacerla relativa a la carpeta /models por el request()
-								window.location.href = `file://${__dirname}/../views/pendientes/pendientes.html`;
-							}
-						});
-				})
-				.catch((err) => { swal("¡Opss!", `Tuvimos problemas creando "${nombre}".\nPor favor vuelva a intentarlo.`, "error"); });
+					.catch((err) => { 
+						console.error(err);
+						swal("¡Opss!", `Tuvimos problemas creando "${nombre}".\nPor favor vuelva a intentarlo.`, "error"); 
+					});
+			});
 		});
 	}
 
@@ -170,38 +180,50 @@ class RenderPendiente {
 		this.model.getMaxOrder()
 			.then((resolve) => {
 				let orden = resolve + 1;
-				let nombre = $('#nombre').val();
-				let pagina = $('#pagina').val();
-				let detalles = $('#detalles').val();
-				let pendiente = new Pendiente(nombre, detalles, orden, pagina);
+				let nombre = document.getElementById('nombre');
+				let pagina = document.getElementById('pagina');
+				let detalles = document.getElementById('detalles');
+				//
+				let pendiente = new Pendiente(nombre.value, detalles.value, orden, pagina.value);
 				this.model.new(pendiente)
 					.then((resolve) => {
 						if (resolve) {
-							Materialize.toast('Datos Ingresados Correctamente', 4000);
+							M.toast({
+								html: 'Datos Ingresados Correctamente',
+								displayLength: 4000
+							});
+							nombre.value = '';
+							pagina.value = '';
+							detalles.value = '';
 						} else {
-							Materialize.toast('Houston, tenemos un problema', 4000);
+							M.toast({
+								html: 'Houston, tenemos un problema',
+								displayLength: 4000
+							});
 						}
 					})
-					.catch((err) => { return console.log(err.message) });
+					.catch((err) => { return console.error(err) });
 			})
-			.catch((err) => { return console.log(err.message) });;
+			.catch((err) => { return console.error(err) });;
 	}
 
 	_setSubmitNew() {
-		$('#submitPendiente').submit(() => {
+		document.getElementById('submitPendiente').addEventListener('submit', e => {
+			e.preventDefault();
+			e.stopPropagation();
 			this._setDataPendiente();
 			return false;
 		});
 	}
 
 	async _setOrderView() {
-		let allPenElemModificados = $('#data-pendientes').find('li#item-list');
+		let allPenElemModificados = document.getElementById('data-pendientes').querySelectorAll('li#item-list');
 		let allPendientes = await this._reorderOrderDatabase(allPenElemModificados);
 		this._setNewOrder(allPendientes);
 	}
 	
 	async _setOrderEdit() {
-		let allPenElemModificados = $('#edit-pen').find('li');
+		let allPenElemModificados = document.getElementById('edit-pen').querySelectorAll('li');
 		let allPendientes = await this._reorderOrderDatabase(allPenElemModificados);
 		this._setNewOrder(allPendientes);
 	}
@@ -217,16 +239,14 @@ class RenderPendiente {
 		let allOrders = [];
 		// Aqui estamos recorriendo los elementos originales, antes de moverlos
 		for (const elem of this.elementsPen) {
-			let key = $(elem).find('#key').html();
+			let key = elem.querySelector('#key').innerHTML;
 			let pendiente = await this.model.getOnce(key); // consegimos los pendiente de la BDD
 			allOrders.push(pendiente.orden); // Guardamos todos los orden de los elementos originales
 		}
 
-		//let allPenElemModificados = $('#data-pendientes').find('li#item-list'); // Esta es la lista actualizada de los elementos, que ya se movieron
-
 		// Aqui estamos recorriendo los elementos modificados, los que ya movimos
 		for (const elem of allPenElemModificados) {
-			let key = $(elem).find('#key').html();
+			let key = elem.querySelector('#key').innerHTML;
 			let pendiente = await this.model.getOnce(key); // consegimos los pendiente de la BDD
 			allPendientes.push(pendiente); // Guardamos los objetos pendiente de la vista modificada
 		}
@@ -241,8 +261,8 @@ class RenderPendiente {
 		}
 		
 		/**
-		 * aqui estamos guardando los elementos modificados 
-		 * para que la siguiente iteracion los tome como los originales.
+		 * Aqui estamos guardando los elementos modificados 
+		 * para que la siguiente iteración los tome como los originales.
 		 */
 		this.elementsPen = allPenElemModificados;
 
@@ -250,30 +270,35 @@ class RenderPendiente {
 	}
 
 	_setOffPendiente(item) {
-		let id = $(item).find('#key').html();
+		let id = item.querySelector('#key').innerHTML;
 		this.model.activeOff(id)
 			.then((resolve) => {
 				if (resolve) {
-					this.elementsPen = $('#data-pendientes').find('li#item-list');
-					Materialize.toast('Marcado como completado correctamente', 4000);
+					this.elementsPen = document.getElementById('data-pendientes').querySelectorAll('li#item-list');
+					M.toast({
+						html: 'Marcado como completado correctamente',
+						displayLength: 4000
+					});
 				} else {
-					Materialize.toast('Houston, tenemos un problema', 4000);
+					M.toast({
+						html: 'Houston, tenemos un problema',
+						displayLength: 4000
+					});
 				}
 			})
-			.catch((err) => { return console.log(err.message) });
+			.catch((err) => { return console.error(err) });
 	}
 
 	setDragDrop() {
-		var self = this;
-		var el = document.getElementById('data-pendientes');
-		var sortable = Sortable.create(el, {
+		let el = document.getElementById('data-pendientes');
+		let sortable = Sortable.create(el, {
 			handle: '.btn-sortable',
 			animation: 150,
-			onUpdate: function (evt) {
-				self._setOrderView(evt.oldIndex, evt.newIndex);
+			onUpdate: (evt) => {
+				this._setOrderView(evt.oldIndex, evt.newIndex);
 			},
 			filter: '.js-remove',
-			onFilter: function (evt) {
+			onFilter: (evt) => {
 				swal({
 					title: "¿Estás seguro?",
 					text: "¡Si lo marcas como completado, se borrara de esta lista!",
@@ -283,10 +308,10 @@ class RenderPendiente {
 				})
 					.then((willDelete) => {
 						if (willDelete) {
-							var el = sortable.closest(evt.item);
+							let el = sortable.closest(evt.item);
 							el && el.parentNode.removeChild(el);
 							// console.log('Justo antes de borrar', evt.item);
-							self._setOffPendiente(evt.item);
+							this._setOffPendiente(evt.item);
 						} else {
 							swal("¡Acción cancelada!", "", "info");
 						}
@@ -317,26 +342,24 @@ class RenderPendiente {
 				document.getElementById('edit-pen').innerHTML = resolve;
 				this._setReorderEditPen();
 				this._cellEdit();
-				this.elementsPen = $('#edit-pen').find('li');
+				this.elementsPen = document.getElementById('edit-pen').querySelectorAll('li');
 			})
-			.catch((err) => { console.log(err.message) });
+			.catch((err) => { console.log(err) });
 	}
 
 	_cellEdit(){
-		let self = this;
-		$('.editable-pen').each(function(key, value) {
-			$(value).dblclick(function() {
-				$(this).attr('contenteditable', 'true');
-				$(this).focus();
+		document.querySelectorAll('.editable-pen').forEach(value => {
+			value.addEventListener('dblclick', e => {
+				value.setAttribute('contenteditable', 'true');
+				value.focus();
 			});
-			$(value).focusout(function() {
-				$(this).removeAttr('contenteditable');
-				let nombre = $(this).parent().parent().find('#nombre').text();
-				let detalle = $(this).parent().parent().find('#detalle').text();
-				let pagina = $(this).parent().parent().find('#pagina').text();
-				let key = $(this).parent().parent().find('#key').text();
-				let row = [nombre, detalle, pagina];
-				self.model
+			value.addEventListener('focusout', e => {
+				value.removeAttribute('contenteditable');
+				let nombre = value.parentElement.parentElement.querySelector('#nombre').innerText;
+				let detalle = value.parentElement.parentElement.querySelector('#detalle').innerText;
+				let pagina = value.parentElement.parentElement.querySelector('#pagina').innerText;
+				let key = value.parentElement.parentElement.querySelector('#key').innerText;
+				this.model
 					.getOnce(key)
 					.then((resolve) => {
 						resolve.nombre = nombre;
@@ -345,40 +368,35 @@ class RenderPendiente {
 						return resolve;
 					})
 					.then((resolve) => {
-						self.model.update(key, resolve);
+						this.model.update(key, resolve);
 					})
 					.catch((err) => { return console.log(err.message) });
 			});
-			$(value).bind('keypress', function(e) {
+			value.addEventListener('keypress', e => {
 				if(e.keyCode==13) {
-					$(this).trigger('focusout');
+					let event = document.createEvent('HTMLEvents');
+					event.initEvent('focusout', true, false);
+					value.dispatchEvent(event)
 				}
 			});
 		});
 	}
 
 	_setReorderEditPen() {
-		var self = this;
-		var el = document.getElementById('edit-pen');
-		var sortable = Sortable.create(el, {
+		Sortable.create(document.getElementById('edit-pen'), {
 			handle: '.btn-sortable',
 			animation: 150,
-			onUpdate: function (evt) {
-				self._setOrderEdit(evt.oldIndex, evt.newIndex);
+			onUpdate: (evt) => {
+				this._setOrderEdit(evt.oldIndex, evt.newIndex);
 			}
 		});
 	}
 
 	_paginaConstructor(pagina) {
-		if (this._isUrl(pagina))
+		if (this.isUrl(pagina))
 			return this._redirectExternalConstructor(pagina);
 		else
 			return pagina;
-	}
-
-	_isUrl(path) {
-		var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
-		return regexp.test(path)
 	}
 
 	_redirectExternalConstructor(path) {
@@ -390,39 +408,15 @@ class RenderPendiente {
 	}
 
 	_urlExternal() {
-		$('.url-external').click(function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-			$(this).each(function (key, value) {
-				if (!shell.openExternal(value.href))
+		document.querySelectorAll('.url-external').forEach(value => {
+			value.addEventListener('click', e => {
+				e.preventDefault();
+				e.stopPropagation();
+				if (!shell.openExternal(value.href)) {
 					swal("Hubo problemas al abrir la url.", "Por favor revise el formato de la url en Editar Animes.", "error");
+				}
 			});
 		});
-	}
-
-	_getFolder(dir){
-		if (dir === undefined || dir === null || dir.files[0] === undefined) return;
-		let folder = dir.files[0].path;
-		let path = this._slashFolder(folder)
-		// console.log(path)
-		$(dir).attr('value', path)
-		$(dir).siblings().html('Cargado')
-		$(dir).siblings().attr('data-tooltip', path)
-		$(dir).siblings().removeClass('blue')
-		$(dir).siblings().addClass('green')
-		$('.tooltipped').tooltip({delay: 50})
-	}
-
-	_slashFolder(folder){
-		let path = ''
-		for(let i in folder){
-			if (folder.charCodeAt(i) === 92){
-				path += '/'
-				continue
-			}
-			path += folder[i]
-		}
-		return path
 	}
 }
 

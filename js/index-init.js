@@ -2,9 +2,9 @@
 const M = require('materialize-css');
 const swal = require('sweetalert');
 // Variables locales
-const { Render } = require('./render.js');
-const { BDAnimes } = require('./consultas.js');
-const { Menu } = require('./defaults-config.js');
+const { Render } = require('../models/render.js');
+const { BDAnimes } = require('../models/consultas.js');
+const { Menu } = require('../models/defaults-config.js');
 const settings = require('electron-settings');
 
 document.addEventListener('DOMContentLoaded', async function () {
@@ -16,6 +16,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 	render.actualizarLista(datos, dia);
 	render.menuRender();
 
-	var instances = M.Collapsible.init(document.querySelectorAll('.collapsible'));
+	let instances = M.Collapsible.init(document.querySelectorAll('.collapsible'));
 	instances[0].open(0);
 });

@@ -22,7 +22,7 @@
 				</h3>		
 				<!-- Modal Structure -->
 				<div id="modal-search" class="modal">
-					<div class="modal-content">
+					<div class="modal-content push-autocomplete">
 						<div class="row">
 							<div class="input-field col s12">
 								<i class="icon-pag icon-search prefix"></i>
@@ -39,7 +39,7 @@
 				<div id="div-filter" show="false" class="row hidden">
 					<div class="input-field col s3">
 						<select id="estado-select" multiple>
-							<option value="" disabled selected>Estado</option>
+							<option value="" disabled>Estado</option>
 							<option value="0">Viendo</option>
 							<option value="1">Finalizado</option>
 							<option value="2">No me gusto</option>
@@ -48,7 +48,7 @@
 					</div>
 					<div class="input-field col s3">
 						<select id="tipo-select" multiple>
-							<option value="" disabled selected>Tipo</option>
+							<option value="" disabled>Tipo</option>
 							<option value="0">TV</option>
 							<option value="1">Película</option>
 							<option value="2">Especial</option>
@@ -58,7 +58,7 @@
 					</div>
 					<div class="input-field col s3">
 						<select id="orden-select">
-							<option value="" disabled selected>Orden</option>
+							<option value="" disabled>Orden</option>
 							<option value="1">Nombre A-Z</option>
 							<option value="2">Últ Cap Visto</option>
 							<option value="3">Fecha Creación</option>
@@ -89,14 +89,6 @@
       </ul>
 		</div>
 	</div>
-	<script type="text/javascript" src="../../routers/animes.js"></script>
-	<script type="text/javascript" src="../../js/render.js"></script>
-	<script type="text/javascript" src="../../js/Historial.js"></script>
-	<script type="text/javascript" src="../../js/consultas.js"></script>
-	<script type="text/javascript">
-		cargarHistorial(1, 1);
-		let historial = new Historial();
-		historial.configurarBuscador();
-	</script>
+	<script>require('../../js/historial-init.js')</script>
 </body>
 </html>
