@@ -23,83 +23,75 @@
         </div>
 
         <div class="col s8">
-            <div class="row">
-                <div class="col s12">
-                    <h5>Editar anime</h5>
-                </div>
-                <div class="col s12">
-                    <div class="divider"></div>
-                </div>
+            <div class="col s12">
+                <h5>Editar anime</h5>
             </div>
-            <div class="row">
-                <form id="form-edit-anime">
-                    <div class="input-field col s12">
-                        <input type="text" placeholder="Nombre" name="nombre" id="nombre" class="validate" required>
-                        <label for="nombre" data-error="Este campo no puede estar vacio">Nombre</label>
-                    </div>
-                    <div class="input-field col s12">
-                        <select id="dia" name="dia" class="validate" required>
-                        </select>
-                        <label for="dia" data-error="Seleccione una opción">Día</label>
-                    </div>
-                    <div class="input-field col s12">
-                        <input type="number" id="orden" name="orden" placeholder="Orden" min="1" class="validate" required>
-                        <label for="orden" data-error="Este campo no puede estar vacio. El mínimo es 1">Orden</label>
-                    </div>
-                    <div class="input-field col s12">
-                        <input type="number" id="cap-vistos" name="cap-vistos" placeholder="Capítulos vistos" min="0" class="validate" required>
-                        <label for="cap-vistos" data-error="Este campo no puede estar vacio">Capítulos vistos</label>
-                    </div>
-                    <div class="input-field col s12">
-                        <input type="number" id="total-cap" name="total-cap" name= placeholder="Total capítulos" min="0" class="validate">
-                        <label for="total-cap" data-error="Este campo no puede estar vacio">Total capítulos</label>
-                    </div>
-                    <div class="input-field col s12">
-                        <select name="tipo" id="tipo" class="validate" required>
-                            <option value="" disabled selected>Tipo</option>
-                        </select>
-                        <label for="tipo" data-error="Seleccione un tipo.">Tipo</label>
-                    </div>
-                    <div class="input-field col s12">
-                        <select name="estado" id="estado" class="validate" required>
-                            <option value="" disabled selected>Estado</option>
-                        </select>
-                        <label for="estado" data-error="Seleccione un estado.">Estado</label>
-                    </div>
-                    <div class="input-field col s12">
-                        <input type="text" placeholder="Pagina" id="pagina" name="pagina" class="validate" required>
-                        <label for="pagina" data-error="Este campo no puede estar vacio">Pagina</label>
-                    </div>
-                    <div class="file-field input-field col s12">
-                        <div class="btn btn-small blue">
-                            <span>Carpeta</span>
-                            <input type="file"  id="carpeta-input" webkitdirectory>
-                        </div>
-                        <div class="file-path-wrapper">
-                            <input class="file-path validate" name="carpeta" type="text" id="carpeta">
-                        </div>
-                    </div>
-                    <div class="col s12 center">
-                        <button class="btn green waves-effect waves-light" type="submit" name="action">
-                            Editar
-                            <i class="material-icons right icon-pencil"></i>
-                        </button>
-                    </div>
-                </form>
+            <div class="col s12">
+                <div class="divider"></div>
             </div>
-            <div class="row no-margin">
-                <div class="col s12">
-                    <h5>Zona de peligro</h5>
+            <form id="form-edit-anime">
+                <div class="input-field col s12">
+                    <input type="text" placeholder="Nombre" name="nombre" id="nombre" class="validate" required>
+                    <label for="nombre" data-error="Este campo no puede estar vacio">Nombre</label>
                 </div>
+                <div class="input-field col s12">
+                    <select id="dia" name="dia" class="validate" required>
+                    </select>
+                    <label for="dia" data-error="Seleccione una opción">Día</label>
+                </div>
+                <div class="input-field col s12">
+                    <input type="number" id="orden" name="orden" placeholder="Orden" min="1" class="validate" required>
+                    <label for="orden" data-error="Este campo no puede estar vacio. El mínimo es 1">Orden</label>
+                </div>
+                <div class="input-field col s12">
+                    <input type="number" id="cap-vistos" name="cap-vistos" placeholder="Capítulos vistos" min="0" class="validate" required>
+                    <label for="cap-vistos" data-error="Este campo no puede estar vacio">Capítulos vistos</label>
+                </div>
+                <div class="input-field col s12">
+                    <input type="number" id="total-cap" name="total-cap" name= placeholder="Total capítulos" min="0" class="validate">
+                    <label for="total-cap" data-error="Este campo no puede estar vacio">Total capítulos</label>
+                </div>
+                <div class="input-field col s12">
+                    <select name="tipo" id="tipo" class="validate" required>
+                        <option value="" disabled selected>Tipo</option>
+                    </select>
+                    <label for="tipo" data-error="Seleccione un tipo.">Tipo</label>
+                </div>
+                <div class="input-field col s12">
+                    <select name="estado" id="estado" class="validate" required>
+                        <option value="" disabled selected>Estado</option>
+                    </select>
+                    <label for="estado" data-error="Seleccione un estado.">Estado</label>
+                </div>
+                <div class="input-field col s12">
+                    <input type="text" placeholder="Pagina" id="pagina" name="pagina" class="validate" required>
+                    <label for="pagina" data-error="Este campo no puede estar vacio">Pagina</label>
+                </div>
+                <div class="file-field input-field col s12">
+                    <div class="btn btn-small blue">
+                        <span>Carpeta</span>
+                        <input type="file"  id="carpeta-input" webkitdirectory>
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" name="carpeta" type="text" id="carpeta">
+                    </div>
+                </div>
+                <div class="col s12 center">
+                    <button class="btn green waves-effect waves-light" type="submit" name="action">
+                        Editar
+                        <i class="material-icons right icon-pencil"></i>
+                    </button>
+                </div>
+            </form>
+            <div class="col s12">
+                <h5>Zona de peligro</h5>
             </div>
-            <div class="row danger-border">
-                <div class="col s12">
-                    <h5>
-                        Borrar anime
-                        <a class="right waves-effect waves-light btn red" id="borrar-anime"><i class="icon-trash-empty material-icons right"></i>Borrar</a>
-                    </h5>
-                    <p class="paragraph-btn-right">Una vez borrado el anime todavia es posible recuperarlo en el Historial.</p>
-                </div>
+            <div class="col s12 danger-border">
+                <h5>
+                    Borrar anime
+                    <a class="right waves-effect waves-light btn red" id="borrar-anime"><i class="icon-trash-empty material-icons right"></i>Borrar</a>
+                </h5>
+                <p class="paragraph-btn-right">Una vez borrado el anime todavia es posible recuperarlo en el Historial.</p>
             </div>
         </div>
     </div>

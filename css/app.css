@@ -256,3 +256,20 @@ select.browser-default {
 .push-autocomplete ul.dropdown-content {
 	position: relative;
 }
+/* Estilos del contenedor */
+  /* Tamaño del scroll */
+  ::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+  }
+  
+   /* Estilos barra (thumb) de scroll */
+  ::-webkit-scrollbar-thumb {
+	background: #ccc;
+	border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:active,
+  ::-webkit-scrollbar-thumb:hover {
+	background: #919193;
+  }

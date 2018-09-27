@@ -289,21 +289,12 @@ class Historial extends RenderBase {
 	}
 
 	_enlaceHistAnime() {
-		let that = this
 		document.querySelectorAll('td.hidden').forEach((value, i) => {
 			value.parentElement.addEventListener('click', e => {
 				let key = value.parentElement.querySelector('#key').innerHTML;
 				this._createModalStats(key);
 			});
 		});
-		/*
-		$('td.hidden').each(function (i, item) {
-			$(this).parent().click(() => {
-				let key = $(this).parent().children('#key').html()
-				that._createModalStats(key)
-			})
-		})
-		*/
 	}
 
 	_setHistoriaAnime(anime){
@@ -638,7 +629,7 @@ class Historial extends RenderBase {
 					</div>
 				</div>
 				<div class="modal-footer">
-					<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cerrar</a>
+					<a class="modal-action modal-close waves-effect waves-green btn-flat">Cerrar</a>
 				</div>
 			</div>`;
 		modalWindow.innerHTML = innerModalWindow;
@@ -649,6 +640,10 @@ class Historial extends RenderBase {
 		});
 		document.getElementById('modalStats').querySelector('.modal-trigger').click();
 		this.noLink();
+		document.querySelector('.modal-close').addEventListener('click', e => {
+			e.preventDefault();
+			// e.stopPropagation();
+		})
 		let data = await this.db.buscarAnimePorId(key);
 		this.capitulosVistosUnAnime(data);
 	}

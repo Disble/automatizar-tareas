@@ -11,11 +11,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 	let menuRender = settings.get('menu', Menu);
 	let render = new Render(menuRender);
 	let consultas = new BDAnimes();
+	render.menuRender();
+	let instances = M.Collapsible.init(document.querySelectorAll('.collapsible'));
+	instances[0].open(0);
 	let dia = render.diaSemana();
 	let { datos } = await consultas.buscar(dia);
 	render.actualizarLista(datos, dia);
-	render.menuRender();
 
-	let instances = M.Collapsible.init(document.querySelectorAll('.collapsible'));
-	instances[0].open(0);
 });

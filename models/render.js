@@ -557,7 +557,10 @@ class Render extends RenderBase {
 			}
 		});
 	}
-
+	/**
+	 * Inicializa todo los eventos relacionados
+	 * al HTML de Editar Animes.
+	 */
 	_initEditAnimeHTML() {
 		let diasSelect = document.getElementById('dia');
 		let estadosSelect = document.getElementById('estado');
@@ -663,7 +666,10 @@ class Render extends RenderBase {
 			value.style.zIndex = -10;
 		});
 	}
-
+	/**
+	 * Inicializa el evento submit del formulario
+	 * de Editar Animes.
+	 */
 	_editAnime() {
 		document.getElementById('form-edit-anime').addEventListener('submit', e => {
 			e.preventDefault();
