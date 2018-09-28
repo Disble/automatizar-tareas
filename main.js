@@ -3,10 +3,8 @@ const {
 	app,
 	BrowserWindow
 } = electron
-const Menu = electron.Menu
-/*-------------------------------------------*/
-// console.log('Automatizador de tareas')
-// console.log('Version : ' + app.getVersion())
+const Menu = electron.Menu;
+let mainWindow;
 
 let template = [
 	{
@@ -18,7 +16,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadURL(`file://${__dirname}/views/animes/index.html`)
+								win.loadFile(`views/animes/index.html`)
 							})
 						}
 					}
@@ -31,7 +29,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadURL(`file://${__dirname}/views/animes/agregar-animes.html`);
+								win.loadFile(`views/animes/agregar-animes.html`);
 							})
 						}
 					}
@@ -44,7 +42,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadURL(`file://${__dirname}/views/animes/editar.html`)
+								win.loadFile(`views/animes/editar.html`)
 							})
 						}
 					}
@@ -60,7 +58,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadURL(`file://${__dirname}/views/animes/historial.html`)
+								win.loadFile(`views/animes/historial.html`)
 							})
 						}
 					}
@@ -73,7 +71,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadURL(`file://${__dirname}/views/animes/viendo.html`)
+								win.loadFile(`views/animes/viendo.html`)
 							})
 						}
 					}
@@ -86,7 +84,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadURL(`file://${__dirname}/views/animes/paginas.html`)
+								win.loadFile(`views/animes/paginas.html`)
 							})
 						}
 					}
@@ -99,7 +97,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadURL(`file://${__dirname}/views/animes/capitulos_restantes.html`)
+								win.loadFile(`views/animes/capitulos_restantes.html`)
 							})
 						}
 					}
@@ -116,7 +114,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadURL(`file://${__dirname}/views/pendientes/pendientes.html`)
+								win.loadFile(`views/pendientes/pendientes.html`)
 							})
 						}
 					}
@@ -129,7 +127,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadURL(`file://${__dirname}/views/pendientes/agregar.html`)
+								win.loadFile(`views/pendientes/agregar.html`)
 							})
 						}
 					}
@@ -142,7 +140,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadURL(`file://${__dirname}/views/pendientes/editar.html`)
+								win.loadFile(`views/pendientes/editar.html`)
 							})
 						}
 					}
@@ -196,7 +194,7 @@ let template = [
 				if (focusedWindow) {
 					if (focusedWindow.id === 1) {
 						BrowserWindow.getAllWindows().forEach(function (win) {
-							win.loadURL(`file://${__dirname}/views/opciones/index.html`)
+							win.loadFile(`views/opciones/index.html`)
 						})
 					}
 				}
@@ -340,6 +338,9 @@ app.on('browser-window-created', function () {
 	if (reopenMenuItem) reopenMenuItem.enabled = false;
 })
 
+app.on('ready', createWindow)
+
+// Quit when all windows are closed.
 app.on('window-all-closed', function () {
 	if (process.platform !== 'darwin') {
 		let reopenMenuItem = findReopenMenuItem();
@@ -347,16 +348,33 @@ app.on('window-all-closed', function () {
 		app.quit();
 	}
 })
-app.on('ready', function () {
-	let win = new BrowserWindow({
-		width: 800,
-		height: 600
-	});
-	win.loadURL(`file://${__dirname}/views/animes/index.html`);
+
+app.on('activate', function () {
+	// On OS X it's common to re-create a window in the app when the
+	// dock icon is clicked and there are no other windows open.
+	if (mainWindow === null) {
+	  createWindow()
+	}
+  })
+function createWindow () {
+	// Create the browser window.
+	mainWindow = new BrowserWindow({width: 800, height: 600});
+  
+	// and load the index.html of the app.
+	mainWindow.loadFile('views/animes/index.html');
+	
+	// Loading menu from menu template
 	const menu = Menu.buildFromTemplate(template);
 	Menu.setApplicationMenu(menu);
 
-	win.on('closed', function () {
-		mainWindow = null
+	// Open the DevTools.
+	// mainWindow.webContents.openDevTools()
+  
+	// Emitted when the window is closed.
+	mainWindow.on('closed', function () {
+	  // Dereference the window object, usually you would store windows
+	  // in an array if your app supports multi windows, this is the time
+	  // when you should delete the corresponding element.
+	  mainWindow = null;
 	});
-})
+  }
