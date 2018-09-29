@@ -142,9 +142,6 @@ class RenderPendiente extends RenderBase{
 				let pagina = form.get('pagina') == "" ? "No Asignada" : form.get('pagina').trim();
 				let carpeta = value.querySelector('input[type=file]').getAttribute('value');
 				let totalcap = parseInt(form.get('totalcap'));
-
-				console.log(orden, nombre, dia, 0, totalcap, tipo, pagina, carpeta, 0, true, new Date(), null, null);
-				
 				
 				let anime = new Anime(orden, nombre, dia, 0, totalcap, tipo, pagina, carpeta, 0, true, new Date(), null, null);
 				
@@ -344,7 +341,7 @@ class RenderPendiente extends RenderBase{
 				this._cellEdit();
 				this.elementsPen = document.getElementById('edit-pen').querySelectorAll('li');
 			})
-			.catch((err) => { console.log(err) });
+			.catch((err) => { console.error(err) });
 	}
 
 	_cellEdit(){
@@ -370,7 +367,7 @@ class RenderPendiente extends RenderBase{
 					.then((resolve) => {
 						this.model.update(key, resolve);
 					})
-					.catch((err) => { return console.log(err.message) });
+					.catch((err) => { return console.error(err.message) });
 			});
 			value.addEventListener('keypress', e => {
 				if(e.keyCode==13) {

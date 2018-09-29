@@ -147,10 +147,6 @@ class BDAnimes extends RenderBase {
 					reject(new Error(err));
 					return;
 				}
-				M.toast({
-					html: 'Datos actualizados correctamente',
-					displayLength: 4000
-				});
 				resolve(numUpdate);
 			});
 		});
@@ -317,8 +313,6 @@ class BDAnimes extends RenderBase {
 	filtrarBuscadorHistorial(query, opciones, orden) {
 		return new Promise((resolve, reject) => {
 			let queryReg = this.escaparQuery(query);
-			console.log(query, queryReg);
-			
 			animesdb
 				.find({ $and: [{ nombre: new RegExp(queryReg, 'i') }, opciones] })
 				.sort(orden)
@@ -331,7 +325,7 @@ class BDAnimes extends RenderBase {
 						html: `Filtrando ${query == "" ? 'todo' : '"'+query+'"'}: ${record.length} resultados`,
 						displayLength: 4000
 					});
-					console.log(record);
+					// console.log(record);
 					return resolve(record);
 				});
 		});

@@ -381,7 +381,6 @@ class Render extends RenderBase {
 	crearAnime() {
 		let listaEnviar = [];
 		let nuevosAnimes = document.querySelectorAll('tr[id="datos-anime-nuevo"]')
-
 		for (const nuevoAnime of nuevosAnimes) {
 			let anime = {};
 			let inputs = nuevoAnime.querySelectorAll('input[type]:not(.select-dropdown)');
@@ -408,7 +407,7 @@ class Render extends RenderBase {
 			// console.log('Full nuevo anime: ', anime);
 			listaEnviar.push(anime);
 		}
-		console.log(listaEnviar);
+		// console.log(listaEnviar);
 		return listaEnviar;
 	}
 	/**
@@ -490,9 +489,36 @@ class Render extends RenderBase {
 		}
 		return data;
 	}
-
+	/**
+	 * Busca y carga los datos de un anime en el
+	 * formulario de Editar Animes, además inicializa
+	 * los componentes de materialize-css.
+	 * @param {string} id Id del anime a buscar.
+	 */
 	async _getAnimeData(id) {
 		let data = await this.db.buscarAnimePorId(id);
+		// Cargan los datos en el formulario
+		this._loadDataFormEdit(id, data);
+		//
+		M.updateTextFields();
+		document.querySelectorAll('select').forEach((select) => {
+			var instance = M.FormSelect.getInstance(select);
+			instance.destroy();
+			M.FormSelect.init(select);
+		});
+		// Quita el mensaje de error de los select en caso de estar activos.
+		document.querySelectorAll('select').forEach((select) => {
+			let label = select.parentNode.nextElementSibling;
+			label.setAttribute('data-value', '');
+		});
+	}
+	/**
+	 * Carga los datos de un anime en el
+	 * formulario de Editar Animes.
+	 * @param {string} id Id del formulario.
+	 * @param {any} data Datos a cargar en el formulario.
+	 */
+	_loadDataFormEdit(id, data) {
 		let form = document.getElementById('form-edit-anime');
 		let nombre = document.getElementById('nombre');
 		let dia = document.getElementById('dia');
@@ -515,18 +541,6 @@ class Render extends RenderBase {
 		estado.value = data.estado;
 		pagina.value = data.pagina;
 		carpeta.value = data.carpeta;
-		//
-		M.updateTextFields();
-		document.querySelectorAll('select').forEach((select) => {
-			var instance = M.FormSelect.getInstance(select);
-			instance.destroy();
-			M.FormSelect.init(select);
-		});
-		// Quita el mensaje de error de los select en caso de estar activos.
-		document.querySelectorAll('select').forEach((select) => {
-			let label = select.parentNode.nextElementSibling;
-			label.setAttribute('data-value', '');
-		});
 	}
 
 	_editAnimebtnDelete() {
@@ -551,6 +565,18 @@ class Render extends RenderBase {
 				let data = await this._loadEditAnime();
 				if (data.length > 0) {
 					this._getAnimeData(data[0]._id);
+				} else {
+					this._loadDataFormEdit(null, {
+						nombre: '',
+						dia: '',
+						orden: '',
+						capVistos: '',
+						totalCap: '',
+						tipo: '',
+						estado: '',
+						pagina: '',
+						carpeta: '',
+					});
 				}
 			} else {
 				swal("¡Acción cancelada!", "", "info");
@@ -702,7 +728,18 @@ class Render extends RenderBase {
 			
 			this.db.actualizarAnime(e.target.getAttribute('data-value'), setValues)
 				.then(res => {
-					this._loadEditAnime();
+					if (res > 0) {
+						M.toast({
+							html: 'Datos actualizados correctamente',
+							displayLength: 4000
+						});
+						this._loadEditAnime();
+					} else {
+						M.toast({
+							html: 'Que raro... por algún motivo no podemos hacer la actualización.',
+							displayLength: 4000
+						});
+					}
 				});
 		});
 	}
