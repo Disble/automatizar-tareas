@@ -1,8 +1,6 @@
-const electron = require('electron')
-const {
-	app,
-	BrowserWindow
-} = electron
+const electron = require('electron');
+const { app, BrowserWindow } = electron;
+const path = require('path');
 const Menu = electron.Menu;
 let mainWindow;
 
@@ -16,7 +14,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadFile(`views/animes/index.html`)
+								win.loadFile(path.join('views', 'animes', 'index.html'));
 							})
 						}
 					}
@@ -29,7 +27,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadFile(`views/animes/agregar-animes.html`);
+								win.loadFile(path.join('views', 'animes', 'agregar-animes.html'));
 							})
 						}
 					}
@@ -42,7 +40,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadFile(`views/animes/editar.html`)
+								win.loadFile(path.join('views', 'animes', 'editar.html'));
 							})
 						}
 					}
@@ -58,7 +56,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadFile(`views/animes/historial.html`)
+								win.loadFile(path.join('views', 'animes', 'historial.html'));
 							})
 						}
 					}
@@ -71,7 +69,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadFile(`views/animes/viendo.html`)
+								win.loadFile(path.join('views', 'animes', 'viendo.html'));
 							})
 						}
 					}
@@ -84,7 +82,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadFile(`views/animes/paginas.html`)
+								win.loadFile(path.join('views', 'animes', 'paginas.html'));
 							})
 						}
 					}
@@ -97,7 +95,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadFile(`views/animes/capitulos_restantes.html`)
+								win.loadFile(path.join('views', 'animes', 'capitulos_restantes.html'));
 							})
 						}
 					}
@@ -114,7 +112,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadFile(`views/pendientes/pendientes.html`)
+								win.loadFile(path.join('views', 'pendientes', 'pendientes.html'));
 							})
 						}
 					}
@@ -127,7 +125,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadFile(`views/pendientes/agregar.html`)
+								win.loadFile(path.join('views', 'pendientes', 'agregar.html'));
 							})
 						}
 					}
@@ -140,7 +138,7 @@ let template = [
 					if (focusedWindow) {
 						if (focusedWindow.id === 1) {
 							BrowserWindow.getAllWindows().forEach(function (win) {
-								win.loadFile(`views/pendientes/editar.html`)
+								win.loadFile(path.join('views', 'pendientes', 'editar.html'));
 							})
 						}
 					}
@@ -186,15 +184,15 @@ let template = [
 		]
 	},
 	{
-		label: 'Herramientas',
+		label: 'Preferencias',
 		submenu: [{
-			label: 'Opciones',
+			label: 'Configuración',
 			accelerator: 'CmdOrCtrl+shift+p',
 			click: function (item, focusedWindow) {
 				if (focusedWindow) {
 					if (focusedWindow.id === 1) {
 						BrowserWindow.getAllWindows().forEach(function (win) {
-							win.loadFile(`views/opciones/index.html`)
+							win.loadFile(path.join('views', 'configuracion', 'index.html'));
 						})
 					}
 				}
@@ -303,7 +301,7 @@ function addUpdateMenuItems(items, position) {
 	}, {
 		label: 'Ver mas',
 		click: function () {
-			electron.shell.openExternal('https://gitlab.com/Disble/automatizar-tareas')
+			electron.shell.openExternal('https://gitlab.com/Disble/automatizar-tareas');
 		}
 	}]
 
@@ -361,7 +359,7 @@ function createWindow () {
 	mainWindow = new BrowserWindow({width: 800, height: 600});
   
 	// and load the index.html of the app.
-	mainWindow.loadFile('views/animes/index.html');
+	mainWindow.loadFile(path.join('views','animes','index.html'));
 	
 	// Loading menu from menu template
 	const menu = Menu.buildFromTemplate(template);
