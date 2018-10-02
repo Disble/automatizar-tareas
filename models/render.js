@@ -1,4 +1,5 @@
 'use strict'
+const path = require('path');
 const { shell } = require('electron');
 const { BDAnimes } = require('./consultas.js');
 const { RenderBase } = require('./RenderBase.js');
@@ -455,8 +456,6 @@ class Render extends RenderBase {
 		}
 	}
 
-	
-
 	async initEditAnime() {
 		this._initEditAnimeHTML();
 		this._editAnime();
@@ -625,10 +624,11 @@ class Render extends RenderBase {
 		 * Reemplazo para método de materialize para input[type=file].
 		 */
 		document.getElementById('carpeta-input').addEventListener('change', (e) => {
-			if (this.isNoData(e.target) || e.target.files[0] === undefined) return;
-			let folder = e.target.files[0].path;
-			let path = this.slashFolder(folder);
-			document.getElementById('carpeta').value = path;
+			setTimeout(() => {
+				if (this.isNoData(e.target) || e.target.files[0] === undefined) return;
+				let folder = e.target.files[0].path;
+				document.getElementById('carpeta').value = path.normalize(folder);
+			}, 1);
 		});
 	}
 	/**
