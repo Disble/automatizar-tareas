@@ -55,7 +55,7 @@ class Render extends RenderBase {
 					</div>
 				</td>
 				<td>
-					<button class="btn btn-small green tooltipped btn-abrir-carpeta ${this.isNoData(consulta[i].carpeta) ? 'disabled' : ''}" carpeta="${this._noApostrophe(consulta[i].carpeta)}" dia="${consulta[i].dia}" id="${consulta[i]._id}" data-position="left" data-tooltip="Abrir carpeta"><span style="display: flex"><i class="icon-folder-open"></i></span></button>
+					<button class="btn btn-small green tooltipped btn-abrir-carpeta ${this.isNoData(consulta[i].carpeta) ? 'disabled' : ''}" carpeta="${consulta[i].carpeta}" dia="${consulta[i].dia}" id="${consulta[i]._id}" data-position="left" data-tooltip="Abrir carpeta"><span style="display: flex"><i class="icon-folder-open"></i></span></button>
 				</td>
 				<td class="hidden" id="key">${consulta[i]._id}</td>
 			</tr>`
@@ -171,17 +171,6 @@ class Render extends RenderBase {
 		this.actualizarLista(datos, dia);
 	}
 
-	_noApostrophe(folder) {
-		let path = ''
-		for (let i in folder) {
-			if (folder.charCodeAt(i) === 39) {
-				path += '\\\''
-				continue
-			}
-			path += folder[i]
-		}		
-		return path
-	}
 	/**
 	 * Comprueba que el índice indicado sea un número de 
 	 * capítulo válido. En caso de no serlo, se retornara el 
@@ -420,7 +409,8 @@ class Render extends RenderBase {
 	 * @param {string} id Id del anime.
 	 */
 	abrirCarpeta(folder, dia, id) {
-		if (!shell.showItemInFolder(`${folder}/*`)) {
+		if (!shell.showItemInFolder(path.join(folder, '*'))) {
+		// if (!shell.showItemInFolder(`${folder}/*`)) {
 			swal("Hubo problemas al abrir la carpeta.", "Es posible que la dirección haya cambiado o que la carpeta ha sido borrada.\n\n¿Quieres volver a escoger la carpeta?", "info", {
 				buttons: ['No', 'Si']
 			})
