@@ -15,7 +15,7 @@ class Historial extends RenderBase {
 			tblListaAnimes += /*html*/`
 			<tr>
 				<td>${++cont}</td>
-				<td>${consulta[i].nombre}${consulta[i].activo === false ? '<i class="icon-trash-empty right">' : ''}</td>
+				<td>${consulta[i].nombre}${consulta[i].activo === false ? '<i class="icon-state-trash icon-trash-empty right">' : ''}</td>
 				<td>${this.isNoData(consulta[i].nrocapvisto) ? 'No Data': consulta[i].nrocapvisto}</td>
 				<td>${this.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._setCalendarDate(consulta[i].fechaUltCapVisto)}</td>
 				<td>${this.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._getDiaSemana(consulta[i].fechaUltCapVisto)}</td>
@@ -25,7 +25,6 @@ class Historial extends RenderBase {
 			</tr>`
 		});
 		document.getElementById('contenido').innerHTML = tblListaAnimes;
-		// $('#contenido').html(tblListaAnimes);
 		this._enlaceHistAnime();
 		M.FormSelect.init(document.querySelectorAll('select'));
 		M.Tooltip.init(document.querySelectorAll('.tooltipped'), {
@@ -145,8 +144,8 @@ class Historial extends RenderBase {
 		});
 		// Combinación de Ctrl + f global para activar el buscador
 		document.addEventListener('keypress', (e) => {
-			if (e.ctrlKey === true && e.keyCode === 6){ //e.code === "KeyF") {
-				$('#modal-search').modal('open');
+			if (e.ctrlKey === true && e.keyCode === 6){
+				M.Modal.getInstance(document.getElementById('modal-search')).open();
 			}
 		});		
 		this._fitrarOpciones();
@@ -157,16 +156,12 @@ class Historial extends RenderBase {
 		this.imprimirHistorial(datos, 0);
 		this._ocultarOpciones();
 		document.getElementById('div-filter').style.display = 'block';
-		// $('#div-filter').css('display', 'block');
 	}
 
 	_ocultarOpciones() {
 		document.getElementById('reload-history').style.display = 'block';
 		document.getElementById('paginas').style.display = 'none';
 		document.getElementById('div-filter').setAttribute('show', 'true');
-		// $('#reload-history').css('display', 'block');
-		// $('#paginas').css('display', 'none');
-		// $('#div-filter').attr('show', 'true');
 	}
 
 	async _recargarHistorial() {
@@ -176,12 +171,6 @@ class Historial extends RenderBase {
 		document.getElementById('div-filter').style.display = 'none';
 		document.getElementById('div-filter').setAttribute('show', 'false');
 		document.getElementById('search-history').value = '';
-		// let data = await this.db.cargarHistorial(1, 1);
-		// $('#reload-history').css('display', 'none');
-		// $('#paginas').css('display', 'block');
-		// $('#div-filter').css('display', 'none');
-		// $('#div-filter').attr('show', 'false');
-		// $('#search-history').val('');
 	}
 
 	_fitrarOpciones() {
@@ -528,7 +517,6 @@ class Historial extends RenderBase {
 	}
 
 	async _createModalStats(key) {
-		// $('#modalStats').remove()
 		let modal = document.getElementById('modalStats');
 		if (modal !== null) {
 			modal.parentNode.removeChild(modal);

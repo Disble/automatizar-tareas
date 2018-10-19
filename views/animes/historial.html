@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Historial</title>
-  <link rel="stylesheet" type="text/css" href="../../node_modules/materialize-css/dist/css/materialize.min.css" />
-  <link rel="stylesheet" type="text/css" href="../../css/app.css" />
-  <link rel="stylesheet" type="text/css" href="../../css/fontello.css" />
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Historial</title>
+	<link rel="stylesheet" type="text/css" href="../../node_modules/materialize-css/dist/css/materialize.min.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/app.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/fontello.css" />
 </head>
+
 <body>
 	<div class="row">
 		<div class="col s12">
 			<table class="bordered centered highlight">
 				<h3 class="center title-historial">Historial
 					<a class="modal-trigger" href="#modal-search">
-						<i class="icon-search deep-blue-text icon-big hover-icon-complete float-r tooltipped" data-position="left" data-tooltip="¡Encuentra el anime que estas buscando!"></i>
+						<i class="icon-search deep-blue-text icon-big hover-icon-complete float-r tooltipped" data-position="left"
+						 data-tooltip="¡Encuentra el anime que estas buscando!"></i>
 					</a>
 					<i id="filter-history" class="icon-filter indigo-text icon-big hover-icon-complete float-r"></i>
-					<i id="reload-history" class="icon-arrows-cw indigo-text icon-big hover-icon-complete float-r tooltipped hidden" data-position="left" data-tooltip="Cargar el historial completo"></i>
-				</h3>		
+					<i id="reload-history" class="icon-arrows-cw indigo-text icon-big hover-icon-complete float-r tooltipped hidden"
+					 data-position="left" data-tooltip="Cargar el historial completo"></i>
+				</h3>
 				<!-- Modal Structure -->
 				<div id="modal-search" class="modal">
 					<div class="modal-content push-autocomplete">
@@ -82,13 +86,16 @@
 						<th>Estado</th>
 					</tr>
 				</thead>
-				<tbody id="contenido">
+				<tbody id="contenido" class="history-list">
 				</tbody>
 			</table>
-      <ul class="pagination center" id="paginas">
-      </ul>
+			<ul class="pagination center" id="paginas">
+			</ul>
 		</div>
 	</div>
-	<script>require('../../js/historial-init.js')</script>
+	<script>
+		require('../../js/historial-init.js')
+	</script>
 </body>
+
 </html>

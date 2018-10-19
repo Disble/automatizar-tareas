@@ -84,6 +84,15 @@
 .btn-eliminar-anime a, .btn-restaurar-anime a{
     font-weight: 500;
 }
+.history-list > tr > td {
+	position: relative;
+	padding-right: 20px;
+}
+.history-list > tr > td > i.icon-state-trash {
+	position: absolute;
+	top: calc(50% - 11px);
+	right: 0;
+}
 table.highlight > tbody > tr:hover{
 	background-color: var(--icon-hover);
 	cursor: pointer;

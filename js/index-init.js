@@ -17,5 +17,4 @@ document.addEventListener('DOMContentLoaded', async function () {
 	let dia = render.diaSemana();
 	let { datos } = await consultas.buscar(dia);
 	render.actualizarLista(datos, dia);
-
 });
