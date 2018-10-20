@@ -232,7 +232,7 @@ class Opciones extends RenderBase {
         this.resetConfData();
         document.getElementById('conf-title').innerText = 'Gestor de descargas';
         let datos = document.getElementById('datos');
-        datos.innerHTML = /*html*/`
+        let inputsDownloader = /*html*/`
         <div class="file-field input-field">
             <div class="btn btn-small blue">
                 <span>Programa</span>
@@ -241,23 +241,24 @@ class Opciones extends RenderBase {
             <div class="file-path-wrapper">
                 <input class="file-path validate" name="programa" type="text" id="programa">
             </div>
-        </div>
-        <div class="col s12">
-        <h5>
-            Icono por defecto de la aplicación<br>
-            <div class="switch right">
-                <label>
-                No
-                <input id="icon-program" type="checkbox" ${settings.get('downloader.icon') ? 'checked': ''}>
-                <span class="lever"></span>
-                Si
-                </label>
-            </div>
-        </h5>
-        <p class="paragraph-btn-right">Se mostrará el icono que la aplicación tenga asignado por defecto. Esto hará que el icono se demore un poco en mostrarse.</p>
-        </div>
-        
-        <div class="center mb-20">
+        </div>`;
+        if (process.platform === 'win32') {
+            inputsDownloader += /*html*/`<div class="col s12">
+            <h5>
+                Icono por defecto de la aplicación<br>
+                <div class="switch right">
+                    <label>
+                    No
+                    <input id="icon-program" type="checkbox" ${settings.get('downloader.icon') ? 'checked': ''}>
+                    <span class="lever"></span>
+                    Si
+                    </label>
+                </div>
+            </h5>
+            <p class="paragraph-btn-right">Se mostrará el icono que la aplicación tenga asignado por defecto. Esto hará que el icono se demore un poco en mostrarse.</p>
+            </div>`;
+        }
+        inputsDownloader += /*html*/`<div class="center mb-20">
             <button class="btn green waves-effect waves-light" id="submit-downloader">
                 Guardar cambios
                 <i class="material-icons right icon-pencil"></i>
@@ -278,6 +279,7 @@ class Opciones extends RenderBase {
             
         </div>
         `;
+        datos.innerHTML = inputsDownloader;
         if (settings.has('downloader')) {
             document.getElementById('programa').value = settings.get('downloader.dir');
         }
@@ -306,7 +308,7 @@ class Opciones extends RenderBase {
         });
         document.getElementById('submit-downloader').addEventListener('click', e => {
             let dirProgram = document.getElementById('programa').value;
-            let verIcono = document.getElementById('icon-program').checked;
+            let verIcono = process.platform === 'win32' ? document.getElementById('icon-program').checked : false;
             if (dirProgram === '') return;
             settings.set('downloader', {
                 dir: dirProgram,

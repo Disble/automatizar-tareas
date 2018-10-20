@@ -21,7 +21,7 @@ class Render extends RenderBase {
 			downloader.style.display = 'none';
 			return;
 		}
-		if (settings.get('downloader.icon')) {
+		if (process.platform === 'win32' && settings.get('downloader.icon')) {
 			const iconExtractor = require('icon-extractor');
 			iconExtractor.emitter.on('icon', function(data){
 				let context = data.Context; // Here is my context
@@ -33,15 +33,11 @@ class Render extends RenderBase {
 			.on('error', (e) => {
 				console.log('error', e);
 				downloader.innerHTML = /*html*/`<i class="icon-rocket grey-text text-darken-2 icon-big"></i>`;
-			})
-			// iconExtractor.getIcon(path.basename(dir, '.exe'), document.createElement('div'));
+			});
 			iconExtractor.getIcon(path.basename(dir, '.exe'), dir);
 		} else {
 			downloader.innerHTML = /*html*/`<i class="icon-rocket grey-text text-darken-2 icon-big"></i>`;
 		}
-		//
-		
-		  
 		//
 		downloader.addEventListener('click', e => {
 			let dir = settings.get('downloader.dir');
