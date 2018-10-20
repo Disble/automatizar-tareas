@@ -174,6 +174,9 @@ table.highlight > tbody > tr:hover{
 .float-r {
 	float: right;
 }
+.block {
+	width: 100%;
+}
 .dropdown-content li>a, .dropdown-content[class*="multiple-select-dropdown"] li>span {
 	font-size: small;
 	color: var(--border-color);
@@ -266,19 +269,31 @@ select.browser-default {
 	position: relative;
 }
 /* Estilos del contenedor */
-  /* Tamaño del scroll */
-  ::-webkit-scrollbar {
-	width: 8px;
-	height: 8px;
-  }
-  
-   /* Estilos barra (thumb) de scroll */
-  ::-webkit-scrollbar-thumb {
-	background: #ccc;
-	border-radius: 4px;
-  }
-  
-  ::-webkit-scrollbar-thumb:active,
-  ::-webkit-scrollbar-thumb:hover {
-	background: #919193;
-  }
+/* Tamaño del scroll */
+::-webkit-scrollbar {
+width: 8px;
+height: 8px;
+}
+
+/* Estilos barra (thumb) de scroll */
+::-webkit-scrollbar-thumb {
+background: #ccc;
+border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:active,
+::-webkit-scrollbar-thumb:hover {
+background: #919193;
+}
+
+/* Styles Downloader */
+.icon-downloader { 
+	position: absolute;
+	cursor: pointer;
+	top: 56px;
+	right: 20px;
+}
+.icon-downloader > img {
+	width: 25px;
+	height: 25px;
+}

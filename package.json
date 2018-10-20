@@ -15,6 +15,7 @@
   "dependencies": {
     "chart.js": "^2.7.2",
     "electron-settings": "^3.2.0",
+    "icon-extractor": "^1.0.3",
     "materialize-css": "^1.0.0",
     "sortablejs": "^1.7.0",
     "sweetalert": "^2.1.0"

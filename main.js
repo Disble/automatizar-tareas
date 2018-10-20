@@ -186,13 +186,13 @@ let template = [
 	{
 		label: 'Preferencias',
 		submenu: [{
-			label: 'Configuración',
-			accelerator: 'CmdOrCtrl+shift+p',
+			label: 'Opciones',
+			accelerator: 'CmdOrCtrl+O',
 			click: function (item, focusedWindow) {
 				if (focusedWindow) {
 					if (focusedWindow.id === 1) {
 						BrowserWindow.getAllWindows().forEach(function (win) {
-							win.loadFile(path.join('views', 'configuracion', 'index.html'));
+							win.loadFile(path.join('views', 'opciones', 'index.html'));
 						})
 					}
 				}

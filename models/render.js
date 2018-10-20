@@ -12,17 +12,54 @@ class Render extends RenderBase {
 		this.db = new BDAnimes();
 		this.contNewFolder = 0;
 		this.menu = menu;
-		/*Bloquea el drag and drop en la pagina*/
-		document.addEventListener('dragover', function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-		})
-		document.addEventListener('drop', function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-		})
 	}
 	/*------------------------- RENDER CARGA CON LA PAGINA ---------------------------------------*/
+	initProgramDownloader() {
+		let dir = settings.get('downloader.dir');
+		let downloader = document.getElementById('icon-downloader');
+		if (dir === undefined) {
+			downloader.style.display = 'none';
+			return;
+		}
+		if (settings.get('downloader.icon')) {
+			const iconExtractor = require('icon-extractor');
+			iconExtractor.emitter.on('icon', function(data){
+				let context = data.Context; // Here is my context
+				// let path = data.Path; // Here is the path it was for
+				let icon = data.Base64ImageData; // Here is the base64 image
+				document.getElementById('img-icon-downloader').src = `data:image/jpeg;base64,${icon}`;
+				document.getElementById('img-icon-downloader').alt = context;
+			})
+			.on('error', (e) => {
+				console.log('error', e);
+				downloader.innerHTML = /*html*/`<i class="icon-rocket grey-text text-darken-2 icon-big"></i>`;
+			})
+			// iconExtractor.getIcon(path.basename(dir, '.exe'), document.createElement('div'));
+			iconExtractor.getIcon(path.basename(dir, '.exe'), dir);
+		} else {
+			downloader.innerHTML = /*html*/`<i class="icon-rocket grey-text text-darken-2 icon-big"></i>`;
+		}
+		//
+		
+		  
+		//
+		downloader.addEventListener('click', e => {
+			let dir = settings.get('downloader.dir');
+			if (dir === undefined) {
+				swal("No configurado.", "No esta configurado la dirección del programa, por favor hagalo en Opciones.", "error");
+				return;
+			}
+			let program = path.normalize(dir);
+			if (shell.openItem(program)) {
+				M.toast({
+					html: `Abriendo ${path.basename(program, '.exe')}...`,
+					displayLength: 4000
+				});
+			} else {
+				swal("Hubo problemas al abrir el programa.", "Por favor revise que la dirección del programa sea correcta en Opciones.", "error");
+			}
+		});
+	}
 	actualizarLista(consulta, dia) {
 		let tblListaAnimes = '';
 		consulta.forEach((value, i) => {
@@ -61,6 +98,24 @@ class Render extends RenderBase {
 			</tr>`
 		});
 		this._iniciarListaAnimes(tblListaAnimes, dia);
+	}
+	/**
+	 * Buscar el nombre del día a mostrar
+	 * en la lista de animes.
+	 * @param {string} dia Día a buscar.
+	 */
+	buscarTituloDia(dia) {
+		let diaRender = '';
+		for (const i in this.menu) {
+			const tipo = this.menu[i];
+			for (const subtipo in tipo) {
+				const atributo = tipo[subtipo];
+				if (atributo.id === dia) {
+					diaRender = subtipo;
+				}
+			}
+		}
+		return diaRender;
 	}
 
 	_iniciarListaAnimes(tblListaAnimes, dia) {
@@ -168,7 +223,8 @@ class Render extends RenderBase {
 	 */
 	async _recargarListaAnimes(dia) {
 		let { datos } = await this.db.buscar(dia);
-		this.actualizarLista(datos, dia);
+		let diaRender = this.buscarTituloDia(dia);
+		this.actualizarLista(datos, diaRender);
 	}
 
 	/**
@@ -266,18 +322,16 @@ class Render extends RenderBase {
 				<div class="input-field">
 					<select id="dia-${this.contNewFolder}" name="dia" class="validate" required>`;
 			for (const tipoDia in menuSettings) {
-				const dias = Menu[tipoDia];
+				const dias = menuSettings[tipoDia];
 				let outgroup = document.createElement('optgroup');
 				outgroup.label = this.firstUpperCase(tipoDia);
 				for (const dia in dias) {
 					let opcion = document.createElement('option');
 					opcion.value = dias[dia].id;
 					opcion.innerText = this.firstUpperCase(dia);
-					// nuevaConsulta += opcion.outerHTML;
 					outgroup.appendChild(opcion);
 				}
 				nuevaConsulta += outgroup.outerHTML;
-				// diasSelect.appendChild(outgroup);
 			}
 		nuevaConsulta +=/*html*/`
 					</select>
@@ -295,7 +349,6 @@ class Render extends RenderBase {
 				opcion.value = valor;
 				opcion.innerText = tipo;
 				nuevaConsulta += opcion.outerHTML;
-				// tiposSelect.appendChild(opcion);
 			}
 		nuevaConsulta +=/*html*/`
 					</select>
@@ -319,7 +372,6 @@ class Render extends RenderBase {
 			exitDelay: 50
 		});
 		M.FormSelect.init(document.querySelectorAll('select'));
-		// this._fixSelectForm();
 		this._fixSelectForm();
 		this._fixSelectValidationLine();
 	}
@@ -331,7 +383,7 @@ class Render extends RenderBase {
 		let menuSettings = settings.get('menu', Menu);
 		let diasSelect = document.getElementById('dia');
 		for (const tipoDia in menuSettings) {
-			const dias = Menu[tipoDia];
+			const dias = menuSettings[tipoDia];
 			let outgroup = document.createElement('optgroup');
 			outgroup.label = this.firstUpperCase(tipoDia);
 			for (const dia in dias) {
@@ -360,7 +412,6 @@ class Render extends RenderBase {
 			exitDelay: 50
 		});
 		M.FormSelect.init(document.querySelectorAll('select'));
-		// this._fixSelectValidation();
 		this._fixSelectForm();
 		this._fixSelectValidationLine();
 	}
@@ -582,7 +633,7 @@ class Render extends RenderBase {
 		let tiposSelect = document.getElementById('tipo');
 		let menuSettings = settings.get('menu', Menu);
 		for (const tipoDia in menuSettings) {
-			const dias = Menu[tipoDia];
+			const dias = menuSettings[tipoDia];
 			let outgroup = document.createElement('optgroup');
 			outgroup.label = this.firstUpperCase(tipoDia);
 			for (const dia in dias) {

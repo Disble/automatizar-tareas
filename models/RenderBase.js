@@ -1,11 +1,23 @@
 exports.RenderBase = class RenderBase {
 	constructor() {
 		this.initPrototypes();
+		this.blockDragAndDrop();
 		this.numReg = 10;
 	}
 	initPrototypes() {
 		HTMLElement.prototype.removeClass = this.removeClass;
 		HTMLElement.prototype.addClass = this.addClass;
+	}
+	/*Bloquea el drag and drop en la pagina*/
+	blockDragAndDrop() {
+		document.addEventListener('dragover', function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+		})
+		document.addEventListener('drop', function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+		})
 	}
 	/**
 	 * Quita los acentos del string proporcionado.

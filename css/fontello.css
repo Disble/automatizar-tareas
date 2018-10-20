@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'fontello';
-  src: url('../font/fontello.eot?18821303');
-  src: url('../font/fontello.eot?18821303#iefix') format('embedded-opentype'),
-       url('../font/fontello.woff2?18821303') format('woff2'),
-       url('../font/fontello.woff?18821303') format('woff'),
-       url('../font/fontello.ttf?18821303') format('truetype'),
-       url('../font/fontello.svg?18821303#fontello') format('svg');
+  src: url('../font/fontello.eot?5321621');
+  src: url('../font/fontello.eot?5321621#iefix') format('embedded-opentype'),
+       url('../font/fontello.woff2?5321621') format('woff2'),
+       url('../font/fontello.woff?5321621') format('woff'),
+       url('../font/fontello.ttf?5321621') format('truetype'),
+       url('../font/fontello.svg?5321621#fontello') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontello';
-    src: url('../font/fontello.svg?18821303#fontello') format('svg');
+    src: url('../font/fontello.svg?5321621#fontello') format('svg');
   }
 }
 */
@@ -64,7 +64,6 @@
 .icon-star-empty:before { content: '\e806'; } /* '' */
 .icon-star-half:before { content: '\e807'; } /* '' */
 .icon-emo-coffee:before { content: '\e808'; } /* '' */
-.icon-emo-sunglasses:before { content: '\e809'; } /* '' */
 .icon-emo-displeased:before { content: '\e80a'; } /* '' */
 .icon-attention-circled:before { content: '\e80b'; } /* '' */
 .icon-emo-grin:before { content: '\e80c'; } /* '' */
@@ -93,7 +92,7 @@
 .icon-minus:before { content: '\e82c'; } /* '' */
 .icon-lock-open:before { content: '\e831'; } /* '' */
 .icon-lock:before { content: '\e832'; } /* '' */
-.icon-tags:before { content: '\e839'; } /* '' */
+.icon-link-ext:before { content: '\f08e'; } /* '' */
 .icon-filter:before { content: '\f0b0'; } /* '' */
 .icon-menu:before { content: '\f0c9'; } /* '' */
 .icon-bell-alt:before { content: '\f0f3'; } /* '' */
@@ -101,5 +100,6 @@
 .icon-star-half-alt:before { content: '\f123'; } /* '' */
 .icon-fork:before { content: '\f126'; } /* '' */
 .icon-attention-alt:before { content: '\f12a'; } /* '' */
+.icon-rocket:before { content: '\f135'; } /* '' */
 .icon-ok-squared:before { content: '\f14a'; } /* '' */
 .icon-clone:before { content: '\f24d'; } /* '' */
