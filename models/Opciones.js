@@ -300,7 +300,9 @@ class Opciones extends RenderBase {
             if (borrar) {
                 settings.delete('downloader');
                 document.getElementById('programa').value = '';
-                document.getElementById('icon-program').checked = false;
+                if(process.platform === 'win32') {
+                    document.getElementById('icon-program').checked = false
+                }
                 swal('Exito', 'Toda posibilidad de recuperación se ha perdido.', 'success');
             } else {
                 swal("No hay problema.", "", "success");
