@@ -73,6 +73,7 @@ class Render extends RenderBase {
 							<button class="btn btn-small modal-close green btn-estado-cap-viendo" dia="${dia}" id="${consulta[i]._id}"><i class="icon-play"></i> Viendo</button>
 							<button class="btn btn-small modal-close btn-estado-cap-fin" dia="${dia}" id="${consulta[i]._id}"><i class="icon-ok-squared"></i> Finalizar</button>
 							<button class="btn btn-small modal-close red btn-estado-cap-no-gusto" dia="${dia}" id="${consulta[i]._id}"><i class="icon-emo-unhappy"></i> No me Gusto</button>
+							<button class="btn btn-small modal-close orange btn-estado-cap-en-pausa" dia="${dia}" id="${consulta[i]._id}"><i class="icon-pause"></i> En pausa</button>
 						</div>
 						<div class="modal-footer">
 						</div>
@@ -113,7 +114,23 @@ class Render extends RenderBase {
 		}
 		return diaRender;
 	}
-
+	/**
+	 * Busca el Id de el día que se esta
+	 * mostrando en lista animes.
+	 * @param {string} dia Día que se muestra en lista animes.
+	 */
+	buscarIdDia(dia) {
+		let diaRender = '';
+		for (const i in this.menu) {
+			const tipo = this.menu[i];
+			for (const subtipo in tipo) {
+				if (subtipo !== dia) continue;
+				const atributo = tipo[subtipo];
+				return atributo.id;
+			}
+		}
+		return diaRender;
+	}
 	_iniciarListaAnimes(tblListaAnimes, dia) {
 		document.getElementById('contenido').innerHTML = tblListaAnimes;
 		document.querySelector('.titulo').innerHTML = this._addDiasAccents(dia);
@@ -195,6 +212,11 @@ class Render extends RenderBase {
 				this._actualizarEstado(value, 2);
 			});
 		});
+		document.querySelectorAll('.btn-estado-cap-en-pausa').forEach((value) => {
+			value.addEventListener('click', async e => {
+				this._actualizarEstado(value, 3);
+			});
+		});
 		document.querySelectorAll('.btn-abrir-carpeta').forEach((value) => {
 			value.addEventListener('click', async e => {
 				let carpeta = value.getAttribute('carpeta');
@@ -209,7 +231,8 @@ class Render extends RenderBase {
 		let dia = el.getAttribute('dia');
 		let id = el.getAttribute('id');
 		await this.db.estadoCap(id, estado);
-		this._recargarListaAnimes(dia);
+		let diaId = this.buscarIdDia(dia);
+		this._recargarListaAnimes(diaId);
 		this._buscarMedallas();
 	}
 	/**
@@ -836,7 +859,7 @@ class Render extends RenderBase {
 	_blockSerie(estado){
 		if (estado == undefined || estado == 0)
 			return false
-		else if (estado === 1 || estado == 2)
+		else if (estado === 1 || estado === 2 || estado === 3)
 			return true
 	}
 }

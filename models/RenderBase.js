@@ -60,6 +60,12 @@ exports.RenderBase = class RenderBase {
 				icon: 'icon-emo-unhappy',
 				color: 'red-text',
 				backgroundColor: 'red'
+			},
+			3: {
+				name: 'En pausa',
+				icon: 'icon-pause',
+				color: 'orange-text',
+				backgroundColor: 'orange'
 			}
 		} [estado]
 	}

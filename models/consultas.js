@@ -378,6 +378,7 @@ class BDAnimes extends RenderBase {
 	 * 		- 0 - Viendo
 	 * 		- 1 - Finalizado
 	 * 		- 2 - No me gusto
+	 * 		- 3 - En pausa
 	 */
 	estadoCap(id, estado) {
 		return new Promise((resolve, reject) => {

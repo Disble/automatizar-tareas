@@ -58,7 +58,8 @@ exports.Menu = {
 exports.Estados = {
     'Viendo': 0,
     'Finalizado': 1,
-    'No me gusto': 2 
+    'No me gusto': 2,
+    'En pausa': 3
 }
 
 exports.Tipos = {
