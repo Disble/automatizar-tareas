@@ -205,7 +205,6 @@ class BDAnimes extends RenderBase {
 	 * 		- 2: Retorna los datos de los animes (viendo).
 	 */
 	cargarHistorial(pag = 1, option = 1) {
-		// console.log(pag, option);
 		return new Promise((resolve, reject) => {
 			animesdb.count({}).exec((err, record) => {
 				if (err) {
@@ -265,7 +264,6 @@ class BDAnimes extends RenderBase {
 					reject(new Error(err));
 					process.exit(0)
 				}
-				// console.log(record);
 				let data = {};
 				for (const i in record) {
 					if (record.hasOwnProperty(i)) {
@@ -292,7 +290,6 @@ class BDAnimes extends RenderBase {
 					reject(new Error(err));
 					process.exit(0);
 				}
-				// console.log(record);
 				if (esFiltro) {
 					M.toast({
 						html: `Filtrando ${query == "" ? 'todo' : '"'+query+'"'}: ${record.length} resultados`,
@@ -325,7 +322,6 @@ class BDAnimes extends RenderBase {
 						html: `Filtrando ${query == "" ? 'todo' : '"'+query+'"'}: ${record.length} resultados`,
 						displayLength: 4000
 					});
-					// console.log(record);
 					return resolve(record);
 				});
 		});

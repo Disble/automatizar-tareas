@@ -14,6 +14,11 @@ class Render extends RenderBase {
 		this.menu = menu;
 	}
 	/*------------------------- RENDER CARGA CON LA PAGINA ---------------------------------------*/
+	/**
+	 * Inicializa el botón que lanza
+	 * el programa que haya configurado
+	 * el usuario.
+	 */
 	initProgramDownloader() {
 		let dir = settings.get('downloader.dir');
 		let downloader = document.getElementById('icon-downloader');
@@ -31,7 +36,6 @@ class Render extends RenderBase {
 				document.getElementById('img-icon-downloader').alt = context;
 			})
 			.on('error', (e) => {
-				console.log('error', e);
 				downloader.innerHTML = /*html*/`<i class="icon-rocket grey-text text-darken-2 icon-big"></i>`;
 			});
 			iconExtractor.getIcon(path.basename(dir, '.exe'), dir);
@@ -56,6 +60,12 @@ class Render extends RenderBase {
 			}
 		});
 	}
+	/**
+	 * Genera una lista con los animes encontrados
+	 * de acuerdo al día buscado en la base de datos.
+	 * @param {any[]} consulta Lista de animes activos filtrados por día.
+	 * @param {string} dia Día del que se esta mostrando los animes.
+	 */
 	actualizarLista(consulta, dia) {
 		let tblListaAnimes = '';
 		consulta.forEach((value, i) => {
@@ -131,6 +141,13 @@ class Render extends RenderBase {
 		}
 		return diaRender;
 	}
+	/**
+	 * Carga la lista de animes en la pagina e 
+	 * inicializa todos lo eventos referentes a 
+	 * esta tabla.
+	 * @param {string} tblListaAnimes Tabla con la lista de los animes para el día seleccionado.
+	 * @param {string} dia Día seleccionado.
+	 */
 	_iniciarListaAnimes(tblListaAnimes, dia) {
 		document.getElementById('contenido').innerHTML = tblListaAnimes;
 		document.querySelector('.titulo').innerHTML = this._addDiasAccents(dia);
@@ -226,7 +243,12 @@ class Render extends RenderBase {
 			});
 		});
 	}
-		
+	/**
+	 * Cambia el estado de un anime y 
+	 * recarga la lista de animes.
+	 * @param {HTMLElement} el Botón al que se ha hecho clic.
+	 * @param {number} estado Estado del anime a guardar.
+	 */
 	async _actualizarEstado(el, estado) {
 		let dia = el.getAttribute('dia');
 		let id = el.getAttribute('id');
@@ -269,11 +291,20 @@ class Render extends RenderBase {
 			el.innerText = '- ' + capInv;
 		}
 	}
-
+	/**
+	 * Muestra en el elemento el número de capítulos vistos del anime.
+	 * @param {HTMLElement} el Span donde se muestra el número de capítulos.
+	 * @param {number} num Número de capítulos actuales del anime.
+	 */
 	numCapituloNormal(el, num) {
 		el.innerText = num;
 	}
-
+	/**
+	 * Lee el objeto del Menu y genera un 
+	 * listado desplegable HTML en base al
+	 * mismo.
+	 * @param {any} menu Objeto con el menu (lista de días).
+	 */
 	async menuRender(menu = this.menu) {
 		var salidaMenu = '';
 		for (const index1 in menu) {
@@ -313,7 +344,12 @@ class Render extends RenderBase {
 		// carganddo medallas
 		this._buscarMedallas(menu);
 	}
-
+	/**
+	 * Busca los animes que ya no se estan viendo 
+	 * y por cada uno día agrega una medalla (badge)
+	 * con el número de animes que cumplen la condición.
+	 * @param {any} menu Objeto con el menu (lista de días).
+	 */
 	async _buscarMedallas(menu = this.menu) {
 		let medallas = await this.db.buscarMedallasDia(menu);
 		medallas.forEach((medalla) => {
@@ -515,7 +551,9 @@ class Render extends RenderBase {
 				});
 		}
 	}
-
+	/**
+	 * Inicializa la pagina Editar Animes.
+	 */
 	async initEditAnime() {
 		this._initEditAnimeHTML();
 		this._editAnime();
@@ -525,12 +563,16 @@ class Render extends RenderBase {
 		}
 		this._editAnimebtnDelete();
 	}
-
+	/**
+	 * Busca todos los animes activos y 
+	 * genera una lista HTML ordenada por 
+	 * su fecha de creación.
+	 * @return {Promise<any[]>} Lista de animes activos ordenados por su fecha de creación del más reciente al más antiguo.
+	 */
 	async _loadEditAnime() {
 		let data = await this.db.buscarTodoEditar();
 		let lista = document.getElementById('edit-anime-list');
 		lista.innerHTML = '';
-		// console.log(data);
 		let i = 0;
 		for (const anime of data) {
 			var item = document.createElement('a');
@@ -601,7 +643,10 @@ class Render extends RenderBase {
 		pagina.value = data.pagina;
 		carpeta.value = data.carpeta;
 	}
-
+	/**
+	 * Inicializa el botón que borra un anime
+	 * de la lista de animes activos.
+	 */
 	_editAnimebtnDelete() {
 		document.getElementById('borrar-anime').addEventListener('click', async (e) => {
 			e.preventDefault();
@@ -803,7 +848,13 @@ class Render extends RenderBase {
 				});
 		});
 	}
-
+	/**
+	 * Actualiza el número de capítulo de un anime y
+	 * recarga la lista de animes.
+	 * @param {string} dia Día del que se esta mostrando los animes.
+	 * @param {HTMLElement} fila Fila del anime del cual se va cambiar el número de capítulo.
+	 * @param {number} cont Número de capítulo a actualizar.
+	 */
 	async actualizarCapitulo(dia, fila, cont) {
 		let id = fila.parentElement.parentElement.parentElement.querySelector('#key').innerText;
 		this.db.actualizarCap(id, cont).then(res => {
@@ -818,12 +869,20 @@ class Render extends RenderBase {
 	}
 
 	/*------------------------- FUNCIONES ADICIONALES ---------------------------------------*/
+	/**
+	 * Retorna el día de la semana actual.
+	 * Se basa en la fecha actual del sistema.
+	 */
 	diaSemana(){
 		let diasSemana = new Array("domingo","lunes","martes","miercoles","jueves","viernes","sabado")
 		let f = new Date()
 		return diasSemana[f.getDay()]
 	}
-
+	/**
+	 * Retorna el mismo día de la semana, pero 
+	 * agregado los acentos respectivos.
+	 * @param {string} dia Día que se muestra de título sobre la lista de animes.
+	 */
 	_addDiasAccents(dia){
 		if (dia === 'sabado')
 			return 'sábado'
@@ -832,22 +891,26 @@ class Render extends RenderBase {
 		else
 			return dia
 	}
-
-	_estadoNumCap(numCap){
-		numCap = parseInt(numCap)
-		if (numCap < -1 || isNaN(numCap))
-			return 0
-		else
-			return numCap
-	}
-
+	/**
+	 * Comprueba que el string proporcionado sea
+	 * una URL o no. Si es una URL entonces 
+	 * genera una etiqueta `a` que puede hacer 
+	 * redirección externa. Si no es una URL, 
+	 * simplemente retorna el mismo string.
+	 * @param {string} pagina Pagina del anime.
+	 */
 	_paginaConstructor(pagina){
 		if (this.isUrl(pagina))
 			return this._redirectExternalConstructor(pagina)
 		else
 			return this.firstUpperCase(pagina)
 	}
-
+	/**
+	 * Crea una etiqueta `a` con la 
+	 * dirección URL proporcionada y la
+	 * clase `.url-external`.
+	 * @param {string} path Dirección URL.
+	 */
 	_redirectExternalConstructor(path){
 		let url = document.createElement('a')
 		url.href = path
@@ -855,7 +918,11 @@ class Render extends RenderBase {
 		url.setAttribute('class', 'url-external')
 		return url.outerHTML
 	}
-
+	/**
+	 * Comprueba si un anime debe estar bloqueado 
+	 * de acuerdo a su estado.
+	 * @param {number} estado Estado del anime.
+	 */
 	_blockSerie(estado){
 		if (estado == undefined || estado == 0)
 			return false

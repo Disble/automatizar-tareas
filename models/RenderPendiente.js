@@ -307,7 +307,6 @@ class RenderPendiente extends RenderBase{
 						if (willDelete) {
 							let el = sortable.closest(evt.item);
 							el && el.parentNode.removeChild(el);
-							// console.log('Justo antes de borrar', evt.item);
 							this._setOffPendiente(evt.item);
 						} else {
 							swal("¡Acción cancelada!", "", "info");
