@@ -17,7 +17,7 @@ Como parte del programa, diseñado al comienzo del desarrollo se presentarán co
  - [x] Editar
  - [x] Ver
  - [x] Borrar (no permanente)
- - [x] Cambiar estado (finalizado, viendo, no me gusto)
+ - [x] Cambiar estado (finalizado, viendo, no me gusto, en pausa)
 - **Estadísticas**
  - [x] Historial de Animes vistos (todos)
     - Datos por anime
@@ -36,6 +36,11 @@ Como parte del programa, diseñado al comienzo del desarrollo se presentarán co
  - [x] Borrar
  - [x] Crear Anime a partir de Pendiente (fork)
 
+### **Preferencias**
+ - [x] Opciones
+    - Días (cambiar de nombre)
+    - Gestor de descargas (acceso directo)
+
 ### Características escondidas por Función
 - **Lista de Animes**
  - [x] Si se guarda como página la URL de la misma, se activa un link de redirección externo.
@@ -43,6 +48,7 @@ Como parte del programa, diseñado al comienzo del desarrollo se presentarán co
  - [x] Cuando se finaliza un anime pero no se elimina, aparece un contador en el menú de días de Ver Animes.
  - [x] Cuando se posa el puntero encima de los capítulos vistos, muestra los capítulos restantes.
  - [x] Si se hace clic derecho en los botones `Cap -` y `Cap +` solo resta o aumenta 0.5 al número de capítulos respectivamente.
+ - [x] Si esta configurado el Gestor de descargar aparecerá un icono a la derecha del título. 
 
 ## Guía de usuario
 ---
@@ -75,7 +81,7 @@ Ver anime.
 ---
 Las versiones de esta aplicación fueron creadas basándose en [Versionado Semántico](http://semver.org/).
 
-**Next Update: RE:Style Update**
+**Next Update: **
 
 ## Licencia
 ---
