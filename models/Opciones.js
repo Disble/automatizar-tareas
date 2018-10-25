@@ -242,22 +242,6 @@ class Opciones extends RenderBase {
                 <input class="file-path validate" name="programa" type="text" id="programa">
             </div>
         </div>`;
-        if (process.platform === 'win32') {
-            inputsDownloader += /*html*/`<div class="col s12">
-            <h5>
-                Icono por defecto de la aplicación<br>
-                <div class="switch right">
-                    <label>
-                    No
-                    <input id="icon-program" type="checkbox" ${settings.get('downloader.icon') ? 'checked': ''}>
-                    <span class="lever"></span>
-                    Si
-                    </label>
-                </div>
-            </h5>
-            <p class="paragraph-btn-right">Se mostrará el icono que la aplicación tenga asignado por defecto. Esto hará que el icono se demore un poco en mostrarse.</p>
-            </div>`;
-        }
         inputsDownloader += /*html*/`<div class="center mb-20">
             <button class="btn green waves-effect waves-light" id="submit-downloader">
                 Guardar cambios
@@ -300,9 +284,6 @@ class Opciones extends RenderBase {
             if (borrar) {
                 settings.delete('downloader');
                 document.getElementById('programa').value = '';
-                if(process.platform === 'win32') {
-                    document.getElementById('icon-program').checked = false
-                }
                 swal('Exito', 'Toda posibilidad de recuperación se ha perdido.', 'success');
             } else {
                 swal("No hay problema.", "", "success");
@@ -310,11 +291,9 @@ class Opciones extends RenderBase {
         });
         document.getElementById('submit-downloader').addEventListener('click', e => {
             let dirProgram = document.getElementById('programa').value;
-            let verIcono = process.platform === 'win32' ? document.getElementById('icon-program').checked : false;
             if (dirProgram === '') return;
             settings.set('downloader', {
-                dir: dirProgram,
-                icon: verIcono
+                dir: dirProgram
             });
             swal("Exito.", `La configuración de ${path.basename(dirProgram, '.exe')} se ha guardado correctamente.`, "success");
         });

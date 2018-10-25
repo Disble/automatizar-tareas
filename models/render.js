@@ -26,23 +26,7 @@ class Render extends RenderBase {
 			downloader.style.display = 'none';
 			return;
 		}
-		if (process.platform === 'win32' && settings.get('downloader.icon')) {
-			const iconExtractor = require('icon-extractor');
-			iconExtractor.emitter.on('icon', function(data){
-				let context = data.Context; // Here is my context
-				// let path = data.Path; // Here is the path it was for
-				let icon = data.Base64ImageData; // Here is the base64 image
-				document.getElementById('img-icon-downloader').src = `data:image/jpeg;base64,${icon}`;
-				document.getElementById('img-icon-downloader').alt = context;
-			})
-			.on('error', (e) => {
-				downloader.innerHTML = /*html*/`<i class="icon-rocket grey-text text-darken-2 icon-big"></i>`;
-			});
-			iconExtractor.getIcon(path.basename(dir, '.exe'), dir);
-		} else {
-			downloader.innerHTML = /*html*/`<i class="icon-rocket grey-text text-darken-2 icon-big"></i>`;
-		}
-		//
+		downloader.innerHTML = /*html*/`<i class="icon-rocket grey-text text-darken-2 icon-big"></i>`;
 		downloader.addEventListener('click', e => {
 			let dir = settings.get('downloader.dir');
 			if (dir === undefined) {
