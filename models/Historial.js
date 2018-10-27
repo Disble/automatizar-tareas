@@ -374,7 +374,7 @@ class Historial extends RenderBase {
         let capVistos = new Chart(ctx, {
             type: tipo,
             data: {
-                labels: listFilter.nombres,
+                labels: this._filterLabelChart(listFilter.nombres),
                 datasets: [{
                     data: listFilter.nroCap,
                     backgroundColor: listFilter.colorTransparente,
@@ -402,6 +402,22 @@ class Historial extends RenderBase {
 				}
             }
         })
+	}
+	/**
+	 * Si el tamaño de un label es mayor a 40,
+	 * lo corta para que no deforme la gráfica.
+	 * @param {string[]} labels Labels de cada gráfica.
+	 */
+	_filterLabelChart(labels) {
+		let newLabels = [];
+		for (const label of labels) {
+			if (label.length > 40) {
+				newLabels.push(`${label.slice(0,40).trim()}...`);
+			} else {
+				newLabels.push(label)
+			}
+		}
+		return newLabels;
 	}
 
 	paginasAnimesActivos() {
