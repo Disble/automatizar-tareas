@@ -5,6 +5,8 @@ const { ModelAnime } = require('./ModelAnime.js');
 const { ModelPendiente } = require('./ModelPendiente.js');
 const { RenderBase } = require('./RenderBase.js');
 var Sortable = require('sortablejs');
+const { Menu, Estados, Tipos } = require('./defaults-config.js');
+const settings = require('electron-settings');
 
 
 class RenderPendiente extends RenderBase{
@@ -18,6 +20,7 @@ class RenderPendiente extends RenderBase{
 		this.model.getAllActive()
 			.then((resolve) => {
 				let data = '';
+				let menuSettings = settings.get('menu', Menu);
 				resolve.map((value, index) => {
 					data += /*html*/`<li id="item-list">
 					<div class="collapsible-header">
@@ -47,25 +50,31 @@ class RenderPendiente extends RenderBase{
 											<input id="nombre" value="${value.nombre}" type="text" name="nombre" class="validate">
 										</div>
 										<div class="input-field">
-											<select name="dia">
-												<option value="" disabled selected>Escoga un día</option>
-												<option value="lunes">Lunes</option>
-												<option value="martes">Martes</option>
-												<option value="miercoles">Miércoles</option>
-												<option value="jueves">Jueves</option>
-												<option value="viernes">Viernes</option>
-												<option value="sabado">Sábado</option>
-												<option value="domingo">Domingo</option>
-											</select>
+											<select name="dia">`;
+											for (const tipoDia in menuSettings) {
+												const dias = menuSettings[tipoDia];
+												let outgroup = document.createElement('optgroup');
+												outgroup.label = this.firstUpperCase(tipoDia);
+												for (const dia in dias) {
+													let opcion = document.createElement('option');
+													opcion.value = dias[dia].id;
+													opcion.innerText = this.firstUpperCase(dia);
+													outgroup.appendChild(opcion);
+												}
+												data += outgroup.outerHTML;
+											}
+					data +=			/*html*/`</select>
 										</div>
 										<div class="input-field">
-											<select name="tipo">
-												<option value="" disabled selected>Escoga un tipo de anime</option>
-												<option value="0">TV</option>
-												<option value="1">Película</option>
-												<option value="2">Especial</option>
-												<option value="3">OVA</option>
-											</select>
+											<select name="tipo">`;
+											for (const tipo in Tipos) {
+												const valor = Tipos[tipo];
+												let opcion = document.createElement('option');
+												opcion.value = valor;
+												opcion.innerText = tipo;
+												data += opcion.outerHTML;
+											}
+					data += 		/*html*/`</select>
 										</div>
 										<div class="input-field">
 										<input type="text" id="pagina" name="pagina" value="${value.pagina}"  class="validate">
