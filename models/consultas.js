@@ -78,16 +78,17 @@ class BDAnimes extends RenderBase {
 		});
 	}
 	/**
-	 * 
+	 * Compara los días contra la base de 
+	 * datos para encontrar la medallas.
 	 * @param {string[]} menu 
 	 */
 	async buscarMedallasDia(menu) {
 		let medallas = [];
 		let contNombres = 0;
-		for (const index1 in menu) {
-			const value1 = menu[index1];
-			for (const index2 in value1) {
-				let dia = this.quitaAcentos(index2);
+		for (const tipo in menu) {
+			const grupo = menu[tipo];
+			for (const titulo in grupo) {
+				let dia = this.quitaAcentos(grupo[titulo].id);
 				let datos = await this._buscarMedalla(dia);
 				medallas.push({
 					itemMenu: contNombres++,
