@@ -5,7 +5,7 @@ const { ModelAnime } = require('./ModelAnime.js');
 const { ModelPendiente } = require('./ModelPendiente.js');
 const { RenderBase } = require('./RenderBase.js');
 var Sortable = require('sortablejs');
-const { Menu, Estados, Tipos } = require('./defaults-config.js');
+const { Menu, Tipos } = require('./defaults-config.js');
 const settings = require('electron-settings');
 
 

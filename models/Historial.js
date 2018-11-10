@@ -18,7 +18,7 @@ class Historial extends RenderBase {
 				<td>${consulta[i].nombre}${consulta[i].activo === false ? '<i class="icon-state-trash icon-trash-empty right">' : ''}</td>
 				<td>${this.isNoData(consulta[i].nrocapvisto) ? 'No Data': consulta[i].nrocapvisto}</td>
 				<td>${this.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._setCalendarDate(consulta[i].fechaUltCapVisto)}</td>
-				<td>${this.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._getDiaSemana(consulta[i].fechaUltCapVisto)}</td>
+				<td>${this.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this.firstUpperCase(this.addDiasAccents(this.getDiaSemana(consulta[i].fechaUltCapVisto)))}</td>
 				<td>${this.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._setHourDate(consulta[i].fechaUltCapVisto)}</td>
 				<td>${this.isNoData(consulta[i].estado) ? 'No Data': `<i class="icon-state-historial ${this.getState(consulta[i].estado).icon} ${this.getState(consulta[i].estado).color}"></i>`}</td>
 				<td class="hidden" id="key">${consulta[i]._id}</td>
@@ -668,11 +668,6 @@ class Historial extends RenderBase {
 
 	_setFullDate(date){
 		return `${this._setCalendarDate(date)} ${this._setHourDate(date)}`
-	}
-
-	_getDiaSemana(date){
-		let diasSemana = new Array("domingo","lunes","martes","miercoles","jueves","viernes","sabado")
-		return diasSemana[date.getDay()]
 	}
 
 	_filterCapActiveChart(list){

@@ -10,11 +10,11 @@ exports.RenderBase = class RenderBase {
 	}
 	/*Bloquea el drag and drop en la pagina*/
 	blockDragAndDrop() {
-		document.addEventListener('dragover', function (e) {
+		document.addEventListener('dragover', (e) => {
 			e.preventDefault();
 			e.stopPropagation();
 		})
-		document.addEventListener('drop', function (e) {
+		document.addEventListener('drop', (e) => {
 			e.preventDefault();
 			e.stopPropagation();
 		})
@@ -138,6 +138,28 @@ exports.RenderBase = class RenderBase {
 				e.stopPropagation();
 			})
 		});
+	}
+	/**
+	 * Obtiene el día de la semana
+	 * de la fecha dada.
+	 * @param {Date} date Fecha
+	 */
+	getDiaSemana(date){
+		let diasSemana = new Array("domingo","lunes","martes","miercoles","jueves","viernes","sabado")
+		return diasSemana[date.getDay()]
+	}
+	/**
+	 * Retorna el mismo día de la semana, pero 
+	 * agregado los acentos respectivos.
+	 * @param {string} dia Día que se muestra de título sobre la lista de animes.
+	 */
+	addDiasAccents(dia){
+		if (dia === 'sabado')
+			return 'sábado'
+		else if (dia === 'miercoles')
+			return 'miércoles'
+		else
+			return dia
 	}
 	/**
 	 * Captura la dirección del input

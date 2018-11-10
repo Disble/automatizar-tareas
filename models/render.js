@@ -134,7 +134,7 @@ class Render extends RenderBase {
 	 */
 	_iniciarListaAnimes(tblListaAnimes, dia) {
 		document.getElementById('contenido').innerHTML = tblListaAnimes;
-		document.querySelector('.titulo').innerHTML = this._addDiasAccents(dia);
+		document.querySelector('.titulo').innerHTML = this.addDiasAccents(dia);
 		// Inicializando tooltipes
 		M.Tooltip.init(document.querySelectorAll('.tooltipped'), {
 			exitDelay: 50,
@@ -861,19 +861,6 @@ class Render extends RenderBase {
 		let diasSemana = new Array("domingo","lunes","martes","miercoles","jueves","viernes","sabado")
 		let f = new Date()
 		return diasSemana[f.getDay()]
-	}
-	/**
-	 * Retorna el mismo día de la semana, pero 
-	 * agregado los acentos respectivos.
-	 * @param {string} dia Día que se muestra de título sobre la lista de animes.
-	 */
-	_addDiasAccents(dia){
-		if (dia === 'sabado')
-			return 'sábado'
-		else if (dia === 'miercoles')
-			return 'miércoles'
-		else
-			return dia
 	}
 	/**
 	 * Comprueba que el string proporcionado sea
