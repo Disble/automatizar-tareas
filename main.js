@@ -360,7 +360,7 @@ function createWindow () {
 		width: 800, 
 		height: 600,
 		backgroundColor: 'rgb(213, 55, 41)',
-		icon: path.join(__dirname, '/icons/png/128x128.png')
+		icon: path.join(__dirname, '/icons/png/512x512.png')
 	});
   
 	// and load the index.html of the app.
