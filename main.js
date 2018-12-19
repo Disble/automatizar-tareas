@@ -2,6 +2,7 @@ const electron = require('electron');
 const { app, BrowserWindow } = electron;
 const path = require('path');
 const Menu = electron.Menu;
+const { autoUpdater } = require('electron-updater');
 let mainWindow;
 
 let template = [
@@ -369,6 +370,9 @@ function createWindow () {
 	// Loading menu from menu template
 	const menu = Menu.buildFromTemplate(template);
 	Menu.setApplicationMenu(menu);
+
+	// Loading autoUpdater
+	autoUpdater.checkForUpdatesAndNotify();
 
 	// Open the DevTools.
 	// mainWindow.webContents.openDevTools()

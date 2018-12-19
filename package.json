@@ -1,22 +1,61 @@
 {
-  "name": "automatizar-tareas",
+  "name": "autoreas",
   "version": "0.11.1",
   "description": "Apoyando la vagancia desde tiempos inmemoriales.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Disble/automatizar-tareas.git"
+  },
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "build --dir",
+    "dist": "build"
   },
   "author": "Disble",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^3.0.6",
-    "nedb": "^1.8.0"
+    "electron": "^3.0.13",
+    "electron-builder": "^20.38.3"
   },
   "dependencies": {
     "chart.js": "^2.7.3",
     "electron-settings": "^3.2.0",
+    "electron-updater": "^4.0.6",
     "materialize-css": "^1.0.0",
+    "nedb": "^1.8.0",
     "sortablejs": "^1.7.0",
-    "sweetalert": "^2.1.0"
+    "sweetalert": "^2.1.2"
+  },
+  "build": {
+    "appId": "com.electron.autoreas",
+    "productName": "Autoreas",
+    "publish": [
+      "github"
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "icons/win/icon.ico"
+    }
   }
 }
