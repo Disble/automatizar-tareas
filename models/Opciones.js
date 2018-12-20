@@ -65,7 +65,25 @@ class Opciones extends RenderBase {
             </button>
         </div>
         `;
+        // Creando la Zona de Peligro
+        let dangerZone = /*html*/`
+        <div class="col s12">
+            <div class="divider"></div>
+        </div>
+        <div class="col s12">
+            <h5>Zona de peligro</h5>
+        </div>
+        <div class="col s12 danger-border">
+            <h5>
+                Restablecer
+                <a class="right waves-effect waves-light btn orange" id="btn-restore"><i class="icon-ccw material-icons right"></i>Restablecer</a>
+            </h5>
+            <p class="paragraph-btn-right">Se restablece a los valores por defecto.</p>
+        </div>
+        `;
+        items += dangerZone;
         datos.innerHTML = items;
+        // Cargando los datos de los días
         for (const clase of clases) {
             let tipo = document.getElementById(`tipo-${clase.clase}`);
             let inputs = '';
@@ -95,22 +113,6 @@ class Opciones extends RenderBase {
             `;
             tipo.innerHTML = inputs;
         }
-        let dangerZone = /*html*/`
-        <div class="col s12">
-            <div class="divider"></div>
-        </div>
-        <div class="col s12">
-            <h5>Zona de peligro</h5>
-        </div>
-        <div class="col s12 danger-border">
-            <h5>
-                Restablecer
-                <a class="right waves-effect waves-light btn orange" id="btn-restore"><i class="icon-ccw material-icons right"></i>Restablecer</a>
-            </h5>
-            <p class="paragraph-btn-right">Se restablece a los valores por defecto.</p>
-        </div>
-        `;
-        datos.insertAdjacentHTML('afterend', dangerZone);
         // Cargando modulos de materialize-css
         M.updateTextFields();
     }
