@@ -1,4 +1,4 @@
-# Automatizador de Tareas (Nombre Provisional)
+# Autoreas
 
 ## Descripción y contexto
 ---
@@ -9,7 +9,7 @@ Esta aplicación tiene como principio la sencillez y accesibilidad de uso, ayuda
 
 Enfocada principalmente como un Sistema de Control de Capítulos (o SCC siglas que acabo de inventar) de animes vistos. Teniendo un ciclo completo (agregar, ver, editar, borrar) en su presente versión Beta.
 
-Como parte del programa, diseñado al comienzo del desarrollo se presentarán como mínimo las siguientes funciones en la versión reléase 1.0.0. De las cuales actualmente ya se tienen cumplidas las siguientes funciones (sujetos a posibles cambios).
+Como parte del programa, diseñado al comienzo del desarrollo se presentarán las siguientes funciones. De las cuales actualmente ya se tienen cumplidas las siguientes funciones (sujetos a posibles cambios).
 
 ### **Lista de Animes (enlazado a carpetas y web)**
 - **Animes**
