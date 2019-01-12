@@ -1,36 +1,24 @@
 exports.RenderBase = class RenderBase {
 	constructor() {
 		this.initPrototypes();
-		this.blockDragAndDrop();
 		this.numReg = 10;
 	}
 	initPrototypes() {
 		HTMLElement.prototype.removeClass = this.removeClass;
 		HTMLElement.prototype.addClass = this.addClass;
 	}
-	/*Bloquea el drag and drop en la pagina*/
-	blockDragAndDrop() {
-		document.addEventListener('dragover', (e) => {
-			e.preventDefault();
-			e.stopPropagation();
-		})
-		document.addEventListener('drop', (e) => {
-			e.preventDefault();
-			e.stopPropagation();
-		})
-	}
 	/**
 	 * Quita los acentos del string proporcionado.
 	 * @param {string} str String a analizar.
 	 */
-    quitaAcentos(str) {
+	quitaAcentos(str) {
 		var res = str.toLowerCase()
-		res = res.replace(new RegExp(/[àáâãäå]/g),'a')
-		res = res.replace(new RegExp(/[èéêë]/g),'e')
-		res = res.replace(new RegExp(/[ìíîï]/g),'i')
-		res = res.replace(new RegExp(/ñ/g),'n')
-		res = res.replace(new RegExp(/[òóôõö]/g),'o')
-		res = res.replace(new RegExp(/[ùúûü]/g),'u')
+		res = res.replace(new RegExp(/[àáâãäå]/g), 'a')
+		res = res.replace(new RegExp(/[èéêë]/g), 'e')
+		res = res.replace(new RegExp(/[ìíîï]/g), 'i')
+		res = res.replace(new RegExp(/ñ/g), 'n')
+		res = res.replace(new RegExp(/[òóôõö]/g), 'o')
+		res = res.replace(new RegExp(/[ùúûü]/g), 'u')
 		return res
 	}
 	/**
@@ -67,7 +55,7 @@ exports.RenderBase = class RenderBase {
 				color: 'orange-text',
 				backgroundColor: 'orange'
 			}
-		} [estado]
+		}[estado]
 	}
 	/**
 	 * Retorna un objeto con los metadatos del
@@ -92,7 +80,7 @@ exports.RenderBase = class RenderBase {
 			3: {
 				name: 'OVA',
 			}
-		} [tipo];
+		}[tipo];
 	}
 	/**
 	 * Busca los hermanos de un elemento HTML.
@@ -144,8 +132,8 @@ exports.RenderBase = class RenderBase {
 	 * de la fecha dada.
 	 * @param {Date} date Fecha
 	 */
-	getDiaSemana(date){
-		let diasSemana = new Array("domingo","lunes","martes","miercoles","jueves","viernes","sabado")
+	getDiaSemana(date) {
+		let diasSemana = new Array("domingo", "lunes", "martes", "miercoles", "jueves", "viernes", "sabado")
 		return diasSemana[date.getDay()]
 	}
 	/**
@@ -153,7 +141,7 @@ exports.RenderBase = class RenderBase {
 	 * agregado los acentos respectivos.
 	 * @param {string} dia Día que se muestra de título sobre la lista de animes.
 	 */
-	addDiasAccents(dia){
+	addDiasAccents(dia) {
 		if (dia === 'sabado')
 			return 'sábado'
 		else if (dia === 'miercoles')
@@ -173,7 +161,7 @@ exports.RenderBase = class RenderBase {
 		let folder = input.files[0].path
 		let path = this.slashFolder(folder)
 		input.setAttribute('value', path);
-		
+
 		let label = this.siblings(input)[0];
 		label.innerHTML = 'Cargado';
 		label.setAttribute('data-tooltip', path);
@@ -213,14 +201,14 @@ exports.RenderBase = class RenderBase {
 	 * datos.
 	 * @param {any} data 
 	 */
-	isNoData(data){
+	isNoData(data) {
 		return data === undefined || data === null
 	}
 	/**
 	 * Convierte la primera letra a mayúscula.
 	 * @param {string} value Cualquier texto
 	 */
-	firstUpperCase(value){
+	firstUpperCase(value) {
 		return value.charAt(0).toUpperCase() + value.slice(1)
 	}
 	/**
@@ -246,7 +234,7 @@ exports.RenderBase = class RenderBase {
 	 * @param {number} totalReg Total de registros consultados.
 	 */
 	saltoPaginacion(pag, totalReg) {
-		return this.numReg  * (pag - 1)
+		return this.numReg * (pag - 1)
 	}
 	/**
 	 * Determina si el número de paginas obtenidas supera
