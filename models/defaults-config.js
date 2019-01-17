@@ -63,7 +63,7 @@ exports.Estados = {
 }
 
 exports.Tipos = {
-    'TV': 0,
+    'Anime (TV)': 0,
     'Película': 1,
     'Especial': 2,
     'OVA': 3

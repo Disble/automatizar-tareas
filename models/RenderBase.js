@@ -1,8 +1,71 @@
-exports.RenderBase = class RenderBase {
+'use strict';
+
+const electron = require('electron');
+const remote = electron.remote;
+const Menu = remote.Menu;
+const InputMenu = Menu.buildFromTemplate([
+	{
+		label: 'Cortar',
+		role: 'cut',
+	}, {
+		label: 'Copiar',
+		role: 'copy',
+	}, {
+		label: 'Pegar',
+		role: 'paste',
+	},
+	{
+		type: 'separator',
+	},
+	{
+		label: 'Deshacer',
+		role: 'undo',
+	}, {
+		label: 'Rehacer',
+		role: 'redo',
+	}, {
+		type: 'separator',
+	}, {
+		label: 'Seleccionar todo',
+		role: 'selectall',
+	},
+]);
+
+/**
+ * Clase dedicada a compartir funciones comunes en toda la aplicación.
+ * Va desde context menu, a nuevos prototipos para las clases.
+ */
+class RenderBase {
 	constructor() {
 		this.initPrototypes();
+		this.setContextMenu();
 		this.numReg = 10;
 	}
+	/**
+	 * Establece el `ContextMenu` con las opciones de 
+	 * cortar, copiar, pegar, deshacer, rehacer, seleccionar todo.
+	 * Este menu solo aparece en los inputs y textarea.
+	 */
+	setContextMenu() {
+		document.body.addEventListener('contextmenu', (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+
+			let node = e.target;
+
+			while (node) {
+				if (node.nodeName.match(/^(input|textarea)$/i) || node.isContentEditable) {
+					InputMenu.popup(remote.getCurrentWindow());
+					break;
+				}
+				node = node.parentNode;
+			}
+		});
+	}
+	/**
+	 * Inicializa los prototipos para agregar y eliminar
+	 * clases a un elemento HTML.
+	 */
 	initPrototypes() {
 		HTMLElement.prototype.removeClass = this.removeClass;
 		HTMLElement.prototype.addClass = this.addClass;
@@ -259,7 +322,8 @@ exports.RenderBase = class RenderBase {
 			return pagActual + 4 > totalPag ? passLimitEnd : inicio
 	}
 	/**
-	 * 
+	 * Determina el número de paginas que se 
+	 * mostraran a la vez.
 	 */
 	limitePaginasFin(pagActual, totalPag) {
 		let inicio = pagActual - 5
@@ -270,3 +334,5 @@ exports.RenderBase = class RenderBase {
 			return fin
 	}
 }
+
+exports.RenderBase = RenderBase;

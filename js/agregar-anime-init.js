@@ -2,11 +2,11 @@
 const M = require('materialize-css');
 const swal = require('sweetalert');
 // Variables locales
-const { Render } = require('../models/render.js');
+const { RenderNuevoAnime } = require('../models/RenderNuevoAnime');
 const settings = require('electron-settings');
 
 document.addEventListener('DOMContentLoaded', function () {
-    let render = new Render();
+    let render = new RenderNuevoAnime();
     render.initAgregarAnime();
     M.FormSelect.init(document.querySelectorAll('select'));
 });

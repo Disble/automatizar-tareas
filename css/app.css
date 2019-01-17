@@ -71,6 +71,7 @@
 .no-padding{
 	padding: 0;
 }
+.dropdown-content li>a>i.no-margin,
 .no-margin {
 	margin: 0;
 }
@@ -216,8 +217,8 @@ table.highlight > tbody > tr:hover{
 select.browser-default {
     min-width: 90px;
 }
-#datos-anime-nuevo input[type="number"] {
-	max-width: 100px;
+.datos-anime-nuevo input[type="number"]:not(.this-not) {
+	max-width: 50px;
 }
 .chart-container {
 	position: relative;
