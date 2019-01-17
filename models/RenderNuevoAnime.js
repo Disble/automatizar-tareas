@@ -103,7 +103,9 @@ class RenderNuevoAnime extends RenderBase {
 			exitDelay: 50
 		});
 		M.FormSelect.init(document.querySelectorAll('select'));
-		M.Modal.init(document.querySelectorAll('.modal'));
+		M.Modal.init(document.querySelectorAll('.modal'), {
+			preventScrolling: false
+		});
 		M.updateTextFields();
 		this._fixSelectForm();
 		this._fixSelectValidationLine();
@@ -161,7 +163,9 @@ class RenderNuevoAnime extends RenderBase {
 			exitDelay: 50
 		});
 		M.FormSelect.init(document.querySelectorAll('select'));
-		M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+		M.Modal.init(document.querySelectorAll('.modal'), {
+			preventScrolling: false
+		});
 		this._fixSelectForm();
 		this._fixSelectValidationLine();
 	}
