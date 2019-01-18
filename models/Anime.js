@@ -1,3 +1,7 @@
+/**
+ * Representa todos los datos de la Base de Datos
+ * correspondientes a un Anime.
+ */
 class Anime {
   /**
    * Representa un Anime.
@@ -28,7 +32,7 @@ class Anime {
     this.orden = orden;
     this.nombre = nombre;
     this.dia = dia;
-		this.nrocapvisto = nrocapvisto;
+    this.nrocapvisto = nrocapvisto;
     this.totalcap = totalcap;
     this.tipo = tipo;
     this.pagina = pagina;
