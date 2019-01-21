@@ -16,11 +16,11 @@ class Historial extends RenderBase {
 			<tr>
 				<td>${++cont}</td>
 				<td>${consulta[i].nombre}${consulta[i].activo === false ? '<i class="icon-state-trash icon-trash-empty right">' : ''}</td>
-				<td>${this.isNoData(consulta[i].nrocapvisto) ? 'No Data': consulta[i].nrocapvisto}</td>
-				<td>${this.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._setCalendarDate(consulta[i].fechaUltCapVisto)}</td>
-				<td>${this.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this.firstUpperCase(this.addDiasAccents(this.getDiaSemana(consulta[i].fechaUltCapVisto)))}</td>
-				<td>${this.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data': this._setHourDate(consulta[i].fechaUltCapVisto)}</td>
-				<td>${this.isNoData(consulta[i].estado) ? 'No Data': `<i class="icon-state-historial ${this.getState(consulta[i].estado).icon} ${this.getState(consulta[i].estado).color}"></i>`}</td>
+				<td>${this.isNoData(consulta[i].nrocapvisto) ? 'No Data' : consulta[i].nrocapvisto}</td>
+				<td>${this.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data' : this._setCalendarDate(consulta[i].fechaUltCapVisto)}</td>
+				<td>${this.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data' : this.firstUpperCase(this.addDiasAccents(this.getDiaSemana(consulta[i].fechaUltCapVisto)))}</td>
+				<td>${this.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data' : this._setHourDate(consulta[i].fechaUltCapVisto)}</td>
+				<td>${this.isNoData(consulta[i].estado) ? 'No Data' : `<i class="icon-state-historial ${this.getState(consulta[i].estado).icon} ${this.getState(consulta[i].estado).color}"></i>`}</td>
 				<td class="hidden" id="key">${consulta[i]._id}</td>
 			</tr>`
 		});
@@ -93,7 +93,7 @@ class Historial extends RenderBase {
 		liFin.classList.add('waves-effect');
 		if (actual === fin) liFin.classList.add('disabled');
 		liFinA.href = '#';
-		liFinA.addEventListener('click', async (e) => {	
+		liFinA.addEventListener('click', async (e) => {
 			e.preventDefault();
 			e.stopPropagation();
 			if (actual !== fin) {
@@ -118,7 +118,7 @@ class Historial extends RenderBase {
 				this._recargarHistorial();
 			}
 		});
-    	M.Autocomplete.init(document.querySelectorAll('input.autocomplete'), {
+		M.Autocomplete.init(document.querySelectorAll('input.autocomplete'), {
 			data,
 			limit: 5, // The max amount of results that can be shown at once. Default: Infinity.
 			onAutocomplete: val => {
@@ -144,10 +144,10 @@ class Historial extends RenderBase {
 		});
 		// Combinación de Ctrl + f global para activar el buscador
 		document.addEventListener('keypress', (e) => {
-			if (e.ctrlKey === true && e.keyCode === 6){
+			if (e.ctrlKey === true && e.keyCode === 6) {
 				M.Modal.getInstance(document.getElementById('modal-search')).open();
 			}
-		});		
+		});
 		this._fitrarOpciones();
 	}
 
@@ -201,42 +201,42 @@ class Historial extends RenderBase {
 
 			if (parseInt(orden) === 1) {
 				opcionOrden = {
-					"nombre" : 1
+					"nombre": 1
 				}
 			} else if (parseInt(orden) === 2) {
 				opcionOrden = {
-					"fechaUltCapVisto" : -1
+					"fechaUltCapVisto": -1
 				}
 			} else if (parseInt(orden) === 3) {
 				opcionOrden = {
-					"fechaCreacion" : -1
+					"fechaCreacion": -1
 				}
 			} else {
 				opcionOrden = {
-					"fechaUltCapVisto" : -1
+					"fechaUltCapVisto": -1
 				}
 			}
-			
+
 			if (estados.length === 0 && tipos.length === 0) {
 				return this._buscarAnimes(query, true, opcionOrden);
 			}
 
 			for (const estado of estados) {
 				opcionesEstado.push({
-					"estado" : parseInt(estado)
+					"estado": parseInt(estado)
 				});
 			}
 
 			for (const tipo of tipos) {
 				opcionesTipo.push({
-					"tipo" : parseInt(tipo)
+					"tipo": parseInt(tipo)
 				});
 			}
 
-			if (opcionesEstado.length > 0 && opcionesTipo.length > 0){
+			if (opcionesEstado.length > 0 && opcionesTipo.length > 0) {
 				opcionesFiltro.$and = [];
-				opcionesFiltro.$and.push({$or: opcionesEstado});
-				opcionesFiltro.$and.push({$or: opcionesTipo});
+				opcionesFiltro.$and.push({ $or: opcionesEstado });
+				opcionesFiltro.$and.push({ $or: opcionesTipo });
 			} else if (opcionesEstado.length > 0) {
 				opcionesFiltro.$or = opcionesEstado;
 			} else if (opcionesTipo.length > 0) {
@@ -244,7 +244,7 @@ class Historial extends RenderBase {
 			}
 
 			// console.log('filtros: ', query, opcionesFiltro, opcionOrden);
-			
+
 			let datos = await this.db.filtrarBuscadorHistorial(query, opcionesFiltro, opcionOrden);
 			this.imprimirHistorial(datos, 0);
 			this._ocultarOpciones();
@@ -266,14 +266,14 @@ class Historial extends RenderBase {
 		}
 	}
 
-	capitulosVistos(lista){
+	capitulosVistos(lista) {
 		let listFilter = this._filterCapActiveChart(lista)
-		this._chartCapVistos(listFilter, 'horizontalBar', 'Capítulos Vistos')
+		this._chartCapVistos(listFilter, 'horizontalBar', 'Capítulos vistos')
 	}
 
-	capitulosVistosUnAnime(anime){
+	capitulosVistosUnAnime(anime) {
 		let animeFilter = this._filterCapChart(anime)
-		this._chartCapVistos(animeFilter, 'bar', 'Capítulos Vistos')
+		this._chartCapVistos(animeFilter, 'bar', 'Capítulos vistos')
 		this._setHistoriaAnime(anime)
 	}
 
@@ -286,7 +286,7 @@ class Historial extends RenderBase {
 		});
 	}
 
-	_setHistoriaAnime(anime){
+	_setHistoriaAnime(anime) {
 		document.getElementById('nombre').innerHTML = anime.nombre;
 		document.getElementById('tipo').innerHTML = this.isNoData(anime.tipo) ? 'Desconocido' : this.getStateType(anime.tipo).name;
 		document.getElementById('estado').innerHTML = this.getState(anime.estado).name;
@@ -326,20 +326,20 @@ class Historial extends RenderBase {
 			buttons: ["Cancelar", "OK"],
 			dangerMode: true,
 		})
-		.then((willDelete) => {
-			if (willDelete) {
-				this.db.restaurarFila(id).then(async (resolve) => {
-					if (resolve > 0) {
-						await swal('Exito', 'El anime ya vuelve a estar disponible.', 'success');
-						this.recargarPagina();
-					} else {
-						swal('Error', 'Tuvimos un pequeño problema al restaurar este anime. Tal vez si lo intentas más tarde...', 'error');
-					}
-				});
-			} else {
-				swal("¡Acción cancelada!", '', 'info');
-			}
-		});
+			.then((willDelete) => {
+				if (willDelete) {
+					this.db.restaurarFila(id).then(async (resolve) => {
+						if (resolve > 0) {
+							await swal('Exito', 'El anime ya vuelve a estar disponible.', 'success');
+							this.recargarPagina();
+						} else {
+							swal('Error', 'Tuvimos un pequeño problema al restaurar este anime. Tal vez si lo intentas más tarde...', 'error');
+						}
+					});
+				} else {
+					swal("¡Acción cancelada!", '', 'info');
+				}
+			});
 	}
 	/**
 	 * Borra el anime proporcionado. Antes hay una
@@ -353,55 +353,55 @@ class Historial extends RenderBase {
 			buttons: ["Cancelar", "OK"],
 			dangerMode: true,
 		})
-		.then((willDelete) => {
-			if (willDelete) {
-				this.db.borrarAnime(id).then(async (resolve) => {
-					if (resolve > 0) {
-						await swal('Exito', 'Toda posibilidad de recuperación se ha perdido.', 'success');
-						this.recargarPagina();
-					} else {
-						swal('Error', 'Tuvimos un pequeño problema al borrar este anime. Tal vez si lo intentas más tarde...', 'error');
-					}
-				});
-			} else {
-				swal("¡Acción cancelada!", '', 'info');
-			}
-		});
+			.then((willDelete) => {
+				if (willDelete) {
+					this.db.borrarAnime(id).then(async (resolve) => {
+						if (resolve > 0) {
+							await swal('Exito', 'Toda posibilidad de recuperación se ha perdido.', 'success');
+							this.recargarPagina();
+						} else {
+							swal('Error', 'Tuvimos un pequeño problema al borrar este anime. Tal vez si lo intentas más tarde...', 'error');
+						}
+					});
+				} else {
+					swal("¡Acción cancelada!", '', 'info');
+				}
+			});
 	}
 
-	_chartCapVistos(listFilter, tipo, title){
+	_chartCapVistos(listFilter, tipo, title) {
 		let ctx = document.getElementById('capVistos')
-        let capVistos = new Chart(ctx, {
-            type: tipo,
-            data: {
-                labels: this._filterLabelChart(listFilter.nombres),
-                datasets: [{
-                    data: listFilter.nroCap,
-                    backgroundColor: listFilter.colorTransparente,
-                    borderColor: listFilter.color,
-                    borderWidth: 1
-                }]
-            },
-            options: {
+		let capVistos = new Chart(ctx, {
+			type: tipo,
+			data: {
+				labels: this._filterLabelChart(listFilter.nombres),
+				datasets: [{
+					data: listFilter.nroCap,
+					backgroundColor: listFilter.colorTransparente,
+					borderColor: listFilter.color,
+					borderWidth: 1
+				}]
+			},
+			options: {
 				responsive: true,
 				maintainAspectRatio: false,
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-            				min: 0
-                        }
-                    }]
-                },
+				scales: {
+					yAxes: [{
+						ticks: {
+							beginAtZero: true,
+							min: 0
+						}
+					}]
+				},
 				title: {
 					display: true,
 					text: title
 				},
-				legend : {
+				legend: {
 					display: false
 				}
-            }
-        })
+			}
+		})
 	}
 	/**
 	 * Si el tamaño de un label es mayor a 40,
@@ -412,7 +412,7 @@ class Historial extends RenderBase {
 		let newLabels = [];
 		for (const label of labels) {
 			if (label.length > 40) {
-				newLabels.push(`${label.slice(0,40).trim()}...`);
+				newLabels.push(`${label.slice(0, 40).trim()}...`);
 			} else {
 				newLabels.push(label)
 			}
@@ -466,7 +466,7 @@ class Historial extends RenderBase {
 	async numCapRestantes() {
 		let capRestantes = await this.db.capRestantes();
 		let listFilter = this._filterCapResChart(capRestantes);
-		this._chartCapVistos(listFilter, 'horizontalBar', 'Capítulos Restantes');
+		this._chartCapVistos(listFilter, 'horizontalBar', 'Capítulos restantes');
 	}
 
 	_generatorTemplate(nombres, paginas) {
@@ -488,7 +488,7 @@ class Historial extends RenderBase {
 		return template;
 	}
 
-	_statisticsPagesSaw(listFiltered){
+	_statisticsPagesSaw(listFiltered) {
 		let ctx = document.getElementById('pagCapVistos');
 		let capVistos = new Chart(ctx, {
 			type: 'doughnut',
@@ -504,7 +504,7 @@ class Historial extends RenderBase {
 				maintainAspectRatio: false,
 				title: {
 					display: true,
-					text: 'Paginas'
+					text: 'Páginas'
 				},
 				legend: {
 					display: true
@@ -652,7 +652,7 @@ class Historial extends RenderBase {
 		this.capitulosVistosUnAnime(data);
 	}
 
-	_setCalendarDate(date){
+	_setCalendarDate(date) {
 		let year = date.getFullYear()
 		let month = date.getMonth()
 		let day = date.getDate()
@@ -666,11 +666,11 @@ class Historial extends RenderBase {
 		return `${hour}:${minutes}`
 	}
 
-	_setFullDate(date){
+	_setFullDate(date) {
 		return `${this._setCalendarDate(date)} ${this._setHourDate(date)}`
 	}
 
-	_filterCapActiveChart(list){
+	_filterCapActiveChart(list) {
 		let nombres = []
 		let nroCap = []
 		let colorTransparente = []
@@ -686,27 +686,27 @@ class Historial extends RenderBase {
 			}
 		});
 		let data = {
-			'nombres' : nombres,
-			'nroCap' : nroCap,
-			'colorTransparente' : colorTransparente,
-			'color' : color
+			'nombres': nombres,
+			'nroCap': nroCap,
+			'colorTransparente': colorTransparente,
+			'color': color
 		}
 		return data
 	}
 
-	_filterCapChart(anime){
+	_filterCapChart(anime) {
 		let colorRand = this._getColorRandom(0.4)
 		let colorT = colorRand.replace('0.4', '1')
 		let data = {
-			'nombres' : [anime.nombre],
-			'nroCap' : [anime.nrocapvisto],
-			'colorTransparente' : [colorRand],
-			'color' : [colorT]
+			'nombres': [anime.nombre],
+			'nroCap': [anime.nrocapvisto],
+			'colorTransparente': [colorRand],
+			'color': [colorT]
 		}
 		return data
 	}
 
-	_filterCapResChart(list){
+	_filterCapResChart(list) {
 		let nombres = []
 		let nroCap = []
 		let colorTransparente = []
@@ -723,10 +723,10 @@ class Historial extends RenderBase {
 			}
 		});
 		let data = {
-			'nombres' : nombres,
-			'nroCap' : nroCap,
-			'colorTransparente' : colorTransparente,
-			'color' : color
+			'nombres': nombres,
+			'nroCap': nroCap,
+			'colorTransparente': colorTransparente,
+			'color': color
 		}
 		return data
 	}
@@ -743,7 +743,7 @@ class Historial extends RenderBase {
 			url.href = value.pagina;
 			let hostname = url.hostname === "" ? "otros" : url.hostname;
 			pages[hostname] = hostname;
-			nombres[hostname] += [','+value.nombre];
+			nombres[hostname] += [',' + value.nombre];
 			nombres[hostname] = nombres[hostname].split(',');
 			count[hostname] = (count[hostname] || 0) + 1;
 		});
@@ -761,15 +761,15 @@ class Historial extends RenderBase {
 		}
 
 		return {
-			'paginas' : paginas,
-			'contador' : contador,
-			'colorTransparente' : colorTransparente,
+			'paginas': paginas,
+			'contador': contador,
+			'colorTransparente': colorTransparente,
 			'nombres': nombres
 		}
 	}
 
 	_getColorRandom(transparent) {
-		return `rgba(${this._getRandom()}, ${this._getRandom()}, ${this._getRandom()}, ${transparent})`;0
+		return `rgba(${this._getRandom()}, ${this._getRandom()}, ${this._getRandom()}, ${transparent})`; 0
 	}
 
 	_getRandom() {

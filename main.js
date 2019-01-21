@@ -1,4 +1,5 @@
 const electron = require('electron');
+const isDev = require('electron-is-dev');
 const { app, BrowserWindow } = electron;
 const path = require('path');
 const Menu = electron.Menu;
@@ -9,7 +10,7 @@ let template = [
 	{
 		label: 'Animes',
 		submenu: [{
-			label: 'Ver animes',
+			label: 'Ver',
 			accelerator: 'CmdOrCtrl+1',
 			click: function (item, focusedWindow) {
 				if (focusedWindow) {
@@ -22,7 +23,7 @@ let template = [
 			}
 		},
 		{
-			label: 'Agregar animes',
+			label: 'Agregar',
 			accelerator: 'CmdOrCtrl+2',
 			click: function (item, focusedWindow) {
 				if (focusedWindow) {
@@ -35,7 +36,7 @@ let template = [
 			}
 		},
 		{
-			label: 'Editar animes',
+			label: 'Editar',
 			accelerator: 'CmdOrCtrl+3',
 			click: function (item, focusedWindow) {
 				if (focusedWindow) {
@@ -64,7 +65,10 @@ let template = [
 			}
 		},
 		{
-			label: 'Animes viendo',
+			type: 'separator'
+		},
+		{
+			label: 'Capítulos vistos',
 			accelerator: 'CmdOrCtrl+g',
 			click: function (item, focusedWindow) {
 				if (focusedWindow) {
@@ -77,20 +81,7 @@ let template = [
 			}
 		},
 		{
-			label: 'Paginas (viendo)',
-			accelerator: 'CmdOrCtrl+p',
-			click: function (item, focusedWindow) {
-				if (focusedWindow) {
-					if (focusedWindow.id === 1) {
-						BrowserWindow.getAllWindows().forEach(function (win) {
-							win.loadFile(path.join('views', 'animes', 'paginas.html'));
-						})
-					}
-				}
-			}
-		},
-		{
-			label: 'Capítulos restantes (viendo)',
+			label: 'Capítulos restantes',
 			accelerator: 'CmdOrCtrl+j',
 			click: function (item, focusedWindow) {
 				if (focusedWindow) {
@@ -101,13 +92,26 @@ let template = [
 					}
 				}
 			}
+		},
+		{
+			label: 'Páginas',
+			accelerator: 'CmdOrCtrl+p',
+			click: function (item, focusedWindow) {
+				if (focusedWindow) {
+					if (focusedWindow.id === 1) {
+						BrowserWindow.getAllWindows().forEach(function (win) {
+							win.loadFile(path.join('views', 'animes', 'paginas.html'));
+						})
+					}
+				}
+			}
 		}
 		]
 	},
 	{
 		label: 'Pendientes',
 		submenu: [{
-			label: 'Ver pendientes',
+			label: 'Ver',
 			accelerator: 'Alt+1',
 			click: function (item, focusedWindow) {
 				if (focusedWindow) {
@@ -120,7 +124,7 @@ let template = [
 			}
 		},
 		{
-			label: 'Agregar pendientes',
+			label: 'Agregar',
 			accelerator: 'Alt+2',
 			click: function (item, focusedWindow) {
 				if (focusedWindow) {
@@ -133,7 +137,7 @@ let template = [
 			}
 		},
 		{
-			label: 'Editar pendientes',
+			label: 'Editar',
 			accelerator: 'Alt+3',
 			click: function (item, focusedWindow) {
 				if (focusedWindow) {
@@ -272,7 +276,9 @@ let template = [
 		role: 'help',
 		submenu: [{
 			label: 'Acerca de',
-			enabled: false
+			click: function () {
+				electron.shell.openExternal('https://gitlab.com/Disble/automatizar-tareas');
+			}
 		}]
 	}
 ]
@@ -286,23 +292,20 @@ function addUpdateMenuItems(items, position) {
 		enabled: false
 	}, {
 		label: 'Buscar actualizaciones...',
-		visible: false,
+		enabled: false,
 		key: 'checkForUpdate',
 		click: function () {
-			require('electron').autoUpdater.checkForUpdates()
+			console.log(electron.app.getVersion())
+			console.log(autoUpdater.onUpdateAvailable());
+			autoUpdater.checkForUpdates();
 		}
 	}, {
-		label: 'Restart and Install Update',
+		label: 'Reiniciar e instalar actualizaciones',
 		enabled: true,
 		visible: false,
 		key: 'restartToUpdate',
 		click: function () {
-			require('electron').autoUpdater.quitAndInstall()
-		}
-	}, {
-		label: 'Ver mas',
-		click: function () {
-			electron.shell.openExternal('https://gitlab.com/Disble/automatizar-tareas');
+			autoUpdater.quitAndInstall();
 		}
 	}]
 
@@ -372,7 +375,9 @@ function createWindow() {
 	Menu.setApplicationMenu(menu);
 
 	// Loading autoUpdater
-	autoUpdater.checkForUpdatesAndNotify();
+	if (!isDev) {
+		autoUpdater.checkForUpdatesAndNotify();
+	}
 
 	// Open the DevTools.
 	// mainWindow.webContents.openDevTools()
