@@ -51,8 +51,8 @@ class BDAnimes extends RenderBase {
 
 	buscarPaginas() {
 		return new Promise((resolve, reject) => {
-			animesdb.find({ $and: [{ "pagina": { $exists: true } }, { $or: [{ "activo": true }, { "activo": { $exists: false } }] }] }, {pagina: 1, nombre: 1})
-				.sort({"orden": 1})
+			animesdb.find({ $and: [{ "pagina": { $exists: true } }, { $or: [{ "activo": true }, { "activo": { $exists: false } }] }] }, { pagina: 1, nombre: 1 })
+				.sort({ "orden": 1 })
 				.exec(function (err, record) {
 					if (err) {
 						//console.error(err)
@@ -65,7 +65,7 @@ class BDAnimes extends RenderBase {
 	}
 	capRestantes() {
 		return new Promise((resolve, reject) => {
-			animesdb.find({ $and: [{ $and: [{$not: {"totalcap": null}} ,{"totalcap": { $exists: true }}] }, { $or: [{ "activo": true }, { "activo": { $exists: false } }] }] }, { nombre: 1, totalcap: 1, nrocapvisto: 1, estado: 1 })
+			animesdb.find({ $and: [{ $and: [{ $not: { "totalcap": null } }, { "totalcap": { $exists: true } }] }, { $or: [{ "activo": true }, { "activo": { $exists: false } }] }] }, { nombre: 1, totalcap: 1, nrocapvisto: 1, estado: 1 })
 				.sort({ "orden": 1 })
 				.exec(function (err, record) {
 					if (err) {
@@ -153,7 +153,7 @@ class BDAnimes extends RenderBase {
 		});
 	}
 	/**
-	 * Retorna el anime que coincida con
+	 * Retorna los datos del anime que coincida con
 	 * el id proporcionado.
 	 * @param {number} id Id del anime.
 	 */
@@ -253,11 +253,14 @@ class BDAnimes extends RenderBase {
 					totalReg,
 					pag
 				});
-				
+
 			});
 		});
 	}
-
+	/**
+	 * Trae los nombres de todos los animes 
+	 * ordenados por la fecha del último capitulo.
+	 */
 	buscarAutocompleteHistorial() {
 		return new Promise((resolve, reject) => {
 			animesdb.find({}, { "nombre": 1 }).sort({ "fechaUltCapVisto": -1 }).exec(function (err, record) {
@@ -293,7 +296,7 @@ class BDAnimes extends RenderBase {
 				}
 				if (esFiltro) {
 					M.toast({
-						html: `Filtrando ${query == "" ? 'todo' : '"'+query+'"'}: ${record.length} resultados`,
+						html: `Filtrando ${query == "" ? 'todo' : '"' + query + '"'}: ${record.length} resultados`,
 						displayLength: 4000
 					});
 				}
@@ -320,7 +323,7 @@ class BDAnimes extends RenderBase {
 						process.exit(0);
 					}
 					M.toast({
-						html: `Filtrando ${query == "" ? 'todo' : '"'+query+'"'}: ${record.length} resultados`,
+						html: `Filtrando ${query == "" ? 'todo' : '"' + query + '"'}: ${record.length} resultados`,
 						displayLength: 4000
 					});
 					return resolve(record);

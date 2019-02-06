@@ -9,6 +9,9 @@ const settings = require('electron-settings');
  * vista `Agregar Animes`.
  */
 class RenderNuevoAnime extends RenderBase {
+	/**
+	 * Inicializa la Base de Datos y otras funciones adicionales.
+	 */
 	constructor() {
 		super();
 		this.db = new BDAnimes();
