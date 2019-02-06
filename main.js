@@ -242,6 +242,7 @@ let template = [
 		},
 		{
 			label: 'Alternar herramientas de desarrollo',
+			visible: isDev ? true : false,
 			accelerator: (function () {
 				if (process.platform === 'darwin') {
 					return 'Alt+Command+I'
@@ -293,6 +294,7 @@ function addUpdateMenuItems(items, position) {
 	}, {
 		label: 'Buscar actualizaciones...',
 		enabled: false,
+		visible: false,
 		key: 'checkForUpdate',
 		click: function () {
 			console.log(electron.app.getVersion())
