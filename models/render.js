@@ -144,8 +144,8 @@ class Render extends RenderBase {
 		// Eventos de mouse para la lista de animes
 		document.querySelectorAll('.url-external').forEach((value) => {
 			value.addEventListener('click', e => {
-			e.preventDefault();
-			e.stopPropagation();
+				e.preventDefault();
+				e.stopPropagation();
 				if (!shell.openExternal(value.href)) {
 					swal("Hubo problemas al abrir la url.", "Por favor revise el formato de la url en Editar Animes.", "error");
 				}
@@ -172,14 +172,14 @@ class Render extends RenderBase {
 				this.actualizarCapitulo(dia, e.target.parentElement, cap);
 			});
 			value.addEventListener('mouseup', e => {
-			if (e.button === 2) {
-				// console.log('Click derecho para minus');
-				let cap = parseFloat(e.target.parentElement.getAttribute('cap'));
-				let dia = e.target.parentElement.getAttribute('dia');
-				cap = cap <= 0 ? 0 : cap - 0.5;
+				if (e.button === 2) {
+					// console.log('Click derecho para minus');
+					let cap = parseFloat(e.target.parentElement.getAttribute('cap'));
+					let dia = e.target.parentElement.getAttribute('dia');
+					cap = cap <= 0 ? 0 : cap - 0.5;
 					this.actualizarCapitulo(dia, e.target.parentElement, cap);
-			}
-		});
+				}
+			});
 		});
 		document.querySelectorAll('.btn-anime-plus').forEach((value) => {
 			value.addEventListener('click', e => {
@@ -189,14 +189,14 @@ class Render extends RenderBase {
 				this.actualizarCapitulo(dia, e.target.parentElement, cap);
 			});
 			value.addEventListener('mouseup', e => {
-			if (e.button === 2) {
-				// console.log('Click derecho para plus');
-				let cap = parseFloat(e.target.parentElement.getAttribute('cap'));
-				let dia = e.target.parentElement.getAttribute('dia');
-				cap += 0.5;
+				if (e.button === 2) {
+					// console.log('Click derecho para plus');
+					let cap = parseFloat(e.target.parentElement.getAttribute('cap'));
+					let dia = e.target.parentElement.getAttribute('dia');
+					cap += 0.5;
 					this.actualizarCapitulo(dia, e.target.parentElement, cap);
-			}
-		});
+				}
+			});
 		});
 		document.querySelectorAll('.btn-estado-cap-viendo').forEach((value) => {
 			value.addEventListener('click', async e => {
@@ -360,18 +360,18 @@ class Render extends RenderBase {
 			<td>
 				<div class="input-field">
 					<select id="dia-${this.contNewFolder}" name="dia" class="validate" required>`;
-			for (const tipoDia in menuSettings) {
-				const dias = menuSettings[tipoDia];
-				let outgroup = document.createElement('optgroup');
-				outgroup.label = this.firstUpperCase(tipoDia);
-				for (const dia in dias) {
-					let opcion = document.createElement('option');
-					opcion.value = dias[dia].id;
-					opcion.innerText = this.firstUpperCase(dia);
-					outgroup.appendChild(opcion);
-				}
-				nuevaConsulta += outgroup.outerHTML;
+		for (const tipoDia in menuSettings) {
+			const dias = menuSettings[tipoDia];
+			let outgroup = document.createElement('optgroup');
+			outgroup.label = this.firstUpperCase(tipoDia);
+			for (const dia in dias) {
+				let opcion = document.createElement('option');
+				opcion.value = dias[dia].id;
+				opcion.innerText = this.firstUpperCase(dia);
+				outgroup.appendChild(opcion);
 			}
+			nuevaConsulta += outgroup.outerHTML;
+		}
 		nuevaConsulta +=/*html*/`
 					</select>
 				</div>
@@ -382,13 +382,13 @@ class Render extends RenderBase {
 				<div class="input-field">
 					<select name="tipo" class="validate" required>
 						<option value="" disabled selected>Tipo</option>`;
-			for (const tipo in Tipos) { // Tipos viene desde el import
-				const valor = Tipos[tipo];
-				let opcion = document.createElement('option');
-				opcion.value = valor;
-				opcion.innerText = tipo;
-				nuevaConsulta += opcion.outerHTML;
-			}
+		for (const tipo in Tipos) { // Tipos viene desde el import
+			const valor = Tipos[tipo];
+			let opcion = document.createElement('option');
+			opcion.value = valor;
+			opcion.innerText = tipo;
+			nuevaConsulta += opcion.outerHTML;
+		}
 		nuevaConsulta +=/*html*/`
 					</select>
 				</div>
@@ -436,11 +436,13 @@ class Render extends RenderBase {
 		document.getElementById('agregarNuevoAnime').addEventListener('click', e => {
 			this.increNuevosAnimes();
 		});
-		document.getElementById('nuevaListaAnimes').addEventListener('submit', e => {
+		document.getElementById('nuevaListaAnimes').addEventListener('submit', async e => {
 			e.preventDefault();
 			e.stopPropagation();
 			let anime = this.crearAnime();
-			this.db.crearAnime(anime);
+			let resp = await this.db.crearAnime(anime);
+			console.log('resp', resp);
+
 		});
 		document.querySelectorAll('#file').forEach((value) => {
 			value.addEventListener('change', e => {
@@ -466,7 +468,7 @@ class Render extends RenderBase {
 			let inputs = nuevoAnime.querySelectorAll('input[type]:not(.select-dropdown)');
 			let tipo = parseInt(nuevoAnime.querySelector('select[name="tipo"]').value);
 			let dia = nuevoAnime.querySelector('select[name="dia"]').value;
-			
+
 			for (const input of inputs) {
 				const valor = input.value;
 				let llave = input.getAttribute('name');
@@ -500,7 +502,6 @@ class Render extends RenderBase {
 	 */
 	abrirCarpeta(folder, dia, id) {
 		if (!shell.showItemInFolder(path.join(folder, '*'))) {
-		// if (!shell.showItemInFolder(`${folder}/*`)) {
 			swal("Hubo problemas al abrir la carpeta.", "Es posible que la dirección haya cambiado o que la carpeta ha sido borrada.\n\n¿Quieres volver a escoger la carpeta?", "info", {
 				buttons: ['No', 'Si']
 			})
@@ -516,19 +517,19 @@ class Render extends RenderBase {
 								},
 							},
 						})
-						.then((direccion) => {
-							direccion = this.slashFolder(direccion);
-							this.db.actualizarCarpeta(id, direccion).then(res => {
-								if (res === 0) {
-									M.toast({
-										html: 'Houston, tenemos un problema',
-										displayLength: 4000
-									});
-								}
+							.then((direccion) => {
+								direccion = this.slashFolder(direccion);
+								this.db.actualizarCarpeta(id, direccion).then(res => {
+									if (res === 0) {
+										M.toast({
+											html: 'Houston, tenemos un problema',
+											displayLength: 4000
+										});
+									}
+								});
+								this._recargarListaAnimes(dia);
+								swal("Dirección cambiada a:", direccion, "success");
 							});
-							this._recargarListaAnimes(dia);
-							swal("Dirección cambiada a:", direccion, "success");
-						});
 					} else {
 						swal("No hay problema.", "También es posible cambiar la dirección de la carpeta en Editar Animes.", "success")
 					}
@@ -706,7 +707,7 @@ class Render extends RenderBase {
 			opcion.innerText = tipo;
 			tiposSelect.appendChild(opcion);
 		}
-		
+
 		M.FormSelect.init(document.querySelectorAll('select'));
 		this._fixSelectValidation();
 		/**
@@ -814,7 +815,7 @@ class Render extends RenderBase {
 			setValues.$set.tipo = tipo;
 			setValues.$set.pagina = pagina;
 			setValues.$set.carpeta = carpeta;
-			
+
 			this.db.actualizarAnime(e.target.getAttribute('data-value'), setValues)
 				.then(res => {
 					if (res > 0) {
@@ -857,8 +858,8 @@ class Render extends RenderBase {
 	 * Retorna el día de la semana actual.
 	 * Se basa en la fecha actual del sistema.
 	 */
-	diaSemana(){
-		let diasSemana = new Array("domingo","lunes","martes","miercoles","jueves","viernes","sabado")
+	diaSemana() {
+		let diasSemana = new Array("domingo", "lunes", "martes", "miercoles", "jueves", "viernes", "sabado")
 		let f = new Date()
 		return diasSemana[f.getDay()]
 	}
@@ -870,7 +871,7 @@ class Render extends RenderBase {
 	 * simplemente retorna el mismo string.
 	 * @param {string} pagina Pagina del anime.
 	 */
-	_paginaConstructor(pagina){
+	_paginaConstructor(pagina) {
 		if (this.isUrl(pagina))
 			return this._redirectExternalConstructor(pagina)
 		else
@@ -882,7 +883,7 @@ class Render extends RenderBase {
 	 * clase `.url-external`.
 	 * @param {string} path Dirección URL.
 	 */
-	_redirectExternalConstructor(path){
+	_redirectExternalConstructor(path) {
 		let url = document.createElement('a')
 		url.href = path
 		url.innerText = this.firstUpperCase(url.hostname)
@@ -894,7 +895,7 @@ class Render extends RenderBase {
 	 * de acuerdo a su estado.
 	 * @param {number} estado Estado del anime.
 	 */
-	_blockSerie(estado){
+	_blockSerie(estado) {
 		if (estado == undefined || estado == 0)
 			return false
 		else if (estado === 1 || estado === 2 || estado === 3)

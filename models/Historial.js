@@ -1,13 +1,26 @@
 'use strict'
 const { RenderBase } = require('./RenderBase.js');
 const { BDAnimes } = require('./consultas.js');
+const { Estados, Tipos } = require('./defaults-config.js');
+/**
+ * Controla todo lo referente a la página Historia y 
+ * páginas de estadísticas como: capítulos vistos,
+ * capítulos restantes, páginas.
+ */
 class Historial extends RenderBase {
-
+	/**
+	 * Inicializa la Base de Datos y otras funciones adicionales.
+	 */
 	constructor() {
 		super();
 		this.db = new BDAnimes();
 	}
-
+	/**
+	 * Imprime una tabla con los datos de los animes
+	 * consultados.
+	 * @param {any} consulta Datos de los animes.
+	 * @param {number} salto Contador del total de animes consulados.
+	 */
 	imprimirHistorial(consulta, salto) {
 		let tblListaAnimes = '';
 		let cont = salto;
@@ -32,6 +45,11 @@ class Historial extends RenderBase {
 			enterDelay: 350
 		});
 	}
+	/**
+	 * Vuelve a cargar los datos del historial con nuevos datos.
+	 * @param {number} pagina Número de paginación.
+	 * @param {number} opcion Opción para la función `cargarHistorial()`
+	 */
 	async _cargarHistorial(pagina, opcion) {
 		let { datos, salto, totalReg, pag } = await this.db.cargarHistorial(pagina, opcion);
 		this.imprimirHistorial(datos, salto);
@@ -60,9 +78,6 @@ class Historial extends RenderBase {
 			e.stopPropagation();
 			if (actual !== inicio) {
 				this._cargarHistorial(1);
-				// let { datos, salto, totalReg, pag } = await this.db.cargarHistorial(1);
-				// this.imprimirHistorial(datos, salto);
-				// this.imprimirPagination(totalReg, pag);
 			}
 		});
 		liInicioA.innerHTML = /*html*/`<i class="icon-pag icon-left-open"></i>`;
@@ -79,9 +94,6 @@ class Historial extends RenderBase {
 				e.preventDefault();
 				e.stopPropagation();
 				this._cargarHistorial(i);
-				// let { datos, salto, totalReg, pag } = await this.db.cargarHistorial(i);
-				// this.imprimirHistorial(datos, salto);
-				// this.imprimirPagination(totalReg, pag);
 			});
 			liInterA.innerHTML = i;
 			liInter.appendChild(liInterA);
@@ -98,17 +110,40 @@ class Historial extends RenderBase {
 			e.stopPropagation();
 			if (actual !== fin) {
 				this._cargarHistorial(todasPag);
-				// let { datos, salto, totalReg, pag } = await this.db.cargarHistorial(todasPag);
-				// this.imprimirHistorial(datos, salto);
-				// this.imprimirPagination(totalReg, pag);
 			}
 		});
 		liFinA.innerHTML = /*html*/`<i class="icon-pag icon-right-open"></i>`;
 		liFin.appendChild(liFinA);
 		paginas.appendChild(liFin);
 	}
-
+	/**
+	 * Cargando datos de selects para el buscador.
+	 */
+	_cargarSelectsBuscador() {
+		let tiposSelect = document.getElementById('tipo-select');
+		let estadosSelect = document.getElementById('estado-select');
+		for (const tipo in Tipos) {
+			let opcion = document.createElement('option');
+			opcion.value = Tipos[tipo];
+			opcion.innerText = this.firstUpperCase(tipo);
+			tiposSelect.appendChild(opcion);
+		}
+		for (const estado in Estados) {
+			const valor = Estados[estado];
+			let opcion = document.createElement('option');
+			opcion.value = valor;
+			opcion.innerText = estado;
+			estadosSelect.appendChild(opcion);
+		}
+	}
+	/**
+	 * Inicializa todos los eventos necesarios para
+	 * que funciones el buscador. Entre estos están eventos 
+	 * de botón cuando se escribe, autocompletado, modales, 
+	 * atajo global `ctr+f`, botón recargar.
+	 */
 	async configurarBuscador() {
+		this._cargarSelectsBuscador();
 		let data = await this.db.buscarAutocompleteHistorial();
 		document.getElementById('search-history').addEventListener('keyup', (e) => {
 			let query = document.getElementById('search-history').value;
@@ -120,17 +155,19 @@ class Historial extends RenderBase {
 		});
 		M.Autocomplete.init(document.querySelectorAll('input.autocomplete'), {
 			data,
-			limit: 5, // The max amount of results that can be shown at once. Default: Infinity.
+			limit: 5,
 			onAutocomplete: val => {
 				this._buscarAnimes(val, false);
 			}
 		});
-		// Inizializando el modal con el campo de búsqueda
+		// Inicializando el modal con el campo de búsqueda
 		M.Modal.init(document.querySelectorAll('.modal'), {
 			onOpenEnd() {
 				document.getElementById('search-history').focus();
 			}
 		});
+		// Inicializando los selects del buscador.
+		M.FormSelect.init(document.querySelectorAll('select'));
 		// Configurando que el modal se cierre al aplastar enter
 		let searchConfirm = document.getElementById('search-confirm');
 		document.getElementById('search-history').addEventListener('keypress', (e) => {
@@ -163,7 +200,10 @@ class Historial extends RenderBase {
 		document.getElementById('paginas').style.display = 'none';
 		document.getElementById('div-filter').setAttribute('show', 'true');
 	}
-
+	/**
+	 * Regresa a los valores por defecto a la 
+	 * página y oculta el botón recargar.
+	 */
 	async _recargarHistorial() {
 		this._cargarHistorial(1, 1);
 		document.getElementById('reload-history').style.display = 'none';
@@ -270,13 +310,22 @@ class Historial extends RenderBase {
 		let listFilter = this._filterCapActiveChart(lista)
 		this._chartCapVistos(listFilter, 'horizontalBar', 'Capítulos vistos')
 	}
-
+	/**
+	 * Inicializa el chart con el número de capítulos 
+	 * vistos, y después carga los datos del anime dentro 
+	 * del modal.
+	 * @param {any} anime Datos del anime.
+	 */
 	capitulosVistosUnAnime(anime) {
 		let animeFilter = this._filterCapChart(anime)
 		this._chartCapVistos(animeFilter, 'bar', 'Capítulos vistos')
 		this._setHistoriaAnime(anime)
 	}
-
+	/**
+	 * Crea un evento `click` para cada fila de la tabla 
+	 * de animes. Cada vez que se haga clic en una fila 
+	 * se generara un modal para mostrar los datos del anime.
+	 */
 	_enlaceHistAnime() {
 		document.querySelectorAll('td.hidden').forEach((value, i) => {
 			value.parentElement.addEventListener('click', e => {
@@ -285,7 +334,12 @@ class Historial extends RenderBase {
 			});
 		});
 	}
-
+	/**
+	 * Carga los datos del anime dentro del modal,
+	 * si el anime no esta activo agrega un botón
+	 * para restaurar dicho anime.
+	 * @param {any} anime Datos del anime.
+	 */
 	_setHistoriaAnime(anime) {
 		document.getElementById('nombre').innerHTML = anime.nombre;
 		document.getElementById('tipo').innerHTML = this.isNoData(anime.tipo) ? 'Desconocido' : this.getStateType(anime.tipo).name;
@@ -321,7 +375,7 @@ class Historial extends RenderBase {
 	_restoreRow(id) {
 		swal({
 			title: "¿Estás seguro?",
-			text: "¡Volvera a aparecer en la lista de ver animes!",
+			text: "¡Volverá a aparecer en la lista de ver animes!",
 			icon: "warning",
 			buttons: ["Cancelar", "OK"],
 			dangerMode: true,
@@ -531,7 +585,13 @@ class Historial extends RenderBase {
 			}
 		});
 	}
-
+	/**
+	 * Inserta un modal en el body del HTML e inicializa
+	 * todos sus componentes. Después busca los datos del 
+	 * anime proporcionado por la key y los carga dentro 
+	 * del modal con el método `capitulosVistosUnAnime()`.
+	 * @param {string} key Id del anime a buscar.
+	 */
 	async _createModalStats(key) {
 		let modal = document.getElementById('modalStats');
 		if (modal !== null) {
@@ -646,28 +706,39 @@ class Historial extends RenderBase {
 		this.noLink();
 		document.querySelector('.modal-close').addEventListener('click', e => {
 			e.preventDefault();
-			// e.stopPropagation();
 		})
 		let data = await this.db.buscarAnimePorId(key);
 		this.capitulosVistosUnAnime(data);
 	}
-
+	/**
+	 * Convierte la fecha a el formato 
+	 * `{día} de {mes}, {año}`.
+	 * @param {Date} date Fecha
+	 */
 	_setCalendarDate(date) {
-		let year = date.getFullYear()
-		let month = date.getMonth()
-		let day = date.getDate()
-		let months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-		return `${day} de ${months[month]}, ${year}`
+		let year = date.getFullYear();
+		let month = date.getMonth();
+		let day = date.getDate();
+		let months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+		return `${day} de ${months[month]}, ${year}`;
 	}
-
+	/**
+	 * Convierte la fecha a el formato 
+	 * `{hora}:{minutos}`.
+	 * @param {Date} date Fecha
+	 */
 	_setHourDate(date) {
-		let hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
-		let minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
-		return `${hour}:${minutes}`
+		let hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+		let minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+		return `${hour}:${minutes}`;
 	}
-
+	/**
+	 * Convierte la fecha a el formato 
+	 * `{día} de {mes}, {año} {hora}:{minutos}`.
+	 * @param {Date} date Fecha
+	 */
 	_setFullDate(date) {
-		return `${this._setCalendarDate(date)} ${this._setHourDate(date)}`
+		return `${this._setCalendarDate(date)} ${this._setHourDate(date)}`;
 	}
 
 	_filterCapActiveChart(list) {
