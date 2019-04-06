@@ -1,9 +1,22 @@
 const { Menu } = require('../models/defaults-config.js');
 const { RenderBase } = require('./RenderBase');
+const { Backup } = require('./Backup');
 const settings = require('electron-settings');
 const path = require('path');
+const isDev = require('electron-is-dev');
 
+
+/**
+ * Clase encargada de cualquier función de `Opciones`.
+ */
 class Opciones extends RenderBase {
+    /**
+     * Contructor de la clase.
+     */
+    constructor() {
+        super();
+        this.backup = new Backup();
+    }
     /**
      * Inicializa todas las Opciones.
      */
@@ -15,7 +28,77 @@ class Opciones extends RenderBase {
         document.getElementById('conf-downloader').addEventListener('click', e => {
             this._initDownloader();
         });
+        document.getElementById('conf-exportar').addEventListener('click', e => {
+            this._initExportar();
+        });
     }
+    /**
+     * Inicializa exportar
+     */
+    _initExportar() {
+        this._cargarExportar();
+        this.noLink();
+        this._initLoaderExportar();
+    }
+
+    _cargarExportar() {
+        document.getElementById('conf-title').innerText = 'Respaldos';
+        let datos = document.getElementById('datos');
+        let items = '';
+        items += /*html*/`
+        <div class="row mt-20">
+            <div class="col s6">
+                <span class="left">Animes</span>
+            </div>
+            <div class="col s6">
+                <a id="btn-import-anime" class="no-link waves-effect waves-light btn-small mr-20 blue">Importar</a>
+                <a id="btn-export-anime" class="no-link waves-effect waves-light btn-small green">Exportar</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <span class="left">Pendientes</span>
+            </div>
+            <div class="col s6">
+                <a id="btn-import-pendiente" class="no-link waves-effect waves-light btn-small mr-20 blue">Importar</a>
+                <a id="btn-export-pendiente" class="rno-link waves-effect waves-light btn-small green">Exportar</a>
+            </div>
+        </div>    
+        <div class="row">
+            <div class="col s12">
+            <h6 class="red-text">Advertencia</h6>
+            <p>
+                Si importa un archivo <code>.json</code> que no tiene el formato del archivo 
+                exportado previamente, la aplicación dejara de funcionar correctamente. Si ese 
+                es el caso, basta con importar nuevamente el archivo con el formato correcto.
+            </p>
+            </div>
+        </div>
+        `;
+        datos.innerHTML = items;
+    }
+    /**
+     * Inicializa los componentes de las opciones de Exportar.
+     */
+    _initLoaderExportar() {
+        document.getElementById('btn-export-anime').addEventListener('click', () => {
+            let dir = path.join(settings.file(), '..', 'data', 'animes.dat');
+            this.backup.exportData(dir, 'animes');
+        });
+        document.getElementById('btn-import-anime').addEventListener('click', () => {
+            let dir = isDev ? path.join(__dirname, '..', 'data', 'animes.dat') : path.join(settings.file(), '..', 'data', 'animes.dat');
+            this.backup.importData(dir);
+        });
+        document.getElementById('btn-export-pendiente').addEventListener('click', () => {
+            let dir = path.join(settings.file(), '..', 'data', 'pendientes.dat');
+            this.backup.exportData(dir, 'pendientes');
+        });
+        document.getElementById('btn-import-pendiente').addEventListener('click', () => {
+            let dir = isDev ? path.join(__dirname, '..', 'data', 'pendientes.dat') : path.join(settings.file(), '..', 'data', 'pendientes.dat');
+            this.backup.importData(dir);
+        });
+    }
+
     /**
      * Inicializa Días.
      */
@@ -134,7 +217,7 @@ class Opciones extends RenderBase {
                     let fila = value.parentElement.parentElement;
                     fila.parentNode.removeChild(fila);
                 } else {
-                    swal("No hay problema.", "", "success")                   
+                    swal("No hay problema.", "", "success")
                 }
             });
         });
@@ -160,7 +243,7 @@ class Opciones extends RenderBase {
                 M.updateTextFields();
                 // Inicializando último btn-delete
                 let allBtnDelete = value.parentElement.parentElement.querySelectorAll('#btn-delete');
-                let ultBtnDelete = allBtnDelete[allBtnDelete.length-1];
+                let ultBtnDelete = allBtnDelete[allBtnDelete.length - 1];
                 ultBtnDelete.addEventListener('click', async (e) => {
                     let borrar = await swal({
                         title: "¿Estás seguro?",
@@ -173,7 +256,7 @@ class Opciones extends RenderBase {
                         let fila = ultBtnDelete.parentElement.parentElement;
                         fila.parentNode.removeChild(fila);
                     } else {
-                        swal("No hay problema.", "", "success")                   
+                        swal("No hay problema.", "", "success")
                     }
                 })
             });
@@ -302,13 +385,13 @@ class Opciones extends RenderBase {
         /**
 		 * Reemplazo para método de materialize para input[type=file].
 		 */
-		document.getElementById('program-file').addEventListener('change', (e) => {
-			setTimeout(() => {
-				if (this.isNoData(e.target) || e.target.files[0] === undefined) return;
-				let folder = e.target.files[0].path;
-				document.getElementById('programa').value = path.normalize(folder);
-			}, 1);
-		});
+        document.getElementById('program-file').addEventListener('change', (e) => {
+            setTimeout(() => {
+                if (this.isNoData(e.target) || e.target.files[0] === undefined) return;
+                let folder = e.target.files[0].path;
+                document.getElementById('programa').value = path.normalize(folder);
+            }, 1);
+        });
     }
     /**
      * Reinicia al estado por defecto del

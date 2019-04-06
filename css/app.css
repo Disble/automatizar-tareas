@@ -166,6 +166,18 @@ table.highlight > tbody > tr:hover{
 .mt-0 {
 	margin-top: 0;
 }
+.mr-10 {
+	margin-right: 10px;
+}
+.mr-20 {
+	margin-right: 20px;
+}
+.mr-30 {
+	margin-right: 30px;
+}
+.mr-40 {
+	margin-right: 40px;
+}
 .overflow-a {
 	overflow: auto;
 }
@@ -268,6 +280,10 @@ select.browser-default {
 }
 .push-autocomplete ul.dropdown-content {
 	position: relative;
+}
+/* Estilos Opciones */
+.collection-options .collection-item.avatar .secondary-content {
+	top: 32px;
 }
 /* Estilos del contenedor */
 /* Tamaño del scroll */
