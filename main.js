@@ -275,10 +275,17 @@ let template = [
 	{
 		label: 'Ayuda',
 		role: 'help',
-		submenu: [{
+		submenu: [
+			{
+				label: 'Notas de versión',
+				click: function () {
+					electron.shell.openExternal('https://gitlab.com/Disble/automatizar-tareas/blob/master/CHANGELOG.md');
+				}
+			},
+{
 			label: 'Acerca de',
 			click: function () {
-				electron.shell.openExternal('https://gitlab.com/Disble/automatizar-tareas');
+				electron.shell. openExternal('https://gitlab.com/Disble/automatizar-tareas');
 			}
 		}]
 	}
