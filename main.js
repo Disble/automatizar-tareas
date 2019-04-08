@@ -282,12 +282,12 @@ let template = [
 					electron.shell.openExternal('https://gitlab.com/Disble/automatizar-tareas/blob/master/CHANGELOG.md');
 				}
 			},
-{
-			label: 'Acerca de',
-			click: function () {
-				electron.shell. openExternal('https://gitlab.com/Disble/automatizar-tareas');
-			}
-		}]
+			{
+				label: 'Acerca de',
+				click: function () {
+					electron.shell.openExternal('https://gitlab.com/Disble/automatizar-tareas');
+				}
+			}]
 	}
 ]
 
@@ -375,7 +375,7 @@ function createWindow() {
 		backgroundColor: 'rgb(213, 55, 41)',
 		icon: path.join(__dirname, '/icons/png/512x512.png')
 	});
-
+	mainWindow.setTitle('Autoreas');
 	// and load the index.html of the app.
 	mainWindow.loadFile(path.join('views', 'animes', 'index.html'));
 
