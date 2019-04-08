@@ -9,7 +9,7 @@ const { Menu, Tipos } = require('./defaults-config.js');
 const settings = require('electron-settings');
 
 
-class RenderPendiente extends RenderBase{
+class RenderPendiente extends RenderBase {
 	constructor() {
 		super();
 		this.model = new ModelPendiente();
@@ -51,29 +51,29 @@ class RenderPendiente extends RenderBase{
 										</div>
 										<div class="input-field">
 											<select name="dia">`;
-											for (const tipoDia in menuSettings) {
-												const dias = menuSettings[tipoDia];
-												let outgroup = document.createElement('optgroup');
-												outgroup.label = this.firstUpperCase(tipoDia);
-												for (const dia in dias) {
-													let opcion = document.createElement('option');
-													opcion.value = dias[dia].id;
-													opcion.innerText = this.firstUpperCase(dia);
-													outgroup.appendChild(opcion);
-												}
-												data += outgroup.outerHTML;
-											}
+					for (const tipoDia in menuSettings) {
+						const dias = menuSettings[tipoDia];
+						let outgroup = document.createElement('optgroup');
+						outgroup.label = this.firstUpperCase(tipoDia);
+						for (const dia in dias) {
+							let opcion = document.createElement('option');
+							opcion.value = dias[dia].id;
+							opcion.innerText = this.firstUpperCase(dia);
+							outgroup.appendChild(opcion);
+						}
+						data += outgroup.outerHTML;
+					}
 					data +=			/*html*/`</select>
 										</div>
 										<div class="input-field">
 											<select name="tipo">`;
-											for (const tipo in Tipos) {
-												const valor = Tipos[tipo];
-												let opcion = document.createElement('option');
-												opcion.value = valor;
-												opcion.innerText = tipo;
-												data += opcion.outerHTML;
-											}
+					for (const tipo in Tipos) {
+						const valor = Tipos[tipo];
+						let opcion = document.createElement('option');
+						opcion.value = valor;
+						opcion.innerText = tipo;
+						data += opcion.outerHTML;
+					}
 					data += 		/*html*/`</select>
 										</div>
 										<div class="input-field">
@@ -110,14 +110,11 @@ class RenderPendiente extends RenderBase{
 			}).then((resolve) => {
 				document.getElementById('data-pendientes').innerHTML = resolve;
 				M.Collapsible.init(document.querySelectorAll('.collapsible'));
-				M.Tooltip.init(document.querySelectorAll('.tooltipped'), { 
-					enterDelay: 350 
+				M.Tooltip.init(document.querySelectorAll('.tooltipped'), {
+					enterDelay: 350
 				});
-				M.Modal.init(document.querySelectorAll('.modal'), {
-					onOpenEnd: () => {
-						this._forkToAnimeOpen(this);
-					}
-				});
+				M.Modal.init(document.querySelectorAll('.modal'));
+				this._forkToAnimeOpen();
 				M.FormSelect.init(document.querySelectorAll('select'));
 				M.updateTextFields();
 				this._urlExternal();
@@ -127,7 +124,7 @@ class RenderPendiente extends RenderBase{
 					})
 				});
 				this.elementsPen = document.getElementById('data-pendientes').querySelectorAll('li#item-list');
-				
+
 			})
 			.catch((err) => { return console.error(err) });
 	}
@@ -137,12 +134,12 @@ class RenderPendiente extends RenderBase{
 			value.addEventListener('submit', e => {
 				e.preventDefault();
 				let form = new FormData(value);
-				
+
 				if (form.get('nombre').length === 0 || form.get('dia') === null || form.get('orden').length === 0 || form.get('tipo') === null) {
 					swal("¡Opss!", `Necesitamos más datos para crearlo.`, "warning");
 					return false;
 				}
-				
+
 				let container = value.parentElement.parentElement.parentElement;
 				let nombre = form.get('nombre').trim();
 				let dia = form.get('dia').trim();
@@ -151,9 +148,9 @@ class RenderPendiente extends RenderBase{
 				let pagina = form.get('pagina') == "" ? "No Asignada" : form.get('pagina').trim();
 				let carpeta = value.querySelector('input[type=file]').getAttribute('value');
 				let totalcap = parseInt(form.get('totalcap'));
-				
+
 				let anime = new Anime(orden, nombre, dia, 0, totalcap, tipo, pagina, carpeta, 0, true, new Date(), null, null);
-				
+
 				this.modelAnime.new(anime)
 					.then(async (resolve) => {
 						swal({
@@ -174,9 +171,9 @@ class RenderPendiente extends RenderBase{
 								}
 							});
 					})
-					.catch((err) => { 
+					.catch((err) => {
 						console.error(err);
-						swal("¡Opss!", `Tuvimos problemas creando "${nombre}".\nPor favor vuelva a intentarlo.`, "error"); 
+						swal("¡Opss!", `Tuvimos problemas creando "${nombre}".\nPor favor vuelva a intentarlo.`, "error");
 					});
 			});
 		});
@@ -227,7 +224,7 @@ class RenderPendiente extends RenderBase{
 		let allPendientes = await this._reorderOrderDatabase(allPenElemModificados);
 		this._setNewOrder(allPendientes);
 	}
-	
+
 	async _setOrderEdit() {
 		let allPenElemModificados = document.getElementById('edit-pen').querySelectorAll('li');
 		let allPendientes = await this._reorderOrderDatabase(allPenElemModificados);
@@ -265,7 +262,7 @@ class RenderPendiente extends RenderBase{
 		for (const key in allPendientes) {
 			allPendientes[key].orden = allOrders[key];
 		}
-		
+
 		/**
 		 * Aqui estamos guardando los elementos modificados 
 		 * para que la siguiente iteración los tome como los originales.
@@ -352,7 +349,7 @@ class RenderPendiente extends RenderBase{
 			.catch((err) => { console.error(err) });
 	}
 
-	_cellEdit(){
+	_cellEdit() {
 		document.querySelectorAll('.editable-pen').forEach(value => {
 			value.addEventListener('dblclick', e => {
 				value.setAttribute('contenteditable', 'true');
@@ -378,7 +375,7 @@ class RenderPendiente extends RenderBase{
 					.catch((err) => { return console.error(err.message) });
 			});
 			value.addEventListener('keypress', e => {
-				if(e.keyCode==13) {
+				if (e.keyCode == 13) {
 					let event = document.createEvent('HTMLEvents');
 					event.initEvent('focusout', true, false);
 					value.dispatchEvent(event)
