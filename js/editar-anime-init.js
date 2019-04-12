@@ -2,10 +2,9 @@
 const M = require('materialize-css');
 const swal = require('sweetalert');
 // Variables locales
-const { Render } = require('../models/render.js');
+const { RenderEditarAnime } = require('../models/RenderEditarAnime');
 
 document.addEventListener('DOMContentLoaded', function () {
-	let render = new Render();
+    let render = new RenderEditarAnime();
     render.initEditAnime();
 });
-

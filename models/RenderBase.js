@@ -1,7 +1,5 @@
 'use strict';
-
-const electron = require('electron');
-const remote = electron.remote;
+const remote = require('electron').remote;
 const Menu = remote.Menu;
 const InputMenu = Menu.buildFromTemplate([
 	{
@@ -275,6 +273,13 @@ class RenderBase {
 		return value.charAt(0).toUpperCase() + value.slice(1)
 	}
 	/**
+	 * Esta línea super larga solo significa que tome el primer valor del objeto anidado.
+	 * @param {Object} menuSettings Estos son los días que se guardan en el archivo Settings, esto días pueden se cambiados por el usuario.
+	 */
+	firstDaySettings(menuSettings) {
+		return menuSettings[Object.keys(menuSettings)[0]][Object.keys(menuSettings[Object.keys(menuSettings)[0]])[0]].id;
+	}
+	/**
 	 * Recarga la pagina actual. Funciona siempre y
 	 * cuando el link de la pagina no tenga al final
 	 *  `#` o `#!`
@@ -332,6 +337,43 @@ class RenderBase {
 			return 10
 		else
 			return fin
+	}
+	/**
+	 * Este addEventListener() es porque la validación del select
+	 * de materialize no funciona, y este es un fix para eso. Esta 
+	 * variación solo muestra una línea roja como indicativo de
+	 * error.
+	 */
+	_fixSelectValidationLine() {
+		document.querySelectorAll('button[type="submit"]').forEach((button) => {
+			button.addEventListener('click', () => {
+				document.querySelectorAll('select').forEach((select) => {
+					if (select.value === "") {
+						select.parentElement.classList.add('error-line');
+					} else {
+						select.parentElement.classList.remove('error-line');
+					}
+				});
+			});
+		});
+	}
+	/**
+	 * Corrigue el error de la validación de los select 
+	 * `An invalid form control with name='tipo' is not focusable.`
+	 */
+	_fixSelectForm() {
+		let selects = document.querySelectorAll('select[required]');
+		selects.forEach((value, key) => {
+			value.style.display = 'inline';
+			value.style.position = 'absolute';
+			value.style.top = '10px';
+			value.style.padding = 0;
+			value.style.margin = 0;
+			value.style.border = 0;
+			value.style.height = 0;
+			value.style.width = 0;
+			value.style.zIndex = -10;
+		});
 	}
 }
 
