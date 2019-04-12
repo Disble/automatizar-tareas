@@ -1,5 +1,6 @@
 'use strict'
 const path = require('path');
+const dialog = require('electron').remote.dialog;
 const { shell } = require('electron');
 const { BDAnimes } = require('./consultas.js');
 const { RenderBase } = require('./RenderBase.js');
@@ -354,40 +355,32 @@ class Render extends RenderBase {
 	 * @param {string} dia Día seleccionado.
 	 * @param {string} id Id del anime.
 	 */
-	abrirCarpeta(folder, dia, id) {
+	async abrirCarpeta(folder, dia, id) {
 		if (!shell.showItemInFolder(path.join(folder, '*'))) {
-			swal("Hubo problemas al abrir la carpeta.", "Es posible que la dirección haya cambiado o que la carpeta ha sido borrada.\n\n¿Quieres volver a escoger la carpeta?", "info", {
+			let confirm = await swal("Hubo problemas al abrir la carpeta.", "Es posible que la dirección haya cambiado o que la carpeta ha sido borrada.\n\n¿Quieres volver a escoger la carpeta?", "info", {
 				buttons: ['No', 'Si']
-			})
-				.then((confirm) => { // escoge la direccion de una nueva carpeta
-					if (confirm) {
-						swal({
-							title: "Nueva dirección",
-							content: {
-								element: "input",
-								attributes: {
-									placeholder: "Dirección de la carpeta",
-									type: "text"
-								},
-							},
-						})
-							.then((direccion) => {
-								direccion = this.slashFolder(direccion);
-								this.db.actualizarCarpeta(id, direccion).then(res => {
-									if (res === 0) {
-										M.toast({
-											html: 'Houston, tenemos un problema',
-											displayLength: 4000
-										});
-									}
-								});
-								this._recargarListaAnimes(dia);
-								swal("Dirección cambiada a:", direccion, "success");
-							});
-					} else {
-						swal("No hay problema.", "También es posible cambiar la dirección de la carpeta en Editar Animes.", "success")
-					}
-				});
+			});
+			if (!confirm) {
+				await swal("No hay problema.", "También es posible cambiar la dirección de la carpeta en Editar Animes.", "success");
+				return;
+			}
+			let newDir = dialog.showOpenDialog({
+				properties: ['openDirectory']
+			});
+			if (newDir === undefined) {
+				await swal("No hay problema.", "También es posible cambiar la dirección de la carpeta en Editar Animes.", "success");
+				return;
+			}
+			this.db.actualizarCarpeta(id, newDir[0]).then(res => {
+				if (res === 0) {
+					M.toast({
+						html: 'Houston, tenemos un problema',
+						displayLength: 4000
+					});
+				}
+			});
+			this._recargarListaAnimes(dia);
+			swal("Dirección cambiada a:", newDir[0], "success");
 		}
 	}
 	/**
