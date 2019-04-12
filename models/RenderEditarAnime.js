@@ -1,4 +1,5 @@
 'use strict'
+const path = require('path');
 const { BDAnimes } = require('./consultas.js');
 const { RenderBase } = require('./RenderBase.js');
 const { Menu, Tipos, Estados } = require('./defaults-config.js');
