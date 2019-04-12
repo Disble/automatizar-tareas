@@ -56,14 +56,14 @@ class Render extends RenderBase {
 			tblListaAnimes += /*html*/ `
 			<tr>
 				<td>
-					<button data-target="modal${i}" class="btn btn-small modal-trigger">${consulta[i].orden}</button>
+					<button data-target="modal${i}" class="btn btn-small modal-trigger blue">${consulta[i].orden}</button>
 					<div id="modal${i}" class="modal">
 						<div class="modal-footer">
 							<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">X</a>
 						</div>
 						<div class="modal-content">
-							<h4>Mensaje de confirmación</h4>
-							<p>Escoga uno de los siguientes estados</p>
+							<h4>Estado del arte del anime</h4>
+							<p>¿En este momento su estado es...?</p>
 							<button class="btn btn-small modal-close green btn-estado-cap-viendo" dia="${dia}" id="${consulta[i]._id}"><i class="icon-play"></i> Viendo</button>
 							<button class="btn btn-small modal-close btn-estado-cap-fin" dia="${dia}" id="${consulta[i]._id}"><i class="icon-ok-squared"></i> Finalizar</button>
 							<button class="btn btn-small modal-close red btn-estado-cap-no-gusto" dia="${dia}" id="${consulta[i]._id}"><i class="icon-emo-unhappy"></i> No me Gusto</button>
@@ -78,8 +78,8 @@ class Render extends RenderBase {
 				<td>${this._paginaConstructor(consulta[i].pagina)}</td>
 				<td>
 					<div class="btnIncremento">
-					<a class="btn-floating btn waves-effect waves-light btn-anime-minus red ${this._blockSerie(consulta[i].estado) ? 'disabled' : ''}" dia="${consulta[i].dia}" cap="${consulta[i].nrocapvisto}"><i class="icon-minus icon-normal"></i></a>
-					<a class="btn-floating btn waves-effect waves-light btn-anime-plus blue ${this._blockSerie(consulta[i].estado) ? 'disabled' : ''}" dia="${consulta[i].dia}" cap="${consulta[i].nrocapvisto}"><i class="icon-plus icon-normal"></i></a>
+					<a class="btn-floating btn waves-effect waves-light btn-anime-minus red ${this._blockSerie(consulta[i].estado) ? 'disabled' : ''}" dia="${consulta[i].dia}" cap="${consulta[i].nrocapvisto}"><i class="icon-minus icon-normal move-icon-cap"></i></a>
+					<a class="btn-floating btn waves-effect waves-light btn-anime-plus blue ${this._blockSerie(consulta[i].estado) ? 'disabled' : ''}" dia="${consulta[i].dia}" cap="${consulta[i].nrocapvisto}"><i class="icon-plus icon-normal move-icon-cap"></i></a>
 					</div>
 				</td>
 				<td>
@@ -294,7 +294,7 @@ class Render extends RenderBase {
 		for (const index1 in menu) {
 			const value1 = menu[index1];
 			salidaMenu += `<li>
-			<div class="collapsible-header flex-x-center">${this.firstUpperCase(index1)}</div>`;
+			<div class="collapsible-header"><h5 class="no-margin">${this.firstUpperCase(index1)}</h5></div>`;
 			if (value1 != null) {
 				salidaMenu += `<div class="collapsible-body no-padding">
 				<div class="collection">`;

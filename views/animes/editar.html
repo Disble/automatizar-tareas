@@ -26,9 +26,6 @@
             <div class="col s12">
                 <h5>Editar</h5>
             </div>
-            <div class="col s12">
-                <div class="divider"></div>
-            </div>
             <form id="form-edit-anime">
                 <div class="input-field col s12">
                     <input type="text" placeholder="Nombre" name="nombre" id="nombre" class="validate" required>
@@ -44,8 +41,8 @@
                     <label for="orden" data-error="Este campo no puede estar vacio. El mínimo es 1">Orden</label>
                 </div>
                 <div class="input-field col s12">
-                    <input type="number" id="cap-vistos" name="cap-vistos" placeholder="Capítulos vistos" min="0" class="validate"
-                        required>
+                    <input type="number" id="cap-vistos" name="cap-vistos" placeholder="Capítulos vistos" min="0"
+                        class="validate" required>
                     <label for="cap-vistos" data-error="Este campo no puede estar vacio">Capítulos vistos</label>
                 </div>
                 <div class="input-field col s12">
@@ -71,7 +68,7 @@
                 </div>
                 <div class="file-field input-field col s12">
                     <div class="btn btn-small blue">
-                        <span>Carpeta</span>
+                        <span><i class="material-icons icon-folder-open"></i></span>
                         <input type="file" id="carpeta-input" webkitdirectory>
                     </div>
                     <div class="file-path-wrapper">
@@ -91,9 +88,11 @@
             <div class="col s12 danger-border">
                 <h5>
                     Borrar anime
-                    <a class="right waves-effect waves-light btn red" id="borrar-anime"><i class="icon-trash-empty material-icons right"></i>Borrar</a>
+                    <a class="right waves-effect waves-light btn red" id="borrar-anime"><i
+                            class="icon-trash-empty material-icons right"></i>Borrar</a>
                 </h5>
-                <p class="paragraph-btn-right">Una vez borrado el anime todavia es posible recuperarlo en el Historial.</p>
+                <p class="paragraph-btn-right">Una vez borrado el anime todavia es posible recuperarlo en el Historial.
+                </p>
             </div>
         </div>
     </div>

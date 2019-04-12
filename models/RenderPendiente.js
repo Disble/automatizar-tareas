@@ -44,7 +44,7 @@ class RenderPendiente extends RenderBase {
 							<form class="form-form-anime">
 							<div class="modal-content">
 								<h4 class="center">Crear nuevo Anime</h4>
-								<div class="row">
+								<div class="row no-margin">
 									<div class="col s12">
 										<div class="input-field">
 											<input id="nombre" value="${value.nombre}" type="text" name="nombre" class="validate">
@@ -80,18 +80,18 @@ class RenderPendiente extends RenderBase {
 										<input type="text" id="pagina" name="pagina" value="${value.pagina}"  class="validate">
 										<label for="pagina">Pagina (No obligatorio)</label>
 										</div>
-										<div class="row">
-											<div class="input-field col s4">
+										<div class="row no-margin">
+											<div class="input-field col s4 no-margin">
 												<input type="number" name="orden" id="orden" min="1" class="validate">
 												<label for="orden">Orden</label>
 											</div>
-											<div class="input-field col s4">
+											<div class="input-field col s4 no-margin">
 												<input type="number" name="totalcap" id="totalcap" min="0" class="validate">
 												<label for="totalcap">Total Cap (No obligatorio)</label>
 											</div>
 											<div class="col s2 push-s1">
 												<input type="file" name="carpeta" id="file${index}" class="inputfile" webkitdirectory />
-												<label for="file${index}" class="tooltipped blue mt-10" data-position="bottom" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
+												<label for="file${index}" class="tooltipped blue" data-position="bottom" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
 											</div>
 										</div>
 									</div>

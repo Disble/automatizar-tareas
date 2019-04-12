@@ -191,7 +191,9 @@ class Opciones extends RenderBase {
                 <div class="barra-sumar mb-20">
                     <hr>
                     <div class="triangle"></div>
-                    <a id="btn-add" class="right btn-floating btn blue">+</a>
+                    <a id="btn-add" class="right btn-floating btn blue">
+                    <i class="material-icons icon-plus icon-normal"></i>
+                    </a>
                 </div>
             `;
             tipo.innerHTML = inputs;

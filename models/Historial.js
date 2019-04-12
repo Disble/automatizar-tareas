@@ -493,7 +493,7 @@ class Historial extends RenderBase {
 		for (const index1 in menu) {
 			const value1 = menu[index1];
 			salidaMenu += `<li>
-			<div class="collapsible-header flex-x-center">${this.firstUpperCase(index1)}</div>`;
+			<div class="collapsible-header"><h5 class="no-margin">${this.firstUpperCase(index1)}</h5></div>`;
 			if (value1 != null) {
 				salidaMenu += `<div class="collapsible-body no-padding">
 				<div class="collection">`;
@@ -531,7 +531,7 @@ class Historial extends RenderBase {
 			nombres[key].map((value, index) => {
 				subData[value] = {
 					'href': '#!',
-					'class': 'collection-item no-link'
+					'class': 'collection-item no-link blue-text'
 				}
 				//console.log('subdata:', subData);
 			});
@@ -693,7 +693,7 @@ class Historial extends RenderBase {
 					</div>
 				</div>
 				<div class="modal-footer">
-					<a class="modal-action modal-close waves-effect waves-green btn-flat">Cerrar</a>
+					<a class="modal-action modal-close waves-effect waves-red btn-flat">Cerrar</a>
 				</div>
 			</div>`;
 		modalWindow.innerHTML = innerModalWindow;

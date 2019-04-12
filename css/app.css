@@ -1,6 +1,7 @@
 :root {
 	--icon-hover: #4fd8fe;
 	--border-color: #1ca7ce;
+	--blue-color: #039be5;
 }
 .barra-sumar {
 	display: flex;
@@ -98,7 +99,8 @@ table.highlight > tbody > tr:hover{
 	background-color: var(--icon-hover);
 	cursor: pointer;
 }
-.icon-pag{
+.icon-pag,
+.icon-med{
 	font-size: 1.2em !important;
 }
 .icon-state-historial {
@@ -106,6 +108,8 @@ table.highlight > tbody > tr:hover{
 }
 .icon-normal {
 	font-size: 1em !important;
+}
+.move-icon-cap {
 	position: relative;
 	left: 1px;
 	top: 1px;
@@ -239,11 +243,16 @@ select.browser-default {
 	height: 100vh;
 	width: 98vw;
 }
+/* Ver Animes */
+.anime-list .collection a.collection-item {
+	color: var(--blue-color);
+}
 /* Editar Animes */
 .edit-anime-list .collection.with-header .collection-header {
 	padding: 5px 10px;
 }
-.edit-anime-list .collection .collection-item {
+.edit-anime-list .collection .collection-item,
+.anime-paginas-list .collection .collection-item {
 	padding: 5px 10px;
 }
 .edit-anime-list .collection.with-header .collection-item {
@@ -283,7 +292,10 @@ select.browser-default {
 }
 /* Estilos Opciones */
 .collection-options .collection-item.avatar .secondary-content {
-	top: 32px;
+	top: 25px;
+}
+.collection-options .collection-item.avatar {
+    min-height: 68px;
 }
 /* Estilos del contenedor */
 /* Tamaño del scroll */

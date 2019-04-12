@@ -35,7 +35,8 @@
                     <tr class="datos-anime-nuevo" id="anime-0">
                         <td><input type="number" name="orden" min="1" placeholder="1" class="validate tooltipped"
                                 data-position="bottom" data-tooltip="Orden en que se muestran los animes" required></td>
-                        <td><input type="text" name="nombre" placeholder="Shokugeki no Soma" class="validate" required></td>
+                        <td><input type="text" name="nombre" placeholder="Shokugeki no Soma" class="validate" required>
+                        </td>
                         <td>
                             <div class="input-field">
                                 <select id="dia" name="dia" class="validate" required>
@@ -48,15 +49,17 @@
                                 </select>
                             </div>
                         </td>
-                        <td><input type="text" name="pagina" class="validate" placeholder="https://animeflv.net/anime/1860/shokugeki-no-souma"
-                                required></td>
+                        <td><input type="text" name="pagina" class="validate"
+                                placeholder="https://animeflv.net/anime/1860/shokugeki-no-souma" required></td>
                         <td>
                             <input type="file" name="carpeta" id="file" class="inputfile" webkitdirectory />
-                            <label for="file" class="tooltipped blue" data-position="bottom" data-tooltip="Este campo no es obligatorio">Escoja
+                            <label for="file" class="tooltipped blue" data-position="bottom"
+                                data-tooltip="Este campo no es obligatorio">Escoja
                                 una carpeta</label>
                         </td>
                         <td>
-                            <a class="modal-trigger icon-big black-text" href="#modal0"><i class="material-icons icon-dot-3 flex flex-x-center"></i></a>
+                            <a class="modal-trigger icon-big black-text" href="#modal0"><i
+                                    class="material-icons icon-dot-3 flex flex-x-center"></i></a>
                             <div id="modal0" class="modal bottom-sheet">
                                 <div class="modal-content left-align">
                                     <h5>Datos opcionales</h5>
@@ -67,14 +70,16 @@
                                             <label for="nrocapvisto">Número capítulos vistos</label>
                                         </div>
                                         <div class="input-field col s6">
-                                            <input type="number" id="totalcap" name="totalcap" min="0" class="tooltipped validate this-not"
-                                                data-position="bottom" data-delay="50" data-tooltip="Este campo no es obligatorio">
+                                            <input type="number" id="totalcap" name="totalcap" min="0"
+                                                class="tooltipped validate this-not" data-position="bottom"
+                                                data-delay="50" data-tooltip="Este campo no es obligatorio">
                                             <label for="totalcap">Total de capítulos</label>
                                         </div>
                                     </div>
                                     <h5>
                                         Remover fila
-                                        <a class="right waves-effect waves-light btn red" id="btn-borrar-fila"><i class="icon-trash-empty material-icons right"></i>Eliminar</a>
+                                        <a class="right waves-effect waves-light btn red" id="btn-borrar-fila"><i
+                                                class="icon-trash-empty material-icons right"></i>Eliminar</a>
                                     </h5>
                                     <p>Se removerá esta fila junto con sus datos.</p>
                                 </div>
@@ -86,7 +91,9 @@
                             <div class="barra-sumar">
                                 <hr>
                                 <div class="triangle"></div>
-                                <a id="agregarNuevoAnime" class="right btn-floating btn blue">+</a>
+                                <a id="agregarNuevoAnime" class="right btn-floating btn blue">
+                                    <i class="material-icons icon-plus icon-normal"></i>
+                                </a>
                             </div>
                         </td>
                     </tr>
