@@ -375,6 +375,33 @@ class RenderBase {
 			value.style.zIndex = -10;
 		});
 	}
+	/**
+	 * Reconoce que un anime se encuentra en la versión `1.x.x`.
+	 * @param {any[]} animes Lista de animes.
+	 */
+	async reconocerAnimeAntiguo(animes) {
+		let listaAnimesAntiguos = [];
+		for (const anime of animes) {
+			if (!anime.dias) listaAnimesAntiguos.push(anime._id);
+		}
+		return {
+			lista: listaAnimesAntiguos,
+			antiguo: listaAnimesAntiguos.length > 0
+		};
+	}
+	/**
+	 * Mensaje de advetencia de versión `1.x.x`.
+	 */
+	advertenciaVersion1() {
+		swal({
+			title: "¿Problemas de actualización?",
+			text: "Se encontró animes en la versión 1.x.x esto puede dar problemas en esta versión, así que vamos a actualizar sus datos para que no de conflictos.\n\nPD: Solo modificaremos los animes que se muestren en este apartado. Si quiere migrar todos sus datos puede ir al apartado respectivo en Opciones -> Respaldos.",
+			icon: "warning",
+			button: {
+				className: "green"
+			}
+		});
+	}
 }
 
 exports.RenderBase = RenderBase;

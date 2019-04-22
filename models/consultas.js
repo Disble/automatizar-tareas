@@ -116,12 +116,33 @@ class BDAnimes extends RenderBase {
 	/**
 	 * Retorna todos los animes activos
 	 * ordenados por su fecha de creación
-	 * del más reciente al más antiguo.
+	 * del más reciente al más antiguo. 
+	 * Retorna solo el nombre del anime.
 	 */
 	buscarTodoEditar() {
 		return new Promise((resolve, reject) => {
 			animesdb
 				.find({ $or: [{ "activo": true }, { "activo": { $exists: false } }] }, { "nombre": 1 })
+				.sort({ "fechaCreacion": -1 })
+				.exec(function (err, record) {
+					if (err) {
+						reject(new Error(err));
+						process.exit(0)
+					}
+					return resolve(record);
+				})
+		});
+	}
+	/**
+	 * Retorna todos los animes activos ordenados 
+	 * por su fecha de creación del más reciente 
+	 * al más antiguo. Retorna todos los datos del 
+	 * anime.
+	 */
+	buscarTodoActivos() {
+		return new Promise((resolve, reject) => {
+			animesdb
+				.find({ $or: [{ "activo": true }, { "activo": { $exists: false } }] })
 				.sort({ "fechaCreacion": -1 })
 				.exec(function (err, record) {
 					if (err) {
@@ -184,7 +205,10 @@ class BDAnimes extends RenderBase {
 			});
 		});
 	}
-
+	/**
+	 * Devuelve los datos de un anime, por su Id.
+	 * @param {string} id Id del anime
+	 */
 	buscarPorId(id) {
 		return new Promise((resolve, reject) => {
 			animesdb.findOne({ _id: id }, function (err, doc) {
@@ -423,6 +447,33 @@ class BDAnimes extends RenderBase {
 				}
 				return resolve(numRemoved);
 			});
+		});
+	}
+	/**
+	 * Reconoce a partir del Id del anime si el mismo
+	 * es de la versión antigua `v.1.x.x` o la nueva.
+	 * @param {string} id Id del anime
+	 */
+	async reconocerAnimeAntiguo(id) {
+		return new Promise(async (resolve, reject) => {
+			let anime = await this.buscarPorId(id);
+			if (anime.cangrejo) {
+				console.log('anime.dia', anime.dia);
+				return resolve(true);
+			} else {
+				console.log('No existe');
+				return resolve(false);
+			}
+			// console.log(idAnime);
+
+			// animesdb.remove({ _id: id }, {}, function (err, numRemoved) {
+			// 	if (err) {
+			// 		reject(new Error(err));
+			// 		process.exit(0);
+			// 	}
+
+			// 	return resolve(true);
+			// });
 		});
 	}
 }

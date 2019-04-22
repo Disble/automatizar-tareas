@@ -19,4 +19,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 	let diaRender = render.buscarTituloDia(dia);
 	let { datos } = await consultas.buscar(dia);
 	render.actualizarLista(datos, diaRender);
+	let listaCompleta = await consultas.buscarTodoActivos();
+	let { lista, antiguo } = await render.reconocerAnimeAntiguo(listaCompleta);
+	if (antiguo) {
+		await render.advertenciaVersion1();
+	}
 });

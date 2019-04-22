@@ -47,47 +47,51 @@ class Render extends RenderBase {
 	/**
 	 * Genera una lista con los animes encontrados
 	 * de acuerdo al día buscado en la base de datos.
-	 * @param {any[]} consulta Lista de animes activos filtrados por día.
+	 * @param {any[]} animes Lista de animes activos filtrados por día.
 	 * @param {string} dia Día del que se esta mostrando los animes.
 	 */
-	actualizarLista(consulta, dia) {
+	async actualizarLista(animes, dia) {
+		// console.log(await this._reconocerAnimeAntiguo(animes));
 		let tblListaAnimes = '';
-		consulta.forEach((value, i) => {
-			tblListaAnimes += /*html*/ `
-			<tr>
-				<td>
-					<button data-target="modal${i}" class="btn btn-small modal-trigger blue">${consulta[i].orden}</button>
-					<div id="modal${i}" class="modal">
-						<div class="modal-footer">
-							<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">X</a>
+		for (const i in animes) {
+			if (animes.hasOwnProperty(i)) {
+				const anime = animes[i];
+				tblListaAnimes += /*html*/ `
+				<tr>
+					<td>
+						<button data-target="modal${i}" class="btn btn-small modal-trigger blue">${anime.orden}</button>
+						<div id="modal${i}" class="modal">
+							<div class="modal-footer">
+								<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">X</a>
+							</div>
+							<div class="modal-content">
+								<h4>Estado del arte del anime</h4>
+								<p>¿En este momento su estado es...?</p>
+								<button class="btn btn-small modal-close green btn-estado-cap-viendo" dia="${dia}" id="${anime._id}"><i class="icon-play"></i> Viendo</button>
+								<button class="btn btn-small modal-close btn-estado-cap-fin" dia="${dia}" id="${anime._id}"><i class="icon-ok-squared"></i> Finalizar</button>
+								<button class="btn btn-small modal-close red btn-estado-cap-no-gusto" dia="${dia}" id="${anime._id}"><i class="icon-emo-unhappy"></i> No me Gusto</button>
+								<button class="btn btn-small modal-close orange btn-estado-cap-en-pausa" dia="${dia}" id="${anime._id}"><i class="icon-pause"></i> En pausa</button>
+							</div>
+							<div class="modal-footer">
+							</div>
 						</div>
-						<div class="modal-content">
-							<h4>Estado del arte del anime</h4>
-							<p>¿En este momento su estado es...?</p>
-							<button class="btn btn-small modal-close green btn-estado-cap-viendo" dia="${dia}" id="${consulta[i]._id}"><i class="icon-play"></i> Viendo</button>
-							<button class="btn btn-small modal-close btn-estado-cap-fin" dia="${dia}" id="${consulta[i]._id}"><i class="icon-ok-squared"></i> Finalizar</button>
-							<button class="btn btn-small modal-close red btn-estado-cap-no-gusto" dia="${dia}" id="${consulta[i]._id}"><i class="icon-emo-unhappy"></i> No me Gusto</button>
-							<button class="btn btn-small modal-close orange btn-estado-cap-en-pausa" dia="${dia}" id="${consulta[i]._id}"><i class="icon-pause"></i> En pausa</button>
+					</td>
+					<td>${anime.nombre}</td>
+					<td><span class="span-cap-vistos" cap="${this._setNumCapitulo(animes, i)}" capTotal="${anime.totalcap}">${this._setNumCapitulo(animes, i)}</span></td>
+					<td>${this._paginaConstructor(anime.pagina)}</td>
+					<td>
+						<div class="btnIncremento">
+						<a class="btn-floating btn waves-effect waves-light btn-anime-minus red ${this._blockSerie(anime.estado) ? 'disabled' : ''}" dia="${anime.dia}" cap="${anime.nrocapvisto}"><i class="icon-minus icon-normal move-icon-cap"></i></a>
+						<a class="btn-floating btn waves-effect waves-light btn-anime-plus blue ${this._blockSerie(anime.estado) ? 'disabled' : ''}" dia="${anime.dia}" cap="${anime.nrocapvisto}"><i class="icon-plus icon-normal move-icon-cap"></i></a>
 						</div>
-						<div class="modal-footer">
-						</div>
-					</div>
-				</td>
-				<td>${consulta[i].nombre}</td>
-				<td><span class="span-cap-vistos" cap="${this._setNumCapitulo(consulta, i)}" capTotal="${consulta[i].totalcap}">${this._setNumCapitulo(consulta, i)}</span></td>
-				<td>${this._paginaConstructor(consulta[i].pagina)}</td>
-				<td>
-					<div class="btnIncremento">
-					<a class="btn-floating btn waves-effect waves-light btn-anime-minus red ${this._blockSerie(consulta[i].estado) ? 'disabled' : ''}" dia="${consulta[i].dia}" cap="${consulta[i].nrocapvisto}"><i class="icon-minus icon-normal move-icon-cap"></i></a>
-					<a class="btn-floating btn waves-effect waves-light btn-anime-plus blue ${this._blockSerie(consulta[i].estado) ? 'disabled' : ''}" dia="${consulta[i].dia}" cap="${consulta[i].nrocapvisto}"><i class="icon-plus icon-normal move-icon-cap"></i></a>
-					</div>
-				</td>
-				<td>
-					<button class="btn btn-small green tooltipped btn-abrir-carpeta ${this.isNoData(consulta[i].carpeta) ? 'disabled' : ''}" carpeta="${consulta[i].carpeta}" dia="${consulta[i].dia}" id="${consulta[i]._id}" data-position="left" data-tooltip="Abrir carpeta"><span style="display: flex"><i class="icon-folder-open"></i></span></button>
-				</td>
-				<td class="hidden" id="key">${consulta[i]._id}</td>
-			</tr>`
-		});
+					</td>
+					<td>
+						<button class="btn btn-small green tooltipped btn-abrir-carpeta ${this.isNoData(anime.carpeta) ? 'disabled' : ''}" carpeta="${anime.carpeta}" dia="${anime.dia}" id="${anime._id}" data-position="left" data-tooltip="Abrir carpeta"><span style="display: flex"><i class="icon-folder-open"></i></span></button>
+					</td>
+					<td class="hidden" id="key">${anime._id}</td>
+				</tr>`;
+			}
+		}
 		this._iniciarListaAnimes(tblListaAnimes, dia);
 	}
 	/**
