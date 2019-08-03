@@ -28,12 +28,7 @@ class Render extends RenderBase {
 		}
 		downloader.innerHTML = /*html*/`<i class="icon-rocket grey-text text-darken-2 icon-big"></i>`;
 		downloader.addEventListener('click', e => {
-			let dir = settings.get('downloader.dir');
-			if (dir === undefined) {
-				swal("No configurado.", "No esta configurado la dirección del programa, por favor hagalo en Opciones.", "error");
-				return;
-			}
-			let program = path.normalize(dir);
+			let program = this.obtenerDirPrograma();
 			if (shell.openItem(program)) {
 				M.toast({
 					html: `Abriendo ${path.basename(program, '.exe')}...`,
@@ -43,6 +38,21 @@ class Render extends RenderBase {
 				swal("Hubo problemas al abrir el programa.", "Por favor revise que la dirección del programa sea correcta en Opciones.", "error");
 			}
 		});
+		downloader.setAttribute('data-tooltip', path.basename(this.obtenerDirPrograma(), '.exe'));
+	}
+	/**
+	 * Obtiene la dirección del programa que este guardado
+	 * en settings (Gestor de descargas).
+	 * 
+	 * En caso de error muestra un modal con dicho mensaje.
+	 */
+	obtenerDirPrograma() {
+		let dir = settings.get('downloader.dir');
+		if (dir === undefined) { // esto es solo que caso de que se muestre por error
+			swal("No configurado.", "No esta configurado la dirección del programa, por favor hagalo en Opciones.", "error");
+			return;
+		}
+		return path.normalize(dir);
 	}
 	/**
 	 * Genera una lista con los animes encontrados
