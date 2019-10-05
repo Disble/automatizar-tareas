@@ -176,7 +176,7 @@ class BDAnimes extends RenderBase {
 	/**
 	 * Retorna los datos del anime que coincida con
 	 * el id proporcionado.
-	 * @param {number} id Id del anime.
+	 * @param {string} id Id del anime.
 	 */
 	buscarAnimePorId(id) {
 		return new Promise((resolve, reject) => {

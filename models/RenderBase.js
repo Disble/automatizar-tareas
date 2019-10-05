@@ -176,6 +176,13 @@ class RenderBase {
 			el.className += ' ' + className;
 	}
 	/**
+	 * Elimina el elemento HTML que se proporciona (se elimina a si mismo).
+	 * @param {HTMLElement} el Elemento HTML
+	 */
+	removeEl(el) {
+		el.parentNode.removeChild(el);
+	}
+	/**
 	 * Cancela la acción predeterminada de los links
 	 * con la clase `.no-link`.
 	 * Evitar que se haga una redirección.

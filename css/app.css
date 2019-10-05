@@ -2,6 +2,7 @@
 	--icon-hover: #4fd8fe;
 	--border-color: #1ca7ce;
 	--blue-color: #039be5;
+	--red-materialize: #f44336;
 }
 .barra-sumar {
 	display: flex;
@@ -194,7 +195,8 @@ table.highlight > tbody > tr:hover{
 .block {
 	width: 100%;
 }
-.dropdown-content li>a, .dropdown-content[class*="multiple-select-dropdown"] li>span {
+.dropdown-content li>a, 
+.dropdown-content[class*="multiple-select-dropdown"] li>span {
 	font-size: small;
 	color: var(--border-color);
 	line-height: initial;
@@ -202,12 +204,14 @@ table.highlight > tbody > tr:hover{
 	position: relative;
     top: 10px;
 }
-.dropdown-content li>a, .dropdown-content li>span {
+.dropdown-content li>a, 
+.dropdown-content li>span {
 	font-size: small;
 	color: var(--border-color);
 	line-height: initial;
 }
-[type="checkbox"]+span:not(.lever):before, [type="checkbox"]:not(.filled-in)+span:not(.lever):after {
+[type="checkbox"]+span:not(.lever):before, 
+[type="checkbox"]:not(.filled-in)+span:not(.lever):after {
 	width: 15px;
 	height: 15px;
 	top: 2.5px;
@@ -236,6 +240,12 @@ select.browser-default {
 .datos-anime-nuevo input[type="number"]:not(.this-not) {
 	max-width: 50px;
 }
+.datos-anime-nuevo .input-field.days {
+	width: 220px;
+}
+.datos-anime-nuevo .dropdown-trigger {
+	font-size: 0.8em;
+}
 .chart-container {
 	position: relative;
 	margin-left: auto;
@@ -247,7 +257,77 @@ select.browser-default {
 .anime-list .collection a.collection-item {
 	color: var(--blue-color);
 }
-/* Editar Animes */
+/* EDITAR ANIMES */
+/* Inicio Dropdown inputs */
+.dropdown-trigger-inputs {
+	cursor: pointer;
+}
+.dropdown-content.inputs {
+	width: inherit !important; /* Este important es porque tiene valores aplicados js y solo así se puede quitar */
+}
+.dropdown-content.inputs .row,
+.dropdown-content.days .row {
+	margin: 0;
+}
+.dropdown-content.inputs .row .dropdown-trash {
+	min-height: 45px;
+    padding: 0;
+}
+.dropdown-content.inputs .row .dropdown-trash a {
+	display: flex;
+    width: 99%;
+    min-height: 43px;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3em;
+}
+.dropdown-content.inputs .row .dropdown-trash a:hover {
+	background-color: #eee !important; /* Este important es porque materializecss pone en sus colores important */
+	color: var(--red-materialize) !important; /* Este important es porque materializecss pone en sus colores important */
+	border: 1px solid var(--red-materialize);
+}
+.dropdown-content.inputs .row > input:first-child {
+	border-right: 1px solid #9e9e9e;
+	width: calc(50% - 6px);
+}
+.no-underline {
+	border: 0 !important; /* es para ganarle a la especifidad de materializecss */
+}
+.dropdown-content.days .row label {
+	min-height: 43px;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+.dropdown-content.days .row label span {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+}
+.dropdown-content.inputs .row > input {
+	padding-left: 5px;
+	width: calc(41.6666666667% - 5px);
+}
+.dropdown-content.inputs a.btn-inputs {
+	display: flex;
+	justify-content: center;
+}
+.dropdown-content.inputs a.btn-inputs > i {
+    display: flex;
+	align-items: center;
+}
+/* Fin Dropdown inputs */
+.edit-anime-list .chips + label {
+	position: absolute;
+	top: -20px;
+}
+.edit-anime-list p.portada {
+	color: #9e9e9e;
+	font-size: 0.85em;
+}
 .edit-anime-list .collection.with-header .collection-header {
 	padding: 5px 10px;
 }
@@ -283,9 +363,9 @@ select.browser-default {
 	color: red;
 }
 .error-line.select-wrapper>input[class*="select-dropdown"] {
-	border-bottom: 1px solid #F44336;
-    -webkit-box-shadow: 0 1px 0 0 #F44336;
-    box-shadow: 0 1px 0 0 #F44336;
+	border-bottom: 1px solid var(--red-materialize);
+    -webkit-box-shadow: 0 1px 0 0 var(--red-materialize);
+    box-shadow: 0 1px 0 0 var(--red-materialize);
 }
 .push-autocomplete ul.dropdown-content {
 	position: relative;
@@ -296,6 +376,21 @@ select.browser-default {
 }
 .collection-options .collection-item.avatar {
     min-height: 68px;
+}
+/* Estilo Información Anime */
+.info .input-field {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.info-cover {
+	height: 200px;
+    width: 300px;
+  	background-position: center;
+  	background-repeat: no-repeat;
+	background-size: cover;
+}
+.btn-return {
+	padding: 0 6px;
 }
 /* Estilos del contenedor */
 /* Tamaño del scroll */

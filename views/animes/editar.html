@@ -32,13 +32,11 @@
                     <label for="nombre" data-error="Este campo no puede estar vacio">Nombre</label>
                 </div>
                 <div class="input-field col s12">
-                    <select id="dia" name="dia" class="validate" required>
-                    </select>
-                    <label for="dia" data-error="Seleccione una opción">Día</label>
-                </div>
-                <div class="input-field col s12">
-                    <input type="number" id="orden" name="orden" placeholder="Orden" min="1" class="validate" required>
-                    <label for="orden" data-error="Este campo no puede estar vacio. El mínimo es 1">Orden</label>
+                    <!-- Dropdown Trigger -->
+                    <a class='dropdown-trigger btn btn-block blue' href='#' data-target='dropdown-dias'>Días</a>
+                    <!-- Dropdown Structure -->
+                    <ul id='dropdown-dias' class='dropdown-content days'>
+                    </ul>
                 </div>
                 <div class="input-field col s12">
                     <input type="number" id="cap-vistos" name="cap-vistos" placeholder="Capítulos vistos" min="0"
@@ -46,7 +44,7 @@
                     <label for="cap-vistos" data-error="Este campo no puede estar vacio">Capítulos vistos</label>
                 </div>
                 <div class="input-field col s12">
-                    <input type="number" id="total-cap" name="total-cap" name=placeholder="Total capítulos" min="0"
+                    <input type="number" id="total-cap" name="total-cap" placeholder="Total capítulos" min="0"
                         class="validate">
                     <label for="total-cap" data-error="Este campo no puede estar vacio">Total capítulos</label>
                 </div>
@@ -74,6 +72,63 @@
                     <div class="file-path-wrapper">
                         <input class="file-path validate" name="carpeta" type="text" id="carpeta">
                     </div>
+                </div>
+                <div class="col s12">
+                    <ul class="collapsible z-depth-0">
+                        <li>
+                            <div class="collapsible-header">Más datos</div>
+                            <div class="collapsible-body">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input type="text" placeholder="Fecha de publicación" id="fechaPublicacion"
+                                            name="fechaPublicacion" class="datepicker">
+                                        <label for="fechaPublicacion" class="">Fecha publicación</label>
+                                    </div>
+                                    <div class="col s12">
+                                        <p class="portada">Portada</p>
+                                        <select id="cambiar-tipo-imagen">
+                                            <option value="imagen">Imagen</option>
+                                            <option value="url">URL</option>
+                                        </select>
+                                        <label for="cambiar-tipo-imagen">Seleccionar portada</label>
+                                    </div>
+                                    <div class="file-field input-field col s12" id="cambiar-portada">
+                                        <div class="btn btn-small blue" id="cambiar-portada-input">
+                                            <span><i class="material-icons icon-picture"></i></span>
+                                            <input type="file" id="portada-input" accept="image/*">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path" type="text" name="portada" id="portada">
+                                        </div>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <input type="number" placeholder="Duración" name="duracion" id="duracion">
+                                        <label for="duracion">Duración (min)</label>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <input type="text" placeholder="Manga" name="origen" id="origen">
+                                        <label for="origen">Origen</label>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <a class='dropdown-trigger-inputs btn btn-block blue' href='#'
+                                            data-target='dropdown-studio'>Estudios</a>
+                                        <ul id='dropdown-studio' class='dropdown-content inputs'>
+                                            <li>
+                                                <a id="btn-add-row" class="btn-small green white-text btn-inputs"><i
+                                                        class="material-icons icon-plus"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <div class="chips chips-generos">
+                                            <input class="custom-class" id="generos" name="generos">
+                                        </div>
+                                        <label for="generos">Generos</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
                 <div class="col s12 center">
                     <button class="btn green waves-effect waves-light" type="submit" name="action">
