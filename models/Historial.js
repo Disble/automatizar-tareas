@@ -2,6 +2,9 @@
 const { RenderBase } = require('./RenderBase.js');
 const { BDAnimes } = require('./consultas.js');
 const { Estados, Tipos } = require('./defaults-config.js');
+const { ipcRenderer } = require('electron');
+const { Anime } = require('./Anime');
+
 /**
  * Controla todo lo referente a la página Historia y 
  * páginas de estadísticas como: capítulos vistos,
@@ -317,9 +320,8 @@ class Historial extends RenderBase {
 	 * @param {any} anime Datos del anime.
 	 */
 	capitulosVistosUnAnime(anime) {
-		let animeFilter = this._filterCapChart(anime)
-		this._chartCapVistos(animeFilter, 'bar', 'Capítulos vistos')
-		this._setHistoriaAnime(anime)
+		let animeFilter = this._filterCapChart(anime);
+		this._chartCapVistos(animeFilter, 'bar', 'Capítulos vistos');
 	}
 	/**
 	 * Crea un evento `click` para cada fila de la tabla 
@@ -330,47 +332,86 @@ class Historial extends RenderBase {
 		document.querySelectorAll('td.hidden').forEach((value, i) => {
 			value.parentElement.addEventListener('click', e => {
 				let key = value.parentElement.querySelector('#key').innerHTML;
-				this._createModalStats(key);
+				console.log(ipcRenderer.sendSync('synchronous-message', key)); // envia la clave del anime al main y luego el main carga la vista info.
 			});
 		});
 	}
 	/**
-	 * Carga los datos del anime dentro del modal,
-	 * si el anime no esta activo agrega un botón
-	 * para restaurar dicho anime.
-	 * @param {any} anime Datos del anime.
+	 * Establece los datos del anime en la 
+	 * sección de información.
+	 * @param {Anime} anime Datos del anime
 	 */
-	_setHistoriaAnime(anime) {
-		document.getElementById('nombre').innerHTML = anime.nombre;
-		document.getElementById('tipo').innerHTML = this.isNoData(anime.tipo) ? 'Desconocido' : this.getStateType(anime.tipo).name;
-		document.getElementById('estado').innerHTML = this.getState(anime.estado).name;
-		document.getElementById('totalcap').innerHTML = this.isNoData(anime.totalcap) ? 'Desconocido' : anime.totalcap;
-		document.getElementById('fechaCreacion').innerHTML = this._setFullDate(anime.fechaCreacion);
-		document.getElementById('fechaEliminacion').innerHTML = this.isNoData(anime.fechaEliminacion) ? 'No Eliminado' : this._setFullDate(anime.fechaEliminacion);
-		document.getElementById('pagina').innerHTML = anime.pagina;
-		document.getElementById('carpeta').innerHTML = this.isNoData(anime.carpeta) ? 'No asignada' : anime.carpeta;
-		document.querySelectorAll('.btn-eliminar-anime').forEach((value) => {
-			value.querySelectorAll('a').forEach((a) => {
-				a.addEventListener('click', e => {
-					this._deleteAnime(anime._id);
-				});
-			});
+	setInfoAnime(anime) {
+		console.log('entry point', anime);
+		// Cover
+		// Para mostrar la imagen en realidad lo único que importa es la dirección del slash.
+		let cover = document.getElementById('info-cover');
+		if (anime.portada.path === undefined || anime.portada.path === '' || this.isNoData(anime.portada.path)) {
+			cover.setAttribute('style', `background-image: url('../../images/Eiffel_tower.svg'); background-size: contain;`);
+		} else {
+			cover.setAttribute('style', `background-image: url('${anime.portada.path}')`);
+		}
+		// Info
+		document.getElementById('nombre').innerText = anime.nombre === '' ? 'Una típica historia' : anime.nombre;
+		document.getElementById('estado').innerText = this.getState(anime.estado).name;
+		document.getElementById('capvistos').innerText = this.isNoData(anime.nrocapvisto) || anime.nrocapvisto === 0 ? 'Empieza hoy una nueva aventura' : `${anime.nrocapvisto} capítulos vistos`
+		document.getElementById('totalcap').innerText = this.isNoData(anime.totalcap) ? 'No hay datos del total de capítulos' : `${anime.totalcap} capítulos en total`;
+		document.getElementById('duracion').innerText = this.isNoData(anime.duracion) ? 'No hay datos de la duración por capítulo' : `${anime.duracion} minutos por capitulo`;
+		document.getElementById('tipo').innerText = this.isNoData(anime.tipo) ? 'Desconocido' : this.getStateType(anime.tipo).name;
+		document.getElementById('pagina').innerText = this.isNoData(anime.pagina) ? 'Houston, tenemos un problema...' : anime.pagina;
+		document.getElementById('carpeta').innerText = this.isNoData(anime.carpeta) ? '¿Todo online?' : anime.carpeta;
+		document.getElementById('origen').innerText = this.isNoData(anime.origen) || anime.origen === '' ? 'Todo tiene un origen, incluso un anime' : anime.origen;
+		// Estadisticas
+		document.getElementById('fechapublicacion').value = this.isNoData(anime.fechaPublicacion) ? 'Desconocido' : this._setFullDate(anime.fechaPublicacion);
+		document.getElementById('fechaestreno').value = this.isNoData(anime.fechaEstreno) ? 'Desconocido' : this._setFullDate(anime.fechaEstreno);
+		document.getElementById('fechacreacion').value = this.isNoData(anime.fechaCreacion) ? 'Desconocido' : this._setFullDate(anime.fechaCreacion);
+		document.getElementById('fechaultcap').value = this.isNoData(anime.fechaUltCapVisto) ? 'Desconocido' : this._setFullDate(anime.fechaUltCapVisto);
+		document.getElementById('fechaeliminacion').value = this.isNoData(anime.fechaEliminacion) ? 'Desconocido' : this._setFullDate(anime.fechaEliminacion);
+		// Generos
+		let chipsGeneros = document.getElementById('chips-generos');
+		for (const genero of anime.generos) {
+			let chip = document.createElement('div');
+			chip.classList.add('chip');
+			chip.innerText = genero;
+			chipsGeneros.append(chip);
+		}
+		if (this.isNoData(anime.generos) || anime.generos.length === 0) { // en caso de no haber datos
+			chipsGeneros.innerHTML = /*html*/`<h6 class="bold">¿Acción o Terror? ¿Fantasía o Ciencia ficción?</h6>`;
+		}
+		// Estudios
+		if (!this.isNoData(anime.estudios) && anime.estudios.length > 0) {
+			let estudiosHTML = '';
+			for (const estudio of anime.estudios) {
+				estudiosHTML += /*html*/`<h6 class="bold" id="origen">${estudio.estudio} <span class="grey-text">${estudio.url === '' ? '' : '•'}
+				${estudio.url}</span></h6>`;
+			}
+			document.getElementById('estudios').innerHTML = estudiosHTML;
+		}
+		// Botón Eliminar
+		document.querySelector('.btn-eliminar-anime').addEventListener('click', e => {
+			this._deleteAnime(anime._id);
 		});
+		// Botón Restaurar
 		if (anime.activo === false) {
-			let collection = document.createElement('div');
-			let a = document.createElement('a');
-			collection.classList.add('collection');
-			a.href = '#';
-			a.classList.add('collection-item', 'waves-effect', 'waves-light', 'black-text', 'orange', 'center', 'no-link');
-			a.addEventListener('click', e => {
+			document.getElementById('restaurar-container').classList.remove('hide');
+			document.querySelector('.btn-restaurar-anime').addEventListener('click', e => {
 				e.preventDefault();
 				e.stopPropagation();
 				this._restoreRow(anime._id);
 			});
-			a.innerHTML = /*html*/`Restaurar<i class="icon-attention-alt right"></i>`;
-			collection.appendChild(a);
-			document.getElementById('restaurar-anime').appendChild(collection);
 		}
+		// Charts
+		this.capitulosVistosUnAnime(anime);
+		this._setInfoLineaTiempo(anime);
+	}
+	/**
+	 * Establece la línea de tiempo para el anime
+	 * dado.
+	 * @param {any} anime Datos del anime.
+	 */
+	_setInfoLineaTiempo(anime) {
+		let animeFil = this._filtroLineaTiempo(anime);
+		this._chartLineaTiempo(animeFil, 'line', 'Línea de tiempo');
 	}
 	_restoreRow(id) {
 		swal({
@@ -421,6 +462,56 @@ class Historial extends RenderBase {
 					swal("¡Acción cancelada!", '', 'info');
 				}
 			});
+	}
+	/**
+	 * Genera el Chart de la línea de tiempo, dentro de
+	 * la sección de información.
+	 * @param {any} listaFil Lista de datos filtrada
+	 * @param {string} tipo Tipo de Chart
+	 * @param {string} title Título del Chart
+	 */
+	_chartLineaTiempo(listaFil, tipo, title) {
+		let ctx = document.getElementById('lineatiempo')
+		new Chart(ctx, {
+			type: tipo,
+			data: {
+				labels: this._filterLabelChart(listaFil.labels),
+				datasets: [{
+					data: listaFil.data,
+					backgroundColor: listaFil.backgroundColor,
+					borderColor: listaFil.borderColor,
+					fill: listaFil.fill
+				}]
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				title: {
+					display: true,
+					text: title
+				},
+				legend: {
+					display: false
+				},
+				scales: {
+					yAxes: [{
+						display: true,
+						ticks: {
+							callback: () => '' // esto solo quita los ticks de la izquierda
+						}
+					}]
+				},
+				tooltips: {
+					callbacks: {
+						label: (tooltipItem, data) => {
+							let allData = data.datasets[tooltipItem.datasetIndex].data;
+							let tooltipData = allData[tooltipItem.index];
+							return this.isNoData(tooltipData.x) ? 'Desconocido' : `Fecha: ${this._setCalendarDate(tooltipData.x)}`;
+						}
+					}
+				}
+			}
+		});
 	}
 
 	_chartCapVistos(listFilter, tipo, title) {
@@ -586,131 +677,6 @@ class Historial extends RenderBase {
 		});
 	}
 	/**
-	 * Inserta un modal en el body del HTML e inicializa
-	 * todos sus componentes. Después busca los datos del 
-	 * anime proporcionado por la key y los carga dentro 
-	 * del modal con el método `capitulosVistosUnAnime()`.
-	 * @param {string} key Id del anime a buscar.
-	 */
-	async _createModalStats(key) {
-		let modal = document.getElementById('modalStats');
-		if (modal !== null) {
-			modal.parentNode.removeChild(modal);
-		}
-		let modalWindow = document.createElement('div');
-		modalWindow.id = 'modalStats';
-		let innerModalWindow = /*html*/`
-			<button data-target="modalWin" class="btn btn-small modal-trigger hidden"></button>
-			<div id="modalWin" class="modal modal-fixed-footer">
-				<div class="modal-content">
-					<div class="row">
-						<div class="col s5">
-							<ul class="collapsible popout expandable">
-								<li class="active">
-									<div class="collapsible-header flex-x-center cyan darken-2">Nombre</div>
-									<div class="collapsible-body no-padding">
-										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center no-link" id="nombre"></a>
-										</div>
-									</div>
-								</li>
-								<li class="active">
-									<div class="collapsible-header flex-x-center cyan darken-1">Tipo</div>
-									<div class="collapsible-body no-padding">
-										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center no-link" id="tipo"></a>
-										</div>
-									</div>
-								</li>
-								<li class="active">
-									<div class="collapsible-header flex-x-center cyan">Total Capítulos</div>
-									<div class="collapsible-body no-padding">
-										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center no-link" id="totalcap"></i></a>
-										</div>
-									</div>
-								</li>
-								<li class="active">
-									<div class="collapsible-header flex-x-center cyan lighten-1">Estado</div>
-									<div class="collapsible-body no-padding">
-										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center no-link" id="estado"></a>
-										</div>
-									</div>
-								</li>
-								<li class="active">
-									<div class="collapsible-header flex-x-center cyan lighten-2">Fecha Creación</div>
-									<div class="collapsible-body no-padding">
-										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center no-link" id="fechaCreacion"></a>
-										</div>
-									</div>
-								</li>
-								<li class="active">
-									<div class="collapsible-header flex-x-center cyan lighten-3">Fecha Eliminación</div>
-									<div class="collapsible-body no-padding">
-										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center no-link" id="fechaEliminacion"></a>
-										</div>
-									</div>
-								</li>
-								<li class="active">
-									<div class="collapsible-header flex-x-center cyan lighten-4">Página</div>
-									<div class="collapsible-body no-padding">
-										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center no-link" id="pagina"></a>
-										</div>
-									</div>
-								</li>
-								<li class="active">
-									<div class="collapsible-header flex-x-center cyan lighten-5">Carpeta</div>
-									<div class="collapsible-body no-padding">
-										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light center no-link" id="carpeta"></a>
-										</div>
-									</div>
-								</li>
-							</ul>
-						</div>
-						<div class="col s7">
-							<div class="row">
-								<div class="col s12">
-									<canvas id="capVistos" height="300"></canvas>
-								</div>
-								<div class="col s12">
-									<div class="container btn-eliminar-anime">
-										<div class="collection">
-											<a href="#" class="collection-item waves-effect waves-light black-text red center no-link">Eliminar<i class="icon-trash-empty right"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="col s12">
-									<div class="container btn-restaurar-anime" id="restaurar-anime">
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<a class="modal-action modal-close waves-effect waves-red btn-flat">Cerrar</a>
-				</div>
-			</div>`;
-		modalWindow.innerHTML = innerModalWindow;
-		document.querySelector('body').appendChild(modalWindow);
-		M.Modal.init(document.querySelectorAll('.modal'));
-		M.Collapsible.init(document.querySelectorAll('.collapsible.expandable'), {
-			accordion: false
-		});
-		document.getElementById('modalStats').querySelector('.modal-trigger').click();
-		this.noLink();
-		document.querySelector('.modal-close').addEventListener('click', e => {
-			e.preventDefault();
-		})
-		let data = await this.db.buscarAnimePorId(key);
-		this.capitulosVistosUnAnime(data);
-	}
-	/**
 	 * Convierte la fecha a el formato 
 	 * `{día} de {mes}, {año}`.
 	 * @param {Date} date Fecha
@@ -763,6 +729,42 @@ class Historial extends RenderBase {
 			'color': color
 		}
 		return data
+	}
+	/**
+	 * Filtra los datos de un anime, creando una
+	 * línea de tiempo.
+	 * @param {any} anime Datos del anime.
+	 */
+	_filtroLineaTiempo(anime) {
+		return {
+			labels: [
+				'Creación',
+				'Estreno',
+				'Últ Cap Visto',
+				'Eliminación',
+			],
+			data: [
+				{
+					y: 1,
+					x: anime.fechaCreacion
+				},
+				{
+					y: 1,
+					x: anime.fechaestreno
+				},
+				{
+					y: 1,
+					x: anime.fechaUltCapVisto
+				},
+				{
+					y: 1,
+					x: anime.fechaEliminacion
+				}
+			],
+			fill: false,
+			backgroundColor: 'rgb(54, 162, 235)',
+			borderColor: 'rgb(54, 162, 235)',
+		};
 	}
 
 	_filterCapChart(anime) {

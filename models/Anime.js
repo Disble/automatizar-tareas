@@ -14,6 +14,7 @@ class Anime {
    *    - 0 - TV
    *    - 1 - Película
    *    - 2 - Especial
+   *    - 3 - OVA.
    * @param {string} pagina Pagina de descarga del animes, también se puede almacenar otro datos.
    * @param {string} carpeta Ubicación en disco del anime.
    * @param {[...{estudio: string, url: string}]} estudios Estudios de animación del anime.
@@ -25,7 +26,7 @@ class Anime {
    *    - 0 - Viendo
    *    - 1 - Finalizado
    *    - 2 - No me gusto
-   *    - 3 - OVA.
+   *    - 3 - En pausa
    * @param {[...{numrepeticion: number, fechaRepeticion: Date, fechaUltCapVisto: Date}]} repetir Array que contiene los datos `numrepeticion`, `fecharepeticion`, `fechaultcapvisto` por cada vez que ve un anime.
    * @param {boolean} activo Representa si el anime es visible o no en las listas para ver animes.
    * @param {boolean} primeravez Marca si es la primera vez que se ve un anime.

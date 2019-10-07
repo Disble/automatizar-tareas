@@ -130,7 +130,7 @@ class RenderBase {
 	getStateType(tipo) {
 		return {
 			0: {
-				name: 'TV',
+				name: 'Anime (TV)',
 			},
 			1: {
 				name: 'Película',

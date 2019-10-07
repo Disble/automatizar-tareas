@@ -1,6 +1,6 @@
 const electron = require('electron');
 const isDev = require('electron-is-dev');
-const { app, BrowserWindow } = electron;
+const { app, BrowserWindow, ipcMain } = electron;
 const path = require('path');
 const Menu = electron.Menu;
 const { autoUpdater } = require('electron-updater');
@@ -23,26 +23,26 @@ let template = [
 			}
 		},
 		{
-			label: 'Agregar',
+			label: 'Editar',
 			accelerator: 'CmdOrCtrl+2',
 			click: function (item, focusedWindow) {
 				if (focusedWindow) {
 					if (focusedWindow.id === 1) {
 						BrowserWindow.getAllWindows().forEach(function (win) {
-							win.loadFile(path.join('views', 'animes', 'agregar.html'));
+							win.loadFile(path.join('views', 'animes', 'editar.html'));
 						})
 					}
 				}
 			}
 		},
 		{
-			label: 'Editar',
+			label: 'Agregar',
 			accelerator: 'CmdOrCtrl+3',
 			click: function (item, focusedWindow) {
 				if (focusedWindow) {
 					if (focusedWindow.id === 1) {
 						BrowserWindow.getAllWindows().forEach(function (win) {
-							win.loadFile(path.join('views', 'animes', 'editar.html'));
+							win.loadFile(path.join('views', 'animes', 'agregar.html'));
 						})
 					}
 				}
@@ -382,6 +382,27 @@ function createWindow() {
 	// Loading menu from menu template
 	const menu = Menu.buildFromTemplate(template);
 	Menu.setApplicationMenu(menu);
+
+	// devtools
+	if (isDev) mainWindow.toggleDevTools();
+	let idAnime = null;
+	// Events IPC
+	ipcMain.on('synchronous-message', (event, arg) => {
+		idAnime = arg;
+		console.log(arg) // prints "ping"
+		mainWindow.loadFile(path.join('views', 'animes', 'info.html'));
+		event.returnValue = 'pong';
+	})
+	ipcMain.on('get-id-anime', (event, arg) => {
+		console.log(arg) // prints "please"
+		event.returnValue = idAnime;
+	});
+	// load the view historial.html and send idAnime loaded already.
+	ipcMain.on('return-me-history', (event, arg) => {
+		console.log(arg) // prints "please return me"
+		mainWindow.loadFile(path.join('views', 'animes', 'historial.html'));
+		event.returnValue = idAnime;
+	});
 
 	// Loading autoUpdater
 	if (!isDev) {
