@@ -350,7 +350,7 @@ class RenderNuevoAnime extends RenderBase {
 			for (const diaVerificado of diasVerificados) {
 				let li = diaVerificado.parentElement.parentElement; // Llegamos a la fila
 				let dia = li.querySelector('#dia').value;
-				let orden = li.querySelector('#orden').value;
+				let orden = parseInt(li.querySelector('#orden').value);
 				if (orden === '') continue;
 				dias.push({
 					dia,

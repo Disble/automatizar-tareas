@@ -157,10 +157,12 @@ class RenderEditarAnime extends RenderBase {
         }
         // chipsGeneros.chipsData = null;
         // cargando nuevos datos
-        for (const genero of data.generos) {
-            chipsGeneros.addChip({
-                tag: genero
-            });
+        if (!this.isNoData(data.generos)) {
+            for (const genero of data.generos) {
+                chipsGeneros.addChip({
+                    tag: genero
+                });
+            }
         }
         // CHIPS GENEROS END
         // DROPDOWN-STUDIO BEGIN
@@ -169,17 +171,19 @@ class RenderEditarAnime extends RenderBase {
         for (const el of forRemove) {
             this.removeEl(el);
         }
-        // segundo agregamos las nuevas filas
-        for (const _i of data.estudios) {
-            this._clickDropdownInputs(document.getElementById('btn-add-row'))(); // esta línea genera nueva filas en el dropdown-inputs
-        }
-        // después asignamos los datos.
-        let dropdownStudio = document.getElementById('dropdown-studio').querySelectorAll('#row-studio');
-        for (const i in dropdownStudio) {
-            if (dropdownStudio.hasOwnProperty(i)) {
-                const dropdown = dropdownStudio[i];
-                dropdown.querySelector('#estudio').value = data.estudios[i].estudio;
-                dropdown.querySelector('#estudio-url').value = data.estudios[i].url;
+        if (!this.isNoData(data.estudios) && data.estudios.length > 1) {
+            // segundo agregamos las nuevas filas
+            for (const _i of data.estudios) {
+                this._clickDropdownInputs(document.getElementById('btn-add-row'))(); // esta línea genera nueva filas en el dropdown-inputs
+            }
+            // después asignamos los datos.
+            let dropdownStudio = document.getElementById('dropdown-studio').querySelectorAll('#row-studio');
+            for (const i in dropdownStudio) {
+                if (dropdownStudio.hasOwnProperty(i)) {
+                    const dropdown = dropdownStudio[i];
+                    dropdown.querySelector('#estudio').value = data.estudios[i].estudio;
+                    dropdown.querySelector('#estudio-url').value = data.estudios[i].url;
+                }
             }
         }
         // DROPDOWN-STUDIO END
@@ -531,7 +535,7 @@ class RenderEditarAnime extends RenderBase {
             for (const diaVerificado of diasVerificados) {
                 let li = diaVerificado.parentElement.parentElement; // Llegamos a la fila
                 let dia = li.querySelector('#dia').value;
-                let orden = li.querySelector('#orden').value;
+                let orden = parseInt(li.querySelector('#orden').value);
                 if (orden === '') continue;
                 dias.push({
                     dia,
@@ -550,7 +554,7 @@ class RenderEditarAnime extends RenderBase {
             // DROPDOWN-STUDIO END
             this.currentAnime.nombre = nombre;
             this.currentAnime.dias = dias;
-            this.currentAnime.capVistos = capVistos;
+            this.currentAnime.nrocapvisto = capVistos;
             this.currentAnime.totalcap = totalCap;
             this.currentAnime.tipo = tipo;
             this.currentAnime.estado = estado;

@@ -442,17 +442,16 @@ select.browser-default {
 	color: hsla(0, 0%, 75%, 1) !important; /*este important es para superar la especificidad de materialize*/
 }
 .info-margin-cap {
-	margin-top: 20px;
+	margin-top: 50px;
 }
 .info-cap-vistos {
-	display: inline-block;
 	padding-left: 60px;
 	font-weight: bold;
-	color: hsla(0, 0%, 20%, 1);
 }
 .info-cap-hashtag {
 	position: relative;
-	top: 36px;
+	top: 16px;
+	font-size: 31px;
 }
 .info-cap-hashtag::before {
 	height: 31px;

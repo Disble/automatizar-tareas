@@ -1,5 +1,6 @@
 'use strict';
 const remote = require('electron').remote;
+const { Anime } = require('./Anime');
 const Menu = remote.Menu;
 const InputMenu = Menu.buildFromTemplate([
 	{
@@ -383,31 +384,92 @@ class RenderBase {
 		});
 	}
 	/**
-	 * Reconoce que un anime se encuentra en la versión `1.x.x`.
-	 * @param {any[]} animes Lista de animes.
-	 */
-	async reconocerAnimeAntiguo(animes) {
-		let listaAnimesAntiguos = [];
-		for (const anime of animes) {
-			if (!anime.dias) listaAnimesAntiguos.push(anime._id);
-		}
-		return {
-			lista: listaAnimesAntiguos,
-			antiguo: listaAnimesAntiguos.length > 0
-		};
-	}
-	/**
 	 * Mensaje de advetencia de versión `1.x.x`.
 	 */
 	advertenciaVersion1() {
-		swal({
+		return swal({
 			title: "¿Problemas de actualización?",
-			text: "Se encontró animes en la versión 1.x.x esto puede dar problemas en esta versión, así que vamos a actualizar sus datos para que no de conflictos.\n\nPD: Solo modificaremos los animes que se muestren en este apartado. Si quiere migrar todos sus datos puede ir al apartado respectivo en Opciones -> Respaldos.",
+			text: "Se encontró animes en la versión 1.x.x esto puede dar problemas en esta versión así que vamos a actualizar sus datos para que no de conflictos.",
 			icon: "warning",
 			button: {
 				className: "green"
 			}
-		});
+		})
+	}
+	/**
+	 * Utiliza los datos de los animes en la versión antigua y crea objetos nuevos 
+	 * tipo `Anime` que se utilizarán para actulizar los mismos animes en la base de 
+	 * datos.
+	 * @param {any} listaOldAnimes Lista de animes que coincidieron con la versión antigua.
+	 * @param {any} db Instancia de la base de datos.
+	 */
+	async convertirANuevoAnime(listaOldAnimes, db) {
+		for (const oldAnime of listaOldAnimes) {
+			let nombre = oldAnime.nombre;
+			let dias = [{
+				dia: this._diasNuevoFormato(oldAnime.dia),
+				orden: oldAnime.orden
+			}];
+			let nrocapvisto = oldAnime.nrocapvisto;
+			let totalcap = oldAnime.totalcap;
+			let tipo = oldAnime.tipo;
+			let pagina = oldAnime.pagina;
+			let carpeta = oldAnime.carpeta;
+			let estudios = null;
+			let origen = '';
+			let generos = null;
+			let duracion = null;
+			let portada = {
+				type: 'url',
+				path: ''
+			};
+			let estado = oldAnime.estado;
+			let repetir = null;
+			let activo = oldAnime.activo;
+			let primeravez = true;
+			let fechaPublicacion = null;
+			let fechaEstreno = null;
+			let fechaCreacion = oldAnime.fechaCreacion;
+			let fechaUltCapVisto = oldAnime.fechaUltCapVisto || null;
+			let fechaEliminacion = oldAnime.fechaEliminacion || null;
+			let anime = new Anime(nombre, dias, nrocapvisto, totalcap, tipo, pagina, carpeta, estudios, origen, generos, duracion, portada, estado, repetir, activo, primeravez, fechaPublicacion, fechaEstreno, fechaCreacion, fechaUltCapVisto, fechaEliminacion, oldAnime._id)
+			try {
+				db.actualizarAnime(oldAnime._id, anime);
+			} catch (error) {
+				return false;
+			}
+		}
+		return true;
+	}
+	/**
+	 * Reconoce y cambia el día del formato antiguo al nuevo.
+	 * @param {string} dia Día en formato antiguo
+	 */
+	_diasNuevoFormato(dia) {
+		switch (dia) {
+			case 'lunes':
+				return 'Lunes';
+			case 'martes':
+				return 'Martes';
+			case 'miercoles':
+				return 'Miércoles';
+			case 'jueves':
+				return 'Jueves';
+			case 'viernes':
+				return 'Viernes';
+			case 'sabado':
+				return 'Sábado';
+			case 'domingo':
+				return 'Domingo';
+			case 'sin ver':
+				return 'Sin ver';
+			case 'visto':
+				return 'Visto';
+			case 'ver hoy':
+				return 'Ver hoy';
+			default:
+				return 'Lunes';
+		}
 	}
 }
 

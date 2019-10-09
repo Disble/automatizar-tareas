@@ -354,7 +354,15 @@ class Historial extends RenderBase {
 		// Info
 		document.getElementById('nombre').innerText = anime.nombre === '' ? 'Una típica historia' : anime.nombre;
 		document.getElementById('estado').innerText = this.getState(anime.estado).name;
-		document.getElementById('capvistos').innerText = this.isNoData(anime.nrocapvisto) || anime.nrocapvisto === 0 ? 'Empieza hoy una nueva aventura' : `${anime.nrocapvisto} capítulos vistos`
+		let numcapvistos = '';
+		if (this.isNoData(anime.nrocapvisto) || anime.nrocapvisto === 0) {
+			numcapvistos = 'Empieza hoy una nueva aventura';
+		} else if (anime.nrocapvisto === 1) {
+			numcapvistos = `${anime.nrocapvisto} capítulo visto`;
+		} else {
+			numcapvistos = `${anime.nrocapvisto} capítulos vistos`;
+		}
+		document.getElementById('capvistos').innerText = numcapvistos;
 		document.getElementById('totalcap').innerText = this.isNoData(anime.totalcap) ? 'No hay datos del total de capítulos' : `${anime.totalcap} capítulos en total`;
 		document.getElementById('duracion').innerText = this.isNoData(anime.duracion) ? 'No hay datos de la duración por capítulo' : `${anime.duracion} minutos por capitulo`;
 		document.getElementById('tipo').innerText = this.isNoData(anime.tipo) ? 'Desconocido' : this.getStateType(anime.tipo).name;
@@ -369,12 +377,13 @@ class Historial extends RenderBase {
 		document.getElementById('fechaeliminacion').value = this.isNoData(anime.fechaEliminacion) ? 'Desconocido' : this._setFullDate(anime.fechaEliminacion);
 		// Generos
 		let chipsGeneros = document.getElementById('chips-generos');
-		for (const genero of anime.generos) {
-			let chip = document.createElement('div');
-			chip.classList.add('chip');
-			chip.innerText = genero;
-			chipsGeneros.append(chip);
-		}
+		if (!this.isNoData(anime.generos) && anime.generos.length > 0)
+			for (const genero of anime.generos) {
+				let chip = document.createElement('div');
+				chip.classList.add('chip');
+				chip.innerText = genero;
+				chipsGeneros.append(chip);
+			}
 		if (this.isNoData(anime.generos) || anime.generos.length === 0) { // en caso de no haber datos
 			chipsGeneros.innerHTML = /*html*/`<h6 class="bold">¿Acción o Terror? ¿Fantasía o Ciencia ficción?</h6>`;
 		}

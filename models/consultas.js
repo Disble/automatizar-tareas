@@ -450,30 +450,18 @@ class BDAnimes extends RenderBase {
 		});
 	}
 	/**
-	 * Reconoce a partir del Id del anime si el mismo
-	 * es de la versión antigua `v.1.x.x` o la nueva.
-	 * @param {string} id Id del anime
+	 * Reconoce a partir del atributo `dia` si un anime es antiguo o no y 
+	 * devuelve la lista de todos los animes que son antiguos.
 	 */
-	async reconocerAnimeAntiguo(id) {
-		return new Promise(async (resolve, reject) => {
-			let anime = await this.buscarPorId(id);
-			if (anime.cangrejo) {
-				console.log('anime.dia', anime.dia);
-				return resolve(true);
-			} else {
-				console.log('No existe');
-				return resolve(false);
-			}
-			// console.log(idAnime);
-
-			// animesdb.remove({ _id: id }, {}, function (err, numRemoved) {
-			// 	if (err) {
-			// 		reject(new Error(err));
-			// 		process.exit(0);
-			// 	}
-
-			// 	return resolve(true);
-			// });
+	async buscarAnimeAntiguo() {
+		return new Promise((resolve, reject) => {
+			animesdb.find({ $where: function () { return Object.keys(this).includes('dia'); } }).exec(function (err, record) {
+				if (err) {
+					reject(new Error(err));
+					process.exit(0)
+				}
+				return resolve(record);
+			});
 		});
 	}
 }
