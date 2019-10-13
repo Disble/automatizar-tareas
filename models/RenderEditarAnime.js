@@ -130,6 +130,9 @@ class RenderEditarAnime extends RenderBase {
                 inputDia.parentElement.querySelector('#check-day').checked = false;
             }
         }
+        document.querySelectorAll('input[id="orden"]').forEach(value => {   // valida que no se queden activados los checkbox
+            value.readOnly = true;
+        });
         for (const dia of data.dias) {                                      // Asigna datos de dia y orden al dropdown-dias
             for (const key in inputsDia) {
                 if (inputsDia.hasOwnProperty(key)) {
@@ -137,8 +140,10 @@ class RenderEditarAnime extends RenderBase {
                     const inputOrden = inputsOrden[key];
                     if (dia.dia === inputDia.value) {
                         let check = inputDia.parentElement.querySelector('#check-day');
+                        let orden = inputDia.parentElement.querySelector('#orden');
                         check.checked = true;
                         inputOrden.value = dia.orden;
+                        orden.removeAttribute('readonly');
                     }
                 }
             }

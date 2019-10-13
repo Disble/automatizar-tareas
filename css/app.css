@@ -177,11 +177,17 @@ table.highlight > tbody > tr:hover{
 .pr-20 {
 	padding-right: 20px;
 }
+.pl-10 {
+	padding-left: 10px;
+}
 .pl-20 {
 	padding-left: 20px;
 }
 .mt-40 {
 	margin-top: 40px;
+}
+.mt-30 {
+	margin-top: 30px;
 }
 .mt-20 {
 	margin-top: 20px;
@@ -509,10 +515,58 @@ background: #919193;
 .icon-downloader { 
 	position: absolute;
 	cursor: pointer;
-	top: 56px;
+	top: 20px;
 	right: 20px;
 }
 .icon-downloader > img {
 	width: 25px;
 	height: 25px;
+}
+/*NEW VER ANIMES*/
+.ver-img-card {
+	background-size: cover;
+    width: 100px;
+	height: calc(100% + 1px);
+    background-repeat: no-repeat;
+	background-position: center;
+	border-radius: 10px 0 0 10px;
+	background-position-y: 2px;
+}
+.ver-radius-card {
+	border-radius: 10px;
+}
+.ver-cap-vistos {
+	font-variant-numeric: oldstyle-nums;
+}
+.grey-text.darken-1 {
+	color: hsla(0, 0%, 40%, 1) !important;
+}
+.ver-folder-icon:hover {
+	color: #4CAF50 !important;
+}
+.ver-link-icon:hover {
+	color: #2196F3 !important;
+}
+.ver-sun-icon:hover {
+	color: #ffc107 !important;
+}
+.card-content.ver-card-content {
+	padding-top: 12px;
+	padding-bottom: 12px;
+}
+.ver-day-title {
+	margin-top: 16px;
+}
+.modal-radius {
+	border-radius: 10px;
+}
+.modal-footer.ver-modal-footer { /*para borrar*/
+	height: 28px;
+}
+.ver-modal-close {
+	right: 10px;
+    position: relative;
+}
+.ver-default-image {
+	max-width: 350px;
 }

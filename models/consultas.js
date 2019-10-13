@@ -34,15 +34,34 @@ class BDAnimes extends RenderBase {
 	buscar(dia) {
 		return new Promise((resolve, reject) => {
 			animesdb
-				.find({ $and: [{ "dia": dia }, { $or: [{ "activo": true }, { "activo": { $exists: false } }] }] })
-				.sort({ "orden": 1 })
+				.find({ $and: [{ "dias": { $elemMatch: { "dia": dia } } }, { $or: [{ "activo": true }, { "activo": { $exists: false } }] }] })
 				.exec(function (err, record) {
 					if (err) {
 						reject(new Error(err));
 						process.exit(0);
 					}
+					// Algoritmo de ordenación
+					let ordenList = [];
+					for (const anime of record) { // primero, saco una lista de objetos con el orden filtrado por dia y los guardamos con su respectivo anime
+						for (const dias of anime.dias) {
+							if (dias.dia === dia) {
+								ordenList.push({
+									orden: dias.orden,
+									anime
+								});
+							}
+						}
+					}
+					let ordenSort = ordenList.sort((a, b) => { // ordenamos los orden
+						return a.orden > b.orden;
+					});
+					let animes = [];
+					for (const iterator of ordenSort) { // sacamos los anime de cada objeto
+						animes.push(iterator.anime);
+					}
+					//
 					return resolve({
-						datos: record
+						datos: animes
 					});
 				});
 		});
@@ -78,32 +97,17 @@ class BDAnimes extends RenderBase {
 		});
 	}
 	/**
-	 * Compara los días contra la base de 
-	 * datos para encontrar la medallas.
-	 * @param {string[]} menu 
+	 * Cuenta los animes que cumplen con las siguientes condiciones:
+	 * 1. Coincida con el día dado.
+	 * 2. Sea un anime activo.
+	 * 3. Su estado sea mayor a 0. 
+	 * @param {string} dia Día por el cual filtrar las medallas
+	 * @returns {Promise<number>} Número de animes que cumplen las condiciones (medallas) por día.
 	 */
-	async buscarMedallasDia(menu) {
-		let medallas = [];
-		let contNombres = 0;
-		for (const tipo in menu) {
-			const grupo = menu[tipo];
-			for (const titulo in grupo) {
-				let dia = this.quitaAcentos(grupo[titulo].id);
-				let datos = await this._buscarMedalla(dia);
-				medallas.push({
-					itemMenu: contNombres++,
-					datos: datos
-				});
-			}
-		}
-		return medallas;
-	}
-
-	_buscarMedalla(dia) {
+	buscarMedalla(dia) {
 		return new Promise((resolve, reject) => {
 			animesdb
-				.count({ $and: [{ "dia": dia }, { $or: [{ "activo": true }, { "activo": { $exists: false } }] }, { "estado": { $gt: 0 } }] })
-				.sort({ "orden": 1 })
+				.count({ $and: [{ "dias": { $elemMatch: { "dia": dia } } }, { $or: [{ "activo": true }, { "activo": { $exists: false } }] }, { "estado": { $gt: 0 } }] })
 				.exec(function (err, record) {
 					if (err) {
 						reject(new Error(err));

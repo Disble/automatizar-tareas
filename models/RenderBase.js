@@ -411,8 +411,8 @@ class RenderBase {
 				orden: oldAnime.orden
 			}];
 			let nrocapvisto = oldAnime.nrocapvisto;
-			let totalcap = oldAnime.totalcap;
-			let tipo = oldAnime.tipo;
+			let totalcap = parseInt(oldAnime.totalcap) === undefined ? null : parseInt(oldAnime.totalcap);
+			let tipo = oldAnime.tipo === undefined ? null : oldAnime.tipo;
 			let pagina = oldAnime.pagina;
 			let carpeta = oldAnime.carpeta;
 			let estudios = null;
@@ -425,14 +425,14 @@ class RenderBase {
 			};
 			let estado = oldAnime.estado;
 			let repetir = null;
-			let activo = oldAnime.activo;
+			let activo = oldAnime.activo; // solo hubo 1 caso undefined de 217 posibles casos
 			let primeravez = true;
 			let fechaPublicacion = null;
 			let fechaEstreno = null;
 			let fechaCreacion = oldAnime.fechaCreacion;
 			let fechaUltCapVisto = oldAnime.fechaUltCapVisto || null;
 			let fechaEliminacion = oldAnime.fechaEliminacion || null;
-			let anime = new Anime(nombre, dias, nrocapvisto, totalcap, tipo, pagina, carpeta, estudios, origen, generos, duracion, portada, estado, repetir, activo, primeravez, fechaPublicacion, fechaEstreno, fechaCreacion, fechaUltCapVisto, fechaEliminacion, oldAnime._id)
+			let anime = new Anime(nombre, dias, nrocapvisto, totalcap, tipo, pagina, carpeta, estudios, origen, generos, duracion, portada, estado, repetir, activo, primeravez, fechaPublicacion, fechaEstreno, fechaCreacion, fechaUltCapVisto, fechaEliminacion, oldAnime._id);
 			try {
 				db.actualizarAnime(oldAnime._id, anime);
 			} catch (error) {

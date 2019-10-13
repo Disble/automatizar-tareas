@@ -16,7 +16,7 @@ let template = [
 				if (focusedWindow) {
 					if (focusedWindow.id === 1) {
 						BrowserWindow.getAllWindows().forEach(function (win) {
-							win.loadFile(path.join('views', 'animes', 'index.html'));
+							win.loadFile(path.join('views', 'animes', 'ver.html'));
 						})
 					}
 				}
@@ -376,8 +376,8 @@ function createWindow() {
 		icon: path.join(__dirname, '/icons/png/512x512.png')
 	});
 	mainWindow.setTitle('Autoreas');
-	// and load the index.html of the app.
-	mainWindow.loadFile(path.join('views', 'animes', 'index.html'));
+	// and load the ver.html of the app.
+	mainWindow.loadFile(path.join('views', 'animes', 'ver.html'));
 
 	// Loading menu from menu template
 	const menu = Menu.buildFromTemplate(template);
