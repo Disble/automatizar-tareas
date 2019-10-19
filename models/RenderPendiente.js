@@ -91,7 +91,7 @@ class RenderPendiente extends RenderBase {
 											</div>
 											<div class="col s2 push-s1">
 												<input type="file" name="carpeta" id="file${index}" class="inputfile" webkitdirectory />
-												<label for="file${index}" class="tooltipped blue" data-position="bottom" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
+												<label for="file${index}" class="tooltipped blue lighten-4 blue-text text-darken-4" data-position="bottom" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
 											</div>
 										</div>
 									</div>

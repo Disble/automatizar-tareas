@@ -384,7 +384,7 @@ class RenderVerAnime extends RenderBase {
             return images[0];
         }
         if (this.isUrl(pathImage)) {
-            let urlExists = this._urlExists(pathImage);
+            let urlExists = this.urlExists(pathImage);
             if (urlExists) {
                 pathRes = pathImage;
             } else {
@@ -423,21 +423,6 @@ class RenderVerAnime extends RenderBase {
             return false
         else if (estado === 1 || estado === 2 || estado === 3)
             return true
-    }
-    /**
-     * Comprueba si una `url` es accesible. El método funciona de 
-     * forma síncrona ignorando el mensaje `deprecate`.
-     * @param {string} url URL a probar.
-     */
-    _urlExists(url) {
-        try {
-            var http = new XMLHttpRequest();
-            http.open('HEAD', url, false);
-            http.send();
-            return http.status != 404;
-        } catch (_error) {
-            return false;
-        }
     }
 }
 

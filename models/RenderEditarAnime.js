@@ -482,7 +482,7 @@ class RenderEditarAnime extends RenderBase {
                     <input type="text" id="estudio" placeholder="Estudio" class="col s6">
                     <input type="text" id="estudio-url" placeholder="URL" class="col s5">
                     <div class="col s1 dropdown-trash">
-                        <a id="btn-delete-row" class="red white-text">
+                        <a id="btn-delete-row" class="red lighten-5 red-text text-darken-1">
                             <i class="material-icons icon-trash-empty"></i>
                         </a>
                     </div>
@@ -625,8 +625,7 @@ class RenderEditarAnime extends RenderBase {
         let dropdownDias = document.querySelector(`[data-target*="dropdown-dias"]`);
         let noError = true; // es para regresar al color original
         if (diasVerificados.length === 0) { // En caso de estar vacio se marca como invalido.
-            dropdownDias.classList.remove('blue');
-            dropdownDias.classList.add('red');
+            dropdownDias.classList.add('dropdown-error');
             validado = false;
             noError = false;
         }
@@ -634,16 +633,14 @@ class RenderEditarAnime extends RenderBase {
             let li = diaVerificado.parentElement.parentElement; // Llegamos a la fila
             let orden = li.querySelector('#orden').value;
             if (orden === '') {
-                dropdownDias.classList.remove('blue');
-                dropdownDias.classList.add('red');
+                dropdownDias.classList.add('dropdown-error');
                 validado = false;
                 noError = false;
                 continue;
             }
         }
         if (noError) {
-            dropdownDias.classList.remove('red');
-            dropdownDias.classList.add('blue');
+            dropdownDias.classList.remove('dropdown-error');
         }
         return validado;
     }

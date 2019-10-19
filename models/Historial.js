@@ -321,7 +321,7 @@ class Historial extends RenderBase {
 	 */
 	capitulosVistosUnAnime(anime) {
 		let animeFilter = this._filterCapChart(anime);
-		this._chartCapVistos(animeFilter, 'bar', 'Capítulos vistos');
+		this._chartCapResVistos(animeFilter.datasets, animeFilter.name, 'Capítulos vistos');
 	}
 	/**
 	 * Crea un evento `click` para cada fila de la tabla 
@@ -345,12 +345,14 @@ class Historial extends RenderBase {
 		console.log('entry point', anime);
 		// Cover
 		// Para mostrar la imagen en realidad lo único que importa es la dirección del slash.
-		let cover = document.getElementById('info-cover');
-		if (anime.portada.path === undefined || anime.portada.path === '' || this.isNoData(anime.portada.path)) {
-			cover.setAttribute('style', `background-image: url('../../images/Eiffel_tower.svg'); background-size: contain;`);
-		} else {
-			cover.setAttribute('style', `background-image: url('${anime.portada.path}')`);
-		}
+		this._isDefaultImage(anime.portada.path).then(isDefault => { // se encuentra en este formato para que la validación no detenga la carga de datos
+			let cover = document.getElementById('info-cover');
+			if (isDefault) {
+				cover.setAttribute('style', `background-image: url('../../images/Eiffel_tower.svg'); background-size: contain;`);
+			} else {
+				cover.setAttribute('style', `background-image: url('${anime.portada.path}')`);
+			}
+		});
 		// Info
 		document.getElementById('nombre').innerText = anime.nombre === '' ? 'Una típica historia' : anime.nombre;
 		document.getElementById('estado').innerText = this.getState(anime.estado).name;
@@ -525,7 +527,7 @@ class Historial extends RenderBase {
 
 	_chartCapVistos(listFilter, tipo, title) {
 		let ctx = document.getElementById('capVistos')
-		let capVistos = new Chart(ctx, {
+		new Chart(ctx, {
 			type: tipo,
 			data: {
 				labels: this._filterLabelChart(listFilter.nombres),
@@ -545,6 +547,42 @@ class Historial extends RenderBase {
 							beginAtZero: true,
 							min: 0
 						}
+					}]
+				},
+				title: {
+					display: true,
+					text: title
+				},
+				legend: {
+					display: false
+				}
+			}
+		})
+	}
+	/**
+	 * Crea un chart que muestra una comparativa de los capítulos restantes contra los totales.
+	 * Si en esta comparativa son iguales o no hay totales solo se muestran los restantes.
+	 * @param {{name: string[], datasets: {data: number[], backgroundColor: string}[]}} datasets Arrays de datos para mostrar.
+	 * @param {string} name Nombre del anime.
+	 * @param {string} title Titulo del chart.
+	 */
+	_chartCapResVistos(datasets, name, title) {
+		let ctx = document.getElementById('capVistos')
+		new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: this._filterLabelChart(name),
+				datasets
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				scales: {
+					xAxes: [{
+						stacked: true,
+					}],
+					yAxes: [{
+						stacked: true
 					}]
 				},
 				title: {
@@ -775,17 +813,30 @@ class Historial extends RenderBase {
 			borderColor: 'rgb(54, 162, 235)',
 		};
 	}
-
+	/**
+	 * Filtra los datos de un anime para crear un objeto que 
+	 * posteriormente se usara en el método `_chartCapResVistos()`. 
+	 * En este método se comparan el número de capítulos visto contra 
+	 * los totales.
+	 * @param {Anime} anime Datos del Anime
+	 */
 	_filterCapChart(anime) {
-		let colorRand = this._getColorRandom(0.4)
-		let colorT = colorRand.replace('0.4', '1')
-		let data = {
-			'nombres': [anime.nombre],
-			'nroCap': [anime.nrocapvisto],
-			'colorTransparente': [colorRand],
-			'color': [colorT]
+		let datasets = [
+			{
+				data: [anime.nrocapvisto],
+				backgroundColor: '#64b5f6',
+			}
+		];
+		if ((!this.isNoData(anime.totalcap) || anime.totalcap > 0) && anime.totalcap !== anime.nrocapvisto) {
+			datasets.push({
+				data: [anime.totalcap],
+				backgroundColor: '#7986cb',
+			});
 		}
-		return data
+		return {
+			name: [anime.nombre],
+			datasets
+		};
 	}
 
 	_filterCapResChart(list) {
@@ -856,6 +907,44 @@ class Historial extends RenderBase {
 
 	_getRandom() {
 		return Math.round(Math.random() * 255) - Math.round(Math.random() * 85);
+	}
+	/**
+     * Comprueba que el `path` de la imagen sea válido, cumpliendo una 
+     * serie de requisitos.
+     * 
+     * 1. Que el `path` tenga datos y no sea una `string` vacio.
+     * 2. Que sea una `url`.
+     * 3. En caso de ser una `url` que esta sea accesible.
+     * 4. En caso de no ser una `url`, que sea un path de disco accesible.
+     * 
+     * Si no cumple con estas condiciones devuelve una imagen por defecto.
+     * @param {string} pathImage Path de la imagen, puede ser una url o path de disco.
+     */
+	async _isDefaultImage(pathImage) {
+		// no se puede usar path.normalize() porque background-url no le acepta con un solo backslash (windows format)
+		let pathRes = null;
+		if (this.isNoData(pathImage) || pathImage === "") {
+			return true;
+		}
+		if (this.isUrl(pathImage)) {
+			let urlExists = this.urlExists(pathImage);
+			if (urlExists) {
+				pathRes = false;
+			} else {
+				pathRes = true;
+			}
+		} else {
+			try {
+				if (fs.existsSync(pathImage)) {
+					pathRes = false;
+				} else {
+					pathRes = true;
+				}
+			} catch (err) {
+				pathRes = true;
+			}
+		}
+		return pathRes;
 	}
 }
 

@@ -30,8 +30,17 @@ class RenderNuevoAnime extends RenderBase {
 			<td>
 				<div class="input-field days">
 					<!-- Dropdown Trigger -->
-					<a class='dropdown-trigger btn btn-block blue' href='#'
-						data-target='dropdown-dias${this.contNewFolder}'>Días</a>
+					<a class='dropdown-trigger btn btn-block dropdown-dias black-text z-depth-0' href='#'
+						data-target='dropdown-dias${this.contNewFolder}''>
+						Días
+						<span class="right">
+							<svg class="caret" height="24" viewBox="0 0 24 24" width="24"
+								xmlns="http://www.w3.org/2000/svg">
+								<path d="M7 10l5 5 5-5z"></path>
+								<path d="M0 0h24v24H0z" fill="none"></path>
+							</svg>
+						</span>
+					</a>
 					<!-- Dropdown Structure -->
 					<ul id='dropdown-dias${this.contNewFolder}' class='dropdown-content days'>
 					</ul>
@@ -54,13 +63,13 @@ class RenderNuevoAnime extends RenderBase {
 			<td><input type="text" name="pagina" class="validate" required></td>
 			<td>
 				<input type="file" name="carpeta" id="file${this.contNewFolder}" class="inputfile btn-carpeta-buscar" webkitdirectory />
-				<label for="file${this.contNewFolder}" class="tooltipped blue" data-position="bottom" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
+				<label for="file${this.contNewFolder}" class="tooltipped blue lighten-4 blue-text text-darken-4" data-position="bottom" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
 			</td>
 			<td>
 				<a class="modal-trigger icon-big black-text" href="#modal${this.contNewFolder}"><i class="material-icons icon-dot-3 flex flex-x-center"></i></a>
 				<div id="modal${this.contNewFolder}" class="modal bottom-sheet">
 					<div class="modal-content left-align">
-						<h5>Datos opcionales</h5>
+						<h5 class="mb-20">Datos opcionales</h5>
 						<div class="row no-margin">
 							<div class="input-field col s4">
 								<input value="0" id="nrocapvisto" name="nrocapvisto" type="number" min="0"
@@ -81,7 +90,7 @@ class RenderNuevoAnime extends RenderBase {
 						</div>
 						<div class="row">
 							<div class="col s12">
-								<p class="portada">Portada</p>
+								<p class="portada grey-text">Portada</p>
 								<select id="cambiar-tipo-imagen">
 									<option value="imagen">Imagen</option>
 									<option value="url">URL</option>
@@ -89,7 +98,7 @@ class RenderNuevoAnime extends RenderBase {
 								<label for="cambiar-tipo-imagen">Seleccionar portada</label>
 							</div>
 							<div class="file-field input-field col s12" id="cambiar-portada">
-								<div class="btn btn-small blue" id="cambiar-portada-input">
+								<div class="btn btn-small blue lighten-5 blue-text text-darken-4 z-depth-0" id="cambiar-portada-input">
 									<span><i class="material-icons icon-picture"></i></span>
 									<input type="file" id="portada-input" name="portadainput"
 										accept="image/*">
@@ -103,7 +112,7 @@ class RenderNuevoAnime extends RenderBase {
 							Remover fila
 							<a class="right waves-effect waves-light btn red" id="btn-borrar-fila"><i class="icon-trash-empty material-icons right"></i>Eliminar</a>
 						</h5>
-						<p>Se removerá esta fila junto con sus datos.</p>
+						<p class="grey-text text-darken-2">Se removerá esta fila junto con sus datos.</p>
 					</div>
 				</div>
 			</td>

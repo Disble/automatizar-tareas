@@ -236,6 +236,8 @@ class RenderBase {
 		label.setAttribute('data-tooltip', path);
 		label.removeClass(label, 'blue'); // método hecho con prototipos de la clase RenderBase
 		label.addClass(label, 'green'); // método hecho con prototipos de la clase RenderBase
+		label.removeClass(label, 'blue-text'); // método hecho con prototipos de la clase RenderBase
+		label.addClass(label, 'green-text'); // método hecho con prototipos de la clase RenderBase
 		M.Tooltip.init(document.querySelectorAll('.tooltipped'), {
 			exitDelay: 50,
 			enterDelay: 350
@@ -469,6 +471,21 @@ class RenderBase {
 				return 'Ver hoy';
 			default:
 				return 'Lunes';
+		}
+	}
+	/**
+     * Comprueba si una `url` es accesible. El método funciona de 
+     * forma síncrona ignorando el mensaje `deprecate`.
+     * @param {string} url URL a probar.
+     */
+	urlExists(url) {
+		try {
+			var http = new XMLHttpRequest();
+			http.open('HEAD', url, false);
+			http.send();
+			return http.status != 404;
+		} catch (_error) {
+			return false;
 		}
 	}
 }

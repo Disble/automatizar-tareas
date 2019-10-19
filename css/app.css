@@ -54,15 +54,12 @@ html {
 	font-size: 0.8em;
 	text-align: center;
 	padding: 6px 4px;
-	font-weight: 400;
-	color: white;
+	font-weight: bold;
+	/* color: white; */
 	width: 80px;
 	border-radius: 4px;
 	display: inline-block;
 	cursor: pointer;
-}
-.inputfile + label:hover {
-	background-color: #4CAF50 ;
 }
 .flex {
 	display: flex;
@@ -340,8 +337,8 @@ select.browser-default {
     font-size: 1.3em;
 }
 .dropdown-content.inputs .row .dropdown-trash a:hover {
-	background-color: #eee !important; /* Este important es porque materializecss pone en sus colores important */
-	color: var(--red-materialize) !important; /* Este important es porque materializecss pone en sus colores important */
+	color: #FFEBEE !important; /* Este important es porque materializecss pone en sus colores important */
+	background-color: var(--red-materialize) !important; /* Este important es porque materializecss pone en sus colores important */
 	border: 1px solid var(--red-materialize);
 }
 .dropdown-content.inputs .row > input:first-child {
@@ -399,7 +396,7 @@ select.browser-default {
 	padding-right: 160px;
 }
 .danger-border {
-	border: 1px solid #d73a49;
+	border: 2px solid hsla(354, 66%, 80%, 1);
 }
 .normal-border {
 	border: 1px solid #d1d5da
@@ -569,4 +566,36 @@ background: #919193;
 }
 .ver-default-image {
 	max-width: 350px;
+}
+.dropdown-dias,
+.dropdown-estudios {
+	background-color: transparent;
+	border-bottom: 1px solid #9e9e9e;
+	padding: 0;
+	font-size: 16px;
+	text-align: left;
+	text-transform: capitalize;
+}
+.dropdown-dias span,
+.dropdown-estudios span {
+	position: relative;
+	top: 5px;
+}
+.dropdown-dias:hover,
+.dropdown-estudios:hover {
+	background-color: transparent;
+	color: #000 !important;
+}
+.dropdown-dias:focus,
+.dropdown-estudios:focus {
+	background-color: transparent;
+	color: #000 !important;
+}
+.dropdown-error {
+	border-bottom: 1px solid var(--red-materialize);
+	-webkit-box-shadow: 0 1px 0 0 var(--red-materialize) !important; /* estos !important son por la class z-depth-0*/
+    box-shadow: 0 1px 0 0 var(--red-materialize) !important; /* estos !important son por la class z-depth-0*/
+}
+.datos-anime-nuevo .dropdown-dias {
+	font-size: 16px;
 }
