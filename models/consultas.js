@@ -370,10 +370,12 @@ class BDAnimes extends RenderBase {
 	 * consulta falla retornara 0.
 	 * @param {string} id Id del anime.
 	 * @param {float} cont Número de capítulos.
+	 * @param {boolean} estrenar Indica si un anime se esta estrenando o no.
 	 */
-	actualizarCap(id, cont) {
+	actualizarCap(id, cont, estrenar) {
 		return new Promise((resolve, reject) => {
-			animesdb.update({ "_id": id }, { $set: { "nrocapvisto": cont, "fechaUltCapVisto": new Date() } }, function (err, numUpdate) {
+			let setData = estrenar ? { "nrocapvisto": cont, "fechaUltCapVisto": new Date(), "fechaEstreno": new Date() } : { "nrocapvisto": cont, "fechaUltCapVisto": new Date() };
+			animesdb.update({ "_id": id }, { $set: setData }, function (err, numUpdate) {
 				if (err) {
 					reject(new Error(err));
 					return;
@@ -382,6 +384,17 @@ class BDAnimes extends RenderBase {
 			});
 		});
 	}
+	// actualizarEstreno(id) {
+	// 	return new Promise((resolve, reject) => {
+	// 		animesdb.update({ "_id": id }, { $set: { "fechaEstreno": new Date() } }, function (err, numUpdate) {
+	// 			if (err) {
+	// 				reject(new Error(err));
+	// 				return;
+	// 			}
+	// 			resolve(numUpdate);
+	// 		});
+	// 	});
+	// }
 	/**
 	 * Guarda la nueva dirección de la carpeta del anime
 	 * seleccionado.
