@@ -244,6 +244,7 @@ class RenderEditarAnime extends RenderBase {
                         carpeta: '',
                     });
                 }
+                swal("Éxito", "Anime enviado al historial exitosamente", "success");
             } else {
                 swal("¡Acción cancelada!", "", "info");
             }

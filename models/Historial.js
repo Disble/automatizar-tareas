@@ -400,10 +400,12 @@ class Historial extends RenderBase {
 		}
 		// Botón Eliminar
 		document.querySelector('.btn-eliminar-anime').addEventListener('click', e => {
+			e.preventDefault();
+			e.stopPropagation();
 			this._deleteAnime(anime._id);
 		});
 		// Botón Restaurar
-		if (anime.activo === false) {
+		if (!anime.activo) {
 			document.getElementById('restaurar-container').classList.remove('hide');
 			document.querySelector('.btn-restaurar-anime').addEventListener('click', e => {
 				e.preventDefault();
@@ -411,9 +413,76 @@ class Historial extends RenderBase {
 				this._restoreRow(anime._id);
 			});
 		}
+		// Botón Repetir
+		if (anime.repetir.length > 0) {
+			document.getElementById('historial-repeticion').classList.remove('hide');
+			document.getElementById('for-repeticion').innerHTML = this._htmlRepetirHistorial(anime.repetir);
+		}
+		if (anime.estado > 0) {
+			document.getElementById('repetir-container').classList.remove('hide');
+			document.querySelector('.btn-repetir-anime').addEventListener('click', e => {
+				e.preventDefault();
+				e.stopPropagation();
+				this._repeatAnime(anime);
+			});
+		}
 		// Charts
 		this.capitulosVistosUnAnime(anime);
 		this._setInfoLineaTiempo(anime);
+	}
+	/**
+	 * Genera una estructura html con los datos de cada repetición 
+	 * del anime.
+	 * @param {any} repeticiones Lista del historico de repeticiones
+	 */
+	_htmlRepetirHistorial(repeticiones) {
+		let repeticionHistorial = '';
+		for (const repeticion of repeticiones) {
+			repeticionHistorial += /*html*/`
+				<li>
+					<div class="collapsible-header">${repeticion.numrepeticion}: ${this._setFullDate(repeticion.fechaRepeticion)}</div>
+					<div class="collapsible-body">
+						<div class="row">
+							<div class="input-field col s12">
+								<input readonly type="text" value="${this.getState(repeticion.estado).name}">
+								<label>Estado</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<input readonly type="text" value="${repeticion.nrocapvisto}">
+								<label>Número de capitulos vistos</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<input readonly type="text" value="${this.isNoData(repeticion.fechaCreacion) ? 'Desconocido' : this._setFullDate(repeticion.fechaCreacion)}">
+								<label>Fecha de creación</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<input readonly type="text" value="${this.isNoData(repeticion.fechaEstreno) ? 'Desconocido' : this._setFullDate(repeticion.fechaEstreno)}">
+								<label>Fecha de estreno</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<input readonly type="text" value="${this.isNoData(repeticion.fechaUltCapVisto) ? 'Desconocido' : this._setFullDate(repeticion.fechaUltCapVisto)}">
+								<label>Fecha de último capitulo visto</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<input readonly type="text" value="${this.isNoData(repeticion.fechaEliminacion) ? 'Desconocido' : this._setFullDate(repeticion.fechaEliminacion)}">
+								<label>Fecha de eliminación</label>
+							</div>
+						</div>
+					</div>
+				</li>
+			`;
+		}
+		return repeticionHistorial;
 	}
 	/**
 	 * Establece la línea de tiempo para el anime
@@ -424,26 +493,112 @@ class Historial extends RenderBase {
 		let animeFil = this._filtroLineaTiempo(anime);
 		this._chartLineaTiempo(animeFil, 'line', 'Línea de tiempo');
 	}
+	/**
+	 * Repite un anime.
+	 * @param {Anime} anime Anime
+	 */
+	async _repeatAnime(anime) {
+		let confirm = await swal({
+			title: "¿Nueva partida?",
+			text: "Se hará un respaldo de los datos actuales y luego se resetearan para que puedas vivir otra vez esta historia.",
+			icon: "info",
+			className: "info-swal",
+			buttons: {
+				cancel: {
+					text: "Cancelar",
+					visible: true,
+					className: "transparent"
+				},
+				confirm: {
+					text: "OK",
+					visible: true,
+					className: "blue lighten-4 blue-text text-darken-4"
+				}
+			},
+			dangerMode: true,
+		});
+		console.log('confirm', confirm);
+		if (confirm) {
+			if (anime.primeravez) anime.primeravez = false;
+			if (this.isNoData(anime.repetir) || anime.repetir.length === 0) anime.repetir = [];
+			anime.repetir.push({
+				numrepeticion: anime.repetir.length,
+				nrocapvisto: anime.nrocapvisto,
+				estado: anime.estado,
+				fechaCreacion: anime.fechaCreacion,
+				fechaEstreno: anime.fechaEstreno,
+				fechaUltCapVisto: anime.fechaUltCapVisto,
+				fechaEliminacion: anime.fechaEliminacion,
+				fechaRepeticion: new Date()
+			});
+			anime.nrocapvisto = 0;
+			anime.estado = 0; // siempre activo
+			anime.fechaCreacion = new Date();
+			anime.fechaEstreno = null;
+			anime.fechaUltCapVisto = null;
+			anime.fechaEliminacion = null;
+			anime.activo = true; // hay que restaurar el anime si esta eliminado
+			//
+			let numUpdate = await this.db.actualizarAnime(anime._id, anime);
+			if (numUpdate > 0) {
+				await swal({
+					title: "Éxito",
+					text: "Este mundo está lleno de infinitas posibilidades. Entre ellas, esta allí en alguna parte. ¡Así que encuéntrala! ¡Mira y mira otra vez! ¡Mil, diez mil, un millón de veces!",
+					icon: "success",
+					className: "success-swal"
+				});
+				this.recargarPagina();
+			} else {
+				await swal({
+					title: "Error",
+					text: "Houston, tenemos un problema.",
+					icon: "info",
+					className: "info-swal"
+				});
+			}
+		} else {
+			await swal({
+				title: "¡Acción cancelada!",
+				icon: "info",
+				className: "info-swal"
+			});
+		}
+	}
 	_restoreRow(id) {
 		swal({
 			title: "¿Estás seguro?",
 			text: "¡Volverá a aparecer en la lista de ver animes!",
 			icon: "warning",
 			buttons: ["Cancelar", "OK"],
+			className: "warning-swal",
 			dangerMode: true,
 		})
 			.then((willDelete) => {
 				if (willDelete) {
 					this.db.restaurarFila(id).then(async (resolve) => {
 						if (resolve > 0) {
-							await swal('Exito', 'El anime ya vuelve a estar disponible.', 'success');
+							await swal({
+								title: 'Éxito',
+								text: 'El anime ya vuelve a estar disponible.',
+								icon: 'success',
+								className: 'success-swal'
+							});
 							this.recargarPagina();
 						} else {
-							swal('Error', 'Tuvimos un pequeño problema al restaurar este anime. Tal vez si lo intentas más tarde...', 'error');
+							swal({
+								title: 'Error',
+								text: 'Tuvimos un pequeño problema al restaurar este anime. Tal vez si lo intentas más tarde...',
+								icon: 'error',
+								className: 'error-swal'
+							});
 						}
 					});
 				} else {
-					swal("¡Acción cancelada!", '', 'info');
+					swal({
+						title: "¡Acción cancelada!",
+						icon: "info",
+						className: "info-swal"
+					});
 				}
 			});
 	}
@@ -456,6 +611,7 @@ class Historial extends RenderBase {
 			title: "¿Estás seguro?",
 			text: "¡Una vez borrado, no vas a poder recuperarlo!",
 			icon: "warning",
+			className: "warning-swal",
 			buttons: ["Cancelar", "OK"],
 			dangerMode: true,
 		})
@@ -463,14 +619,28 @@ class Historial extends RenderBase {
 				if (willDelete) {
 					this.db.borrarAnime(id).then(async (resolve) => {
 						if (resolve > 0) {
-							await swal('Exito', 'Toda posibilidad de recuperación se ha perdido.', 'success');
-							this.recargarPagina();
+							await swal({
+								title: 'Éxito',
+								text: 'Toda posibilidad de recuperación se ha perdido.',
+								icon: 'success',
+								className: 'success-swal'
+							});
+							document.getElementById('return-history').click(); // aquí estoy aprovechandome del evento por defecto para regresar
 						} else {
-							swal('Error', 'Tuvimos un pequeño problema al borrar este anime. Tal vez si lo intentas más tarde...', 'error');
+							swal({
+								title: 'Error',
+								text: 'Tuvimos un pequeño problema al borrar este anime. Tal vez si lo intentas más tarde...',
+								icon: 'error',
+								className: 'error-swal'
+							});
 						}
 					});
 				} else {
-					swal("¡Acción cancelada!", '', 'info');
+					swal({
+						title: "¡Acción cancelada!",
+						icon: "info",
+						className: "info-swal"
+					});
 				}
 			});
 	}

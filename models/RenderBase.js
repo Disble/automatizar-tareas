@@ -426,7 +426,7 @@ class RenderBase {
 				path: ''
 			};
 			let estado = oldAnime.estado;
-			let repetir = null;
+			let repetir = [];
 			let activo = oldAnime.activo; // solo hubo 1 caso undefined de 217 posibles casos
 			let primeravez = true;
 			let fechaPublicacion = null;

@@ -1,28 +1,35 @@
 html {
 	color: hsla(0, 0%, 20%, 1);
 }
+
 :root {
 	--icon-hover: #4fd8fe;
 	--border-color: #1ca7ce;
 	--blue-color: #039be5;
 	--red-materialize: #f44336;
+	--blue-grey: #eceff1;
 }
+
 .blue-grey-text.lighten-5 {
-	color: #eceff1 !important;
+	color: var(--blue-grey) !important;
 }
+
 .barra-sumar {
 	display: flex;
 	position: relative;
 	align-items: center;
 }
-.barra-sumar > hr{
+
+.barra-sumar>hr {
 	width: 100%;
 }
-.barra-sumar > a{
+
+.barra-sumar>a {
 	display: flex;
 	justify-content: center;
 }
-.triangle{
+
+.triangle {
 	top: 10px;
 	position: absolute;
 	right: 34px;
@@ -31,17 +38,21 @@ html {
 	border-bottom: 10px solid transparent;
 	z-index: 2;
 }
+
 .titulo {
-    text-transform:capitalize;
+	text-transform: capitalize;
 }
-.btnIncremento{
+
+.btnIncremento {
 	width: 105px;
 }
+
 .btn-small {
 	padding: 0 1rem;
 	font-size: 0.9em !important;
 	font-weight: 300;
 }
+
 .inputfile {
 	width: 0.1px;
 	height: 0.1px;
@@ -50,7 +61,8 @@ html {
 	position: absolute;
 	z-index: -1;
 }
-.inputfile + label {
+
+.inputfile+label {
 	font-size: 0.8em;
 	text-align: center;
 	padding: 6px 4px;
@@ -61,245 +73,318 @@ html {
 	display: inline-block;
 	cursor: pointer;
 }
+
 .flex {
 	display: flex;
 }
-.flex-x-center{
+
+.flex-x-center {
 	justify-content: center;
 }
+
 .flex-y-center {
 	align-items: center;
 }
-.hidden{
+
+.hidden {
 	display: none;
 }
-.no-padding{
+
+.no-padding {
 	padding: 0;
 }
+
 .dropdown-content li>a>i.no-margin,
 .no-margin {
 	margin: 0;
 }
-.btn-eliminar-anime{
+
+.btn-eliminar-anime {
 	padding: 4px 10px;
-    border-radius: 11px;
+	border-radius: 11px;
 	color: hsla(354, 100%, 20%, 1) !important;
 	font-weight: 500;
 }
-.btn-repetir-anime{
+
+.btn-repetir-anime {
 	padding: 4px 10px;
-    border-radius: 11px;
+	border-radius: 11px;
 	color: hsla(207, 89%, 20%, 1) !important;
 	font-weight: 500;
 }
-.btn-restaurar-anime{
+
+.btn-restaurar-anime {
 	padding: 4px 10px;
-    border-radius: 11px;
+	border-radius: 11px;
 	color: hsla(36, 100%, 20%, 1) !important;
 	font-weight: 500;
 }
-.btn-eliminar-anime i, .btn-restaurar-anime i{
+
+.btn-eliminar-anime i,
+.btn-restaurar-anime i {
 	font-weight: bold;
 	font-size: 1.3em;
 }
-.btn-eliminar-anime a, .btn-restaurar-anime a{
-    font-weight: 500;
+
+.btn-eliminar-anime a,
+.btn-restaurar-anime a {
+	font-weight: 500;
 }
-.history-list > tr > td {
+
+.history-list>tr>td {
 	position: relative;
 	padding-right: 20px;
 }
-.history-list > tr > td > i.icon-state-trash {
+
+.history-list>tr>td>i.icon-state-trash {
 	position: absolute;
 	top: calc(50% - 11px);
 	right: 0;
 }
-table.highlight > tbody > tr:hover{
+
+table.highlight>tbody>tr:hover {
 	background-color: var(--icon-hover);
 	cursor: pointer;
 }
+
 .icon-pag,
-.icon-med{
+.icon-med {
 	font-size: 1.2em !important;
 }
+
 .icon-state-historial {
-    font-size: 1.4em;
+	font-size: 1.4em;
 }
+
 .icon-normal {
 	font-size: 1em !important;
 }
+
 .move-icon-cap {
 	position: relative;
 	left: 1px;
 	top: 1px;
 }
+
 .icon-big {
 	font-size: 24px;
 }
+
 .pagination li.active {
 	background-color: #40b8d9;
 }
+
 .text-icon {
 	width: 100%;
 }
+
 .hover-icon-complete:hover {
 	cursor: pointer;
 	text-decoration: var(--icon-hover);
-	color: var(--icon-hover) !important; /* Este !important es porque los de materialize ponen sus clases con !important y asi no se puede ¬¬ */
+	color: var(--icon-hover) !important;
+	/* Este !important es porque los de materialize ponen sus clases con !important y asi no se puede ¬¬ */
 }
+
 .btn-sortable:hover {
 	cursor: move;
 }
+
 .border-top {
 	border-top: 1px solid var(--border-color);
 }
+
 .border-bottom {
 	border-bottom: 1px solid var(--border-color);
 }
+
 .border-right {
 	border-right: 1px solid var(--border-color);
 }
+
 .border-left {
 	border-left: 1px solid var(--border-color);
 }
+
 .border-solid {
 	border: 1px solid var(--border-color);
 }
+
 .editable-pen:hover {
 	border: 1px solid var(--border-color);
 }
-.editable-pen.mh-small { /* mh : min-height */
+
+.editable-pen.mh-small {
+	/* mh : min-height */
 	min-height: 65px;
 }
+
 .pr-20 {
 	padding-right: 20px;
 }
+
 .pl-10 {
 	padding-left: 10px;
 }
+
 .pl-20 {
 	padding-left: 20px;
 }
+
 .mt-40 {
 	margin-top: 40px;
 }
+
 .mt-30 {
 	margin-top: 30px;
 }
+
 .mt-20 {
 	margin-top: 20px;
 }
+
 .mt-10 {
 	margin-top: 10px;
 }
+
 .mb-10 {
 	margin-bottom: 10px;
 }
+
 .mb-20 {
 	margin-bottom: 20px;
 }
+
 .mb-30 {
 	margin-bottom: 30px;
 }
+
 .mb-40 {
 	margin-bottom: 40px;
 }
+
 .mb-0 {
 	margin-bottom: 0;
 }
+
 .mt-0 {
 	margin-top: 0;
 }
+
 .mr-10 {
 	margin-right: 10px;
 }
+
 .mr-20 {
 	margin-right: 20px;
 }
+
 .mr-30 {
 	margin-right: 30px;
 }
+
 .mr-40 {
 	margin-right: 40px;
 }
+
 .ml-0 {
 	margin-left: 0;
 }
+
 .ml-10 {
 	margin-left: 10px;
 }
+
 .ml-20 {
 	margin-left: 20px;
 }
+
 .ml-30 {
 	margin-left: 30px;
 }
+
 .ml-40 {
 	margin-left: 40px;
 }
+
 .overflow-a {
 	overflow: auto;
 }
+
 .float-l {
 	float: left;
 }
+
 .float-r {
 	float: right;
 }
+
 .block {
 	width: 100%;
 }
-.dropdown-content li>a, 
+
+.dropdown-content li>a,
 .dropdown-content[class*="multiple-select-dropdown"] li>span {
 	font-size: small;
 	color: var(--border-color);
 	line-height: initial;
 	padding: 1px 16px;
 	position: relative;
-    top: 10px;
+	top: 10px;
 }
-.dropdown-content li>a, 
+
+.dropdown-content li>a,
 .dropdown-content li>span {
 	font-size: small;
 	color: var(--border-color);
 	line-height: initial;
 }
-[type="checkbox"]+span:not(.lever):before, 
+
+[type="checkbox"]+span:not(.lever):before,
 [type="checkbox"]:not(.filled-in)+span:not(.lever):after {
 	width: 15px;
 	height: 15px;
 	top: 2.5px;
 }
+
 [type="checkbox"]:checked+span:not(.lever):before {
 	width: 8px;
 	height: 18px;
 	border-right-color: #4caf50;
 	border-bottom-color: #4CAF50;
 }
-.select-dropdown li.optgroup ~ li.optgroup-option {
+
+.select-dropdown li.optgroup~li.optgroup-option {
 	padding-left: 0;
 }
+
 .dropdown-content li {
-    min-height: 45px;
+	min-height: 45px;
 }
+
 .title-historial {
 	padding-left: 80px;
 }
+
 .container-big {
 	width: 97%;
 }
+
 select.browser-default {
-    min-width: 90px;
+	min-width: 90px;
 }
+
 .datos-anime-nuevo input[type="number"]:not(.this-not) {
 	max-width: 50px;
 }
+
 .datos-anime-nuevo .input-field.days {
 	width: 220px;
 }
+
 .datos-anime-nuevo .dropdown-trigger {
 	font-size: 0.8em;
 }
+
 .chart-container {
 	position: relative;
 	margin-left: auto;
@@ -307,266 +392,332 @@ select.browser-default {
 	height: 100vh;
 	width: 98vw;
 }
+
 /* Ver Animes */
 .anime-list .collection a.collection-item {
 	color: var(--blue-color);
 }
+
 /* EDITAR ANIMES */
 /* Inicio Dropdown inputs */
 .dropdown-trigger-inputs {
 	cursor: pointer;
 }
+
 .dropdown-content.inputs {
-	width: inherit !important; /* Este important es porque tiene valores aplicados js y solo así se puede quitar */
+	width: inherit !important;
+	/* Este important es porque tiene valores aplicados js y solo así se puede quitar */
 }
+
 .dropdown-content.inputs .row,
 .dropdown-content.days .row {
 	margin: 0;
 }
+
 .dropdown-content.inputs .row .dropdown-trash {
 	min-height: 45px;
-    padding: 0;
+	padding: 0;
 }
+
 .dropdown-content.inputs .row .dropdown-trash a {
 	display: flex;
-    width: 99%;
-    min-height: 43px;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.3em;
+	width: 99%;
+	min-height: 43px;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.3em;
 }
+
 .dropdown-content.inputs .row .dropdown-trash a:hover {
-	color: #FFEBEE !important; /* Este important es porque materializecss pone en sus colores important */
-	background-color: var(--red-materialize) !important; /* Este important es porque materializecss pone en sus colores important */
+	color: #FFEBEE !important;
+	/* Este important es porque materializecss pone en sus colores important */
+	background-color: var(--red-materialize) !important;
+	/* Este important es porque materializecss pone en sus colores important */
 	border: 1px solid var(--red-materialize);
 }
-.dropdown-content.inputs .row > input:first-child {
+
+.dropdown-content.inputs .row>input:first-child {
 	border-right: 1px solid #9e9e9e;
 	width: calc(50% - 6px);
 }
+
 .no-underline {
-	border: 0 !important; /* es para ganarle a la especifidad de materializecss */
+	border: 0 !important;
+	/* es para ganarle a la especifidad de materializecss */
 }
+
 .dropdown-content.days .row label {
 	min-height: 43px;
 	display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
+	justify-content: center;
+	align-items: center;
+	padding: 0;
 }
+
 .dropdown-content.days .row label span {
 	display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 8px;
+	justify-content: center;
+	align-items: center;
+	padding: 8px;
 }
-.dropdown-content.inputs .row > input {
+
+.dropdown-content.inputs .row>input {
 	padding-left: 5px;
 	width: calc(41.6666666667% - 5px);
 }
+
 .dropdown-content.inputs a.btn-inputs {
 	display: flex;
 	justify-content: center;
 }
-.dropdown-content.inputs a.btn-inputs > i {
-    display: flex;
+
+.dropdown-content.inputs a.btn-inputs>i {
+	display: flex;
 	align-items: center;
 }
+
 /* Fin Dropdown inputs */
-.edit-anime-list .chips + label {
+.edit-anime-list .chips+label {
 	position: absolute;
 	top: -20px;
 }
+
 .edit-anime-list p.portada {
 	color: #9e9e9e;
 	font-size: 0.85em;
 }
+
 .edit-anime-list .collection.with-header .collection-header {
 	padding: 5px 10px;
 }
+
 .edit-anime-list .collection .collection-item,
 .anime-paginas-list .collection .collection-item {
 	padding: 5px 10px;
 }
+
 .edit-anime-list .collection.with-header .collection-item {
 	padding-left: 30px;
 }
+
 .paragraph-btn-right {
 	padding-right: 160px;
 }
+
 .danger-border {
 	border: 2px solid hsla(354, 66%, 80%, 1);
 }
+
 .normal-border {
 	border: 1px solid #d1d5da
 }
+
 .badge-left-edit {
 	position: absolute;
 	left: 2px;
 	width: 24px;
 	overflow-x: auto;
 }
+
 .select-wrapper+label {
 	width: 100%;
 }
+
 .select-wrapper+label::after {
 	content: attr(data-value);
 	opacity: 1;
 	top: 57px;
 	color: red;
 }
+
 .error-line.select-wrapper>input[class*="select-dropdown"] {
 	border-bottom: 1px solid var(--red-materialize);
-    -webkit-box-shadow: 0 1px 0 0 var(--red-materialize);
-    box-shadow: 0 1px 0 0 var(--red-materialize);
+	-webkit-box-shadow: 0 1px 0 0 var(--red-materialize);
+	box-shadow: 0 1px 0 0 var(--red-materialize);
 }
+
 .push-autocomplete ul.dropdown-content {
 	position: relative;
 }
+
 /* Estilos Opciones */
 .collection-options .collection-item.avatar .secondary-content {
 	top: 25px;
 }
+
 .collection-options .collection-item.avatar {
-    min-height: 68px;
+	min-height: 68px;
 }
+
 /* Estilo Información Anime */
 .info .input-field {
 	margin-top: 0;
 	margin-bottom: 0;
 }
+
 .name-info {
 	margin-bottom: 9px;
 	font-weight: bold;
 }
+
 .info-subtitle {
 	font-size: 1.4em;
-	color: hsla(0, 0%, 75%, 1) !important; /*este important es para superar la especificidad de materialize*/
+	color: hsla(0, 0%, 75%, 1) !important;
+	/*este important es para superar la especificidad de materialize*/
 }
+
 .info-margin-cap {
 	margin-top: 50px;
 }
+
 .info-cap-vistos {
 	padding-left: 60px;
 	font-weight: bold;
 }
+
 .info-cap-hashtag {
 	position: relative;
 	top: 16px;
 	font-size: 31px;
 }
+
 .info-cap-hashtag::before {
 	height: 31px;
 }
+
 .info-data-icon {
 	color: hsla(0, 0%, 75%, 1);
 }
+
 .info-cap-sub {
 	font-size: 1.3em;
 	margin-left: 60px;
 	font-weight: bold;
 }
+
 .info-cap-separate {
 	margin-top: 8px;
 }
+
 .info-cover-shadow {
-	-webkit-box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.14), 0px 0px 10px 2px rgba(0,0,0,0.12), 0 0 0 0 rgba(0,0,0,0.2);
-    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.14), 0px 0px 10px 2px rgba(0,0,0,0.12), 0 0 0 0 rgba(0,0,0,0.2);
+	-webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.14), 0px 0px 10px 2px rgba(0, 0, 0, 0.12), 0 0 0 0 rgba(0, 0, 0, 0.2);
+	box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.14), 0px 0px 10px 2px rgba(0, 0, 0, 0.12), 0 0 0 0 rgba(0, 0, 0, 0.2);
 }
+
 .info-cover {
 	height: 170px;
-    width: 170px;
-  	background-position: center;
-  	background-repeat: no-repeat;
+	width: 170px;
+	background-position: center;
+	background-repeat: no-repeat;
 	background-size: cover;
 }
+
 .btn-return {
 	padding: 0 6px;
 }
+
 /* Estilos del contenedor */
 .divider {
 	border: 2px solid hsl(210, 23%, 95%);
 }
+
 .bold {
 	font-weight: bold;
 }
+
 /* Tamaño del scroll */
 ::-webkit-scrollbar {
-width: 8px;
-height: 8px;
+	width: 8px;
+	height: 8px;
 }
 
 /* Estilos barra (thumb) de scroll */
 ::-webkit-scrollbar-thumb {
-background: #ccc;
-border-radius: 4px;
+	background: #ccc;
+	border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:active,
 ::-webkit-scrollbar-thumb:hover {
-background: #919193;
+	background: #919193;
 }
 
 /* Styles Downloader */
-.icon-downloader { 
+.icon-downloader {
 	position: absolute;
 	cursor: pointer;
 	top: 20px;
 	right: 20px;
 }
-.icon-downloader > img {
+
+.icon-downloader>img {
 	width: 25px;
 	height: 25px;
 }
+
 /*NEW VER ANIMES*/
 .ver-img-card {
 	background-size: cover;
-    width: 100px;
+	width: 100px;
 	height: calc(100% + 1px);
-    background-repeat: no-repeat;
+	background-repeat: no-repeat;
 	background-position: center;
 	border-radius: 10px 0 0 10px;
 	background-position-y: 2px;
 }
+
 .ver-radius-card {
 	border-radius: 10px;
 }
+
 .ver-cap-vistos {
 	font-variant-numeric: oldstyle-nums;
 }
+
 .grey-text.darken-1 {
 	color: hsla(0, 0%, 40%, 1) !important;
 }
+
 .ver-folder-icon:hover {
 	color: #4CAF50 !important;
 }
+
 .ver-link-icon:hover {
 	color: #2196F3 !important;
 }
+
 .ver-sun-icon:hover {
 	color: #ffc107 !important;
 }
+
 .card-content.ver-card-content {
 	padding-top: 12px;
 	padding-bottom: 12px;
 }
+
 .ver-day-title {
 	margin-top: 16px;
 }
+
 .modal-radius {
 	border-radius: 10px;
 }
-.modal-footer.ver-modal-footer { /*para borrar*/
+
+.modal-footer.ver-modal-footer {
+	/*para borrar*/
 	height: 28px;
 }
+
 .ver-modal-close {
 	right: 10px;
-    position: relative;
+	position: relative;
 }
+
 .ver-default-image {
 	max-width: 350px;
 }
+
 .dropdown-dias,
 .dropdown-estudios {
 	background-color: transparent;
@@ -576,26 +727,80 @@ background: #919193;
 	text-align: left;
 	text-transform: capitalize;
 }
+
 .dropdown-dias span,
 .dropdown-estudios span {
 	position: relative;
 	top: 5px;
 }
+
 .dropdown-dias:hover,
 .dropdown-estudios:hover {
 	background-color: transparent;
 	color: #000 !important;
 }
+
 .dropdown-dias:focus,
 .dropdown-estudios:focus {
 	background-color: transparent;
 	color: #000 !important;
 }
+
 .dropdown-error {
 	border-bottom: 1px solid var(--red-materialize);
-	-webkit-box-shadow: 0 1px 0 0 var(--red-materialize) !important; /* estos !important son por la class z-depth-0*/
-    box-shadow: 0 1px 0 0 var(--red-materialize) !important; /* estos !important son por la class z-depth-0*/
+	-webkit-box-shadow: 0 1px 0 0 var(--red-materialize) !important;
+	/* estos !important son por la class z-depth-0*/
+	box-shadow: 0 1px 0 0 var(--red-materialize) !important;
+	/* estos !important son por la class z-depth-0*/
 }
+
 .datos-anime-nuevo .dropdown-dias {
 	font-size: 16px;
+}
+
+/* Rewrite Swal */
+.warning-swal {
+	border-top: 6px solid #f9a825;
+}
+
+.error-swal {
+	border-top: 6px solid #d50000;
+}
+
+.success-swal {
+	border-top: 6px solid #b9f6ca;
+}
+
+.info-swal {
+	border-top: 6px solid #448aff;
+}
+
+.swal-button:focus {
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
+.swal-footer {
+	background-color: var(--blue-grey);
+	margin-top: 32px;
+	overflow: hidden;
+}
+
+.swal-button--confirm {
+	/* este !important es por la clase button:focus de materializecss */
+	color: #0D47A1 !important;
+	/* este !important es por la clase button:focus de materializecss */
+	background-color: #BBDEFB !important;
+}
+
+.swal-button--danger {
+	color: #B71C1C !important;
+	/* este !important es por la clase button:focus de materializecss */
+	background-color: #FFCDD2 !important;
+}
+
+.swal-button--cancel {
+	/* este !important es por la clase button:focus de materializecss */
+	background-color: transparent !important;
 }
