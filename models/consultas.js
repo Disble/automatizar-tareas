@@ -158,7 +158,7 @@ class BDAnimes extends RenderBase {
 		});
 	}
 	/**
-	 * Actualiza los campos de un anime en la base de datos.
+	 * Actualiza todos los campos de un anime en la base de datos.
 	 * @param {string} id Id del anime.
 	 * @param {any} setValues Objeto con los campos a modificar en la base de datos.
 	 */

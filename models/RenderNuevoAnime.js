@@ -337,7 +337,7 @@ class RenderNuevoAnime extends RenderBase {
 			});
 			if (!confirm) return;
 			el.parentNode.removeChild(el);
-			await swal('Exito', 'Toda posibilidad de recuperación se ha perdido.', 'success');
+			await swal('Éxito', 'Toda posibilidad de recuperación se ha perdido.', 'success');
 		}
 	}
 	/**
@@ -395,7 +395,7 @@ class RenderNuevoAnime extends RenderBase {
 				type: this.isNoData(anime.portadainput) ? 'url' : 'image',
 				path: anime.portadainput || anime.portada
 			};
-			anime.repetir = null;
+			anime.repetir = [];
 			anime.primeravez = true;
 			anime.fechaPublicacion = null;
 			anime.fechaEstreno = null;

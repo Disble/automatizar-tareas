@@ -283,7 +283,7 @@ class Opciones extends RenderBase {
                 }
             }
             settings.set('menu', menu);
-            swal("Exito.", `Los días del menu se han actualizado correctamente.`, "success");
+            swal("Éxito.", `Los días del menu se han actualizado correctamente.`, "success");
         });
         document.getElementById('btn-restore').addEventListener('click', async (e) => {
             let borrar = await swal({
@@ -297,7 +297,7 @@ class Opciones extends RenderBase {
                 settings.delete('menu');
                 this.resetConfData();
                 this._initDias();
-                swal('Exito', 'Toda posibilidad de recuperación se ha perdido.', 'success');
+                swal('Éxito', 'Toda posibilidad de recuperación se ha perdido.', 'success');
             } else {
                 swal("No hay problema.", "", "success");
             }
@@ -371,7 +371,7 @@ class Opciones extends RenderBase {
             if (borrar) {
                 settings.delete('downloader');
                 document.getElementById('programa').value = '';
-                swal('Exito', 'Toda posibilidad de recuperación se ha perdido.', 'success');
+                swal('Éxito', 'Toda posibilidad de recuperación se ha perdido.', 'success');
             } else {
                 swal("No hay problema.", "", "success");
             }
@@ -382,7 +382,7 @@ class Opciones extends RenderBase {
             settings.set('downloader', {
                 dir: dirProgram
             });
-            swal("Exito.", `La configuración de ${path.basename(dirProgram, '.exe')} se ha guardado correctamente.`, "success");
+            swal("Éxito.", `La configuración de ${path.basename(dirProgram, '.exe')} se ha guardado correctamente.`, "success");
         });
         /**
 		 * Reemplazo para método de materialize para input[type=file].
