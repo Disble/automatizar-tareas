@@ -626,6 +626,10 @@ select.browser-default {
 	font-weight: bold;
 }
 
+.semibold {
+	font-weight: 600;
+}
+
 /* Tamaño del scroll */
 ::-webkit-scrollbar {
 	width: 8px;
@@ -758,6 +762,15 @@ select.browser-default {
 	font-size: 16px;
 }
 
+.preloader-wrapper.big.bigger {
+	width: 128px;
+	height: 128px;
+}
+
+.circle-clipper .circle {
+	border-width: 5px;
+}
+
 /* Rewrite Swal */
 .warning-swal {
 	border-top: 6px solid #f9a825;
@@ -803,4 +816,8 @@ select.browser-default {
 .swal-button--cancel {
 	/* este !important es por la clase button:focus de materializecss */
 	background-color: transparent !important;
+}
+
+.swal-preload-modal {
+	width: 333px;
 }

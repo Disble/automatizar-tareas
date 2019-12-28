@@ -13,4 +13,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     historial.imprimirHistorial(datos, salto);
     historial.imprimirPagination(totalReg, pag);
     historial.configurarBuscador();
+    // Comprueba en que versión esta y migra si es necesario
+    await historial.comprobarVersion(consultas);
 });
+
+

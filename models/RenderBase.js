@@ -385,6 +385,21 @@ class RenderBase {
 			value.style.zIndex = -10;
 		});
 	}
+	async comprobarVersion(bd) {
+		let animesAntiguos = await bd.buscarAnimeAntiguo();
+		if (animesAntiguos.length > 0) {
+			await this.advertenciaVersion1();
+			this.advertenciaProcesando();
+			let migrated = await this.convertirANuevoAnime(animesAntiguos, bd);
+			if (migrated) {
+				await swal('Éxito', 'Hemos actualizado los datos con éxito. Se recargara la ventana.', 'success');
+				window.location.href = window.location.href;
+			}
+			else {
+				await swal('Houston, tenemos un problema', 'Hubo un error leyendo los datos del archivo original. Por favor recargue la ventana y vuelva a intentarlo.', 'error');
+			}
+		}
+	}
 	/**
 	 * Mensaje de advetencia de versión `1.x.x`.
 	 */
@@ -396,7 +411,30 @@ class RenderBase {
 			button: {
 				className: "green"
 			}
-		})
+		});
+	}
+	async advertenciaProcesando() {
+		let preload = document.createElement('div');
+		preload.innerHTML = /*html*/`
+        <h4 class="center blue-grey-text mb-40">Procesando...</h4>
+        <div class="preloader-wrapper big bigger active mb-20">
+            <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+        </div>
+        `;
+		return swal({
+			content: preload,
+			buttons: false,
+			closeOnClickOutside: false,
+			className: "swal-preload-modal",
+		});
 	}
 	/**
 	 * Utiliza los datos de los animes en la versión antigua y crea objetos nuevos 
@@ -436,7 +474,7 @@ class RenderBase {
 			let fechaEliminacion = oldAnime.fechaEliminacion || null;
 			let anime = new Anime(nombre, dias, nrocapvisto, totalcap, tipo, pagina, carpeta, estudios, origen, generos, duracion, portada, estado, repetir, activo, primeravez, fechaPublicacion, fechaEstreno, fechaCreacion, fechaUltCapVisto, fechaEliminacion, oldAnime._id);
 			try {
-				db.actualizarAnime(oldAnime._id, anime);
+				await db.actualizarAnime(oldAnime._id, anime);
 			} catch (error) {
 				return false;
 			}
