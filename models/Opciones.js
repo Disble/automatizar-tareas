@@ -51,8 +51,8 @@ class Opciones extends RenderBase {
                 <span class="left">Animes</span>
             </div>
             <div class="col s6">
-                <a id="btn-import-anime" class="no-link waves-effect waves-light btn-small mr-20 blue">Importar</a>
-                <a id="btn-export-anime" class="no-link waves-effect waves-light btn-small green">Exportar</a>
+                <a id="btn-import-anime" class="no-link waves-effect waves-light btn-small mr-20 blue lighten-4 blue-text text-darken-3">Importar</a>
+                <a id="btn-export-anime" class="no-link waves-effect waves-light btn-small green lighten-4 green-text text-darken-3">Exportar</a>
             </div>
         </div>
         <div class="row">
@@ -60,8 +60,8 @@ class Opciones extends RenderBase {
                 <span class="left">Pendientes</span>
             </div>
             <div class="col s6">
-                <a id="btn-import-pendiente" class="no-link waves-effect waves-light btn-small mr-20 blue">Importar</a>
-                <a id="btn-export-pendiente" class="rno-link waves-effect waves-light btn-small green">Exportar</a>
+                <a id="btn-import-pendiente" class="no-link waves-effect waves-light btn-small mr-20 blue lighten-4 blue-text text-darken-3">Importar</a>
+                <a id="btn-export-pendiente" class="rno-link waves-effect waves-light btn-small green lighten-4 green-text text-darken-3">Exportar</a>
             </div>
         </div>    
         <div class="row">
@@ -150,14 +150,15 @@ class Opciones extends RenderBase {
                 <div class="divider"></div>
             </div>
             <div class="col s12">
-                <h5>Zona de peligro</h5>
+                <h5 class="red-text text-accent-1">Zona de peligro</h5>
             </div>
             <div class="col s12 danger-border">
-                <h5>
+                <h5 class="grey-text text-darken-2">
                     Restablecer
                     <a class="right waves-effect waves-light btn orange lighten-4 orange-text text-darken-4 z-depth-0" id="btn-restore"><i class="icon-ccw material-icons right"></i>Restablecer</a>
                 </h5>
-                <p class="paragraph-btn-right">Se restablece a los valores por defecto.</p>
+                <p class="paragraph-btn-right grey-text">Se restablece a los valores por defecto.</p>
+                
             </div>
         `;
         datos.innerHTML = datosText;
@@ -237,7 +238,7 @@ class Opciones extends RenderBase {
         let datos = document.getElementById('datos');
         let inputsDownloader = /*html*/`
         <div class="file-field input-field">
-            <div class="btn btn-small blue">
+            <div class="btn btn-small blue lighten-5 blue-text z-depth-0">
                 <span>Programa</span>
                 <input type="file" id="program-file">
             </div>
@@ -246,7 +247,7 @@ class Opciones extends RenderBase {
             </div>
         </div>`;
         inputsDownloader += /*html*/`<div class="center mb-20">
-            <button class="btn green waves-effect waves-light" id="submit-downloader">
+            <button class="btn green waves-effect waves-light green-text text-lighten-5" id="submit-downloader">
                 Guardar cambios
                 <i class="material-icons right icon-pencil"></i>
             </button>
@@ -255,14 +256,14 @@ class Opciones extends RenderBase {
             <div class="divider"></div>
         </div>
         <div class="col s12">
-            <h5>Zona de peligro</h5>
+            <h5 class="red-text text-accent-1">Zona de peligro</h5>
         </div>
         <div class="col s12 danger-border">
-            <h5>
+            <h5 class="grey-text text-darken-2">
                 Restablecer
-                <a class="right waves-effect waves-light btn orange" id="btn-restore"><i class="icon-ccw material-icons right"></i>Restablecer</a>
+                <a class="right waves-effect waves-light btn orange lighten-4 orange-text text-darken-4 z-depth-0" id="btn-restore"><i class="icon-ccw material-icons right"></i>Restablecer</a>
             </h5>
-            <p class="paragraph-btn-right">Se restablece a los valores por defecto.</p>
+            <p class="paragraph-btn-right grey-text">Se restablece a los valores por defecto.</p>
             
         </div>
         `;
