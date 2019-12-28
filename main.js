@@ -373,7 +373,10 @@ function createWindow() {
 		width: 800,
 		height: 600,
 		backgroundColor: 'rgb(213, 55, 41)',
-		icon: path.join(__dirname, '/icons/png/512x512.png')
+		icon: path.join(__dirname, '/icons/png/512x512.png'),
+		webPreferences: {
+			nodeIntegration: true
+		}
 	});
 	mainWindow.setTitle('Autoreas');
 	// and load the ver.html of the app.
