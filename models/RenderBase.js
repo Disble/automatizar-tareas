@@ -418,15 +418,42 @@ class RenderBase {
 		preload.innerHTML = /*html*/`
         <h4 class="center blue-grey-text mb-40">Procesando...</h4>
         <div class="preloader-wrapper big bigger active mb-20">
-            <div class="spinner-layer spinner-blue-only">
-            <div class="circle-clipper left">
-                <div class="circle"></div>
-            </div><div class="gap-patch">
-                <div class="circle"></div>
-            </div><div class="circle-clipper right">
-                <div class="circle"></div>
-            </div>
-            </div>
+			<div class="spinner-layer spinner-blue">
+				<div class="circle-clipper left">
+				<div class="circle"></div>
+				</div><div class="gap-patch">
+				<div class="circle"></div>
+				</div><div class="circle-clipper right">
+				<div class="circle"></div>
+				</div>
+			</div>
+			<div class="spinner-layer spinner-red">
+				<div class="circle-clipper left">
+				<div class="circle"></div>
+				</div><div class="gap-patch">
+				<div class="circle"></div>
+				</div><div class="circle-clipper right">
+				<div class="circle"></div>
+				</div>
+			</div>
+			<div class="spinner-layer spinner-yellow">
+				<div class="circle-clipper left">
+				<div class="circle"></div>
+				</div><div class="gap-patch">
+				<div class="circle"></div>
+				</div><div class="circle-clipper right">
+				<div class="circle"></div>
+				</div>
+			</div>
+			<div class="spinner-layer spinner-green">
+				<div class="circle-clipper left">
+				<div class="circle"></div>
+				</div><div class="gap-patch">
+				<div class="circle"></div>
+				</div><div class="circle-clipper right">
+				<div class="circle"></div>
+				</div>
+			</div>
         </div>
         `;
 		return swal({

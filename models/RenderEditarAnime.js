@@ -27,6 +27,9 @@ class RenderEditarAnime extends RenderBase {
         let data = await this._loadEditAnime();
         if (data.length > 0) {
             this._getAnimeData(data[0]._id);
+        } else {
+            document.getElementById('submit-editar').classList.add('disabled');
+            document.getElementById('borrar-anime').classList.add('disabled');
         }
         this._editAnimebtnDelete();
     }
