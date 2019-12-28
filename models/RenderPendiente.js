@@ -15,117 +15,119 @@ class RenderPendiente extends RenderBase {
 		this.model = new ModelPendiente();
 		this.modelAnime = new ModelAnime();
 	}
-
-	getAllData() {
-		this.model.getAllActive()
-			.then((resolve) => {
-				let data = '';
-				let diasSettings = settings.get('days', Days);
-				resolve.map((value, index) => {
-					data += /*html*/`<li id="item-list">
-					<div class="collapsible-header">
-						<i class="icon-menu left icon-pag btn-sortable"></i>
-						<span class="text-icon">${value.nombre}
-						<a href="#!" class="secondary-content right">
-						<i class="icon-ok-squared grey-text hover-icon-complete js-remove tooltipped" data-position="right" data-tooltip="¡Completar!"></i>
-						</a>
-						</span>
-					</div>
-					<div class="collapsible-body">
-						<span><b>Detalle</b></span>
-						<p>${value.detalle}</p>
-						<div class="divider"></div>
-						<p><b>Pagina : </b>${this._paginaConstructor(value.pagina)}</p>
-						<span class="hidden" id="key">${value._id}</span>
-						<div class="divider"></div>
-						<a class="modal-trigger" href="#modal${index}"><i class="icon-fork deep-orange-text icon-big hover-icon-complete btn-forking-anime tooltipped disabled" data-position="right" data-tooltip="¡Crear anime a partir de pendiente!"></i></a>
-						<!-- Modal Structure -->
-						<div id="modal${index}" class="modal modal-fixed-footer">
-							<form class="form-form-anime">
-							<div class="modal-content">
-								<h4 class="center">Crear nuevo Anime</h4>
+	/**
+	 * Obtiene todos los `pendientes` activos y los 
+	 * carga en una interfaz en la página `ver pendientes`.
+	 */
+	async getAllData() {
+		let res = await this.model.getAllActive();
+		console.log(res, res.length);
+		if (res.length === 0) {
+			this.containerBlancoConImagen('container-pendientes', 'Tree_swing.svg');
+			return;
+		}
+		let data = '';
+		let diasSettings = settings.get('days', Days);
+		res.map((value, index) => {
+			data += /*html*/`<li id="item-list">
+			<div class="collapsible-header">
+				<i class="icon-menu left icon-pag btn-sortable"></i>
+				<span class="text-icon">${value.nombre}
+				<a href="#!" class="secondary-content right">
+				<i class="icon-ok-squared grey-text hover-icon-complete js-remove tooltipped" data-position="right" data-tooltip="¡Completar!"></i>
+				</a>
+				</span>
+			</div>
+			<div class="collapsible-body">
+				<span><b>Detalle</b></span>
+				<p>${value.detalle}</p>
+				<div class="divider"></div>
+				<p><b>Pagina : </b>${this._paginaConstructor(value.pagina)}</p>
+				<span class="hidden" id="key">${value._id}</span>
+				<div class="divider"></div>
+				<a class="modal-trigger" href="#modal${index}"><i class="icon-fork deep-orange-text icon-big hover-icon-complete btn-forking-anime tooltipped disabled" data-position="right" data-tooltip="¡Crear anime a partir de pendiente!"></i></a>
+				<!-- Modal Structure -->
+				<div id="modal${index}" class="modal modal-fixed-footer">
+					<form class="form-form-anime">
+					<div class="modal-content">
+						<h4 class="center">Crear nuevo Anime</h4>
+						<div class="row no-margin">
+							<div class="col s12">
+								<div class="input-field">
+									<input id="nombre" value="${value.nombre}" type="text" name="nombre" class="validate">
+								</div>
+								<div class="input-field">
+									<select name="dia">`;
+			for (const tipoDia of diasSettings) {
+				let outgroup = document.createElement('optgroup');
+				outgroup.label = this.firstUpperCase(tipoDia.title);
+				for (const dia of tipoDia.data) {
+					let opcion = document.createElement('option');
+					opcion.value = dia.name;
+					opcion.innerText = this.firstUpperCase(dia.name === dia.alternative ? dia.name : dia.alternative);
+					outgroup.appendChild(opcion);
+				}
+				data += outgroup.outerHTML;
+			}
+			data +=			/*html*/`</select>
+								</div>
+								<div class="input-field">
+									<select name="tipo">`;
+			for (const tipo in Tipos) {
+				const valor = Tipos[tipo];
+				let opcion = document.createElement('option');
+				opcion.value = valor;
+				opcion.innerText = tipo;
+				data += opcion.outerHTML;
+			}
+			data += 		/*html*/`</select>
+								</div>
+								<div class="input-field">
+								<input type="text" id="pagina" name="pagina" value="${value.pagina}"  class="validate">
+								<label for="pagina">Pagina (No obligatorio)</label>
+								</div>
 								<div class="row no-margin">
-									<div class="col s12">
-										<div class="input-field">
-											<input id="nombre" value="${value.nombre}" type="text" name="nombre" class="validate">
-										</div>
-										<div class="input-field">
-											<select name="dia">`;
-					for (const tipoDia of diasSettings) {
-						let outgroup = document.createElement('optgroup');
-						outgroup.label = this.firstUpperCase(tipoDia.title);
-						for (const dia of tipoDia.data) {
-							let opcion = document.createElement('option');
-							opcion.value = dia.name;
-							opcion.innerText = this.firstUpperCase(dia.name === dia.alternative ? dia.name : dia.alternative);
-							outgroup.appendChild(opcion);
-						}
-						data += outgroup.outerHTML;
-					}
-					data +=			/*html*/`</select>
-										</div>
-										<div class="input-field">
-											<select name="tipo">`;
-					for (const tipo in Tipos) {
-						const valor = Tipos[tipo];
-						let opcion = document.createElement('option');
-						opcion.value = valor;
-						opcion.innerText = tipo;
-						data += opcion.outerHTML;
-					}
-					data += 		/*html*/`</select>
-										</div>
-										<div class="input-field">
-										<input type="text" id="pagina" name="pagina" value="${value.pagina}"  class="validate">
-										<label for="pagina">Pagina (No obligatorio)</label>
-										</div>
-										<div class="row no-margin">
-											<div class="input-field col s4 no-margin">
-												<input type="number" name="orden" id="orden" min="1" class="validate">
-												<label for="orden">Orden</label>
-											</div>
-											<div class="input-field col s4 no-margin">
-												<input type="number" name="totalcap" id="totalcap" min="0" class="validate">
-												<label for="totalcap">Total Cap (No obligatorio)</label>
-											</div>
-											<div class="col s2 push-s1">
-												<input type="file" name="carpeta" id="file${index}" class="inputfile" webkitdirectory />
-												<label for="file${index}" class="tooltipped blue lighten-4 blue-text text-darken-4" data-position="bottom" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
-											</div>
-										</div>
+									<div class="input-field col s4 no-margin">
+										<input type="number" name="orden" id="orden" min="1" class="validate">
+										<label for="orden">Orden</label>
+									</div>
+									<div class="input-field col s4 no-margin">
+										<input type="number" name="totalcap" id="totalcap" min="0" class="validate">
+										<label for="totalcap">Total Cap (No obligatorio)</label>
+									</div>
+									<div class="col s2 push-s1">
+										<input type="file" name="carpeta" id="file${index}" class="inputfile" webkitdirectory />
+										<label for="file${index}" class="tooltipped blue lighten-4 blue-text text-darken-4" data-position="bottom" data-tooltip="Este campo no es obligatorio">Escoja una carpeta</label>
 									</div>
 								</div>
 							</div>
-							<div class="modal-footer">
-								<input type="submit" class="waves-effect btn-flat green-text" value="crear">
-								<a href="#!" class="modal-action modal-close waves-effect btn-flat red-text">Cancelar</a>
-							</div>
-						</form>
 						</div>
 					</div>
-					</li>`;
-				});
-				return data;
-			}).then((resolve) => {
-				document.getElementById('data-pendientes').innerHTML = resolve;
-				M.Collapsible.init(document.querySelectorAll('.collapsible'));
-				M.Tooltip.init(document.querySelectorAll('.tooltipped'), {
-					enterDelay: 350
-				});
-				M.Modal.init(document.querySelectorAll('.modal'));
-				this._forkToAnimeOpen();
-				M.FormSelect.init(document.querySelectorAll('select'));
-				M.updateTextFields();
-				this._urlExternal();
-				document.querySelectorAll('.inputfile').forEach((value) => {
-					value.addEventListener('change', e => {
-						this.getFolder(value);
-					})
-				});
-				this.elementsPen = document.getElementById('data-pendientes').querySelectorAll('li#item-list');
-
+					<div class="modal-footer">
+						<input type="submit" class="waves-effect btn-flat green-text" value="crear">
+						<a href="#!" class="modal-action modal-close waves-effect btn-flat red-text">Cancelar</a>
+					</div>
+				</form>
+				</div>
+			</div>
+			</li>`;
+		});
+		document.getElementById('data-pendientes').innerHTML = data;
+		M.Collapsible.init(document.querySelectorAll('.collapsible'));
+		M.Tooltip.init(document.querySelectorAll('.tooltipped'), {
+			enterDelay: 350
+		});
+		M.Modal.init(document.querySelectorAll('.modal'));
+		this._forkToAnimeOpen();
+		M.FormSelect.init(document.querySelectorAll('select'));
+		M.updateTextFields();
+		this._urlExternal();
+		document.querySelectorAll('.inputfile').forEach((value) => {
+			value.addEventListener('change', e => {
+				this.getFolder(value);
 			})
-			.catch((err) => { return console.error(err) });
+		});
+		this.elementsPen = document.getElementById('data-pendientes').querySelectorAll('li#item-list');
 	}
 
 	_forkToAnimeOpen() {
@@ -320,32 +322,33 @@ class RenderPendiente extends RenderBase {
 			}
 		});
 	}
-
-	_setEdit() {
-		this.model.getAllActive()
-			.then((resolve) => {
-				let data = '';
-				resolve.map((value, index) => {
-					data += `
-						<li>
-							<div class="row border-bottom mb-0 flex">
-								<div class="col s1 border-left border-right flex flex-y-center"><span class="hidden" id="key">${value._id}</span><i class="icon-menu left icon-pag btn-sortable"></i></div>
-								<div class="col s3 border-right flex flex-y-center editable-pen mh-small" id="nombre">${value.nombre}</div>
-								<div class="col s4 border-right flex flex-y-center editable-pen mh-small" id="detalle">${value.detalle}</div>
-								<div class="col s4 border-right flex flex-y-center overflow-a editable-pen mh-small" id="pagina">${value.pagina}</div>
-							</div>
-						</li> 
-					`;
-				});
-				return data;
-			})
-			.then((resolve) => {
-				document.getElementById('edit-pen').innerHTML = resolve;
-				this._setReorderEditPen();
-				this._cellEdit();
-				this.elementsPen = document.getElementById('edit-pen').querySelectorAll('li');
-			})
-			.catch((err) => { console.error(err) });
+	/**
+	 * Obtiene todos los pendientes activos y los 
+	 * carga en una interfaz en la página `editar pendientes`.
+	 */
+	async _setEdit() {
+		let res = await this.model.getAllActive();
+		if (res.length === 0) {
+			this.containerBlancoConImagen('container-editar-pendiente', 'before_dawn.svg');
+			return;
+		}
+		let data = '';
+		res.map((value) => {
+			data += /*html*/`
+				<li>
+					<div class="row border-bottom mb-0 flex">
+						<div class="col s1 border-left border-right flex flex-y-center"><span class="hidden" id="key">${value._id}</span><i class="icon-menu left icon-pag btn-sortable"></i></div>
+						<div class="col s3 border-right flex flex-y-center editable-pen mh-small" id="nombre">${value.nombre}</div>
+						<div class="col s4 border-right flex flex-y-center editable-pen mh-small" id="detalle">${value.detalle}</div>
+						<div class="col s4 border-right flex flex-y-center overflow-a editable-pen mh-small" id="pagina">${value.pagina}</div>
+					</div>
+				</li> 
+			`;
+		});
+		document.getElementById('edit-pen').innerHTML = data;
+		this._setReorderEditPen();
+		this._cellEdit();
+		this.elementsPen = document.getElementById('edit-pen').querySelectorAll('li');
 	}
 
 	_cellEdit() {

@@ -8,7 +8,11 @@ const { BDAnimes } = require('../models/consultas.js');
 
 document.addEventListener('DOMContentLoaded', async function () {
     let consultas = new BDAnimes();
-    let datos = await consultas.cargarHistorial(1, 2);
+    let datos = await consultas.animesViendo();
     let historial = new Historial();
-    historial.capitulosVistos(datos);
+    if (datos.length > 0) {
+        historial.capitulosVistos(datos);
+    } else {
+        historial.paginaBlancoConImagen();
+    }
 });

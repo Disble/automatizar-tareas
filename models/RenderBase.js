@@ -526,6 +526,24 @@ class RenderBase {
 			return false;
 		}
 	}
+	/**
+	 * Modifica una página con un contenedor para mostrar solo una
+	 * imagen y un texto debajo de ella diciendo que no 
+	 * hay datos para mostrar.
+	 * @param {string} el Contenedor de la imagen
+	 * @param {string} img Imagen a mostrar
+	 */
+	containerBlancoConImagen(el, img) {
+		document.body.classList.add('vh-100');
+		let container = document.getElementById(el);
+		container.classList.add('flex', 'flex-x-center', 'flex-y-center');
+		container.innerHTML = /*html*/`
+			<div class="mt-20">
+				<img class="responsive-img" width="400" src="../../images/${img}" />
+				<p class="blue-grey-text bold center">No hay datos disponibles, inténtalo de nuevo más tarde.</p>
+			</div>
+		`;
+	}
 }
 
 exports.RenderBase = RenderBase;

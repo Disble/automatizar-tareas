@@ -308,10 +308,28 @@ class Historial extends RenderBase {
 			}
 		}
 	}
-
+	/**
+	 * Carga la interfaz de la página `Capítulos vistos` 
+	 * con una estadística de los animes viendo.
+	 * @param {any[]} lista Lista de animes que se están viendo
+	 */
 	capitulosVistos(lista) {
 		let listFilter = this._filterCapActiveChart(lista)
 		this._chartCapVistos(listFilter, 'horizontalBar', 'Capítulos vistos')
+	}
+	/**
+	 * Modifica la pagina completa para mostrar solo una
+	 * imagen y un texto debajo de ella diciendo que no 
+	 * hay datos para mostrar.
+	 */
+	paginaBlancoConImagen() {
+		document.body.classList.add('vh-100', 'flex', 'flex-x-center', 'flex-y-center');
+		document.body.innerHTML = /*html*/`
+			<div>
+				<img class="responsive-img" width="400" src="../../images/not_found.svg" />
+				<p class="blue-grey-text bold">No hay datos disponibles, inténtalo de nuevo más tarde.</p>
+			</div>
+		`;
 	}
 	/**
 	 * Inicializa el chart con el número de capítulos 
@@ -781,19 +799,22 @@ class Historial extends RenderBase {
 		}
 		return newLabels;
 	}
-
-	paginasAnimesActivos() {
-		this.db.buscarPaginas().then((resolve) => {
-			return this._filterPageActiveChart(resolve);
-		}).then((resolve) => {
-			let template = this._generatorTemplate(resolve.nombres);
+	/**
+	 * Carga un estadistica de las paginas donde 
+	 * se descargan los animes.
+	 */
+	async paginasAnimesActivos() {
+		let res = await this.db.buscarPaginas();
+		if (res.length > 0) {
+			let paginasFiltradas = this._filterPageActiveChart(res);
+			let template = this._generatorTemplate(paginasFiltradas.nombres);
 			this.menuRender(template);
-			this._statisticsPagesSaw(resolve);
-			return resolve;
-		}).then((resolve) => {
+			this._statisticsPagesSaw(paginasFiltradas);
 			let instances = M.Collapsible.init(document.querySelectorAll('.collapsible'));
 			instances[0].open(0);
-		});
+		} else {
+			this.paginaBlancoConImagen();
+		}
 	}
 
 	async menuRender(menu) {
@@ -824,11 +845,18 @@ class Historial extends RenderBase {
 		document.getElementById('menu').innerHTML = salidaMenu;
 		this.noLink();
 	}
-
+	/**
+	 * Genera la interfaz de la pagina 
+	 * `Capítulos restantes`.
+	 */
 	async numCapRestantes() {
-		let capRestantes = await this.db.capRestantes();
-		let listFilter = this._filterCapResChart(capRestantes);
-		this._chartCapVistos(listFilter, 'horizontalBar', 'Capítulos restantes');
+		let capRestantes = await this.db.animesViendo();
+		if (capRestantes.length > 0) {
+			let listFilter = this._filterCapResChart(capRestantes);
+			this._chartCapVistos(listFilter, 'horizontalBar', 'Capítulos restantes');
+		} else {
+			this.paginaBlancoConImagen();
+		}
 	}
 
 	_generatorTemplate(nombres, paginas) {

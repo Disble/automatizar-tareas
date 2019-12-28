@@ -10,11 +10,15 @@ document.addEventListener('DOMContentLoaded', async function () {
     let consultas = new BDAnimes();
     let { datos, salto, totalReg, pag } = await consultas.cargarHistorial(1, 1);
     let historial = new Historial();
-    historial.imprimirHistorial(datos, salto);
-    historial.imprimirPagination(totalReg, pag);
-    historial.configurarBuscador();
-    // Comprueba en que versión esta y migra si es necesario
-    await historial.comprobarVersion(consultas);
+    if (datos.length > 0) {
+        historial.imprimirHistorial(datos, salto);
+        historial.imprimirPagination(totalReg, pag);
+        historial.configurarBuscador();
+        // Comprueba en que versión esta y migra si es necesario
+        await historial.comprobarVersion(consultas);
+    } else {
+        historial.containerBlancoConImagen('container-historial', 'Eiffel_tower.svg');
+    }
 });
 
 

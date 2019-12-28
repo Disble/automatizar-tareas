@@ -82,7 +82,11 @@ class BDAnimes extends RenderBase {
 				});
 		});
 	}
-	capRestantes() {
+	/**
+	 * Retorna una lista de todos los animes que se estan 
+	 * viendo en ese momento. 
+	 */
+	animesViendo() {
 		return new Promise((resolve, reject) => {
 			animesdb.find({ $and: [{ $and: [{ $not: { "totalcap": null } }, { "totalcap": { $exists: true } }] }, { $or: [{ "activo": true }, { "activo": { $exists: false } }] }] }, { nombre: 1, totalcap: 1, nrocapvisto: 1, estado: 1 })
 				.sort({ "orden": 1 })
