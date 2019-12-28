@@ -307,17 +307,27 @@ class RenderNuevoAnime extends RenderBase {
 				li.appendChild(label);
 				let inputDia = document.createElement('input');
 				let inputOrden = document.createElement('input');
+				let inputVerDia = document.createElement('input');
+				//
 				inputDia.value = dia.name;
 				inputDia.type = 'text';
 				inputDia.id = 'dia';
-				inputDia.classList.add('col', 's6', 'no-underline');
+				inputDia.classList.add('hide');
 				inputDia.readOnly = inputOrden.readOnly = true;
+				//
 				inputOrden.type = 'number';
 				inputOrden.id = 'orden';
 				inputOrden.min = 1;
 				inputOrden.placeholder = 'Orden';
 				inputOrden.classList.add('col', 's4', 'this-not'); // se adapto esta línea
+				//
+				inputVerDia.value = dia.name === dia.alternative ? dia.name : dia.alternative;
+				inputVerDia.type = 'text';
+				inputVerDia.id = 'dia';
+				inputVerDia.classList.add('col', 's6', 'no-underline');
+				inputVerDia.readOnly = inputOrden.readOnly = true;
 				li.appendChild(inputDia);
+				li.appendChild(inputVerDia);
 				li.appendChild(inputOrden);
 				dropdownDias.appendChild(li);
 			}

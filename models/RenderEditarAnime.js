@@ -276,17 +276,26 @@ class RenderEditarAnime extends RenderBase {
                 li.appendChild(label);
                 let inputDia = document.createElement('input');
                 let inputOrden = document.createElement('input');
+                let inputVerDia = document.createElement('input');
+                //
                 inputDia.type = 'text';
                 inputDia.value = dia.name;
                 inputDia.id = 'dia';
-                inputDia.classList.add('col', 's6', 'no-underline');
+                inputDia.classList.add('hide');
                 inputDia.readOnly = inputOrden.readOnly = true;
+                //
                 inputOrden.type = 'number';
                 inputOrden.id = 'orden';
                 inputOrden.min = 1;
                 inputOrden.placeholder = 'Orden';
                 inputOrden.classList.add('col', 's4');
+                //
+                inputVerDia.type = 'text';
+                inputVerDia.value = dia.name === dia.alternative ? dia.name : dia.alternative;
+                inputVerDia.classList.add('col', 's6', 'no-underline');
+                inputVerDia.readOnly = inputOrden.readOnly = true;
                 li.appendChild(inputDia);
+                li.appendChild(inputVerDia);
                 li.appendChild(inputOrden);
                 dropdownDias.appendChild(li);
             }

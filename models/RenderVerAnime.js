@@ -95,7 +95,7 @@ class RenderVerAnime extends RenderBase {
             for (const dias of grupoDias.data) {
                 let dia = dias.name === dias.alternative ? dias.name : dias.alternative;
                 menu += /*html*/`
-                            <a href="#!" class="collection-item no-link blue-text" dia="${dia}">${dia}<span class="badge"></span></a>
+                            <a href="#!" class="collection-item no-link blue-text" dia="${dias.name}">${dia}<span class="badge"></span></a>
                         `;
             }
             menu += /*html*/`
