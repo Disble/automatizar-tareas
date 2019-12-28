@@ -307,7 +307,7 @@ class RenderNuevoAnime extends RenderBase {
 				li.appendChild(label);
 				let inputDia = document.createElement('input');
 				let inputOrden = document.createElement('input');
-				inputDia.value = dia.name === dia.alternative ? dia.name : dia.alternative;
+				inputDia.value = dia.name;
 				inputDia.type = 'text';
 				inputDia.id = 'dia';
 				inputDia.classList.add('col', 's6', 'no-underline');

@@ -1,4 +1,4 @@
-const { Menu } = require('../models/defaults-config.js');
+const { Days } = require('../models/defaults-config.js');
 const { RenderBase } = require('./RenderBase');
 const { Backup } = require('./Backup');
 const settings = require('electron-settings');
@@ -113,91 +113,54 @@ class Opciones extends RenderBase {
      */
     _cargarDias() {
         document.getElementById('conf-title').innerText = 'Días';
-        let menu = settings.get('menu', Menu);
+        let daysSettings = settings.get('days', Days);
         let datos = document.getElementById('datos');
-        let items = '';
-        let clases = [];
-        for (const grupo in menu) {
-            if (menu.hasOwnProperty(grupo)) {
-                const subGrupo = menu[grupo];
-                items += /*html*/ `
-                <div class="col s12">
-                    <h5>${this.firstUpperCase(grupo)}</h5>
-                </div>
-                <div class="col s12 inputs-dias" id="tipo-${grupo}">
-                </div>
-                `;
-                let clase = {
-                    clase: grupo,
-                    data: []
-                };
-                for (const item in subGrupo) {
-                    clase.data.push({
-                        clave: item,
-                        valor: subGrupo[item].id
-                    });
-                }
-                clases.push(clase);
-            }
-        }
-        items += /*html*/`
-        <div class="col s12 center mb-20">
-            <button class="btn green waves-effect waves-light block" id="submit-dias" type="submit" name="action">
-                Guardar cambios
-                <i class="material-icons right icon-pencil"></i>
-            </button>
-        </div>
-        `;
-        // Creando la Zona de Peligro
-        let dangerZone = /*html*/`
-        <div class="col s12">
-            <div class="divider"></div>
-        </div>
-        <div class="col s12">
-            <h5>Zona de peligro</h5>
-        </div>
-        <div class="col s12 danger-border">
-            <h5>
-                Restablecer
-                <a class="right waves-effect waves-light btn orange" id="btn-restore"><i class="icon-ccw material-icons right"></i>Restablecer</a>
-            </h5>
-            <p class="paragraph-btn-right">Se restablece a los valores por defecto.</p>
-        </div>
-        `;
-        items += dangerZone;
-        datos.innerHTML = items;
-        // Cargando los datos de los días
-        for (const clase of clases) {
-            let tipo = document.getElementById(`tipo-${clase.clase}`);
-            let inputs = '';
-            for (const data of clase.data) {
-                inputs += /*html*/`
+        let datosText = '';
+        for (const dias of daysSettings) {
+            datosText += /*html*/`
                 <div class="row">
-                    <div class="input-field col s5">
-                        <input placeholder="Clave" value="${data.clave}" id="clave" type="text" class="validate">
-                        <label for="clave">Clave</label>
+                    <div class="col s12">
+                        <h5>${dias.title}</h5>
                     </div>
-                    <div class="input-field col s5">
-                        <input placeholder="Valor" value="${data.valor}" id="valor" type="text" readonly>
-                        <label for="valor">Valor</label>
-                    </div>
-                    <div class="col s2">
-                        <a id="btn-delete" class="waves-effect waves-light red btn btn-small mt-20"><i class="icon-trash-empty"></i></a>
-                    </div>
-                </div>
-                `;
-            }
-            inputs += /*html*/`
-                <div class="barra-sumar mb-20">
-                    <hr>
-                    <div class="triangle"></div>
-                    <a id="btn-add" class="right btn-floating btn blue">
-                    <i class="material-icons icon-plus icon-normal"></i>
-                    </a>
                 </div>
             `;
-            tipo.innerHTML = inputs;
+            for (const dia of dias.data) {
+                datosText += /*html*/`
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input type="text" value="${dia.name}" placeholder="Nombre" id="nombre" readonly>
+                        <label for="nombre">Nombre</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input type="text" value="${dia.alternative}" dia="${dias.title}" placeholder="Nombre alternativo" id="nombre-alternativo">
+                        <label for="nombre-alternativo">Nombre alternativo</label>
+                    </div>
+                </div>
+                `;
+            }
         }
+        datosText += /*html*/`
+            <div class="center mb-20">
+                <button class="btn green waves-effect waves-light green-text text-lighten-5" id="submit-dias">
+                    Guardar cambios
+                    <i class="material-icons right icon-pencil"></i>
+                </button>
+            </div>
+            <div class="col s12">
+                <div class="divider"></div>
+            </div>
+            <div class="col s12">
+                <h5>Zona de peligro</h5>
+            </div>
+            <div class="col s12 danger-border">
+                <h5>
+                    Restablecer
+                    <a class="right waves-effect waves-light btn orange lighten-4 orange-text text-darken-4 z-depth-0" id="btn-restore"><i class="icon-ccw material-icons right"></i>Restablecer</a>
+                </h5>
+                <p class="paragraph-btn-right">Se restablece a los valores por defecto.</p>
+            </div>
+        `;
+        datos.innerHTML = datosText;
         // Cargando modulos de materialize-css
         M.updateTextFields();
     }
@@ -206,83 +169,36 @@ class Opciones extends RenderBase {
      * de Días.
      */
     _initLoaderDias() {
-        document.querySelectorAll('#btn-delete').forEach((value, key) => {
-            value.addEventListener('click', async (e) => {
-                let borrar = await swal({
-                    title: "¿Estás seguro?",
-                    text: `Una vez eliminado no podrás recuperarlo.`,
-                    icon: "warning",
-                    buttons: ["Cancelar", "OK"],
-                    dangerMode: true,
-                });
-                if (borrar) {
-                    let fila = value.parentElement.parentElement;
-                    fila.parentNode.removeChild(fila);
-                } else {
-                    swal("No hay problema.", "", "success")
-                }
-            });
-        });
-        document.querySelectorAll('#btn-add').forEach((value, key) => {
-            value.addEventListener('click', e => {
-                let nuevaFila = /*html*/`
-                <div class="row">
-                    <div class="input-field col s5">
-                        <input placeholder="Clave" id="clave" type="text" class="validate">
-                        <label for="clave">Clave</label>
-                    </div>
-                    <div class="input-field col s5">
-                        <input placeholder="Valor" id="valor" type="text" class="validate">
-                        <label for="valor">Valor</label>
-                    </div>
-                    <div class="col s2">
-                        <a id="btn-delete" class="waves-effect waves-light red btn btn-small mt-20"><i class="icon-trash-empty"></i></a>
-                    </div>
-                </div>
-                `;
-                value.parentElement.insertAdjacentHTML('beforebegin', nuevaFila);
-                // Cargando modulos de materialize-css
-                M.updateTextFields();
-                // Inicializando último btn-delete
-                let allBtnDelete = value.parentElement.parentElement.querySelectorAll('#btn-delete');
-                let ultBtnDelete = allBtnDelete[allBtnDelete.length - 1];
-                ultBtnDelete.addEventListener('click', async (e) => {
-                    let borrar = await swal({
-                        title: "¿Estás seguro?",
-                        text: `Una vez eliminado no podrás recuperarlo.`,
-                        icon: "warning",
-                        buttons: ["Cancelar", "OK"],
-                        dangerMode: true,
-                    });
-                    if (borrar) {
-                        let fila = ultBtnDelete.parentElement.parentElement;
-                        fila.parentNode.removeChild(fila);
-                    } else {
-                        swal("No hay problema.", "", "success")
-                    }
-                })
-            });
-        });
-        let menu = {};
+        let dias = [];
+        let diasClasificados = {};
         let submitDias = document.getElementById('submit-dias');
         submitDias.addEventListener('click', e => {
             let datos = submitDias.parentElement.parentElement;
-            let filasTipo = datos.querySelectorAll('.inputs-dias');
-            for (const filaTipo of filasTipo) {
-                let tipo = filaTipo.getAttribute('id').split('tipo-')[1]
-                menu[tipo] = {};
-                let filas = filaTipo.querySelectorAll('.row');
-                for (const fila of filas) {
-                    let inputClave = fila.querySelector('input[type]#clave');
-                    let inputValor = fila.querySelector('input[type]#valor');
-                    menu[tipo][inputClave.value] = {
-                        "href": "#!",
-                        "id": inputValor.value,
-                        "class": "collection-item no-link btn-buscar-animes"
+            let nombresAlternativos = datos.querySelectorAll('#nombre-alternativo');
+            let nombres = datos.querySelectorAll('#nombre');
+            for (const i in nombresAlternativos) {
+                if (nombresAlternativos.hasOwnProperty(i)) {
+                    const nombreAlternativo = nombresAlternativos[i].value;
+                    let dia = nombresAlternativos[i].getAttribute('dia');
+                    const nombre = nombres[i].value;
+                    if (!diasClasificados[dia]) {
+                        diasClasificados[dia] = [];
                     }
+                    diasClasificados[dia].push({
+                        name: nombre,
+                        alternative: nombreAlternativo
+                    });
                 }
             }
-            settings.set('menu', menu);
+            for (const nombreDia in diasClasificados) {
+                if (diasClasificados.hasOwnProperty(nombreDia)) {
+                    dias.push({
+                        title: nombreDia,
+                        data: diasClasificados[nombreDia]
+                    });
+                }
+            }
+            settings.set('days', dias);
             swal("Éxito.", `Los días del menu se han actualizado correctamente.`, "success");
         });
         document.getElementById('btn-restore').addEventListener('click', async (e) => {
@@ -294,7 +210,7 @@ class Opciones extends RenderBase {
                 dangerMode: true,
             });
             if (borrar) {
-                settings.delete('menu');
+                settings.delete('days');
                 this.resetConfData();
                 this._initDias();
                 swal('Éxito', 'Toda posibilidad de recuperación se ha perdido.', 'success');

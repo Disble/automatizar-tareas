@@ -56,8 +56,8 @@ class RenderPendiente extends RenderBase {
 						outgroup.label = this.firstUpperCase(tipoDia.title);
 						for (const dia of tipoDia.data) {
 							let opcion = document.createElement('option');
-							opcion.value = dia.name === dia.alternative ? dia.name : dia.alternative;
-							opcion.innerText = this.firstUpperCase(dia.name === dia.alternative ? dia.name : dia.alternative);
+							opcion.value = dia.name;
+							opcion.innerText = this.firstUpperCase(dia.name);
 							outgroup.appendChild(opcion);
 						}
 						data += outgroup.outerHTML;
