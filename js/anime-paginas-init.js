@@ -4,7 +4,6 @@ const swal = require('sweetalert');
 const Chart = require('chart.js');
 // Variables locales
 const { Historial } = require('../models/Historial.js');
-const { BDAnimes } = require('../models/consultas.js');
 
 document.addEventListener('DOMContentLoaded', async function () {
     let historial = new Historial();

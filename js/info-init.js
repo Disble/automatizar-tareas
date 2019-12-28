@@ -8,8 +8,7 @@ const { Anime } = require('../models/Anime');
 const { ipcRenderer } = require('electron');
 document.addEventListener('DOMContentLoaded', async function () {
     let idAnime = ipcRenderer.sendSync('get-id-anime', 'please'); // pide al main el idAnime que se guardo antes
-    console.log('idAnime', idAnime);
-
+    //
     let consultas = new BDAnimes();
     let animeData = await consultas.buscarAnimePorId(idAnime);
     let anime = new Anime(animeData.nombre, animeData.dias, animeData.nrocapvisto, animeData.totalcap, animeData.tipo, animeData.pagina, animeData.carpeta, animeData.estudios, animeData.origen, animeData.generos, animeData.duracion, animeData.portada, animeData.estado, animeData.repetir, animeData.activo, animeData.primeravez, animeData.fechaPublicacion, animeData.fechaEstreno, animeData.fechaCreacion, animeData.fechaUltCapVisto, animeData.fechaEliminacion, animeData._id);

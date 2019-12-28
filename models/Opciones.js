@@ -51,8 +51,8 @@ class Opciones extends RenderBase {
                 <span class="left">Animes</span>
             </div>
             <div class="col s6">
-                <a id="btn-import-anime" class="no-link waves-effect waves-light btn-small mr-20 blue lighten-4 blue-text text-darken-3">Importar</a>
-                <a id="btn-export-anime" class="no-link waves-effect waves-light btn-small green lighten-4 green-text text-darken-3">Exportar</a>
+                <a id="btn-import-anime" class="no-link waves-effect waves-light btn-small mr-20 blue lighten-4 blue-text text-darken-1 semibold">Importar</a>
+                <a id="btn-export-anime" class="no-link waves-effect waves-light btn-small green lighten-4 green-text text-darken-1 semibold">Exportar</a>
             </div>
         </div>
         <div class="row">
@@ -60,8 +60,8 @@ class Opciones extends RenderBase {
                 <span class="left">Pendientes</span>
             </div>
             <div class="col s6">
-                <a id="btn-import-pendiente" class="no-link waves-effect waves-light btn-small mr-20 blue lighten-4 blue-text text-darken-3">Importar</a>
-                <a id="btn-export-pendiente" class="rno-link waves-effect waves-light btn-small green lighten-4 green-text text-darken-3">Exportar</a>
+                <a id="btn-import-pendiente" class="no-link waves-effect waves-light btn-small mr-20 blue lighten-4 blue-text text-darken-1 semibold">Importar</a>
+                <a id="btn-export-pendiente" class="rno-link waves-effect waves-light btn-small green lighten-4 green-text text-darken-1 semibold">Exportar</a>
             </div>
         </div>    
         <div class="row">
