@@ -1,5 +1,5 @@
 class Pendiente {
-    constructor(nombre, detalle, orden, pagina = null, activo = true, fechaFin = null, fechaCreacion = new Date, _id = "") {
+    constructor(nombre, detalle, orden, pagina = null, activo = true, fechaFin = null, fechaCreacion = new Date(), _id = "") {
         this.nombre = nombre;
         this.detalle = detalle;
         this.orden = orden;

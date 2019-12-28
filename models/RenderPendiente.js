@@ -4,8 +4,8 @@ const { Pendiente } = require('./Pendiente.js');
 const { ModelAnime } = require('./ModelAnime.js');
 const { ModelPendiente } = require('./ModelPendiente.js');
 const { RenderBase } = require('./RenderBase.js');
-var Sortable = require('sortablejs');
-const { Menu, Tipos } = require('./defaults-config.js');
+const Sortable = require('sortablejs');
+const { Days, Tipos } = require('./defaults-config.js');
 const settings = require('electron-settings');
 
 
@@ -20,7 +20,7 @@ class RenderPendiente extends RenderBase {
 		this.model.getAllActive()
 			.then((resolve) => {
 				let data = '';
-				let menuSettings = settings.get('menu', Menu);
+				let diasSettings = settings.get('days', Days);
 				resolve.map((value, index) => {
 					data += /*html*/`<li id="item-list">
 					<div class="collapsible-header">
@@ -51,14 +51,13 @@ class RenderPendiente extends RenderBase {
 										</div>
 										<div class="input-field">
 											<select name="dia">`;
-					for (const tipoDia in menuSettings) {
-						const dias = menuSettings[tipoDia];
+					for (const tipoDia of diasSettings) {
 						let outgroup = document.createElement('optgroup');
-						outgroup.label = this.firstUpperCase(tipoDia);
-						for (const dia in dias) {
+						outgroup.label = this.firstUpperCase(tipoDia.title);
+						for (const dia of tipoDia.data) {
 							let opcion = document.createElement('option');
-							opcion.value = dias[dia].id;
-							opcion.innerText = this.firstUpperCase(dia);
+							opcion.value = dia.name === dia.alternative ? dia.name : dia.alternative;
+							opcion.innerText = this.firstUpperCase(dia.name === dia.alternative ? dia.name : dia.alternative);
 							outgroup.appendChild(opcion);
 						}
 						data += outgroup.outerHTML;
@@ -149,7 +148,7 @@ class RenderPendiente extends RenderBase {
 				let carpeta = value.querySelector('input[type=file]').getAttribute('value');
 				let totalcap = parseInt(form.get('totalcap'));
 
-				let anime = new Anime(orden, nombre, dia, 0, totalcap, tipo, pagina, carpeta, 0, true, new Date(), null, null);
+				let anime = new Anime(nombre, [{ dia, orden }], 0, totalcap, tipo, pagina, carpeta, null, '', null, null, { type: 'url', path: '' }, 0, [], true, true, null, null, new Date(), null, null);
 
 				this.modelAnime.new(anime)
 					.then(async (resolve) => {
