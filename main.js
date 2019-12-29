@@ -376,7 +376,8 @@ function createWindow() {
 		icon: path.join(__dirname, '/icons/png/512x512.png'),
 		webPreferences: {
 			nodeIntegration: true
-		}
+		},
+		// frame: false
 	});
 	mainWindow.setTitle('Autoreas');
 	// and load the ver.html of the app.

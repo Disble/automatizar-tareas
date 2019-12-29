@@ -1,5 +1,30 @@
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('../font/OpenSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: url('../font/OpenSans-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url('../font/OpenSans-Bold.ttf') format('truetype');
+}
+
 html {
 	color: hsla(0, 0%, 20%, 1);
+	font-family: 'Open Sans', 'Roboto', sans-serif;
 }
 
 :root {
@@ -8,6 +33,33 @@ html {
 	--blue-color: #039be5;
 	--red-materialize: #f44336;
 	--blue-grey: #eceff1;
+}
+
+.titlebar {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	font-weight: 400;
+}
+
+/* cambia dependiendo del tema de sistema (en tiempo real), probado solo en chrome */
+@media (prefers-color-scheme: dark) {
+	.titlebar {
+		color: hsl(213, 5%, 66%) !important;
+	}
+
+	.action-menu-item {
+		color: hsl(213, 15%, 80%) !important;
+	}
+}
+
+/* cambia dependiendo del tema de sistema (en tiempo real), probado solo en chrome */
+@media (prefers-color-scheme: light) {
+	.titlebar {
+		color: rgb(56, 56, 56) !important;
+	}
+
+	.action-menu-item {
+		color: rgb(42, 42, 42) !important;
+	}
 }
 
 .blue-grey-text.lighten-5 {
