@@ -1,6 +1,10 @@
 # Change Log
 Todos los cambios importantes de Autoreas van a ser documentados en este archivo.
 
+## [2.0.2]
+### Corrección de errores
+- Por algún extraña razón el orden de los animes se volvía completamente aleatorio, ¿por qué?, ¡Vaya uno a saber! Pero, al menos ya lo hemos arreglado.
+
 ## [2.0.0]
 ### Novedades incompatibles
 - La estructura de los datos internos ha cambiado completamente, pero no te preocupes, la misma aplicación se encarga de actualizar tus datos antiguos a los nuevos. \(^o^)/
