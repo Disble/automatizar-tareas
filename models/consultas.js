@@ -52,9 +52,9 @@ class BDAnimes extends RenderBase {
 							}
 						}
 					}
-					let ordenSort = ordenList.sort((a, b) => { // ordenamos los orden
-						return a.orden > b.orden;
-					});
+					// ordenamos los orden de forma ascendente
+					let ordenSort = ordenList.sort((a, b) => a.orden - b.orden);
+					//
 					let animes = [];
 					for (const iterator of ordenSort) { // sacamos los anime de cada objeto
 						animes.push(iterator.anime);
