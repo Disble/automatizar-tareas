@@ -350,7 +350,7 @@ class Historial extends RenderBase {
 		document.querySelectorAll('td.hidden').forEach((value, i) => {
 			value.parentElement.addEventListener('click', e => {
 				let key = value.parentElement.querySelector('#key').innerHTML;
-				console.log(ipcRenderer.sendSync('synchronous-message', key)); // envia la clave del anime al main y luego el main carga la vista info.
+				ipcRenderer.sendSync('synchronous-message', key) // envia la clave del anime al main y luego el main carga la vista info.
 			});
 		});
 	}
@@ -360,7 +360,6 @@ class Historial extends RenderBase {
 	 * @param {Anime} anime Datos del anime
 	 */
 	setInfoAnime(anime) {
-		console.log('entry point', anime);
 		// Cover
 		// Para mostrar la imagen en realidad lo único que importa es la dirección del slash.
 		this._isDefaultImage(anime.portada.path).then(isDefault => { // se encuentra en este formato para que la validación no detenga la carga de datos
@@ -535,7 +534,6 @@ class Historial extends RenderBase {
 			},
 			dangerMode: true,
 		});
-		console.log('confirm', confirm);
 		if (confirm) {
 			if (anime.primeravez) anime.primeravez = false;
 			if (this.isNoData(anime.repetir) || anime.repetir.length === 0) anime.repetir = [];

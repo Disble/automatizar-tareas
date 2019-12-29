@@ -392,17 +392,14 @@ function createWindow() {
 	// Events IPC
 	ipcMain.on('synchronous-message', (event, arg) => {
 		idAnime = arg;
-		console.log(arg) // prints "ping"
 		mainWindow.loadFile(path.join('views', 'animes', 'info.html'));
 		event.returnValue = 'pong';
 	})
 	ipcMain.on('get-id-anime', (event, arg) => {
-		console.log(arg) // prints "please"
 		event.returnValue = idAnime;
 	});
 	// load the view historial.html and send idAnime loaded already.
 	ipcMain.on('return-me-history', (event, arg) => {
-		console.log(arg) // prints "please return me"
 		mainWindow.loadFile(path.join('views', 'animes', 'historial.html'));
 		event.returnValue = idAnime;
 	});

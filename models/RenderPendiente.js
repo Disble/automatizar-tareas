@@ -21,7 +21,6 @@ class RenderPendiente extends RenderBase {
 	 */
 	async getAllData() {
 		let res = await this.model.getAllActive();
-		console.log(res, res.length);
 		if (res.length === 0) {
 			this.containerBlancoConImagen('container-pendientes', 'Tree_swing.svg');
 			return;

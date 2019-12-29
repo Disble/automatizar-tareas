@@ -167,7 +167,6 @@ class RenderNuevoAnime extends RenderBase {
 			let validacion = this._validarDropdownDias();
 			if (!validacion) return false;
 			let anime = this.crearAnime();
-			console.log('anime', anime);
 			let resp = await this.db.crearAnime(anime);
 			if (resp.length > 0) {
 				e.target.reset();
