@@ -3,11 +3,11 @@
 ## Descripción y contexto
 ---
 
-Esta aplicación tiene como principio la sencillez y accesibilidad de uso, ayudando al usuario con un sistema de control rápido y seguro. O como el lema que precede a esta aplicación dice.
+Esta aplicación tiene como principio la sencillez y accesibilidad de uso, ayudando al usuario con un sistema de control rápido y seguro, o como el lema que precede a esta aplicación dice.
 
 > Apoyando la vagancia desde tiempos inmemoriales.
 
-Enfocada principalmente como un Sistema de Control de Capítulos (o SCC siglas que acabo de inventar) de animes vistos. Teniendo un ciclo completo (agregar, ver, editar, borrar) en su presente versión Beta.
+Enfocada principalmente como un Sistema de Control de Capítulos (o SCC siglas que acabo de inventar) de animes vistos. Teniendo un ciclo completo (agregar, ver, editar, borrar) en su presente versión.
 
 Como parte del programa, diseñado al comienzo del desarrollo se presentarán las siguientes funciones. De las cuales actualmente ya se tienen cumplidas las siguientes funciones (sujetos a posibles cambios).
 
@@ -23,6 +23,7 @@ Como parte del programa, diseñado al comienzo del desarrollo se presentarán la
     - Datos por anime
     - Borrar (permanente)
     - Restaurar (regresa a la lista de Ver Animes)
+    - Repetir
     - Buscador
     - Filtros para el buscador e historial
  - [x] Gráfica de capítulos vistos de todos los animes (viendo)
@@ -40,6 +41,7 @@ Como parte del programa, diseñado al comienzo del desarrollo se presentarán la
  - [x] Opciones
     - Días (cambiar de nombre)
     - Gestor de descargas (acceso directo)
+    - Respaldos (importar y exportar)
 
 ### Características escondidas por Función
 - **Lista de Animes**
@@ -81,7 +83,7 @@ Ver anime.
 ---
 Las versiones de esta aplicación fueron creadas basándose en [Versionado Semántico](http://semver.org/).
 
-**Next Update: **
+**Next Update: Tooltip Update**
 
 ## Licencia
 ---
