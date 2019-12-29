@@ -1,6 +1,6 @@
 {
   "name": "autoreas",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Apoyando la vagancia desde tiempos inmemoriales.",
   "repository": {
     "type": "git",
@@ -35,7 +35,8 @@
       "github"
     ],
     "dmg": {
-      "contents": [{
+      "contents": [
+        {
           "x": 110,
           "y": 150
         },
