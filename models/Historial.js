@@ -993,7 +993,7 @@ class Historial extends RenderBase {
 				},
 				{
 					y: 1,
-					x: anime.fechaestreno
+					x: anime.fechaEstreno
 				},
 				{
 					y: 1,
@@ -1023,9 +1023,9 @@ class Historial extends RenderBase {
 				backgroundColor: '#64b5f6',
 			}
 		];
-		if ((!this.isNoData(anime.totalcap) || anime.totalcap > 0) && anime.totalcap !== anime.nrocapvisto) {
+		if ((!this.isNoData(anime.totalcap) || anime.totalcap > 0) && anime.totalcap !== anime.nrocapvisto && anime.totalcap - anime.nrocapvisto >= 0) {
 			datasets.push({
-				data: [anime.totalcap],
+				data: [anime.totalcap - anime.nrocapvisto],
 				backgroundColor: '#7986cb',
 			});
 		}
