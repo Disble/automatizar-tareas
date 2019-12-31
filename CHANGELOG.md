@@ -1,6 +1,14 @@
 # Change Log
 Todos los cambios importantes de Autoreas van a ser documentados en este archivo.
 
+## [2.0.3]
+### Corrección de errores
+- Solucionado: Por alguna motivo el icono de la aplicación se distorsionaba en la barra de tareas de Windows, sabemos que no eran las mejores vistas por lo que lo hemos cambiado, esperemos mejores vistas desde ahora.
+- Solucionado: Al agregar una carpeta a un anime, esta se agregaba con todo el contenido o simplemente no se agregaba, este no debería ser el comportamiento adecuado, lo hemos hablado seriamente y ha prometido que no volverá a suceder.
+- Solucionado: La nueva opción de importar o exportar, no funcionaba, esta vez si lo hemos corregido (o eso esperamos).
+- Solucionado: En la información del anime en Historial en lugar de mostrarse en la gráfica los capítulos vistos y los restantes se mostraban los vistos y el total, entendemos que esta vista no era muy útil así que la hemos cambiado por una más útil.
+- Solucionado: Algunas pequeñas cositas sin importancia.
+
 ## [2.0.2]
 ### Corrección de errores
 - Por algún extraña razón el orden de los animes se volvía completamente aleatorio, ¿por qué?, ¡Vaya uno a saber! Pero, al menos ya lo hemos arreglado.
