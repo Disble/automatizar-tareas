@@ -534,7 +534,6 @@ class RenderEditarAnime extends RenderBase {
             let estado = parseInt(form.get('estado'));
             let pagina = form.get('pagina').trim();
             let carpeta = form.get('carpeta') === "" ? null : form.get('carpeta').trim();
-            console.log(carpeta);
 
             // No obligatorios
             let pickerFechaPublicacion = M.Datepicker.getInstance(document.getElementById('fechaPublicacion'));

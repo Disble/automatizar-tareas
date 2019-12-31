@@ -177,7 +177,9 @@ class RenderNuevoAnime extends RenderBase {
 						el.parentNode.removeChild(el);
 					}
 				});
+				document.querySelector(`.datos-anime-nuevo [data-target*="dropdown-dias"]`).classList.remove('blue');
 				this._crearDropdownDias(dropdownDias);
+				this._initDropdownDias(dropdownDias);
 			}
 		});
 		document.getElementById('btn-borrar-fila').addEventListener('click', this.eliminarFila(document.getElementById('anime-0')));
