@@ -252,7 +252,7 @@ class RenderVerAnime extends RenderBase {
                 let dia = e.currentTarget.getAttribute('dia');
                 let id = e.currentTarget.getAttribute('idanime');
                 cap = cap <= 0.5 ? 0 : cap - 1;
-                this.actualizarCapitulo(anime.fechaEstreno, dia, cap, id);
+                this.actualizarCapitulo(anime, dia, cap, id);
             });
             animeMinus.addEventListener('mouseup', e => {
                 if (e.button === 2) {
@@ -261,7 +261,7 @@ class RenderVerAnime extends RenderBase {
                     let dia = e.currentTarget.getAttribute('dia');
                     let id = e.currentTarget.getAttribute('idanime');
                     cap = cap <= 0 ? 0 : cap - 0.5;
-                    this.actualizarCapitulo(anime.fechaEstreno, dia, cap, id);
+                    this.actualizarCapitulo(anime, dia, cap, id);
                 }
             });
             animePlus.addEventListener('click', e => {
@@ -269,7 +269,7 @@ class RenderVerAnime extends RenderBase {
                 let dia = e.currentTarget.getAttribute('dia');
                 let id = e.currentTarget.getAttribute('idanime');
                 cap += 1;
-                this.actualizarCapitulo(anime.fechaEstreno, dia, cap, id);
+                this.actualizarCapitulo(anime, dia, cap, id);
             });
             animePlus.addEventListener('mouseup', e => {
                 if (e.button === 2) {
@@ -278,7 +278,7 @@ class RenderVerAnime extends RenderBase {
                     let dia = e.currentTarget.getAttribute('dia');
                     let id = e.currentTarget.getAttribute('idanime');
                     cap += 0.5;
-                    this.actualizarCapitulo(anime.fechaEstreno, dia, cap, id);
+                    this.actualizarCapitulo(anime, dia, cap, id);
                 }
             });
             // Capitulos restantes
@@ -333,12 +333,12 @@ class RenderVerAnime extends RenderBase {
     /**
 	 * Actualiza el número de capítulo de un anime y
 	 * recarga la lista de animes.
-	 * @param {string} dia Día del que se esta mostrando los animes.
+	 * @param {Anime} anime Datos del anime.
 	 * @param {number} cont Número de capítulo a actualizar.
      * @param {number} id Id del anime a actualizar
 	 */
-    async actualizarCapitulo(fechaEstreno, dia, cont, id) {
-        let estrenar = fechaEstreno === null;
+    async actualizarCapitulo(anime, dia, cont, id) {
+        let estrenar = anime.fechaUltCapVisto === null && anime.fechaEstreno === null;
         let res = await this.db.actualizarCap(id, cont, estrenar);
         if (res === 0) {
             M.toast({
