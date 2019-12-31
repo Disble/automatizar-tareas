@@ -138,7 +138,12 @@ class RenderPendiente extends RenderBase {
 				let form = new FormData(value);
 
 				if (form.get('nombre').length === 0 || form.get('dia') === null || form.get('orden').length === 0 || form.get('tipo') === null) {
-					swal("¡Opss!", `Necesitamos más datos para crearlo.`, "warning");
+					swal({
+						title: "¡Opss!",
+						text: "Necesitamos más datos para crearlo.",
+						icon: "warning",
+						className: "warning-swal"
+					});
 					return false;
 				}
 
@@ -161,21 +166,37 @@ class RenderPendiente extends RenderBase {
 							icon: "success",
 							buttons: ["NO", "SI"],
 							dangerMode: true,
+							className: "success-swal"
 						})
 							.then(async (willDelete) => {
 								if (willDelete) {
 									this._setOffPendiente(container);
-									await swal("¡Pendiente borrado!", "", "success");
+									swal({
+										title: "¡Pendiente borrado!",
+										text: "",
+										icon: "success",
+										className: "success-swal"
+									});
 									this.recargarPagina();
 								} else {
-									await swal("No hay problema", "Este pendiente se mantendra en la lista.", "success")
+									swal({
+										title: "No hay problema",
+										text: "Este pendiente se mantendra en la lista.",
+										icon: "success",
+										className: "success-swal"
+									});
 									this.recargarPagina();
 								}
 							});
 					})
 					.catch((err) => {
 						console.error(err);
-						swal("¡Opss!", `Tuvimos problemas creando "${nombre}".\nPor favor vuelva a intentarlo.`, "error");
+						swal({
+							title: "¡Opss!",
+							text: `Tuvimos problemas creando "${nombre}".\nPor favor vuelva a intentarlo.`,
+							icon: "error",
+							className: "error-swal"
+						});
 					});
 			});
 		});
@@ -310,6 +331,7 @@ class RenderPendiente extends RenderBase {
 					icon: "info",
 					buttons: ["NO", "SI"],
 					dangerMode: true,
+					className: "info-swal"
 				})
 					.then((willDelete) => {
 						if (willDelete) {
@@ -317,7 +339,12 @@ class RenderPendiente extends RenderBase {
 							el && el.parentNode.removeChild(el);
 							this._setOffPendiente(evt.item);
 						} else {
-							swal("¡Acción cancelada!", "", "info");
+							swal({
+								title: "¡Acción cancelada!",
+								text: "",
+								icon: "info",
+								className: "info-swal"
+							});
 						}
 					});
 			}
@@ -418,7 +445,12 @@ class RenderPendiente extends RenderBase {
 				e.preventDefault();
 				e.stopPropagation();
 				if (!shell.openExternal(value.href)) {
-					swal("Hubo problemas al abrir la url.", "Por favor revise el formato de la url en Editar Animes.", "error");
+					swal({
+						title: "Hubo problemas al abrir la url.",
+						text: "Por favor revise el formato de la url en Editar Animes.",
+						icon: "error",
+						className: "error-swal"
+					});
 				}
 			});
 		});

@@ -347,12 +347,22 @@ class RenderNuevoAnime extends RenderBase {
 	 */
 	eliminarFila(el) {
 		return async e => {
-			let confirm = await swal("¿Estas seguro?", "Se perderan todos los datos ingresados.", "warning", {
-				buttons: ['No', 'Si']
+			let confirm = await swal({
+				title: "¿Estás seguro?",
+				text: `Se perderan todos los datos ingresados.`,
+				icon: "warning",
+				buttons: ["No", "Si"],
+				dangerMode: true,
+				className: "warning-swal"
 			});
 			if (!confirm) return;
 			el.parentNode.removeChild(el);
-			await swal('Éxito', 'Toda posibilidad de recuperación se ha perdido.', 'success');
+			await swal({
+				title: "Éxito",
+				text: "Toda posibilidad de recuperación se ha perdido.",
+				icon: "success",
+				className: "success-swal"
+			});
 		}
 	}
 	/**

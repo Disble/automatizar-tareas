@@ -17,7 +17,12 @@ class Backup {
             content = fs.readFileSync(dir, 'utf8');
         }
         catch (e) {
-            await swal('Houston, tenemos un problema', 'Hubo un error leyendo los datos del archivo original. Por favor recargue la ventana y vuelva a intentarlo.', 'error');
+            await swal({
+                title: "Houston, tenemos un problema",
+                text: "Hubo un error leyendo los datos del archivo original. Por favor recargue la ventana y vuelva a intentarlo.",
+                icon: "error",
+                className: "error-swal"
+            });
             return;
         }
 
@@ -30,11 +35,21 @@ class Backup {
         if (saveDir === undefined) return; // validación en caso de cancelar la ventana de dialogo
         try {
             fs.writeFileSync(saveDir, content, 'utf-8');
-            swal('Sus datos se han guardado con éxito', 'Ya puede estar tranquilo.', 'success');
+            await swal({
+                title: "Sus datos se han guardado con éxito",
+                text: "Ya puede estar tranquilo.",
+                icon: "success",
+                className: "success-swal"
+            });
         }
         catch (error) {
             if (error.code === 'ERR_INVALID_OPT_VALUE_ENCODING') console.error(`${error.code}: error de encoding`);
-            swal('Houston, tenemos un problema', 'Hubo un error guardando los datos en el destino proporcionado. Por favor recargue la ventana y vuelva a intentarlo.', 'error');
+            await swal({
+                title: "Houston, tenemos un problema",
+                text: "Hubo un error guardando los datos en el destino proporcionado. Por favor recargue la ventana y vuelva a intentarlo.",
+                icon: "error",
+                className: "error-swal"
+            });
         }
     }
     /**
@@ -54,16 +69,31 @@ class Backup {
             content = fs.readFileSync(fileDir[0], 'utf8');
         }
         catch (e) {
-            await swal('Houston, tenemos un problema', 'Hubo un error leyendo los datos del archivo. Por favor recargue la ventana y vuelva a intentarlo.', 'error');
+            await swal({
+                title: "Houston, tenemos un problema",
+                text: "Hubo un error leyendo los datos del archivo. Por favor recargue la ventana y vuelva a intentarlo.",
+                icon: "error",
+                className: "error-swal"
+            });
             return;
         }
         try {
             fs.writeFileSync(importDir, content, 'utf-8');
-            swal('Sus datos se han actualizado con éxito', 'Ya puede estar tranquilo.', 'success');
+            await swal({
+                title: "Sus datos se han actualizado con éxito",
+                text: "Ya puede estar tranquilo.",
+                icon: "success",
+                className: "success-swal"
+            });
         }
         catch (error) {
             if (error.code === 'ERR_INVALID_OPT_VALUE_ENCODING') console.error(`${error.code}: error de encoding`);
-            swal('Houston, tenemos un problema', 'Hubo un error guardando los datos en el destino proporcionado. Por favor recargue la ventana y vuelva a intentarlo.', 'error');
+            await swal({
+                title: "Houston, tenemos un problema",
+                text: "Hubo un error guardando los datos en el destino proporcionado. Por favor recargue la ventana y vuelva a intentarlo.",
+                icon: "error",
+                className: "error-swal"
+            });
         }
     }
 }

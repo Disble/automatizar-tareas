@@ -395,11 +395,21 @@ class RenderBase {
 			this.advertenciaProcesando();
 			let migrated = await this.convertirANuevoAnime(animesAntiguos, bd);
 			if (migrated) {
-				await swal('Éxito', 'Hemos actualizado los datos con éxito. Se recargara la ventana.', 'success');
+				await swal({
+					title: "Éxito",
+					text: "Hemos actualizado los datos con éxito. Se recargara la ventana.",
+					icon: "success",
+					className: "success-swal"
+				});
 				window.location.href = window.location.href;
 			}
 			else {
-				await swal('Houston, tenemos un problema', 'Hubo un error leyendo los datos del archivo original. Por favor recargue la ventana y vuelva a intentarlo.', 'error');
+				await swal({
+					title: "Houston, tenemos un problema",
+					text: "Hubo un error leyendo los datos del archivo original. Por favor recargue la ventana y vuelva a intentarlo.",
+					icon: "error",
+					className: "error-swal"
+				});
 			}
 		}
 	}
@@ -413,7 +423,8 @@ class RenderBase {
 			icon: "warning",
 			button: {
 				className: "green"
-			}
+			},
+			className: "warning-swal"
 		});
 	}
 	async advertenciaProcesando() {

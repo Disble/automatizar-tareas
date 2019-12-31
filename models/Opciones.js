@@ -203,7 +203,12 @@ class Opciones extends RenderBase {
                 }
             }
             settings.set('days', dias);
-            swal("Éxito.", `Los días del menu se han actualizado correctamente.`, "success");
+            swal({
+                title: "Éxito",
+                text: "Los días del menu se han actualizado correctamente.",
+                icon: "success",
+                className: "success-swal"
+            });
         });
         document.getElementById('btn-restore').addEventListener('click', async (e) => {
             let borrar = await swal({
@@ -212,14 +217,25 @@ class Opciones extends RenderBase {
                 icon: "warning",
                 buttons: ["Cancelar", "OK"],
                 dangerMode: true,
+                className: "warning-swal"
             });
             if (borrar) {
                 settings.delete('days');
                 this.resetConfData();
                 this._initDias();
-                swal('Éxito', 'Toda posibilidad de recuperación se ha perdido.', 'success');
+                await swal({
+                    title: "Éxito",
+                    text: "Toda posibilidad de recuperación se ha perdido.",
+                    icon: "success",
+                    className: "success-swal"
+                });
             } else {
-                swal("No hay problema.", "", "success");
+                await swal({
+                    title: "No hay problema",
+                    text: "",
+                    icon: "success",
+                    className: "success-swal"
+                });
             }
         });
     }
@@ -287,13 +303,24 @@ class Opciones extends RenderBase {
                 icon: "warning",
                 buttons: ["Cancelar", "OK"],
                 dangerMode: true,
+                className: "warning-swal"
             });
             if (borrar) {
                 settings.delete('downloader');
                 document.getElementById('programa').value = '';
-                swal('Éxito', 'Toda posibilidad de recuperación se ha perdido.', 'success');
+                await swal({
+                    title: "Éxito",
+                    text: "Toda posibilidad de recuperación se ha perdido.",
+                    icon: "success",
+                    className: "success-swal"
+                });
             } else {
-                swal("No hay problema.", "", "success");
+                await swal({
+                    title: "No hay problema",
+                    text: "",
+                    icon: "success",
+                    className: "success-swal"
+                });
             }
         });
         document.getElementById('submit-downloader').addEventListener('click', e => {
@@ -302,7 +329,12 @@ class Opciones extends RenderBase {
             settings.set('downloader', {
                 dir: dirProgram
             });
-            swal("Éxito.", `La configuración de ${path.basename(dirProgram, '.exe')} se ha guardado correctamente.`, "success");
+            swal({
+                title: "Éxito",
+                text: `La configuración de ${path.basename(dirProgram, '.exe')} se ha guardado correctamente.`,
+                icon: "success",
+                className: "success-swal"
+            });
         });
         /**
 		 * Reemplazo para método de materialize para input[type=file].

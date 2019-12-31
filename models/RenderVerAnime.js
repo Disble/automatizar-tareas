@@ -53,7 +53,12 @@ class RenderVerAnime extends RenderBase {
                     displayLength: 4000
                 });
             } else {
-                swal("Hubo problemas al abrir el programa.", "Por favor revise que la dirección del programa sea correcta en Opciones.", "error");
+                swal({
+                    title: "Hubo problemas al abrir el programa",
+                    text: "Por favor revise que la dirección del programa sea correcta en Opciones.",
+                    icon: "error",
+                    className: "error-swal"
+                });
             }
         });
         downloader.setAttribute('data-tooltip', path.basename(this._obtenerDirPrograma(), '.exe'));
@@ -67,7 +72,12 @@ class RenderVerAnime extends RenderBase {
     _obtenerDirPrograma() {
         let dir = settings.get('downloader.dir');
         if (dir === undefined) { // esto es solo que caso de que se muestre por error
-            swal("No configurado.", "No esta configurado la dirección del programa, por favor hagalo en Opciones.", "error");
+            swal({
+                title: "No configurado",
+                text: "No esta configurado la dirección del programa, por favor hagalo en Opciones.",
+                icon: "error",
+                className: "error-swal"
+            });
             return;
         }
         return path.normalize(dir);
@@ -222,7 +232,12 @@ class RenderVerAnime extends RenderBase {
             col.querySelector('#anime-link').addEventListener('click', () => {
                 // if (!this.isUrl(anime.pagina)) return;
                 if (!shell.openExternal(anime.pagina)) {
-                    swal("Hubo problemas al abrir la url.", "Por favor revise el formato de la url en Editar Animes.", "error");
+                    swal({
+                        title: "Hubo problemas al abrir la url",
+                        text: "Por favor revise el formato de la url en Editar Animes.",
+                        icon: "error",
+                        className: "error-swal"
+                    });
                 }
             });
             col.querySelector('#anime-folder').addEventListener('click', () => {

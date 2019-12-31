@@ -227,6 +227,7 @@ class RenderEditarAnime extends RenderBase {
                 title: "¿Estás seguro?",
                 text: `Estas a punto de borrar "${nombreAnime}". \n\n¡Una vez borrado aún se podra restaurar en historial!`,
                 icon: "warning",
+                className: "warning-swal",
                 buttons: ["Cancelar", "OK"],
                 dangerMode: true,
             });
@@ -248,9 +249,19 @@ class RenderEditarAnime extends RenderBase {
                         carpeta: '',
                     });
                 }
-                swal("Éxito", "Anime enviado al historial exitosamente", "success");
+                swal({
+                    title: "Éxito",
+                    text: "Anime enviado al historial exitosamente",
+                    icon: "success",
+                    className: "success-swal"
+                });
             } else {
-                swal("¡Acción cancelada!", "", "info");
+                swal({
+                    title: "¡Acción cancelada!",
+                    text: "",
+                    icon: "info",
+                    className: "info-swal"
+                });
             }
         });
     }
