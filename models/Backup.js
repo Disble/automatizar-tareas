@@ -21,7 +21,7 @@ class Backup {
             return;
         }
 
-        let saveDir = dialog.showSaveDialog({
+        let saveDir = dialog.showSaveDialogSync({
             defaultPath: `*/${name}`,
             filters: [
                 { name: 'Data', extensions: ['json'] }
@@ -43,7 +43,7 @@ class Backup {
      * @param {string} importDir Directorio a donde se va copia los datos.
      */
     async importData(importDir) {
-        let fileDir = dialog.showOpenDialog({
+        let fileDir = dialog.showOpenDialogSync({
             filters: [
                 { name: 'Data', extensions: ['json'] }
             ]

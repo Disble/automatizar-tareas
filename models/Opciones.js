@@ -40,7 +40,10 @@ class Opciones extends RenderBase {
         this.noLink();
         this._initLoaderExportar();
     }
-
+    /**
+     * Inicializa la estructura HTML de la opción de 
+     * exportar.
+     */
     _cargarExportar() {
         document.getElementById('conf-title').innerText = 'Respaldos';
         let datos = document.getElementById('datos');
