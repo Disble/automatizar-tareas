@@ -122,9 +122,11 @@ class RenderPendiente extends RenderBase {
 		M.updateTextFields();
 		this._urlExternal();
 		document.querySelectorAll('.inputfile').forEach((value) => {
-			value.addEventListener('change', e => {
+			value.addEventListener('click', e => {
+				e.preventDefault();
+				e.stopPropagation();
 				this.getFolder(value);
-			})
+			});
 		});
 		this.elementsPen = document.getElementById('data-pendientes').querySelectorAll('li#item-list');
 	}

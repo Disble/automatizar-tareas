@@ -1,7 +1,8 @@
 'use strict';
 const remote = require('electron').remote;
-const { Anime } = require('./Anime');
 const Menu = remote.Menu;
+const dialog = remote.dialog;
+const { Anime } = require('./Anime');
 const InputMenu = Menu.buildFromTemplate([
 	{
 		label: 'Cortar',
@@ -223,17 +224,19 @@ class RenderBase {
 	 * proporcionado y lo guarda en atributos.
 	 * Método especifico de para ciertos
 	 * inputs tipo file.
-	 * @param {any} input 
+	 * @param {HTMLElement} input Input al cual se va a agregar la dirección
 	 */
 	getFolder(input) {
-		if (this.isNoData(input) || input.files[0] === undefined) return
-		let folder = input.files[0].path
-		let path = this.slashFolder(folder)
-		input.setAttribute('value', path);
+		let folders = dialog.showOpenDialogSync(null, {
+			properties: ['openDirectory']
+		});
+		if (this.isNoData(folders)) return;
+		let folder = folders[0];
+		input.setAttribute('value', folder);
 
 		let label = this.siblings(input)[0];
 		label.innerHTML = 'Cargado';
-		label.setAttribute('data-tooltip', path);
+		label.setAttribute('data-tooltip', folder);
 		label.removeClass(label, 'blue'); // método hecho con prototipos de la clase RenderBase
 		label.addClass(label, 'green'); // método hecho con prototipos de la clase RenderBase
 		label.removeClass(label, 'blue-text'); // método hecho con prototipos de la clase RenderBase

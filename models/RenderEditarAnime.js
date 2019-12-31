@@ -5,6 +5,7 @@ const { RenderBase } = require('./RenderBase.js');
 const { Days, Tipos, Estados } = require('./defaults-config.js');
 const settings = require('electron-settings');
 const { Anime } = require('./Anime');
+const { dialog } = require('electron').remote;
 
 /**
  * Clase para la sección de `Editar Anime`.
@@ -420,15 +421,19 @@ class RenderEditarAnime extends RenderBase {
         cambiarTipoImagen.addEventListener('change', this._runChangePortadaSelect(cambiarTipoImagen));
         this._initInputPortada();
         /**
-         * Reemplazo para método de materialize para input[type=file].
+         * Reemplazo para el input file webkitdirectory que dejo de funcionar desde la v2.0.0
+         * ahora se maneja con la API dialog de electron.
          */
-        document.getElementById('carpeta-input').addEventListener('change', (e) => {
-            setTimeout(() => {
-                if (this.isNoData(e.target) || e.target.files[0] === undefined) return;
-                let folder = e.target.files[0].path;
-                document.getElementById('carpeta').value = path.normalize(folder);
-            }, 1);
-        });
+        document.getElementById('carpeta-input').addEventListener('click', e => {
+            e.preventDefault();
+            e.stopPropagation();
+            let folders = dialog.showOpenDialogSync(null, {
+                properties: ['openDirectory']
+            });
+            if (this.isNoData(folders)) return;
+            let folder = folders[0];
+            document.getElementById('carpeta').value = path.normalize(folder);
+        })
     }
     /**
      * Activa el cambio del `input` del `select` Portada, dependiendo si es 
@@ -529,6 +534,8 @@ class RenderEditarAnime extends RenderBase {
             let estado = parseInt(form.get('estado'));
             let pagina = form.get('pagina').trim();
             let carpeta = form.get('carpeta') === "" ? null : form.get('carpeta').trim();
+            console.log(carpeta);
+
             // No obligatorios
             let pickerFechaPublicacion = M.Datepicker.getInstance(document.getElementById('fechaPublicacion'));
             let fechaPublicacion = pickerFechaPublicacion.date;

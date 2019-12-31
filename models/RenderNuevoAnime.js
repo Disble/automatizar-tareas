@@ -121,9 +121,11 @@ class RenderNuevoAnime extends RenderBase {
 		let filaNueva = document.getElementById('agregarNuevoAnime').parentElement.parentElement.parentElement.previousElementSibling;
 
 		filaNueva.querySelectorAll('.btn-carpeta-buscar').forEach((value) => {
-			value.addEventListener('change', e => {
+			value.addEventListener('click', e => {
+				e.preventDefault();
+				e.stopPropagation();
 				this.getFolder(value);
-			});
+			})
 		});
 		let dropdownDias = filaNueva.querySelector(`#dropdown-dias${this.contNewFolder}`);
 		this._crearDropdownDias(dropdownDias);
@@ -180,9 +182,11 @@ class RenderNuevoAnime extends RenderBase {
 		});
 		document.getElementById('btn-borrar-fila').addEventListener('click', this.eliminarFila(document.getElementById('anime-0')));
 		document.querySelectorAll('#file').forEach((value) => {
-			value.addEventListener('change', e => {
+			value.addEventListener('click', e => {
+				e.preventDefault();
+				e.stopPropagation();
 				this.getFolder(value);
-			});
+			})
 		});
 		this._initInputPortada();
 		M.Tooltip.init(document.querySelectorAll('.tooltipped'), {
