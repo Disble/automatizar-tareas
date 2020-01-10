@@ -1,5 +1,6 @@
 {
   "name": "autoreas",
+  "productName": "Autoreas",
   "version": "2.0.3",
   "description": "Apoyando la vagancia desde tiempos inmemoriales.",
   "repository": {
@@ -30,13 +31,12 @@
   },
   "build": {
     "appId": "com.electron.autoreas",
-    "artifactName": "${name}-setup-${version}.${ext}",
+    "artifactName": "${productName}-setup-${version}.${ext}",
     "publish": [
       "github"
     ],
     "dmg": {
-      "contents": [
-        {
+      "contents": [{
           "x": 110,
           "y": 150
         },
