@@ -4,6 +4,7 @@ const { BDAnimes } = require('./consultas.js');
 const { Estados, Tipos } = require('./defaults-config.js');
 const { ipcRenderer } = require('electron');
 const { Anime } = require('./Anime');
+const fs = require('fs');
 
 /**
  * Controla todo lo referente a la página Historia y 
