@@ -672,11 +672,10 @@ select.browser-default {
 .ver-img-card {
 	background-size: cover;
 	width: 100px;
-	height: calc(100% + 1px);
+	height: 100%;
 	background-repeat: no-repeat;
 	background-position: center;
 	border-radius: 10px 0 0 10px;
-	background-position-y: 2px;
 }
 
 .ver-radius-card {
