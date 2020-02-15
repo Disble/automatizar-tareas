@@ -330,6 +330,10 @@ table.highlight>tbody>tr:hover {
 	width: 100%;
 }
 
+.inline-block {
+	display: inline-block;
+}
+
 .dropdown-content li>a,
 .dropdown-content[class*="multiple-select-dropdown"] li>span {
 	font-size: small;

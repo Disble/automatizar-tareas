@@ -31,6 +31,54 @@ class Opciones extends RenderBase {
         document.getElementById('conf-exportar').addEventListener('click', e => {
             this._initExportar();
         });
+        document.getElementById('conf-temporada').addEventListener('click', e => {
+            this._initTemporada();
+        });
+    }
+    /**
+     * Inicializa temporada
+     */
+    _initTemporada() {
+        this._cargarTemporada();
+        this.noLink();
+        this._initLoaderTemporada();
+    }
+    /**
+     * Inicializa la estructura HTML de la opción de 
+     * temporada.
+     */
+    _cargarTemporada() {
+        this.resetConfData();
+        document.getElementById('conf-title').innerText = 'Modo temporada';
+        let datos = document.getElementById('datos');
+        let checkbox = /*html*/`
+            <div class="col s12">
+                <h5 class="grey-text text-darken-2">
+                    Activar temporada
+                    <!-- Switch -->
+                    <div class="switch right">
+                        <label>
+                        Desactivado
+                        <input type="checkbox" id="check-temporada">
+                        <span class="lever"></span>
+                        Activado
+                        </label>
+                    </div>
+                </h5>
+                <p class="paragraph-btn-right grey-text"><em>Ver animes</em> se abre con la sección de <em>Estrenos</em> desplegada en <em>${this.getAlternativeDay('Ver hoy')}<em>.</p>
+            </div>
+        `;
+        datos.innerHTML = checkbox;
+    }
+    /**
+     * Inicializa los componentes de las opciones de Temporada.
+     */
+    _initLoaderTemporada() {
+        let checkTemporada = document.getElementById('check-temporada');
+        checkTemporada.addEventListener('change', e => {
+            settings.set('is-season', e.target.checked);
+        });
+        checkTemporada.checked = settings.get('is-season', false);
     }
     /**
      * Inicializa exportar

@@ -88,13 +88,19 @@ class RenderVerAnime extends RenderBase {
 	 */
     async menuRender() {
         let diasSettings = settings.get('days', Days);
+        let seasonMode = settings.get('is-season', false);
         let menuDropdown = document.getElementById('menu');
         menuDropdown.innerHTML = '';
+        let dayTitle = '';
         let i = 0;
         for (const grupoDias of diasSettings) {
             let menu = '';
             let li = document.createElement('li');
-            if (i++ === 0) li.classList.add('active');
+            if (seasonMode) {
+                if (i++ === 1) li.classList.add('active');
+            } else {
+                if (i++ === 0) li.classList.add('active');
+            }
             menu += /*html*/`
                     <div class="collapsible-header">
                         <h5 class="no-margin blue-grey-text">${grupoDias.title}</h5>
@@ -105,7 +111,7 @@ class RenderVerAnime extends RenderBase {
             for (const dias of grupoDias.data) {
                 let dia = dias.name === dias.alternative ? dias.name : dias.alternative;
                 menu += /*html*/`
-                            <a href="#!" class="collection-item no-link blue-text" dia="${dias.name}">${dia}<span class="badge"></span></a>
+                            <a href="#!" class="collection-item no-link blue-text" dia="${dias.name}" dia-alternative="${dias.alternative}">${dia}<span class="badge"></span></a>
                         `;
             }
             menu += /*html*/`
@@ -117,7 +123,8 @@ class RenderVerAnime extends RenderBase {
             li.querySelectorAll('[dia]').forEach(item => {
                 item.addEventListener('click', () => {
                     let day = item.getAttribute('dia');
-                    document.getElementById('title-day').innerText = day;
+                    let dayAlternative = item.getAttribute('dia-alternative');
+                    document.getElementById('title-day').innerText = dayAlternative;
                     this._loadAnime(day);
                 });
             });
@@ -132,8 +139,10 @@ class RenderVerAnime extends RenderBase {
      * actual.
      */
     async _verAnime() {
-        let today = this._dayWeek();
-        document.getElementById('title-day').innerText = today;
+        let seasonMode = settings.get('is-season', false);
+        let today = seasonMode ? 'Ver hoy' : this._dayWeek();
+        let alternativeDay = this.getAlternativeDay(today);
+        document.getElementById('title-day').innerText = alternativeDay;
         this._loadAnime(today);
     }
     /**

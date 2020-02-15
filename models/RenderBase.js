@@ -3,6 +3,8 @@ const remote = require('electron').remote;
 const Menu = remote.Menu;
 const dialog = remote.dialog;
 const { Anime } = require('./Anime');
+const settings = require('electron-settings');
+const { Days } = require('../models/defaults-config.js');
 const InputMenu = Menu.buildFromTemplate([
 	{
 		label: 'Cortar',
@@ -584,6 +586,23 @@ class RenderBase {
 				<p class="blue-grey-text bold center">No hay datos disponibles, inténtalo de nuevo más tarde.</p>
 			</div>
 		`;
+	}
+	/**
+     * Busca entre los días guardados (semana, estrenos) el nombre
+     * alternativo del día dado.
+     * @param {string} today Día del cual se buscará el nombre alternativo.
+     */
+	getAlternativeDay(today) {
+		let alternativeDay = '';
+		let diasSettings = settings.get('days', Days);
+		for (const groupDay of diasSettings) {
+			for (const day of groupDay.data) {
+				if (day.name === today) {
+					alternativeDay = day.alternative;
+				}
+			}
+		}
+		return alternativeDay;
 	}
 }
 
