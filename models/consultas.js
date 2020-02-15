@@ -88,7 +88,7 @@ class BDAnimes extends RenderBase {
 	 */
 	animesViendo() {
 		return new Promise((resolve, reject) => {
-			animesdb.find({ $and: [{ $and: [{ $not: { "totalcap": null } }, { "totalcap": { $exists: true } }] }, { $or: [{ "activo": true }, { "activo": { $exists: false } }] }] }, { nombre: 1, totalcap: 1, nrocapvisto: 1, estado: 1 })
+			animesdb.find({ $and: [{ $or: [{ "activo": true }, { "activo": { $exists: false } }] }] }, { nombre: 1, totalcap: 1, nrocapvisto: 1, estado: 1 })
 				.sort({ "orden": 1 })
 				.exec(function (err, record) {
 					if (err) {
