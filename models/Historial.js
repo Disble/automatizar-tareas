@@ -458,7 +458,7 @@ class Historial extends RenderBase {
 		for (const repeticion of repeticiones) {
 			repeticionHistorial += /*html*/`
 				<li>
-					<div class="collapsible-header">${repeticion.numrepeticion}: ${this._setFullDate(repeticion.fechaRepeticion)}</div>
+					<div class="collapsible-header">Repetición ${repeticion.numrepeticion}</div>
 					<div class="collapsible-body">
 						<div class="row">
 							<div class="input-field col s12">
@@ -494,6 +494,12 @@ class Historial extends RenderBase {
 							<div class="input-field col s12">
 								<input readonly type="text" value="${this.isNoData(repeticion.fechaEliminacion) ? 'Desconocido' : this._setFullDate(repeticion.fechaEliminacion)}">
 								<label>Fecha de eliminación</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<input readonly type="text" value="${this._setFullDate(repeticion.fechaRepeticion)}">
+								<label>Siguiente repetición</label>
 							</div>
 						</div>
 					</div>
