@@ -32,21 +32,24 @@
                     <label for="nombre" data-error="Este campo no puede estar vacio">Nombre</label>
                 </div>
                 <div class="input-field col s12">
-                    <!-- Dropdown Trigger -->
-                    <a class='dropdown-trigger btn btn-block dropdown-dias black-text z-depth-0' href='#'
-                        data-target='dropdown-dias'>
-                        Días
-                        <span class="right">
-                            <svg class="caret" height="24" viewBox="0 0 24 24" width="24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M7 10l5 5 5-5z"></path>
-                                <path d="M0 0h24v24H0z" fill="none"></path>
-                            </svg>
-                        </span>
-                    </a>
-                    <!-- Dropdown Structure -->
-                    <ul id='dropdown-dias' class='dropdown-content days'>
-                    </ul>
+                    <div class="select-wrapper">
+                        <!-- Dropdown Trigger -->
+                        <a class='dropdown-trigger btn btn-block dropdown-dias black-text z-depth-0 wrap-one-line'
+                            id="dropdown-dias-trigger" href='#' data-target='dropdown-dias' dropdown-dias="drop-anime">
+                            <span autoreas-droptext="dropdown-dias-text">Días</span>
+                            <span class="right">
+                                <svg class="caret" height="24" viewBox="0 0 24 24" width="24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 10l5 5 5-5z"></path>
+                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                </svg>
+                            </span>
+                        </a>
+                        <!-- Dropdown Structure -->
+                        <ul id='dropdown-dias' autoreas-dropdias="drop-anime" class='dropdown-content days'>
+                        </ul>
+                    </div>
+                    <label for="dropdown-dias-trigger" data-error="Este campo no puede estar vacio">Días</label>
                 </div>
                 <div class="input-field col s12">
                     <input type="number" id="cap-vistos" name="cap-vistos" placeholder="Capítulos vistos" min="0"

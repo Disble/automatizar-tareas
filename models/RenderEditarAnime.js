@@ -126,6 +126,7 @@ class RenderEditarAnime extends RenderBase {
         let dropdownDias = document.getElementById('dropdown-dias');
         let inputsDia = dropdownDias.querySelectorAll('#dia');
         let inputsOrden = dropdownDias.querySelectorAll('#orden');
+        let selectDropdownDaysText = '';
         for (const key in inputsOrden) {                                    // Limpia el dropdown-dias antes de asignar datos
             if (inputsOrden.hasOwnProperty(key)) {
                 const inputOrden = inputsOrden[key];
@@ -148,10 +149,12 @@ class RenderEditarAnime extends RenderBase {
                         check.checked = true;
                         inputOrden.value = dia.orden;
                         orden.removeAttribute('readonly');
+                        selectDropdownDaysText += selectDropdownDaysText.length === 0 ? `${this.getAlternativeDay(dia.dia)}, ${dia.orden}` : `; ${this.getAlternativeDay(dia.dia)}, ${dia.orden}`;     // guarda el día y orden para mostrarlo con el select cerrado
                     }
                 }
             }
         }
+        document.querySelector('[autoreas-droptext^=dropdown-dias-text]').innerText = selectDropdownDaysText;       // asígna el día y orden cuando el select esta cerrado
         // DROPDOWN-DIAS END
         // DATE-PICKER BEGIN
         let pickerFechaPublicacion = M.Datepicker.getInstance(document.getElementById('fechaPublicacion'));
@@ -402,7 +405,26 @@ class RenderEditarAnime extends RenderBase {
          */
         M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'), {
             closeOnClick: false,
-            coverTrigger: false
+            coverTrigger: false,
+            onCloseStart(el) {
+                let dropdownId = el.getAttribute('dropdown-dias');
+                let dropdownText = el.querySelector('[autoreas-droptext^=dropdown-dias-text]');
+                let dropdownContainer = document.querySelector(`[autoreas-dropdias="${dropdownId}"]`);
+                let days = dropdownContainer.querySelectorAll('#dia+input'); // ya que el input junto #dia no tiene id, le busque por hermanos
+                let orders = dropdownContainer.querySelectorAll('#orden');
+                let selectDropdownDaysText = '';
+                for (const i in days) {
+                    if (days.hasOwnProperty(i)) {
+                        const day = days[i];
+                        const order = orders[i];
+                        if (order.value.length > 0) {
+                            selectDropdownDaysText += selectDropdownDaysText.length === 0 ? `${day.value}, ${order.value}` : `; ${day.value}, ${order.value}`;     // guarda el día y orden para mostrarlo con el select cerrado
+                        }
+                    }
+                }
+                if (selectDropdownDaysText.length === 0) selectDropdownDaysText = 'Días';
+                dropdownText.innerText = selectDropdownDaysText;
+            }
         });
         document.querySelectorAll('#check-day').forEach((value) => {            // Configura el estado modo lectura de los inputs en base a los checks.
             if (value.checked) {                                                // Los que ya esten `checked` se activan directamente.

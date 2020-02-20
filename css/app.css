@@ -334,6 +334,12 @@ table.highlight>tbody>tr:hover {
 	display: inline-block;
 }
 
+.wrap-one-line {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 .dropdown-content li>a,
 .dropdown-content[class*="multiple-select-dropdown"] li>span {
 	font-size: small;
@@ -743,7 +749,6 @@ select.browser-default {
 	text-transform: capitalize;
 }
 
-.dropdown-dias span,
 .dropdown-estudios span {
 	position: relative;
 	top: 5px;

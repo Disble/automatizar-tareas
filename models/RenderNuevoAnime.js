@@ -30,9 +30,11 @@ class RenderNuevoAnime extends RenderBase {
 			<td>
 				<div class="input-field days">
 					<!-- Dropdown Trigger -->
-					<a class='dropdown-trigger btn btn-block dropdown-dias black-text z-depth-0' href='#'
-						data-target='dropdown-dias${this.contNewFolder}''>
-						Días
+					<a class='dropdown-trigger btn btn-block dropdown-dias black-text z-depth-0 wrap-one-line' href='#'
+						data-target='dropdown-dias${this.contNewFolder}' 
+						dropdown-dias="drop-anime-${this.contNewFolder}">
+						<span autoreas-droptext="dropdown-dias-text-${this.contNewFolder}"
+							class="dropdown-dias-text">Días</span>
 						<span class="right">
 							<svg class="caret" height="24" viewBox="0 0 24 24" width="24"
 								xmlns="http://www.w3.org/2000/svg">
@@ -42,7 +44,9 @@ class RenderNuevoAnime extends RenderBase {
 						</span>
 					</a>
 					<!-- Dropdown Structure -->
-					<ul id='dropdown-dias${this.contNewFolder}' class='dropdown-content days'>
+					<ul id='dropdown-dias${this.contNewFolder}' 
+						autoreas-dropdias="drop-anime-${this.contNewFolder}" 
+						class='dropdown-content days'>
 					</ul>
 				</div>
 			</td>
@@ -263,7 +267,26 @@ class RenderNuevoAnime extends RenderBase {
          */
 		M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'), {
 			closeOnClick: false,
-			coverTrigger: false
+			coverTrigger: false,
+			onCloseStart(el) {
+				let dropdownId = el.getAttribute('dropdown-dias');
+				let dropdownText = el.querySelector('[autoreas-droptext^=dropdown-dias-text]');
+				let dropdownContainer = document.querySelector(`[autoreas-dropdias="${dropdownId}"]`);
+				let days = dropdownContainer.querySelectorAll('#dia:not(.hide)');
+				let orders = dropdownContainer.querySelectorAll('#orden');
+				let selectDropdownDaysText = '';
+				for (const i in days) {
+					if (days.hasOwnProperty(i)) {
+						const day = days[i];
+						const order = orders[i];
+						if (order.value.length > 0) {
+							selectDropdownDaysText += selectDropdownDaysText.length === 0 ? `${day.value}, ${order.value}` : `; ${day.value}, ${order.value}`;     // guarda el día y orden para mostrarlo con el select cerrado
+						}
+					}
+				}
+				if (selectDropdownDaysText.length === 0) selectDropdownDaysText = 'Días';
+				dropdownText.innerText = selectDropdownDaysText;
+			}
 		});
 		/**
          * FIN DROPDOWN DIAS

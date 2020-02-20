@@ -37,9 +37,9 @@
                         <td>
                             <div class="input-field days">
                                 <!-- Dropdown Trigger -->
-                                <a class='dropdown-trigger btn btn-block dropdown-dias black-text z-depth-0' href='#'
-                                    data-target='dropdown-dias'>
-                                    Días
+                                <a class='dropdown-trigger btn btn-block dropdown-dias black-text z-depth-0 wrap-one-line'
+                                    href='#' data-target='dropdown-dias' dropdown-dias="drop-anime-0">
+                                    <span autoreas-droptext="dropdown-dias-text-0">Días</span>
                                     <span class="right">
                                         <svg class="caret" height="24" viewBox="0 0 24 24" width="24"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -49,7 +49,7 @@
                                     </span>
                                 </a>
                                 <!-- Dropdown Structure -->
-                                <ul id='dropdown-dias' class='dropdown-content days'>
+                                <ul id='dropdown-dias' autoreas-dropdias="drop-anime-0" class='dropdown-content days'>
                                 </ul>
                             </div>
                         </td>
@@ -144,7 +144,9 @@
             </table>
         </form>
     </div>
-    <script>require('../../js/agregar-anime-init.js');</script>
+    <script>
+        require('../../js/agregar-anime-init.js');
+    </script>
 </body>
 
 </html>
