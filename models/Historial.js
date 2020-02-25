@@ -24,8 +24,10 @@ class Historial extends RenderBase {
 	 * consultados.
 	 * @param {any} consulta Datos de los animes.
 	 * @param {number} salto Contador del total de animes consulados.
+	 * @param {number} pagina Página actual
 	 */
-	imprimirHistorial(consulta, salto) {
+	imprimirHistorial(consulta, salto, pag) {
+		this._resetArgsHistory();
 		let tblListaAnimes = '';
 		let cont = salto;
 		consulta.forEach((value, i) => {
@@ -38,7 +40,7 @@ class Historial extends RenderBase {
 				<td>${this.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data' : this.firstUpperCase(this.addDiasAccents(this.getDiaSemana(consulta[i].fechaUltCapVisto)))}</td>
 				<td>${this.isNoData(consulta[i].fechaUltCapVisto) ? 'No Data' : this._setHourDate(consulta[i].fechaUltCapVisto)}</td>
 				<td>${this.isNoData(consulta[i].estado) ? 'No Data' : `<i class="icon-state-historial ${this.getState(consulta[i].estado).icon} ${this.getState(consulta[i].estado).color}"></i>`}</td>
-				<td class="hidden" id="key">${consulta[i]._id}</td>
+				<td class="hidden" id="key" autoreas-pag="${pag}">${consulta[i]._id}</td>
 			</tr>`
 		});
 		document.getElementById('contenido').innerHTML = tblListaAnimes;
@@ -56,7 +58,7 @@ class Historial extends RenderBase {
 	 */
 	async _cargarHistorial(pagina, opcion) {
 		let { datos, salto, totalReg, pag } = await this.db.cargarHistorial(pagina, opcion);
-		this.imprimirHistorial(datos, salto);
+		this.imprimirHistorial(datos, salto, pag);
 		this.imprimirPagination(totalReg, pag);
 	}
 	/**
@@ -350,10 +352,22 @@ class Historial extends RenderBase {
 	_enlaceHistAnime() {
 		document.querySelectorAll('td.hidden').forEach((value, i) => {
 			value.parentElement.addEventListener('click', e => {
-				let key = value.parentElement.querySelector('#key').innerHTML;
-				ipcRenderer.sendSync('synchronous-message', key) // envia la clave del anime al main y luego el main carga la vista info.
+				let row = value.parentElement.querySelector('#key');
+				let key = row.innerHTML;
+				let pag = parseInt(row.getAttribute('autoreas-pag'));
+				ipcRenderer.sendSync('load-info-page', {
+					key,
+					pag
+				}); // envia la clave del anime al main y luego el main carga la vista info.
 			});
 		});
+	}
+	/**
+	 * Vuelve los argumentos del historial a `null` para
+	 * que así se puedan volver a validar.
+	 */
+	_resetArgsHistory() {
+		ipcRenderer.sendSync('reset-args-history', null);
 	}
 	/**
 	 * Establece los datos del anime en la 

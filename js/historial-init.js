@@ -5,13 +5,17 @@ const Chart = require('chart.js');
 // Variables locales
 const { Historial } = require('../models/Historial.js');
 const { BDAnimes } = require('../models/consultas.js');
+const { ipcRenderer } = require('electron');
 
 document.addEventListener('DOMContentLoaded', async function () {
+    let res = ipcRenderer.sendSync('return-history', 'please'); // pide al main el idAnime y pag que se guardo antes
+    let pagInfo = 1;
+    if (res !== null) pagInfo = res.pag;
     let consultas = new BDAnimes();
-    let { datos, salto, totalReg, pag } = await consultas.cargarHistorial(1, 1);
+    let { datos, salto, totalReg, pag } = await consultas.cargarHistorial(pagInfo, 1);
     let historial = new Historial();
     if (datos.length > 0) {
-        historial.imprimirHistorial(datos, salto);
+        historial.imprimirHistorial(datos, salto, pag);
         historial.imprimirPagination(totalReg, pag);
         historial.configurarBuscador();
         // Comprueba en que versión esta y migra si es necesario

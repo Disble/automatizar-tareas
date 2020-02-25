@@ -58,6 +58,7 @@ let template = [
 				if (focusedWindow) {
 					if (focusedWindow.id === 1) {
 						BrowserWindow.getAllWindows().forEach(function (win) {
+							argsHistory = { pag: 1 };
 							win.loadFile(path.join('views', 'animes', 'historial.html'));
 						})
 					}
@@ -388,20 +389,24 @@ function createWindow() {
 
 	// devtools
 	if (isDev) mainWindow.toggleDevTools();
-	let idAnime = null;
+	let argsHistory = null;
 	// Events IPC
-	ipcMain.on('synchronous-message', (event, arg) => {
-		idAnime = arg;
+	ipcMain.on('load-info-page', (event, arg) => {
+		argsHistory = arg;
 		mainWindow.loadFile(path.join('views', 'animes', 'info.html'));
 		event.returnValue = 'pong';
-	})
-	ipcMain.on('get-id-anime', (event, arg) => {
-		event.returnValue = idAnime;
 	});
 	// load the view historial.html and send idAnime loaded already.
 	ipcMain.on('return-me-history', (event, arg) => {
 		mainWindow.loadFile(path.join('views', 'animes', 'historial.html'));
-		event.returnValue = idAnime;
+		event.returnValue = argsHistory;
+	});
+	ipcMain.on('reset-args-history', (event, arg) => {
+		argsHistory = arg;
+		event.returnValue = 'reset-args-history';
+	});
+	ipcMain.on('return-history', (event, arg) => {
+		event.returnValue = argsHistory;
 	});
 
 	// Loading autoUpdater

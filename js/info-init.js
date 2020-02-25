@@ -7,10 +7,10 @@ const { BDAnimes } = require('../models/consultas.js');
 const { Anime } = require('../models/Anime');
 const { ipcRenderer } = require('electron');
 document.addEventListener('DOMContentLoaded', async function () {
-    let idAnime = ipcRenderer.sendSync('get-id-anime', 'please'); // pide al main el idAnime que se guardo antes
+    let res = ipcRenderer.sendSync('return-history', 'please'); // pide al main el idAnime que se guardo antes
     //
     let consultas = new BDAnimes();
-    let animeData = await consultas.buscarAnimePorId(idAnime);
+    let animeData = await consultas.buscarAnimePorId(res.key);
     let anime = new Anime(animeData.nombre, animeData.dias, animeData.nrocapvisto, animeData.totalcap, animeData.tipo, animeData.pagina, animeData.carpeta, animeData.estudios, animeData.origen, animeData.generos, animeData.duracion, animeData.portada, animeData.estado, animeData.repetir, animeData.activo, animeData.primeravez, animeData.fechaPublicacion, animeData.fechaEstreno, animeData.fechaCreacion, animeData.fechaUltCapVisto, animeData.fechaEliminacion, animeData._id);
     document.title = `${anime.nombre} | Información`;
     let historial = new Historial();
@@ -24,6 +24,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     M.updateTextFields();
 
     document.getElementById('return-history').addEventListener('click', () => {
-        ipcRenderer.sendSync('return-me-history', 'please return me');
+        ipcRenderer.sendSync('return-me-history', res.pag);
     });
 });
