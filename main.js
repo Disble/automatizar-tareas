@@ -1,6 +1,6 @@
 const electron = require('electron');
 const isDev = require('electron-is-dev');
-const { app, BrowserWindow, ipcMain } = electron;
+const { app, BrowserWindow, ipcMain, nativeTheme } = electron;
 const path = require('path');
 const Menu = electron.Menu;
 const { autoUpdater } = require('electron-updater');
@@ -387,8 +387,9 @@ function createWindow() {
 	const menu = Menu.buildFromTemplate(template);
 	Menu.setApplicationMenu(menu);
 
-	// devtools
+	// Open the DevTools.
 	if (isDev) mainWindow.toggleDevTools();
+	// HISTORY
 	let argsHistory = null;
 	// Events IPC
 	ipcMain.on('load-info-page', (event, arg) => {
@@ -408,14 +409,15 @@ function createWindow() {
 	ipcMain.on('return-history', (event, arg) => {
 		event.returnValue = argsHistory;
 	});
+	// DARK MODE
+	nativeTheme.on('updated', () => {
+		mainWindow.webContents.send('is-dark-mode', nativeTheme.shouldUseDarkColors);
+	});
 
 	// Loading autoUpdater
 	if (!isDev) {
 		autoUpdater.checkForUpdatesAndNotify();
 	}
-
-	// Open the DevTools.
-	// mainWindow.webContents.openDevTools()
 
 	// Emitted when the window is closed.
 	mainWindow.on('closed', function () {

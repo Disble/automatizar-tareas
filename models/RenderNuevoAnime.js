@@ -30,7 +30,7 @@ class RenderNuevoAnime extends RenderBase {
 			<td>
 				<div class="input-field days">
 					<!-- Dropdown Trigger -->
-					<a class='dropdown-trigger btn btn-block dropdown-dias black-text z-depth-0 wrap-one-line' href='#'
+					<a class='dropdown-trigger btn btn-block dropdown-dias z-depth-0 wrap-one-line' href='#'
 						data-target='dropdown-dias${this.contNewFolder}' 
 						dropdown-dias="drop-anime-${this.contNewFolder}">
 						<span autoreas-droptext="dropdown-dias-text-${this.contNewFolder}"

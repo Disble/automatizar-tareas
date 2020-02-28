@@ -1026,8 +1026,8 @@ class Historial extends RenderBase {
 				}
 			],
 			fill: false,
-			backgroundColor: 'rgb(54, 162, 235)',
-			borderColor: 'rgb(54, 162, 235)',
+			backgroundColor: 'hsl(207, 69%, 58%)',
+			borderColor: 'hsl(207, 69%, 58%)',
 		};
 	}
 	/**
@@ -1041,13 +1041,13 @@ class Historial extends RenderBase {
 		let datasets = [
 			{
 				data: [anime.nrocapvisto],
-				backgroundColor: '#64b5f6',
+				backgroundColor: 'hsl(207, 69%, 68%)',
 			}
 		];
 		if ((!this.isNoData(anime.totalcap) || anime.totalcap > 0) && anime.totalcap !== anime.nrocapvisto && anime.totalcap - anime.nrocapvisto >= 0) {
 			datasets.push({
 				data: [anime.totalcap - anime.nrocapvisto],
-				backgroundColor: '#7986cb',
+				backgroundColor: 'hsl(230, 24%, 64%)',
 			});
 		}
 		return {

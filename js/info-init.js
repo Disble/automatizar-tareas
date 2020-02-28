@@ -6,7 +6,10 @@ const { Historial } = require('../models/Historial.js');
 const { BDAnimes } = require('../models/consultas.js');
 const { Anime } = require('../models/Anime');
 const { ipcRenderer } = require('electron');
+const { darkMode } = require('../models/darkMode');
+
 document.addEventListener('DOMContentLoaded', async function () {
+    darkMode(); // activando dark-mode
     let res = ipcRenderer.sendSync('return-history', 'please'); // pide al main el idAnime que se guardo antes
     //
     let consultas = new BDAnimes();

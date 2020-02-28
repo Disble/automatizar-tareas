@@ -8,6 +8,16 @@ html {
 	--blue-color: #039be5;
 	--red-materialize: #f44336;
 	--blue-grey: #eceff1;
+	/* Colors dark mode */
+	--d-dark: #121212;
+	--d-dark__ligthen-1: hsl(0, 0%, 11%);
+	--d-dark__ligthen-2: hsl(0, 0%, 15%);
+	--d-dark__ligthen-3: hsl(0, 0%, 19%);
+	--d-dark__ligthen-4: hsl(0, 0%, 24%);
+	--d-white: hsla(0, 0%, 100%, 0.87);
+	--d-white__darken-1: hsla(0, 0%, 100%, 0.60);
+	--d-white__darken-2: hsla(0, 0%, 100%, 0.38);
+	--d-white__darken-3: hsla(0, 0%, 100%, 0.19);
 }
 
 .blue-grey-text.lighten-5 {
@@ -760,6 +770,11 @@ select.browser-default {
 	color: #000 !important;
 }
 
+.dropdown-dias.btn,
+.dropdown-estudios.btn {
+	color: #000;
+}
+
 .dropdown-dias:focus,
 .dropdown-estudios:focus {
 	background-color: transparent;
@@ -836,4 +851,434 @@ select.browser-default {
 
 .swal-preload-modal {
 	width: 333px;
+}
+
+/* ================================================================== */
+/* ============================= DARK MODE ========================== */
+/* ================================================================== */
+body.dark-mode {
+	color: var(--d-white__darken-1);
+}
+
+.dark-mode {
+	background-color: var(--d-dark);
+}
+
+/* Texts */
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode h6,
+.dark-mode p,
+.dark-mode input,
+.dark-mode .input {
+	color: var(--d-white);
+}
+
+/* Collapsible */
+
+.dark-mode .collapsible,
+.dark-mode .collapsible .collapsible-header,
+.dark-mode .collapsible .collapsible-body,
+.dark-mode .collapsible .collapsible-body a {
+	border-color: var(--d-dark__ligthen-4);
+	color: var(--d-white__darken-1);
+}
+
+.dark-mode .collapsible-header:focus {
+	background-color: var(--d-dark__ligthen-4);
+}
+
+.dark-mode .collapsible-header,
+.dark-mode .collapsible-body .collection a {
+	background-color: var(--d-dark);
+}
+
+.dark-mode .collapsible.popout .collapsible-header,
+.dark-mode .collapsible.popout .collapsible-body {
+	background-color: var(--d-dark__ligthen-1);
+	-webkit-transition: background 400ms ease-in-out;
+	-moz-transition: background 400ms ease-in-out;
+	-ms-transition: background 400ms ease-in-out;
+	-o-transition: background 400ms ease-in-out;
+	transition: background 400ms ease-in-out;
+}
+
+.dark-mode .collapsible.popout .active .collapsible-header,
+.dark-mode .collapsible.popout .active .collapsible-body {
+	background-color: var(--d-dark__ligthen-2);
+	-webkit-transition: background 400ms ease-in-out;
+	-moz-transition: background 400ms ease-in-out;
+	-ms-transition: background 400ms ease-in-out;
+	-o-transition: background 400ms ease-in-out;
+	transition: background 400ms ease-in-out;
+}
+
+/* Card */
+.dark-mode .card {
+	background-color: var(--d-dark__ligthen-1);
+}
+
+.dark-mode .card .btn.disabled {
+	background-color: var(--d-dark__ligthen-3) !important;
+	/* Este important es porque materializecss pone en sus colores important */
+}
+
+.dark-mode .card .btn.disabled i {
+	color: var(--d-white__darken-2);
+}
+
+.dark-mode .card #anime-minus {
+	/* color: hsl(4, 90%, 58%) !important; */
+	color: hsl(4, 80%, 68%) !important;
+	/* Este important es porque materializecss pone en sus colores important */
+}
+
+.dark-mode .card #anime-plus {
+	/* color: hsl(207, 90%, 54%) !important; */
+	color: hsl(207, 80%, 64%) !important;
+	/* Este important es porque materializecss pone en sus colores important */
+}
+
+.dark-mode .collection a.collection-item:not(.active):hover {
+	background-color: hsl(0, 0%, 15%);
+}
+
+/* Modal */
+.dark-mode .modal,
+.dark-mode .modal .modal-footer {
+	background-color: var(--d-dark) !important;
+	/* Este important es porque materializecss pone en sus colores important */
+}
+
+.dark-mode .modal .modal-content {
+	background-color: var(--d-dark__ligthen-1) !important;
+	/* Este important es porque materializecss pone en sus colores important */
+}
+
+.dark-mode .modal .modal-content .btn {
+	color: var(--d-white) !important;
+	/* Este important es porque materializecss pone en sus colores important */
+}
+
+/* Collection */
+.dark-mode .collection .collection-header,
+.dark-mode .collection .collection-item {
+	background-color: var(--d-dark);
+}
+
+.dark-mode .collection,
+.dark-mode .collection .collection-header,
+.dark-mode .collection .collection-item {
+	border-color: var(--d-dark__ligthen-4);
+}
+
+.dark-mode .dropdown-dias.btn {
+	color: var(--d-white);
+}
+
+.dark-mode .dropdown-dias.btn:hover,
+.dark-mode .dropdown-dias.btn:focus,
+.dark-mode .dropdown-estudios.btn:hover,
+.dark-mode .dropdown-estudios.btn:focus {
+	color: var(--d-white) !important;
+	/* Este important es porque materializecss pone en sus colores important */
+}
+
+.dark-mode .caret {
+	fill: var(--d-white__darken-1);
+}
+
+/* Dropdown */
+.dark-mode .dropdown-content {
+	background-color: var(--d-dark__ligthen-1);
+}
+
+.dark-mode .modal .dropdown-content {
+	background-color: var(--d-dark__ligthen-2) !important;
+}
+
+.dark-mode .dropdown-content li span .highlight {
+	color: var(--d-white__darken-1);
+}
+
+.dark-mode .select-dropdown li.disabled>span {
+	color: var(--d-white__darken-2);
+}
+
+.dark-mode .select-dropdown li.optgroup>span {
+	color: var(--d-white__darken-2);
+}
+
+.dark-mode .select-dropdown li.optgroup {
+	border-top-color: var(--d-white__darken-3);
+}
+
+.dark-mode .dropdown-content li:hover {
+	background-color: var(--d-dark__ligthen-4);
+}
+
+.dark-mode .dropdown-content.inputs .row .dropdown-trash a:hover {
+	background-color: hsl(4, 70%, 68%) !important;
+	border: 1px solid hsl(4, 70%, 68%);
+	color: var(--d-white) !important;
+}
+
+/* table */
+.dark-mode table tr {
+	border-bottom-color: var(--d-dark__ligthen-2);
+}
+
+.dark-mode table.highlight>tbody>tr:hover {
+	/* background-color: hsl(193, 99%, 65%); */
+	background-color: hsl(193, 49%, 44%);
+}
+
+.dark-mode table.highlight>tbody>tr:hover td {
+	color: var(--d-white);
+}
+
+.dark-mode table .history-list i.icon-play {
+	/* color: hsl(122, 39%, 49%) !important; */
+	color: hsl(122, 39%, 59%) !important;
+}
+
+.dark-mode table .history-list i.icon-pause {
+	/* color: hsl(36, 100%, 50%) !important; */
+	color: hsl(36, 70%, 60%) !important;
+}
+
+.dark-mode table .history-list i.icon-emo-unhappy {
+	/* color: hsl(4, 90%, 58%) !important; */
+	color: hsl(4, 70%, 74%) !important;
+}
+
+.dark-mode table .history-list i.icon-ok-squared {
+	/* color: hsl(174, 100%, 29%) !important; */
+	color: hsl(174, 70%, 39%) !important;
+}
+
+/* Switch */
+.dark-mode .switch label .lever {
+	background-color: var(--d-dark__ligthen-3);
+}
+
+.dark-mode .switch label .lever:after {
+	background-color: var(--d-white__darken-1);
+}
+
+/* Forms */
+.dark-mode input::placeholder {
+	color: var(--d-white__darken-3);
+}
+
+.dark-mode input:not([type]),
+.dark-mode input[type=text]:not(.browser-default),
+.dark-mode input[type=password]:not(.browser-default),
+.dark-mode input[type=email]:not(.browser-default),
+.dark-mode input[type=url]:not(.browser-default),
+.dark-mode input[type=time]:not(.browser-default),
+.dark-mode input[type=date]:not(.browser-default),
+.dark-mode input[type=datetime]:not(.browser-default),
+.dark-mode input[type=datetime-local]:not(.browser-default),
+.dark-mode input[type=tel]:not(.browser-default),
+.dark-mode input[type=number]:not(.browser-default),
+.dark-mode input[type=search]:not(.browser-default),
+.dark-mode textarea.materialize-textarea,
+.dark-mode .dropdown-dias,
+.dark-mode .dropdown-estudios {
+	border-bottom-color: var(--d-white__darken-2);
+}
+
+.dark-mode textarea.materialize-textarea {
+	color: var(--d-white);
+}
+
+/* COLORS */
+.dark-mode .green {
+	/* background-color: hsl(122, 39%, 49%) !important; */
+	background-color: hsl(130, 25%, 49%) !important;
+}
+
+.dark-mode .blue {
+	/* background-color: hsl(207, 90%, 54%) !important; */
+	background-color: hsl(207, 70%, 64%) !important;
+}
+
+.dark-mode .red {
+	/* background-color: hsl(4, 90%, 58%) !important; */
+	background-color: hsl(4, 70%, 58%) !important;
+}
+
+.dark-mode .red-text {
+	/* color: #F44336 !important; */
+	color: hsl(4, 70%, 68%) !important;
+}
+
+.dark-mode .blue-text {
+	/* color: hsl(207, 90%, 54%) !important; */
+	color: hsl(207, 80%, 74%) !important;
+}
+
+.dark-mode .transparent {
+	background-color: var(--d-dark__ligthen-1) !important;
+}
+
+/* color + darken/ligthen */
+.dark-mode .blue-text.text-darken-4 {
+	color: var(--d-white) !important;
+}
+
+.dark-mode .blue.lighten-1 {
+	background-color: hsl(207, 70%, 51%) !important;
+}
+
+.dark-mode .lighten-5 {
+	background-color: var(--d-dark__ligthen-1) !important;
+}
+
+/* Others */
+.dark-mode .danger-border {
+	border-color: hsla(354, 66%, 60%, 1);
+}
+
+.dark-mode .barra-sumar .triangle {
+	border-right-color: hsl(207, 70%, 64%);
+}
+
+.dark-mode .barra-sumar i {
+	color: var(--d-white) !important;
+}
+
+.dark-mode .datos-anime-nuevo .icon-dot-3 {
+	color: var(--d-white__darken-1);
+}
+
+.dark-mode .divider {
+	border-color: var(--d-dark__ligthen-1);
+}
+
+.dark-mode .barra-sumar hr {
+	border-color: var(--d-white__darken-2);
+}
+
+.dark-mode .chip {
+	background-color: var(--d-white);
+}
+
+/* pagination */
+.dark-mode .pagination li a {
+	color: var(--d-white__darken-1);
+}
+
+.dark-mode .pagination li.disabled a {
+	color: var(--d-white__darken-3);
+}
+
+.dark-mode .pagination li.active a {
+	background-color: hsl(193, 57%, 65%);
+	color: hsl(193, 37%, 10%);
+}
+
+/* INFO */
+.dark-mode .info .info-cover {
+	background-color: white;
+}
+
+.dark-mode .info .red.lighten-4 {
+	background-color: #FFCDD2 !important;
+}
+
+.dark-mode .info .btn-eliminar-anime {
+	color: hsla(354, 100%, 20%, 1) !important;
+}
+
+.dark-mode .info .blue.lighten-4,
+.dark-mode .settings .blue.lighten-4 {
+	background-color: #BBDEFB !important;
+}
+
+.dark-mode .info .btn-repetir-anime {
+	color: hsla(207, 89%, 20%, 1) !important;
+}
+
+.dark-mode .info .btn-restaurar-anime {
+	color: hsla(36, 100%, 20%, 1) !important;
+}
+
+.dark-mode .info .info-subtitle {
+	color: var(--d-white__darken-2) !important;
+}
+
+/* SETTINGS */
+.dark-mode .settings .blue-text {
+	color: #2196F3 !important;
+}
+
+.dark-mode .settings .green.lighten-4 {
+	background-color: #C8E6C9 !important;
+}
+
+.dark-mode .settings .collection a {
+	color: hsl(207, 80%, 74%);
+}
+
+.dark-mode .settings .collection .secondary-content {
+	color: hsl(207, 80%, 74%) !important;
+}
+
+/* Dark Swal */
+.dark-mode .swal-modal {
+	background-color: var(--d-dark__ligthen-1);
+}
+
+.dark-mode .swal-footer {
+	background-color: var(--d-dark__ligthen-2);
+}
+
+.dark-mode .swal-title,
+.dark-mode .swal-text,
+.dark-mode .swal-footer,
+.dark-mode .swal-button {
+	color: var(--d-white);
+}
+
+.dark-mode .swal-icon--success:before,
+.dark-mode .swal-icon--success:after,
+.dark-mode .swal-icon--success__hide-corners {
+	background-color: hsla(0, 0%, 11%, 0.2);
+}
+
+.dark-mode .swal-icon--success__ring {
+	border-color: hsla(0, 0%, 11%, 0);
+}
+
+.dark-mode .warning-swal {
+	border-top-color: hsl(37, 75%, 66%);
+}
+
+.dark-mode .error-swal {
+	border-top-color: hsl(0, 70%, 62%);
+}
+
+.dark-mode .success-swal {
+	border-top-color: #a5dc86;
+}
+
+.dark-mode .info-swal {
+	border-top-color: hsl(218, 70%, 63%);
+}
+
+/* Dark scroll bar */
+@media (prefers-color-scheme: dark) {
+	::-webkit-scrollbar-thumb {
+		background: hsl(0, 0%, 20%);
+	}
+
+	::-webkit-scrollbar-thumb:active,
+	::-webkit-scrollbar-thumb:hover {
+		background: hsl(240, 1%, 30%);
+	}
 }

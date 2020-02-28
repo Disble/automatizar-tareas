@@ -4,6 +4,7 @@ const { Backup } = require('./Backup');
 const settings = require('electron-settings');
 const path = require('path');
 const isDev = require('electron-is-dev');
+const { darkMode } = require('./darkMode');
 
 
 /**
@@ -33,6 +34,53 @@ class Opciones extends RenderBase {
         });
         document.getElementById('conf-temporada').addEventListener('click', e => {
             this._initTemporada();
+        });
+        document.getElementById('conf-dark-mode').addEventListener('click', e => {
+            this._initModoOscuro();
+        });
+    }
+    /**
+     * Inicializa el modo oscuro.
+     */
+    _initModoOscuro() {
+        this._cargarModoOscuro();
+        this.noLink();
+        this._initLoaderModoOscuro();
+    }
+    /**
+     * Inicializa la estructura HTML de la opción de 
+     * modo oscuro.
+     */
+    _cargarModoOscuro() {
+        this.resetConfData();
+        document.getElementById('conf-title').innerText = 'Modo oscuro';
+        let datos = document.getElementById('datos');
+        let darkModeSettings = settings.get('darkMode', 'system');
+        let checkbox = /*html*/`
+            <div class="input-field col s12 mt-40">
+                <select id="select-dark-mode">
+                    <option value="light" ${darkModeSettings === 'light' ? 'selected' : ''}>Claro</option>
+                    <option value="dark" ${darkModeSettings === 'dark' ? 'selected' : ''}>Oscuro</option>
+                    <option value="system" ${darkModeSettings === 'system' ? 'selected' : ''}>Sistema</option>
+                </select>
+                <label>Elegir el color</label>
+            </div>
+            <div class="col s12">
+                <p>
+                    Con la opción <code>Sistema</code> el Sistema Operativo escoge que tema utilizar.
+                </p>
+            </div>
+        `;
+        datos.innerHTML = checkbox;
+    }
+    /**
+     * Inicializa los componentes de las opciones de modo oscuro.
+     */
+    _initLoaderModoOscuro() {
+        M.FormSelect.init(document.querySelectorAll('select'));
+        document.getElementById('select-dark-mode').addEventListener('change', e => {
+            settings.set('darkMode', e.target.value);
+            darkMode(); // reactivando el darkmode
         });
     }
     /**
