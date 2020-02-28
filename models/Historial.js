@@ -869,7 +869,7 @@ class Historial extends RenderBase {
 	 * `Capítulos restantes`.
 	 */
 	async numCapRestantes() {
-		let capRestantes = await this.db.animesViendo();
+		let capRestantes = await this.db.animesCapsRestantes();
 		if (capRestantes.length > 0) {
 			let listFilter = this._filterCapResChart(capRestantes);
 			this._chartCapVistos(listFilter, 'horizontalBar', 'Capítulos restantes');
@@ -1078,7 +1078,7 @@ class Historial extends RenderBase {
 			'colorTransparente': colorTransparente,
 			'color': color
 		}
-		return data
+		return data;
 	}
 
 	_filterPageActiveChart(data) {
@@ -1123,7 +1123,7 @@ class Historial extends RenderBase {
 	}
 
 	_getRandom() {
-		return Math.round(Math.random() * 255) - Math.round(Math.random() * 85);
+		return Math.abs(Math.round(Math.random() * 255) - Math.round(Math.random() * 85));
 	}
 	/**
      * Comprueba que el `path` de la imagen sea válido, cumpliendo una 
