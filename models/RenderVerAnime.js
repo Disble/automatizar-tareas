@@ -250,7 +250,7 @@ class RenderVerAnime extends RenderBase {
                 }
             });
             col.querySelector('#anime-folder').addEventListener('click', () => {
-                shell.showItemInFolder(path.join(anime.carpeta, '*'));
+                shell.openItem(anime.carpeta);
             });
             col.querySelector('#anime-estado-viendo').addEventListener('click', async e => {
                 this._updateState(e.currentTarget, 0);
