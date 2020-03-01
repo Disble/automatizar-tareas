@@ -1,6 +1,10 @@
 # Change Log
 Todos los cambios importantes de Autoreas van a ser documentados en este archivo.
 
+## [2.1.1]
+### Corrección de errores
+- Solucionado: Por alguna razón no era posible abrir la carpeta desde la sección `Ver animes`, esto ya esta solucionado y nos disculpamos por los problemas que esto pudo haber causado.
+
 ## [2.1.0]
 ### Novedades
 - Hemos estado trabajando duro para integrar un nuevo **modo oscuro** que se podrá habilitar desde Opciones. \(^o^)/ Si eso de tener que hacer elecciones no es lo tuyo puedes dejar que el SO lo haga por ti (por defecto elige el SO).
