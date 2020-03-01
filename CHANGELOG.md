@@ -1,6 +1,19 @@
 # Change Log
 Todos los cambios importantes de Autoreas van a ser documentados en este archivo.
 
+## [2.1.0]
+### Novedades
+- Hemos estado trabajando duro para integrar un nuevo **modo oscuro** que se podrá habilitar desde Opciones. \(^o^)/ Si eso de tener que hacer elecciones no es lo tuyo puedes dejar que el SO lo haga por ti (por defecto elige el SO).
+- Lo sabemos, esto sucede una vez cada varios meses, pero era necesario, hemos agregado un **modo temporada** que te permitirá mostrar directamente la lista de los animes de estreno que vayas agregando.
+- Si, por alguna razón, cuando regresabas de ver la *info* de algún anime te regresaba al principio del historial, sabemos lo tedioso que volverlo a buscar, así que hemos cambiado este comportamiento y prometemos que no volverá a suceder.
+- En ***Editar*** y ***Agregar*** animes ahora se puede ver directamente en que día y orden se muestran cada anime.
+- El título de cada repetición de anime era muy difícil de entender, lo hemos replanteado y ahora esperamos que sea más natural.
+- En las nuevas instalaciones de **Autoreas** se mostrará en los archivos del sistema y accesos directos como **Autoreas** (con mayúscula la primera letra).
+
+### Corrección de errores
+- Solucionado: Si te pasaba que ahora salían menos animes en `Capítulos vistos`, no te preocupes, ya lo hemos corregido.
+- Solucionado: La imagen de portada de anime en `Ver animes` no se conectaba con `Info`, ya las hemos conectado de nuevo.
+
 ## [2.0.3]
 ### Corrección de errores
 - Solucionado: Por alguna motivo el icono de la aplicación se distorsionaba en la barra de tareas de Windows, sabemos que no eran las mejores vistas por lo que lo hemos cambiado, esperemos mejores vistas desde ahora.
@@ -23,7 +36,7 @@ Todos los cambios importantes de Autoreas van a ser documentados en este archivo
 - Ahora puedes recordar más cosas de tus animes favoritos, como el género, origen, duración por capítulo o cuando se publico. Todo esto se puede modificar en `Editar Animes` y es perfectamente visible en los detalles del anime en `Historial`.
 - Sabemos que no quieres perder los valiosos registros de tu historia por el anime, no te preocupes, hemos agregado una opción de `exportar` e `importar`, para que nunca más te preocupes por ello.
 - Hemos agregado una nueva opción de ver las `Notas de Versión`, para que siempre estés actualizado con los detalles de la última actualización.
-- Hemos actualizado la vista de `Ver Animes`, hemos hechos muchos cambios estéticos, pero todas las antiguas funciones siguen allí, incluso hemos agregado una hermosa imagen a un costado (puedes cambiarla).
+- Hemos actualizado la vista de `Ver Animes`, hemos hecho muchos cambios estéticos, pero todas las antiguas funciones siguen allí, incluso hemos agregado una hermosa imagen a un costado (puedes cambiarla).
 - Ahora ya puedes recordar que programa enlazaste al icono del cohete sin salir de la página.
 - Hemos cambiado la forma en ves los detalles de un anime en `Historial`, ahora se abren en una nueva página y son muchos más detallados.
 - Hemos agregado un nueva función para que puedas `repetir` el anime que quieras, se encuentra dentro de los detalles del anime en `Historial` (tienes que terminar de verlo primero... ¬¬).
@@ -43,8 +56,7 @@ Todos los cambios importantes de Autoreas van a ser documentados en este archivo
 ### Novedades
 - Se cambiaron los nombres de los títulos de cada sección, y sección de menú.
 - Se simplifico la forma de agregar nuevos animes. Ahora es mucho más intuitiva.
-- Ahora se puede pegar texto en un campo de varias maneras: arrastrando el texto, 
-con clic derecho, ctrl + v.
+- Ahora se puede pegar texto en un campo de varias maneras: arrastrando el texto, con clic derecho, `ctrl + v`.
 
 ## Corrección de errores
 - Por alguna razón los filtros del buscador no coincidían con las otras secciones. Esto ya esta solucionado y no debería haber más confusiones.

@@ -42,6 +42,8 @@ Como parte del programa, diseñado al comienzo del desarrollo se presentarán la
     - Días (cambiar de nombre)
     - Gestor de descargas (acceso directo)
     - Respaldos (importar y exportar)
+    - Modo temporada
+    - Modo oscuro
 
 ### Características escondidas por Función
 - **Lista de Animes**
@@ -50,7 +52,7 @@ Como parte del programa, diseñado al comienzo del desarrollo se presentarán la
  - [x] Cuando se finaliza un anime pero no se elimina, aparece un contador en el menú de días de Ver Animes.
  - [x] Cuando se posa el puntero encima de los capítulos vistos, muestra los capítulos restantes.
  - [x] Si se hace clic derecho en los botones `Cap -` y `Cap +` solo resta o aumenta 0.5 al número de capítulos respectivamente.
- - [x] Si esta configurado el Gestor de descargar aparecerá un icono a la derecha del título. 
+ - [x] Si esta configurado el Gestor de descargas aparecerá un icono a la derecha del título. 
 
 ## Guía de usuario
 ---

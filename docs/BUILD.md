@@ -9,5 +9,5 @@ npm install -g electron-builder
 Escribir el siguiente comando.
 
 ```
-npx build --x64 --ia32
+npx electron-builder build --x64 --ia32
 ```

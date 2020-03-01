@@ -1,7 +1,7 @@
 {
   "name": "autoreas",
   "productName": "Autoreas",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "Apoyando la vagancia desde tiempos inmemoriales.",
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^7.1.14",
-    "electron-builder": "^21.2.0"
+    "electron-builder": "^22.3.2"
   },
   "dependencies": {
     "chart.js": "^2.9.3",
@@ -36,7 +36,8 @@
       "github"
     ],
     "dmg": {
-      "contents": [{
+      "contents": [
+        {
           "x": 110,
           "y": 150
         },
