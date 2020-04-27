@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path');
 const fs = require('fs');
-const { shell } = require('electron');
+const { shell, clipboard } = require('electron');
 const { BDAnimes } = require('./consultas.js');
 const { RenderBase } = require('./RenderBase.js');
 const settings = require('electron-settings');
@@ -238,14 +238,23 @@ class RenderVerAnime extends RenderBase {
             });
             if (this.isNoData(anime.carpeta) || anime.carpeta === '') col.querySelector('#anime-folder').classList.add('hide'); // validacion para carpeta
             if (!this.isUrl(anime.pagina)) col.querySelector('#anime-link').classList.add('hide');
-            col.querySelector('#anime-link').addEventListener('click', () => {
+            col.querySelector('#anime-link').addEventListener('mouseup', (e) => {
                 // if (!this.isUrl(anime.pagina)) return;
-                if (!shell.openExternal(anime.pagina)) {
-                    swal({
-                        title: "Hubo problemas al abrir la url",
-                        text: "Por favor revise el formato de la url en Editar Animes.",
-                        icon: "error",
-                        className: "error-swal"
+                console.log('click derecho', e.button);
+                if (e.button === 0) {
+                    if (!shell.openExternal(anime.pagina)) {
+                        swal({
+                            title: "Hubo problemas al abrir la url",
+                            text: "Por favor revise el formato de la url en Editar Animes.",
+                            icon: "error",
+                            className: "error-swal"
+                        });
+                    }
+                } else if (e.button === 2) {
+                    clipboard.writeText(anime.pagina);
+                    M.toast({
+                        html: 'URL copiada al portapapeles',
+                        displayLength: 4000
                     });
                 }
             });
