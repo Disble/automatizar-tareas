@@ -240,7 +240,6 @@ class RenderVerAnime extends RenderBase {
             if (!this.isUrl(anime.pagina)) col.querySelector('#anime-link').classList.add('hide');
             col.querySelector('#anime-link').addEventListener('mouseup', (e) => {
                 // if (!this.isUrl(anime.pagina)) return;
-                console.log('click derecho', e.button);
                 if (e.button === 0) {
                     if (!shell.openExternal(anime.pagina)) {
                         swal({
@@ -258,8 +257,16 @@ class RenderVerAnime extends RenderBase {
                     });
                 }
             });
-            col.querySelector('#anime-folder').addEventListener('click', () => {
-                shell.openItem(anime.carpeta);
+            col.querySelector('#anime-folder').addEventListener('mouseup', e => {
+                if (e.button === 0) {
+                    shell.openItem(anime.carpeta);
+                } else if (e.button === 2) {
+                    clipboard.writeText(anime.carpeta);
+                    M.toast({
+                        html: 'Dirección de la carpeta copiada al portapapeles',
+                        displayLength: 4000
+                    });
+                }
             });
             col.querySelector('#anime-estado-viendo').addEventListener('click', async e => {
                 this._updateState(e.currentTarget, 0);
