@@ -53,6 +53,7 @@ Como parte del programa, diseñado al comienzo del desarrollo se presentarán la
  - [x] Cuando se posa el puntero encima de los capítulos vistos, muestra los capítulos restantes.
  - [x] Si se hace clic derecho en los botones `Cap -` y `Cap +` solo resta o aumenta 0.5 al número de capítulos respectivamente.
  - [x] Si esta configurado el Gestor de descargas aparecerá un icono a la derecha del título. 
+ - [x] Clic derecho en el ícono de carpeta o link copiara la dirección al portapapeles.
 
 ## Guía de usuario
 ---

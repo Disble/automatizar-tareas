@@ -1,6 +1,13 @@
 # Change Log
 Todos los cambios importantes de Autoreas van a ser documentados en este archivo.
 
+## [2.2.0]
+### Novedades
+- Ahora cuando hagas clic derecho en el ícono de carpeta o link se copiará la dirección directamente en el portapapeles.
+
+### Corrección de errores
+- Hemos hecho pequeñas mejoras en el tema oscuro.
+
 ## [2.1.1]
 ### Corrección de errores
 - Solucionado: Por alguna razón no era posible abrir la carpeta desde la sección `Ver animes`, esto ya esta solucionado y nos disculpamos por los problemas que esto pudo haber causado.
