@@ -930,6 +930,10 @@ body.dark-mode {
 	color: var(--d-white__darken-2);
 }
 
+.dark-mode .card .card-content .btn .waves-ripple {
+	background-color: var(--d-dark__ligthen-2);
+}
+
 .dark-mode .card #anime-minus {
 	/* color: hsl(4, 90%, 58%) !important; */
 	color: hsl(4, 80%, 68%) !important;
@@ -949,18 +953,22 @@ body.dark-mode {
 /* Modal */
 .dark-mode .modal,
 .dark-mode .modal .modal-footer {
-	background-color: var(--d-dark) !important;
+	background-color: var(--d-dark__ligthen-1) !important;
 	/* Este important es porque materializecss pone en sus colores important */
 }
 
 .dark-mode .modal .modal-content {
-	background-color: var(--d-dark__ligthen-1) !important;
+	background-color: var(--d-dark) !important;
 	/* Este important es porque materializecss pone en sus colores important */
 }
 
 .dark-mode .modal .modal-content .btn {
 	color: var(--d-white) !important;
 	/* Este important es porque materializecss pone en sus colores important */
+}
+
+.dark-mode .modal .modal-content .btn .waves-ripple {
+	background-color: var(--d-dark__ligthen-1);
 }
 
 /* Collection */
@@ -1004,6 +1012,17 @@ body.dark-mode {
 	color: var(--d-white__darken-1);
 }
 
+.dark-mode .dropdown-content li:hover, 
+.dark-mode .dropdown-content li.active {
+	background-color: var(--d-dark__ligthen-4);
+}
+
+.dark-mode.keyboard-focused .select-dropdown.dropdown-content li:focus,
+.dark-mode.keyboard-focused .dropdown-content li:focus,
+.dark-mode .keyboard-focused .collapsible-header:focus {
+	background-color: var(--d-dark__ligthen-4);
+}
+
 .dark-mode .select-dropdown li.disabled>span {
 	color: var(--d-white__darken-2);
 }
@@ -1024,6 +1043,10 @@ body.dark-mode {
 	background-color: hsl(4, 70%, 68%) !important;
 	border: 1px solid hsl(4, 70%, 68%);
 	color: var(--d-white) !important;
+}
+
+.dark-mode [type="checkbox"]:not(:checked):disabled+span:not(.lever):before {
+	background-color: var(--d-white__darken-3);
 }
 
 /* table */
@@ -1092,11 +1115,23 @@ body.dark-mode {
 	border-bottom-color: var(--d-white__darken-2);
 }
 
+.dark-mode .input-field>label {
+	color: var(--d-white__darken-2);
+}
+
 .dark-mode textarea.materialize-textarea {
 	color: var(--d-white);
 }
 
 /* COLORS */
+.dark-mode span.badge {
+	color: var(--d-white__darken-3) !important;
+}
+
+.dark-mode .edit-anime-list .grey-text {
+	color: var(--d-white__darken-3) !important;
+}
+
 .dark-mode .green {
 	/* background-color: hsl(122, 39%, 49%) !important; */
 	background-color: hsl(130, 25%, 49%) !important;
@@ -1120,10 +1155,6 @@ body.dark-mode {
 .dark-mode .blue-text {
 	/* color: hsl(207, 90%, 54%) !important; */
 	color: hsl(207, 80%, 74%) !important;
-}
-
-.dark-mode .transparent {
-	background-color: var(--d-dark__ligthen-1) !important;
 }
 
 /* color + darken/ligthen */
